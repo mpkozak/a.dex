@@ -19,18 +19,15 @@ export default class Audio extends Component {
     d3.select(node).append('g').classed('spec', true);
     d3.select(node).append('g').classed('freq', true);
     d3.select(node).append('g').classed('wave', true);
-
-    const width = node.clientWidth;
-    const height = node.clientHeight;
-    d3.select('.spec').append('rect').attr('x', 0).attr('y', 0).attr('width', width).attr('height', height).style('fill', 'black')
+    // d3.select('.spec').append('rect').attr('x', 0).attr('y', 0).attr('width', node.clientWidth).attr('height', node.clientHeight).style('fill', 'black')
 
 
-    var AudioContext = window.AudioContext || window.webkitAudioContext;
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
     navigator.mediaDevices.getUserMedia({audio: true})
       .then(stream => {
         const ctx = new AudioContext();
 
-        const size = 512;
+        const size = 128;
         const analyser = ctx.createAnalyser();
         analyser.fftSize = size * 2;
         const bufferLength = analyser.frequencyBinCount;
@@ -54,10 +51,10 @@ export default class Audio extends Component {
           analyser.getByteFrequencyData(freq);
           analyser.getByteTimeDomainData(wave);
           // this.drawFreq(freq, size);
-          // this.drawWave(wave, size);
+          this.drawWave(wave, size);
 
-          this.drawSpec(freq, size, t);
-          // if (t % 4 === 0) this.drawSpec(freq, size, t / 4)
+          // this.drawSpec(freq, size, t);
+          if (t % 4 === 0) this.drawSpec(freq, size, t / 4)
 
           t += 1;
         }
@@ -75,9 +72,10 @@ export default class Audio extends Component {
     const sliceWidth = width / slices;
 
     const xScale = d3.scaleLinear().domain([0, slices]).range([0, width]);
-    const yScale = d3.scaleLinear().domain([0, size]).range([0, height]);
-    const zScale = d3.scaleLinear().domain([0, 128, 256]).range(['#000000', '#0000FF', '#FF8C00'])
-
+    const yScale = d3.scaleLinear().domain([0, size - 1]).range([0, height]);
+    // const zScale = d3.scaleLinear().domain([0, 128, 256]).range(['#000000', '#0000FF', '#FF8C00']);
+    const zScale = d3.scaleLinear().domain([0, 127, 255]).range(['rgba(0,0,0,0)', 'rgba(0,0,255,1)', 'rgba(255,140,0,1)']);
+    console.log(zScale(63))
     const slice = d3.select('.spec').append('g').classed('unit', true)
     const rects = slice.selectAll('rect').data(input)
     rects.enter().append('rect')
@@ -92,13 +90,32 @@ export default class Audio extends Component {
     rects
       .attr('x', width + xScale(t))
 
+    // d3.select('.spec').selectAll('g').attr('transform', `translate(${-xScale(t)})`)
+
+
+
+    // const circ = slice.selectAll('circle').data(input)
+    // circ.enter().append('circle')
+    //   .attr('cx', width + xScale(t))
+    //   .attr('cy', (d, i) => height - yScale(i))
+    //   .attr('r', yScale(.5))
+    //   .style('fill', (d) => zScale(d))
+    //   .style('opacity', 0.5)
+    //   .style('stroke', (d) => zScale(d))
+    //   .style('stroke-width', yScale(0.25))
+    //   .style('stroke-opacity', 0.5)
+    // circ
+    //   .attr('cx', width + xScale(t))
+
+
     d3.select('.spec').selectAll('g').attr('transform', `translate(${-xScale(t)})`)
 
-    // console.log(d3.select('.spec').node().childNodes.length)
-    // if (d3.select('.spec').node().childNodes.length > slices) {
-    //   d3.select('.spec').selectAll('rect').attr('width', (width / d3.select('.spec').node().childNodes.length))
-    // }
 
+    const sliceNodes = d3.select('.spec').node().childNodes;
+    if (sliceNodes.length > slices) {
+      sliceNodes[0].remove();
+    };
+    // console.log(sliceNodes.length)
   }
 
 
@@ -107,8 +124,8 @@ export default class Audio extends Component {
     const width = node.clientWidth;
     const height = node.clientHeight;
 
-    const xScale = d3.scaleLinear().domain([0, size]).range([0, width]);
-    const yScale = d3.scaleLinear().domain([0, 256]).range([0, height]);
+    const xScale = d3.scaleLinear().domain([0, size - 1]).range([0, width]);
+    const yScale = d3.scaleLinear().domain([0, 255]).range([0, height]);
     const curveScale = d3.line().curve(d3.curveLinear);
 
     const dataCurve = [];
@@ -144,9 +161,10 @@ export default class Audio extends Component {
     const node = this.node;
     const width = node.clientWidth;
     const height = node.clientHeight;
+    const margin = 10;
 
-    const xScale = d3.scaleLinear().domain([0, size]).range([0, width]);
-    const yScale = d3.scaleLinear().domain([0, 256]).range([0, height]);
+    const xScale = d3.scaleLinear().domain([0, size - 1]).range([0, width]);
+    const yScale = d3.scaleLinear().domain([0 - margin, 255 + margin]).range([0, height]);
     const curveScale = d3.line().curve(d3.curveLinear);
 
     const dataCurve = [];
@@ -157,7 +175,7 @@ export default class Audio extends Component {
     const wave = d3.select('.wave').selectAll('path').data([dataCurve]);
     wave.enter().append('path')
       .style('fill', 'none')
-      .style('stroke', '#FFFFFF')
+      .style('stroke', '#FFFF00')
     wave
       .attr('d', d => curveScale(d))
 
