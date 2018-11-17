@@ -11,25 +11,28 @@ export default class Audio extends Component {
     };
     this.drawFreq = this.drawFreq.bind(this);
     this.drawWave = this.drawWave.bind(this);
-    // this.drawSpec = this.drawSpec.bind(this);
-    this.drawSlice = this.drawSlice.bind(this);
-    this.moveSlices = this.moveSlices.bind(this);
+    this.drawSpec = this.drawSpec.bind(this);
   }
 
   componentDidMount() {
-    var AudioContext = window.AudioContext || window.webkitAudioContext;
     const node = this.node;
     d3.select(node).append('g').classed('spec', true);
     d3.select(node).append('g').classed('freq', true);
     d3.select(node).append('g').classed('wave', true);
 
+    const width = node.clientWidth;
+    const height = node.clientHeight;
+    d3.select('.spec').append('rect').attr('x', 0).attr('y', 0).attr('width', width).attr('height', height).style('fill', 'black')
+
+
+    var AudioContext = window.AudioContext || window.webkitAudioContext;
     navigator.mediaDevices.getUserMedia({audio: true})
       .then(stream => {
         const ctx = new AudioContext();
 
-
+        const size = 512;
         const analyser = ctx.createAnalyser();
-        analyser.fftSize = 1024;
+        analyser.fftSize = size * 2;
         const bufferLength = analyser.frequencyBinCount;
         const freq = new Uint8Array(bufferLength);
         const wave = new Uint8Array(bufferLength);
@@ -38,279 +41,74 @@ export default class Audio extends Component {
         mic.connect(analyser);
         analyser.connect(ctx.destination)
 
-        // const spec = new Array(50).fill(freq);
-        // const spec = new Array(50).fill({x: 0, y: freq});
+        let t = 0;
 
-        // const spec = []
-
-        // let x = 0
-
-
-
-        setInterval(() => {
-          // if (spec.length > 50) spec.shift()
-          analyser.getByteFrequencyData(freq);
-          // // spec.push({x: x, y: freq});
-          // this.drawSlice(freq);
-          // this.moveSlices();
-          // console.log(spec[0].y)
-          // x += 1
-        }, 100)
-
-        let t = 0
-
-
-
-
+        // setInterval(() => {
+        //   analyser.getByteFrequencyData(freq);
+        //   this.drawSpec(freq, size, t);
+        //   t += 1;
+        // }, 100)
 
         const draw = () => {
           requestAnimationFrame(draw);
           analyser.getByteFrequencyData(freq);
           analyser.getByteTimeDomainData(wave);
-          // this.drawFreq(freq);
-          // this.drawWave(wave);
+          // this.drawFreq(freq, size);
+          // this.drawWave(wave, size);
 
+          this.drawSpec(freq, size, t);
+          // if (t % 4 === 0) this.drawSpec(freq, size, t / 4)
 
-          this.drawSlice(freq, t);
-          // this.moveSlices(t);
-          t += 1
-
-          // spec.shift();
-          // spec.push(freq);
-
-          // const newSpec =
-          // analyser.getByteFrequencyData(spec[49]);
-          // spec.push(newSpec);
-
-
-
-          // console.log(spec[49])
-
-          // this.drawSpec(spec);
-          // this.drawSpec(freq);
-
-
+          t += 1;
         }
         requestAnimationFrame(draw);
       });
   }
 
-  drawSlice(input, t) {
+
+  drawSpec(input, size, t) {
     const node = this.node;
     const width = node.clientWidth;
     const height = node.clientHeight;
-    // const domainX = d3.extent(input.map(d => d.x))
-    // console.log(domainX)
+    const xScaleFactor = size / 128;
+    const slices = (width / (height / size)) / xScaleFactor;
+    const sliceWidth = width / slices;
 
-    const xScale = d3.scaleLinear().domain([0, 1000]).range([0, width]);
-    const yScale = d3.scaleLinear().domain([0, 512]).range([0, height]);
+    const xScale = d3.scaleLinear().domain([0, slices]).range([0, width]);
+    const yScale = d3.scaleLinear().domain([0, size]).range([0, height]);
     const zScale = d3.scaleLinear().domain([0, 128, 256]).range(['#000000', '#0000FF', '#FF8C00'])
 
-
-    const slice = d3.select(node).append('g').classed('unit', true)
+    const slice = d3.select('.spec').append('g').classed('unit', true)
     const rects = slice.selectAll('rect').data(input)
     rects.enter().append('rect')
-      .attr('x', width - xScale(t))
+      .attr('x', width + xScale(t))
       .attr('y', (d, i) => height - yScale(i))
-      .attr('width', width / 1000)
+      .attr('width', sliceWidth)
       .attr('height', yScale(1))
       .style('fill', (d) => zScale(d))
+      .style('stroke', (d) => zScale(d))
+      .style('stroke-width', yScale(0.5))
+      .style('stroke-opacity', 0.5)
     rects
-      .attr('x', width - xScale(t))
-      // .attr('y', (d, i) => height - yScale(i))
-      // .attr('width', 1)
-      // .attr('height', yScale(1))
-      // .style('fill', (d) => zScale(d))
+      .attr('x', width + xScale(t))
 
+    d3.select('.spec').selectAll('g').attr('transform', `translate(${-xScale(t)})`)
 
-
-
-  }
-
-
-
-  moveSlices(t) {
-    const node = this.node;
-
-
-    d3.select(node).selectAll('g')
-      .each(function(d, i){
-        d3.select(this).selectAll('rect')
-
-
-        // const unit = d3.select(this)
-        // const x = d3.select(this).select('rect').attr('x')
-        // const x = d3.select(this).selectAll('rect').attr('x')
-        // console.log(x)
-        // if (x > 0) {
-          // d3.selectAll('rect').attr('x', x - 1)
-        // } else {
-          // d3.selectAll('rect').remove()
-        // }
-        // d3.select(this).attr('transform', `translate(${x - 10})`)
-      })
-
-
-
-
-    // const node = this.node;
-    // const width = node.clientWidth;
-    // const height = node.clientHeight;
-    // // const domainX = d3.extent(input.map(d => d.x))
-    // // console.log(domainX)
-
-    // // const xScale = d3.scaleLinear().domain(domainX).range([0, width]);
-    // const yScale = d3.scaleLinear().domain([0, 512]).range([0, height]);
-    // const zScale = d3.scaleLinear().domain([0, 128, 256]).range(['#000000', '#0000FF', '#FF8C00'])
-
-
-
-    // const data = input[input.length - 1]
-
-    // const slice = d3.select('.spec').append('g').classed('unit', true)
-    // // slice
-    // //   .attr('transform', 'translate(10)')
-    // const rects = slice.selectAll('rect').data(data.y)
-    // rects.enter().append('rect')
-    //   .attr('x', width)
-    //   .attr('y', (d, i) => height - yScale(i))
-    //   .attr('width', 50)
-    //   .attr('height', yScale(1))
-    //   .style('fill', (d) => zScale(d))
-
-
-
-
-
-    // const spec = d3.select('.spec').selectAll('rect').data(input)
-// d3.select(node).selectAll('g').remove()
-
-
-    // // input.forEach((d, i) => {
-    // //   console.log('new one')
-    // //   // const gr = d3.select(node).append('g').classed(d.x, true)
-    //   .attr('transform', 'translate(10)')
-    // //   // const slice = d3.select(gr).selectAll('rect').data(d.y)
-    // //   const gr = d3.select(node).append('g').classed(d.x, true)
-    // //   gr.selectAll('rect').data(d.y)
-    // //   .enter().append('rect')
-    // //     .attr('x', width - xScale(d.x))
-    // //     .attr('y', (f, j) => height - yScale(j))
-    // //     .attr('width', xScale(1))
-    // //     .attr('height', yScale(1))
-    // //     .style('fill', (f) => zScale(f))
-    // //   gr
-    // //     .attr('x', width - xScale(d.x))
-    // //     .attr('y', (f, j) => height - yScale(j))
-    // //     .attr('width', xScale(1))
-    // //     .attr('height', yScale(1))
-    // //     .style('fill', (f) => zScale(f))
-    // // })
-
-
-
-
-
-
-
-
-//     const spec = d3.select(node).selectAll('rect').data(input)
-//     spec.enter().append('g')
-// // d3.select(node).selectAll('rect').data(input).enter().append('g')
-//       .each(function(d, i){
-//         let unit = d3.select(this).attr('x', width - xScale(d.x))
-//         // d3.select(this).selectAll('rect').data(d.y)
-//         unit.selectAll('rect').data(d.y).enter().append('rect')
-//           // .attr('x', width - xScale(d.x))
-//           .attr('y', (f, j) => height - yScale(j))
-//           .attr('width', xScale(1))
-//           .attr('height', yScale(1))
-//           .style('fill', (f) => zScale(f))
-//           .style('stroke', 'none')
-//       })
-
-//     spec
-//       .each(function(d, i){
-//         let unit = d3.select(this).attr('x', width - xScale(d.x))
-//         // d3.select(this).selectAll('rect').data(d.y)
-//         unit.selectAll('rect').data(d.y)
-//           // .attr('x', width - xScale(d.x))
-//           .attr('y', (f, j) => height - yScale(j))
-//           .attr('width', xScale(1))
-//           .attr('height', yScale(1))
-//           .style('fill', (f) => zScale(f))
-//           .style('stroke', 'none')
-//       })
-
-
-
-
-
-        // unit
-          // .attr('x', width - xScale(i))
-          // .attr('y', (f, j) => height - yScale(j))
-          // .attr('width', xScale(1))
-          // .attr('height', yScale(1))
-          // .style('fill', (f) => zScale(f))
-        // unit.exit().transition().remove()
-    // spec.transition()
-    //   .each(function(d, i){
-    //     d3.select(this).selectAll('rect').data(d.y)
-    //     .enter().append('rect')
-    //       .attr('x', width - xScale(i))
-    //       .attr('y', (f, j) => height - yScale(j))
-    //       .attr('width', xScale(1))
-    //       .attr('height', yScale(1))
-    //       .style('fill', (f) => zScale(f))
-      // })
-
-    // spec
-    //   .each(function(d, i){
-    //     const unit = d3.select(this).selectAll('rect').data(d)
-    //       .attr('x', width - xScale(i))
-    //       .attr('y', (f, j) => height - yScale(j))
-    //       .attr('width', xScale(1))
-    //       .attr('height', yScale(1))
-    //       .style('fill', (f) => zScale(f))
-    //     unit
-    //       .attr('x', width - xScale(i))
-    //       .attr('y', (f, j) => height - yScale(j))
-    //       .attr('width', xScale(1))
-    //       .attr('height', yScale(1))
-    //       .style('fill', (f) => zScale(f))
-    //   })
-
-
-
-    // spec.enter().append('rect')
-    //   .attr('x', width)
-    //   .attr('y', (d, i) => height - yScale(d[d.length - 1]i))
-    //   .attr('width', width)
-    //   .attr('height', height / 512)
-    //   .style('fill', d => zScale(d))
-    //   .style('stroke', d => zScale(d))
-    // spec
-    //   .attr('x', )
-    //   .attr('y', (d, i) => height - yScale(i))
-    //   .attr('width', width)
-    //   .attr('height', height / 512)
-    //   .style('fill', d => zScale(d))
-    //   .style('stroke', d => zScale(d))
+    // console.log(d3.select('.spec').node().childNodes.length)
+    // if (d3.select('.spec').node().childNodes.length > slices) {
+    //   d3.select('.spec').selectAll('rect').attr('width', (width / d3.select('.spec').node().childNodes.length))
+    // }
 
   }
 
 
-
-
-
-
-  drawFreq(input) {
+  drawFreq(input, size) {
     const node = this.node;
     const width = node.clientWidth;
     const height = node.clientHeight;
 
-    const xScale = d3.scaleLinear().domain([0, 512]).range([0, width]);
-    const yScale = d3.scaleLinear().domain([0, 255]).range([0, height]);
+    const xScale = d3.scaleLinear().domain([0, size]).range([0, width]);
+    const yScale = d3.scaleLinear().domain([0, 256]).range([0, height]);
     const curveScale = d3.line().curve(d3.curveLinear);
 
     const dataCurve = [];
@@ -342,13 +140,13 @@ export default class Audio extends Component {
   }
 
 
-  drawWave(input) {
+  drawWave(input, size) {
     const node = this.node;
     const width = node.clientWidth;
     const height = node.clientHeight;
 
-    const xScale = d3.scaleLinear().domain([0, 512]).range([0, width]);
-    const yScale = d3.scaleLinear().domain([0, 255]).range([0, height]);
+    const xScale = d3.scaleLinear().domain([0, size]).range([0, width]);
+    const yScale = d3.scaleLinear().domain([0, 256]).range([0, height]);
     const curveScale = d3.line().curve(d3.curveLinear);
 
     const dataCurve = [];
