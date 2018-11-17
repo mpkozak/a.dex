@@ -27,7 +27,7 @@ export default class Audio extends Component {
       .then(stream => {
         const ctx = new AudioContext();
 
-        const size = 128;
+        const size = 512;
         const analyser = ctx.createAnalyser();
         analyser.fftSize = size * 2;
         const bufferLength = analyser.frequencyBinCount;
@@ -51,10 +51,10 @@ export default class Audio extends Component {
           analyser.getByteFrequencyData(freq);
           analyser.getByteTimeDomainData(wave);
           // this.drawFreq(freq, size);
-          this.drawWave(wave, size);
+          // this.drawWave(wave, size);
 
-          // this.drawSpec(freq, size, t);
-          if (t % 4 === 0) this.drawSpec(freq, size, t / 4)
+          this.drawSpec(freq, size, t);
+          // if (t % 4 === 0) this.drawSpec(freq, size, t / 4)
 
           t += 1;
         }
@@ -175,7 +175,7 @@ export default class Audio extends Component {
     const wave = d3.select('.wave').selectAll('path').data([dataCurve]);
     wave.enter().append('path')
       .style('fill', 'none')
-      .style('stroke', '#FFFF00')
+      .style('stroke', '#FFFFFF')
     wave
       .attr('d', d => curveScale(d))
 
