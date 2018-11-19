@@ -5,14 +5,14 @@ export default class Audio extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      scaleBase: 10, // valid range: 5-15
+      scaleBase: 9, // valid range: 5-15
       slices: 60
     };
     this.enableAudio = this.enableAudio.bind(this);
     this.newSpec = this.newSpec.bind(this);
+    this.drawWave = this.drawWave.bind(this);
 
     this.drawFreq = this.drawFreq.bind(this);
-    this.drawWave = this.drawWave.bind(this);
     this.drawSpec = this.drawSpec.bind(this);
   }
 
@@ -20,9 +20,11 @@ export default class Audio extends Component {
     this.enableAudio(this.state.scaleBase);
 
     const node = this.node;
-    d3.select(node).append('g').classed('spec', true);
-    d3.select(node).append('g').classed('freq', true);
     d3.select(node).append('g').classed('wave', true);
+
+    // d3.select(node).append('rect').attr('x', 0).attr('y', 0).attr('width', node.clientWidth).attr('height', node.clientHeight).style('fill', 'rgba(0,0,0,.2');
+    // d3.select(node).append('g').classed('spec', true);
+    // d3.select(node).append('g').classed('freq', true);
   }
 
 
@@ -106,10 +108,12 @@ export default class Audio extends Component {
         // canvas.clearRect(0, 0, WIDTH, HEIGHT);
 
 // Declare Scale Constants
-        const domain = [0, -15, -30, -45, -60, -75, -90, -Infinity];
+        const domain = [0, -15, -30, -45, -60, -75, -110, -Infinity];
         // const domain = [255, 223, 191, 127, 95, 63, 31, 0];
         const colors = ['#FEFEF5', '#F9FF7A', '#F3B226', '#E0610F', '#8A3B12', '#3D2E25', '#181E36', '#000A18'];
         const zScale = d3.scaleLinear().domain(domain).range(colors);
+
+
 
 // Draw Canvas
         const draw = () => {
@@ -187,28 +191,33 @@ export default class Audio extends Component {
 
 
 
-        // let t = 0;
-        // const draw = () => {
-        //   requestAnimationFrame(draw);
-        //   analyser.getFloatFrequencyData(freq);
-
-        //   // analyser.getByteFrequencyData(freq);
-        //   analyser.getByteTimeDomainData(wave);
-        //   // this.drawFreq(freq, fftBins);
-        //   this.drawWave(wave, fftBins);
-
-        //   // this.newSpec(freq, fftBins, t);
-        //   // if (t % 4 === 0) this.drawSpec(freq, fftBins, t / 4)
-
-        //   t += 1;
-        // }
-        // requestAnimationFrame(draw);
-
-
-
       });
   }
 
+
+
+  drawWave(input, size) {
+    const node = this.node;
+    const width = node.clientWidth;
+    const height = node.clientHeight;
+    const margin = 10;
+
+    const xScale = d3.scaleLinear().domain([0, size - 1]).range([0, width]);
+    const yScale = d3.scaleLinear().domain([0 - margin, 255 + margin]).range([0, height]);
+    const curveScale = d3.line().curve(d3.curveLinear);
+
+    const dataCurve = [];
+    input.forEach((d, i) => {
+      dataCurve.push([xScale(i), yScale(d)]);
+    });
+
+    const wave = d3.select('.wave').selectAll('path').data([dataCurve]);
+    wave.enter().append('path')
+      .style('fill', 'none')
+      .style('stroke', '#66DD66')
+    wave
+      .attr('d', d => curveScale(d))
+  }
 
 
 
@@ -355,28 +364,7 @@ export default class Audio extends Component {
   }
 
 
-  drawWave(input, size) {
-    const node = this.node;
-    const width = node.clientWidth;
-    const height = node.clientHeight;
-    const margin = 10;
 
-    const xScale = d3.scaleLinear().domain([0, size - 1]).range([0, width]);
-    const yScale = d3.scaleLinear().domain([0 - margin, 255 + margin]).range([0, height]);
-    const curveScale = d3.line().curve(d3.curveLinear);
-
-    const dataCurve = [];
-    input.forEach((d, i) => {
-      dataCurve.push([xScale(i), yScale(d)]);
-    });
-
-    const wave = d3.select('.wave').selectAll('path').data([dataCurve]);
-    wave.enter().append('path')
-      .style('fill', 'none')
-      .style('stroke', '#FFFFFF')
-    wave
-      .attr('d', d => curveScale(d))
-  }
 
 
 
