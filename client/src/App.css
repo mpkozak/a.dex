@@ -14,10 +14,19 @@ canvas {
 
 svg {
   background-color: rgba(0,0,0,.3);
-  width: 90vw;
   height: 40vh;
+  margin: 1px;
+}
+
+.node1 {
+  width: 45vw;
+}
+
+.node2 {
+  width: 45vw;
 }
 
 .Note {
-  height: 10vh;
+  height: 8vh;
+  margin: 1px;
 }

@@ -19,12 +19,12 @@ export default class Audio extends Component {
   componentDidMount() {
     this.enableAudio(this.state.scaleBase);
 
-    const node = this.node;
-    d3.select(node).append('g').classed('wave', true);
+    d3.select(this.node1).append('g').classed('wave', true);
+    d3.select(this.node2).append('g').classed('freq', true);
 
+    // const node = this.node;
     // d3.select(node).append('rect').attr('x', 0).attr('y', 0).attr('width', node.clientWidth).attr('height', node.clientHeight).style('fill', 'rgba(0,0,0,.2');
     // d3.select(node).append('g').classed('spec', true);
-    d3.select(node).append('g').classed('freq', true);
   }
 
 
@@ -151,55 +151,13 @@ export default class Audio extends Component {
 // Initialize Draw Stack
         draw();
 
-
-
-
-// WORKING INFINITE FILL SPEC
-    // let t = 0;
-    // const data = [];
-    // function draw() {
-    //   requestAnimationFrame(draw);
-    //   data.push(new Uint8Array(fftBins));
-    //   analyser.getByteFrequencyData(data[data.length - 1]);
-    //   canvas.fillStyle = 'rgb(0, 0, 0)';
-    //   canvas.fillRect(0, 0, WIDTH, HEIGHT);
-    //   const zScale = d3.scaleLinear().domain([0, 127, 255]).range(['rgb(0,0,0)', 'rgb(0,0,255)', 'rgb(255,140,0)']);
-    //   const sliceHeight = (HEIGHT / fftBins);
-    //   const sliceWidth = (WIDTH / t);
-    //   data.forEach((d, i) => {
-    //     d.forEach((f, j) => {
-    //       canvas.fillStyle = zScale(f)
-    //       canvas.fillRect(i * sliceWidth, HEIGHT - j * sliceHeight, sliceWidth, sliceHeight)
-    //     });
-    //   });
-    //   t += 1;
-    // };
-    // draw();
-
-// WORKING CANVAS STATIC SPEC
-    // function draw() {
-    //   requestAnimationFrame(draw);
-    //   canvas.fillStyle = 'rgb(0, 0, 0)';
-    //   canvas.fillRect(0, 0, WIDTH, HEIGHT);
-    //   const zScale = d3.scaleLinear().domain([0, 127, 255]).range(['rgb(0,0,0)', 'rgb(0,0,255)', 'rgb(255,140,0)']);
-    //   const sliceWidth = (WIDTH / fftBins);
-    //   analyser.getByteFrequencyData(freq);
-    //   freq.forEach((d, i) => {
-    //     canvas.fillStyle = zScale(d)
-    //     canvas.fillRect(sliceWidth * i, HEIGHT - d / 2, sliceWidth, d / 2)
-    //   })
-    // };
-    // draw();
-
-
-
       });
   }
 
 
 
   drawWave(input, size) {
-    const node = this.node;
+    const node = this.node1;
     const width = node.clientWidth;
     const height = node.clientHeight;
     const margin = 10;
@@ -218,6 +176,31 @@ export default class Audio extends Component {
       .style('fill', 'none')
       .style('stroke', '#66DD66')
     wave
+      .attr('d', d => curveScale(d))
+  }
+
+  drawFreq(input, size) {
+    const node = this.node2;
+    const width = node.clientWidth;
+    const height = node.clientHeight;
+
+    const xScale = d3.scaleLinear().domain([0, size - 1]).range([0, width]);
+    const yScale = d3.scaleLinear().domain([0, 255]).range([0, height]);
+    const curveScale = d3.line().curve(d3.curveLinear);
+
+    const dataCurve = [];
+
+    dataCurve.push([0, height]);
+    input.forEach((d, i) => {
+      dataCurve.push([xScale(i), height - yScale(d)]);
+    });
+    dataCurve.push([width, height]);
+
+    const freq = d3.select('.freq').selectAll('path').data([dataCurve]);
+    freq.enter().append('path')
+      .style('fill', 'rgba(255,255,255,.2')
+      .style('stroke', 'none')
+    freq
       .attr('d', d => curveScale(d))
   }
 
@@ -328,42 +311,7 @@ export default class Audio extends Component {
   }
 
 
-  drawFreq(input, size) {
-    const node = this.node;
-    const width = node.clientWidth;
-    const height = node.clientHeight;
 
-    const xScale = d3.scaleLinear().domain([0, size - 1]).range([0, width]);
-    const yScale = d3.scaleLinear().domain([0, 255]).range([0, height]);
-    const curveScale = d3.line().curve(d3.curveLinear);
-
-    const dataCurve = [];
-
-    dataCurve.push([0, height]);
-    input.forEach((d, i) => {
-      dataCurve.push([xScale(i), height - yScale(d)]);
-    });
-    dataCurve.push([width, height]);
-
-    const freq = d3.select('.freq').selectAll('path').data([dataCurve]);
-    freq.enter().append('path')
-      .style('fill', 'rgba(255,255,255,.2')
-      .style('stroke', 'none')
-    freq
-      .attr('d', d => curveScale(d))
-
-
-    // const freq = d3.select('.freq').selectAll('rect').data(input);
-    // freq.enter().append('rect')
-    //   .attr('x', (d, i) => xScale(i))
-    //   .attr('width', width / input.length)
-    //   .style('stroke', 'white')
-    //   .style('fill', 'green')
-    // freq
-    //   .attr('y', d => height - yScale(d))
-    //   .attr('height', d => yScale(d))
-
-  }
 
 
 
@@ -378,8 +326,12 @@ export default class Audio extends Component {
           ref='canvas'
         />
         <svg
-          className='node'
-          ref={node => this.node = node}
+          className='node2'
+          ref={node => this.node2 = node}
+        />
+        <svg
+          className='node1'
+          ref={node => this.node1 = node}
         />
       </div>
     );

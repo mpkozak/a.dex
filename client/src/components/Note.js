@@ -185,7 +185,8 @@ export default class Note extends Component {
           const median = d3.median(freq)
           const index = freq.indexOf(max);
 
-          const val = (max - median > median - min) ? index : 0
+          // const val = (max - median > median - min) ? index : 0
+          const val = index
           this.setState(prevState => ({
             freq: val * bandwidth
           }))
@@ -286,9 +287,9 @@ export default class Note extends Component {
 
     return(
       <div>
-        <h4>{freq} Hz</h4>
+        <h4>{Math.round(freq)} Hz</h4>
         <h1>{note.str}</h1>
-        <h3>variance: {Math.floor(cents,5)} ct</h3>
+        <h3>variance: {Math.round(cents,5)} ct</h3>
       </div>
     );
   }
