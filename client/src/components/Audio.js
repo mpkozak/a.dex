@@ -5,8 +5,8 @@ export default class Audio extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      scaleBase: 8, // valid range: 5-15
-      slices: 120
+      scaleBase: 10, // valid range: 5-15
+      slices: 60
     };
     this.enableAudio = this.enableAudio.bind(this);
     this.newSpec = this.newSpec.bind(this);
@@ -72,10 +72,12 @@ export default class Audio extends Component {
         // os20k.start();
 
 // Declare Empty Analyser Arrays
-        const freq = new Float32Array(fftBins);
+        // const freq = new Float32Array(fftBins);
         // const freq = new Uint8Array(fftBins);
         const wave = new Uint8Array(fftBins);
         const data = new Array(this.state.slices).fill(new Float32Array(fftBins).fill(-Infinity));
+        // const data = new Array(this.state.slices).fill(new Uint8Array(fftBins).fill(0));
+
 
         // const sliceFreq = freq.map((d, i) => (i + 1) * bandwidth);
         // const sliceFreqLog = freq.map((d, i) => Math.log10((i + 1) * bandwidth));
@@ -105,6 +107,7 @@ export default class Audio extends Component {
 
 // Declare Scale Constants
         const domain = [0, -15, -30, -45, -60, -75, -90, -Infinity];
+        // const domain = [255, 223, 191, 127, 95, 63, 31, 0];
         const colors = ['#FEFEF5', '#F9FF7A', '#F3B226', '#E0610F', '#8A3B12', '#3D2E25', '#181E36', '#000A18'];
         const zScale = d3.scaleLinear().domain(domain).range(colors);
 
@@ -118,6 +121,8 @@ export default class Audio extends Component {
           data.shift();
           data.push(new Float32Array(fftBins));
           analyser.getFloatFrequencyData(data[data.length - 1]);
+          // data.push(new Uint8Array(fftBins));
+          // analyser.getByteFrequencyData(data[data.length - 1]);
 
 // Clear Canvas
           canvas.fillStyle = 'rgb(0, 0, 0)';
