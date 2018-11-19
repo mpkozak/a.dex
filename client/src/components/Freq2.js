@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3';
 
-export default class Wave extends Component {
+export default class Freq extends Component {
   constructor(props) {
     super(props);
     this.state = {
       scaleBase: 10, // valid range: 5-15
     };
     this.getData = this.getData.bind(this);
-    this.drawWave = this.drawWave.bind(this);
+    this.drawFreq = this.drawFreq.bind(this);
   }
 
   componentDidMount() {
-    d3.select(this.node).append('g').classed('wave', true);
+    d3.select(this.node).append('g').classed('freq', true);
   }
 
   componentDidUpdate() {
@@ -29,43 +29,45 @@ export default class Wave extends Component {
     analyser.connect(audioCtx.destination)
 
     const fftBins = analyser.frequencyBinCount;
-    const wave = new Uint8Array(fftBins);
+    const freq = new Uint8Array(fftBins);
 
     const draw = () => {
       requestAnimationFrame(draw);
-      analyser.getByteTimeDomainData(wave);
-      this.drawWave(wave, fftBins);
+      analyser.getByteFrequencyData(freq);
+      this.drawFreq(freq, fftBins);
     };
     draw();
   }
 
-  drawWave(input, size) {
+  drawFreq(input, size) {
     const node = this.node;
     const width = node.clientWidth;
     const height = node.clientHeight;
-    const margin = 10;
 
     const xScale = d3.scaleLinear().domain([0, size - 1]).range([0, width]);
-    const yScale = d3.scaleLinear().domain([0 - margin, 255 + margin]).range([0, height]);
-    const curveScale = d3.line().curve(d3.curveLinear);
+    const yScale = d3.scaleLinear().domain([0, 255]).range([0, height]);
+    const curveScale = d3.line().curve(d3.curveMonotoneX);
 
     const dataCurve = [];
-    input.forEach((d, i) => {
-      dataCurve.push([xScale(i), yScale(d)]);
-    });
 
-    const wave = d3.select('.wave').selectAll('path').data([dataCurve]);
-    wave.enter().append('path')
-      .style('fill', 'none')
-      .style('stroke', '#66DD66')
-    wave
+    dataCurve.push([0, height]);
+    input.forEach((d, i) => {
+      dataCurve.push([xScale(i), height - yScale(d)]);
+    });
+    dataCurve.push([width, height]);
+
+    const freq = d3.select('.freq').selectAll('path').data([dataCurve]);
+    freq.enter().append('path')
+      .style('fill', 'rgba(255,0,255,.2')
+      .style('stroke', 'none')
+    freq
       .attr('d', d => curveScale(d))
   }
 
   render() {
     return (
       <svg
-        className='Wave'
+        className='Freq'
         ref={node => this.node = node}
       />
     );
