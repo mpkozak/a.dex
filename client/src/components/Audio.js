@@ -5,8 +5,8 @@ export default class Audio extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      scaleBase: 12, // valid range: 5-15
-      slices: 100
+      scaleBase: 8, // valid range: 5-15
+      slices: 120
     };
     this.enableAudio = this.enableAudio.bind(this);
     this.newSpec = this.newSpec.bind(this);
@@ -66,15 +66,15 @@ export default class Audio extends Component {
         os10k.connect(analyser);
         os20k.connect(analyser);
         // os10.start();
-        os100.start();
-        os1k.start();
-        os10k.start();
-        os20k.start();
+        // os100.start();
+        // os1k.start();
+        // os10k.start();
+        // os20k.start();
 
 // Declare Empty Analyser Arrays
         const freq = new Float32Array(fftBins);
         // const freq = new Uint8Array(fftBins);
-        // const wave = new Uint8Array(fftBins);
+        const wave = new Uint8Array(fftBins);
         const data = new Array(this.state.slices).fill(new Float32Array(fftBins).fill(-Infinity));
 
         // const sliceFreq = freq.map((d, i) => (i + 1) * bandwidth);
@@ -109,7 +109,7 @@ export default class Audio extends Component {
         const zScale = d3.scaleLinear().domain(domain).range(colors);
 
 // Draw Canvas
-        function draw() {
+        const draw = () => {
 
 // rAF Callback
           requestAnimationFrame(draw);
@@ -130,6 +130,11 @@ export default class Audio extends Component {
               canvas.fillRect(i, HEIGHT - (j * sliceHeight), 1, sliceHeight);
             });
           });
+
+// Draw Wave SVG
+          analyser.getByteTimeDomainData(wave);
+          this.drawWave(wave, fftBins);
+
         };
 
 // Initialize Draw Stack
@@ -177,7 +182,6 @@ export default class Audio extends Component {
 
 
 
-
         // let t = 0;
         // const draw = () => {
         //   requestAnimationFrame(draw);
@@ -186,14 +190,17 @@ export default class Audio extends Component {
         //   // analyser.getByteFrequencyData(freq);
         //   analyser.getByteTimeDomainData(wave);
         //   // this.drawFreq(freq, fftBins);
-        //   // this.drawWave(wave, fftBins);
+        //   this.drawWave(wave, fftBins);
 
-        //   this.newSpec(freq, fftBins, t);
+        //   // this.newSpec(freq, fftBins, t);
         //   // if (t % 4 === 0) this.drawSpec(freq, fftBins, t / 4)
 
         //   t += 1;
         // }
         // requestAnimationFrame(draw);
+
+
+
       });
   }
 
@@ -375,15 +382,11 @@ export default class Audio extends Component {
         <canvas
           ref='canvas'
         />
+        <svg
+          className='node'
+          ref={node => this.node = node}
+        />
       </div>
     );
   };
 }
-
-
-        // <svg
-        //   className='node'
-        //   ref={node => this.node = node}
-        // />
-
-

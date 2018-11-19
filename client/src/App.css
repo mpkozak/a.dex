@@ -8,11 +8,11 @@
 }
 
 svg {
-  width: 99vw;
-  height: 99vh;
+  width: 90vw;
+  height: 45vh;
 }
 
 canvas {
   width: 90vw;
-  height: 90vh;
+  height: 45vh;
 }
