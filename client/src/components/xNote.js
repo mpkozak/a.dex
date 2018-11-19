@@ -117,7 +117,7 @@ export default class Note extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      scaleBase: 15, // valid range: 5-15
+      scaleBase: 5, // valid range: 5-15
       freq: 0
     };
     this.enableAudio = this.enableAudio.bind(this);

@@ -3,14 +3,14 @@ import './App.css';
 import Wave from './components/Wave2.js';
 import Spec from './components/Spec2.js';
 import Freq from './components/Freq2.js';
-// import Note from './components/Note.js';
+import Note from './components/Note2.js';
 
 class App extends Component {
   constructor() {
     super()
     this.state = {
-      audioCtx: {},
-      mic: {},
+      audioCtx: false,
+      mic: false,
     };
   }
 
@@ -42,7 +42,7 @@ class App extends Component {
           <Freq audioCtx={audioCtx} mic={mic} />
         </div>
         <div className='module'>
-
+          <Note audioCtx={audioCtx} mic={mic} />
         </div>
       </div>
     );
