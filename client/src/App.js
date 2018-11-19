@@ -7,6 +7,7 @@ class App extends Component {
   render() {
     return (
       <div className='App'>
+        <Audio/>
         <Note/>
       </div>
     );
@@ -14,7 +15,3 @@ class App extends Component {
 }
 
 export default App;
-
-
-
-        // <Audio/>

@@ -7,13 +7,17 @@
   justify-content: center;
 }
 
+canvas {
+  width: 90vw;
+  height: 40vh;
+}
+
 svg {
   background-color: rgba(0,0,0,.3);
   width: 90vw;
-  height: 45vh;
+  height: 40vh;
 }
 
-canvas {
-  width: 90vw;
-  height: 45vh;
+.Note {
+  height: 10vh;
 }

@@ -5,7 +5,7 @@ export default class Audio extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      scaleBase: 9, // valid range: 5-15
+      scaleBase: 10, // valid range: 5-15
       slices: 60
     };
     this.enableAudio = this.enableAudio.bind(this);
@@ -24,7 +24,7 @@ export default class Audio extends Component {
 
     // d3.select(node).append('rect').attr('x', 0).attr('y', 0).attr('width', node.clientWidth).attr('height', node.clientHeight).style('fill', 'rgba(0,0,0,.2');
     // d3.select(node).append('g').classed('spec', true);
-    // d3.select(node).append('g').classed('freq', true);
+    d3.select(node).append('g').classed('freq', true);
   }
 
 
@@ -75,7 +75,7 @@ export default class Audio extends Component {
 
 // Declare Empty Analyser Arrays
         // const freq = new Float32Array(fftBins);
-        // const freq = new Uint8Array(fftBins);
+        const freq = new Uint8Array(fftBins);
         const wave = new Uint8Array(fftBins);
         const data = new Array(this.state.slices).fill(new Float32Array(fftBins).fill(-Infinity));
         // const data = new Array(this.state.slices).fill(new Uint8Array(fftBins).fill(0));
@@ -142,7 +142,9 @@ export default class Audio extends Component {
 
 // Draw Wave SVG
           analyser.getByteTimeDomainData(wave);
+          analyser.getByteFrequencyData(freq);
           this.drawWave(wave, fftBins);
+          this.drawFreq(freq, fftBins)
 
         };
 
@@ -345,7 +347,7 @@ export default class Audio extends Component {
 
     const freq = d3.select('.freq').selectAll('path').data([dataCurve]);
     freq.enter().append('path')
-      .style('fill', 'green')
+      .style('fill', 'rgba(255,255,255,.2')
       .style('stroke', 'none')
     freq
       .attr('d', d => curveScale(d))
@@ -355,7 +357,7 @@ export default class Audio extends Component {
     // freq.enter().append('rect')
     //   .attr('x', (d, i) => xScale(i))
     //   .attr('width', width / input.length)
-    //   .style('stroke', 'none')
+    //   .style('stroke', 'white')
     //   .style('fill', 'green')
     // freq
     //   .attr('y', d => height - yScale(d))

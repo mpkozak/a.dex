@@ -117,7 +117,7 @@ export default class Note extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      scaleBase: 10, // valid range: 5-15
+      scaleBase: 15, // valid range: 5-15
       freq: 0
     };
     this.enableAudio = this.enableAudio.bind(this);
@@ -177,45 +177,72 @@ export default class Note extends Component {
 // Declare Empty Analyser Arrays
         const freq = new Float32Array(fftBins);
 
-        const maxHz = sampleRate / 2;
-        const minHz = 20;
-        const rangeHz = maxHz - minHz;
-        const arrBins = 512;
-        // const arrBandwidth = maxHz / arrBins;
-        const arr = new Array(arrBins).fill([]);
-        const arrBands = arr.map((d, i) => Math.pow(10, -(Math.log10((i + 1) / arrBins)/Math.log10(1/2))) * rangeHz + minHz);
-        const analBands = freq.map((d, i) => i * bandwidth);
-
-        // console.log(arrBands)
-
-
-        const destIndex = freq.map((d, i) => {
-          let currentFreq = analBands[i];
-          const getIndex = () => {
-            let arrIndex = 0;
-            let arrFreq = arrBands[arrIndex];
-            arrBands.forEach((f, j) => {
-              if (Math.abs(currentFreq - f) < Math.abs(currentFreq - arrFreq)) {
-                arrIndex = j;
-                arrFreq = f;
-              };
-            });
-            return arrIndex;
-          }
-          return getIndex();
-        })
-
-
-
-
-
-
+// Get Frequency
         setInterval(() => {
           analyser.getFloatFrequencyData(freq);
           const max = d3.max(freq);
           const min = d3.min(freq)
           const median = d3.median(freq)
-          const mean = d3.mean(freq)
+          const index = freq.indexOf(max);
+
+          const val = (max - median > median - min) ? index : 0
+          this.setState(prevState => ({
+            freq: val * bandwidth
+          }))
+        }, 60);
+
+
+
+
+
+// Dumb Shit that Doesn't Work
+        // const maxHz = sampleRate / 2;
+        // const minHz = 0;
+        // const rangeHz = maxHz - minHz;
+        // const outBins = 256;
+
+        // const inBands = new Array(fftBins).fill(0).map((d, i) => i * bandwidth);
+        // const outBands = new Array(outBins).fill(0).map((d, i) => Math.pow(10, -(Math.log10((i + 1) / outBins)/Math.log10(1/2))) * rangeHz + minHz);
+
+        // const destIndex = new Array(fftBins).fill(0).map((d, i) => {
+        //   let currentFreq = inBands[i];
+        //   const getIndex = () => {
+        //     let outIndex = 0;
+        //     let outFreq = outBands[outIndex];
+        //     outBands.forEach((f, j) => {
+        //       if (Math.abs(currentFreq - f) < Math.abs(currentFreq - outFreq)) {
+        //         outIndex = j;
+        //         outFreq = f;
+        //       };
+        //     });
+        //     return outIndex;
+        //     // return [outIndex, outFreq, currentFreq];
+        //   }
+        //   return getIndex();
+        // })
+
+        // // console.log(destIndex)
+
+
+
+        // setInterval(() => {
+        //   analyser.getFloatFrequencyData(freq);
+        //   const staticFreq = [];
+        //   freq.forEach(d => staticFreq.push(d));
+
+        //   const output = new Array(outBins).fill([]);
+
+        //   output.forEach((d, i) => {
+        //     let matches = destIndex.filter(a => a === i)
+        //     // console.log(i, matches)
+        //   })
+        // }, 1000)
+
+
+          // const max = d3.max(freq);
+          // const min = d3.min(freq)
+          // const median = d3.median(freq)
+          // const mean = d3.mean(freq)
 
           // const dr = max - min;
           // const sr = max - median;
@@ -229,94 +256,6 @@ export default class Note extends Component {
           // console.log(bands)
           // console.log(freq)
 
-
-
-
-
-
-          // console.log(destIndex)
-
-          const arr = new Array(arrBins).fill([]);
-          freq.forEach((d, i) => {
-            const destination = destIndex[i]
-            console.log(destination)
-            arr[destination].push(d)
-          })
-
-
-          console.log(arr)
-
-
-          // const arr = new Array(arrBins).fill([]);
-          // freq.forEach((d, i) => {
-          //   let currentFreq = analBands[i];
-
-          //   const getIndex = () => {
-          //     let arrIndex = 0;
-          //     let arrFreq = arrBands[arrIndex];
-          //     arrBands.forEach((f, j) => {
-          //       if (Math.abs(currentFreq - f) < Math.abs(currentFreq - arrFreq)) {
-          //         arrIndex = j;
-          //         arrFreq = f;
-          //       };
-          //     })
-          //     return arrIndex
-          //   }
-          //   const arrIndex = getIndex()
-          //   // console.log(currentFreq, arrFreq)
-          //   arr[arrIndex].push(d)
-
-          //   // console.log(currentFreq, arrFreq)
-
-
-
-
-          //   // console.log(currentFreq, d)
-          //   // arrBands.forEach((f, j, b) => {
-          //   //   const prevBand = j === 0 ? 0 : arrBands[j - 1];
-          //   //   // const currentBand = f
-          //   //   const currentBand = parseInt(f)
-
-
-          //   //   // if (j === 100) {console.log(currentFreq > prevBand && currentFreq <= currentBand)}
-          //   //     // console.log(currentFreq > prevBand && currentFreq <= currentBand)
-
-
-          //   //   if (currentFreq > prevBand && currentFreq <= currentBand) {
-          //   //     // console.log(true)
-          //   //     arr[j].push(d)
-          //   //   } else {
-          //   //     // console.log(false)
-          //   //   }
-          //   // })
-          // })
-
-          // console.log(arr)
-
-
-
-
-          // const output = new Array(arrBins)
-          // arr.forEach((d, i) => {
-          //   output.push(d3.mean(d))
-          // })
-
-          // console.log(output)
-
-          // console.log(arr)
-
-          // arrBands.forEach((d, i) => {
-          //   freq.forEach((f, j) => {
-
-          //   })
-          // })
-
-
-          const index = freq.indexOf(max);
-          this.setState(prevState => ({
-            freq: index * bandwidth
-          }))
-        }, 10000)
 
 
 
@@ -336,26 +275,20 @@ export default class Note extends Component {
       };
     });
 
-    const offsetHz = note.int - freq;
-    const adjacentIndex = offsetHz > 0 ? noteIndex + 1 : noteIndex - 1;
-    const intervalHz = Math.abs(notes[adjacentIndex].int - note.int);
-    const cent = intervalHz / 100;
+    // const offsetHz = note.int - freq;
+    // const adjacentIndex = offsetHz > 0 ? noteIndex + 1 : noteIndex - 1;
+    // const intervalHz = Math.abs(notes[adjacentIndex].int - note.int);
+    // const cent = intervalHz / 100;
 
 
-
-    // const centsOld = (offsetHz / intervalHz) * 100
     const cents = 1200 * Math.log2(freq / note.int)
-
-
-
-    // console.log(noteIndex, adjacentIndex, intervalHz, cents)
 
 
     return(
       <div>
-        <h4>Freq: {freq} Hz</h4>
-        <h1>Note: {note.str}</h1>
-        <h3>Out of tune: {cents} ct</h3>
+        <h4>{freq} Hz</h4>
+        <h1>{note.str}</h1>
+        <h3>variance: {Math.floor(cents,5)} ct</h3>
       </div>
     );
   }
@@ -367,8 +300,8 @@ export default class Note extends Component {
     const { freq } = this.state;
 
     return (
-      <div>
-        {this.getNote(freq)}
+      <div className='Note'>
+        {freq ? this.getNote(freq) : ''}
       </div>
     );
   };
