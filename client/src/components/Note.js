@@ -157,23 +157,6 @@ export default class Note extends Component {
         mic.connect(analyser);
         analyser.connect(audioCtx.destination);
 
-// Declare Static Sine Oscillators + Pass To Analyser + Initialize
-        const os10 = new OscillatorNode(audioCtx, {type: 'sine', frequency: 10});
-        const os100 = new OscillatorNode(audioCtx, {type: 'sine', frequency: 100});
-        const os1k = new OscillatorNode(audioCtx, {type: 'sine', frequency: 1000});
-        const os10k = new OscillatorNode(audioCtx, {type: 'sine', frequency: 10000});
-        const os20k = new OscillatorNode(audioCtx, {type: 'sine', frequency: 20000});
-        os10.connect(analyser);
-        os100.connect(analyser);
-        os1k.connect(analyser);
-        os10k.connect(analyser);
-        os20k.connect(analyser);
-        // os10.start();
-        // os100.start();
-        // os1k.start();
-        // os10k.start();
-        // os20k.start();
-
 // Declare Empty Analyser Arrays
         const freq = new Float32Array(fftBins);
 
@@ -185,8 +168,8 @@ export default class Note extends Component {
           const median = d3.median(freq)
           const index = freq.indexOf(max);
 
-          // const val = (max - median > median - min) ? index : 0
-          const val = index
+          const val = (max - median > median - min) ? index : 0
+          // const val = index
           this.setState(prevState => ({
             freq: val * bandwidth
           }))
@@ -287,14 +270,12 @@ export default class Note extends Component {
 
     return(
       <div>
-        <h4>{Math.round(freq)} Hz</h4>
         <h1>{note.str}</h1>
-        <h3>variance: {Math.round(cents,5)} ct</h3>
+        <h3>{Math.round(freq)} Hz</h3>
+        <h6>variance: {Math.round(cents,5)} ct</h6>
       </div>
     );
   }
-
-
 
 
   render() {

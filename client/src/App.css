@@ -1,32 +1,50 @@
 .App {
-  height: 100vh;
   width: 100vw;
+  height: 100vh;
   display: flex;
-  flex-flow: column nowrap;
+  flex-flow: row wrap;
   align-items: center;
   justify-content: center;
 }
 
-canvas {
-  width: 90vw;
-  height: 40vh;
+.module {
+  width: 48vw;
+  height: 48vh;
+  margin: .1vh 1vw;
+}
+
+.Spec {
+  width: 100%;
+  height: 100%;
+}
+
+.Freq {
+  width: 100%;
+  height: 100%;
+}
+
+.Wave {
+  width: 100%;
+  height: 100%;
+}
+
+.Note {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0,0,0,.3);
 }
 
 svg {
   background-color: rgba(0,0,0,.3);
-  height: 40vh;
-  margin: 1px;
 }
 
-.node1 {
-  width: 45vw;
+
+canvas {
+
 }
 
-.node2 {
-  width: 45vw;
-}
 
-.Note {
-  height: 8vh;
-  margin: 1px;
-}
