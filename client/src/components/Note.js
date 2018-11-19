@@ -207,44 +207,6 @@ export default class Note extends Component {
 
         // // console.log(destIndex)
 
-
-
-        // setInterval(() => {
-        //   analyser.getFloatFrequencyData(freq);
-        //   const staticFreq = [];
-        //   freq.forEach(d => staticFreq.push(d));
-
-        //   const output = new Array(outBins).fill([]);
-
-        //   output.forEach((d, i) => {
-        //     let matches = destIndex.filter(a => a === i)
-        //     // console.log(i, matches)
-        //   })
-        // }, 1000)
-
-
-          // const max = d3.max(freq);
-          // const min = d3.min(freq)
-          // const median = d3.median(freq)
-          // const mean = d3.mean(freq)
-
-          // const dr = max - min;
-          // const sr = max - median;
-          // const nf = median - min;
-          // console.log('max: ', max, 'min: ', min, 'median: ', median, 'mean: ', mean)
-          // console.log('dr ', dr, 'sr ', sr)
-          // console.log(sr / dr)
-          // console.log(nf, sr)
-
-          // const bands = freq.map((d, i) => i * bandwidth)
-          // console.log(bands)
-          // console.log(freq)
-
-
-
-
-
-
       });
   }
 
@@ -252,27 +214,19 @@ export default class Note extends Component {
     let noteIndex = 0;
     let note = notes[noteIndex];
     notes.forEach((d, i) => {
-      // note = Math.abs(freq - d.int) < Math.abs(freq - note.int) ? d : note;
       if (Math.abs(freq - d.int) < Math.abs(freq - note.int)) {
         note = d;
         noteIndex = i;
       };
     });
 
-    // const offsetHz = note.int - freq;
-    // const adjacentIndex = offsetHz > 0 ? noteIndex + 1 : noteIndex - 1;
-    // const intervalHz = Math.abs(notes[adjacentIndex].int - note.int);
-    // const cent = intervalHz / 100;
-
-
     const cents = 1200 * Math.log2(freq / note.int)
-
 
     return(
       <div>
         <h1>{note.str}</h1>
         <h3>{Math.round(freq)} Hz</h3>
-        <h6>variance: {Math.round(cents,5)} ct</h6>
+        <h6>variance: {Math.round(cents)} ct</h6>
       </div>
     );
   }

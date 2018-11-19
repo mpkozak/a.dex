@@ -36,7 +36,6 @@ export default class Spec extends Component {
 
 // Declare Analyser Constants
         const fftBins = analyser.frequencyBinCount;
-        const sampleRate = audioCtx.sampleRate;
 
 // Enable Microphone + Pass To Analyser
         const mic = audioCtx.createMediaStreamSource(stream);
