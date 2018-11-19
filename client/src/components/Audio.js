@@ -5,7 +5,7 @@ export default class Audio extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      scaleBase: 10, // valid range: 5-15
+      scaleBase: 12, // valid range: 5-15
       slices: 100
     };
     this.enableAudio = this.enableAudio.bind(this);
@@ -66,10 +66,10 @@ export default class Audio extends Component {
         os10k.connect(analyser);
         os20k.connect(analyser);
         // os10.start();
-        // os100.start();
-        // os1k.start();
-        // os10k.start();
-        // os20k.start();
+        os100.start();
+        os1k.start();
+        os10k.start();
+        os20k.start();
 
 // Declare Empty Analyser Arrays
         const freq = new Float32Array(fftBins);
@@ -83,11 +83,11 @@ export default class Audio extends Component {
         // const sliceFreqLogPropSum = sliceFreqLogProp.reduce((a, b) => a + b);
         // const sliceFreqLogPropHeight = sliceFreqLogProp.map(d => d / sliceFreqLogPropSum);
 
-        const y = freq.map((d, i) => fftBins - (Math.log10((i+ 1) * bandwidth) / Math.log10(sampleRate / 2)) * fftBins);
-        const sliceHeight = y.map((d, i, a) => {
-          const prev = i === 0 ? fftBins : a[i - 1];
-          return prev - d;
-        });
+        // const y = freq.map((d, i) => fftBins - (Math.log10((i+ 1) * bandwidth) / Math.log10(sampleRate / 2)) * fftBins);
+        // const sliceHeight = y.map((d, i, a) => {
+        //   const prev = i === 0 ? fftBins : a[i - 1];
+        //   return prev - d;
+        // });
 
         // const hSum = sliceHeight.reduce((a, b) => a + b)
         // console.log(y, sliceHeight, hSum)
@@ -98,6 +98,7 @@ export default class Audio extends Component {
         const canvas = this.refs.canvas.getContext('2d');
         const WIDTH = this.state.slices;
         const HEIGHT = fftBins;
+        const sliceHeight = (HEIGHT / fftBins);
         this.refs.canvas.width = WIDTH;
         this.refs.canvas.height = HEIGHT;
         // canvas.clearRect(0, 0, WIDTH, HEIGHT);
@@ -106,8 +107,6 @@ export default class Audio extends Component {
         const domain = [0, -15, -30, -45, -60, -75, -90, -Infinity];
         const colors = ['#FEFEF5', '#F9FF7A', '#F3B226', '#E0610F', '#8A3B12', '#3D2E25', '#181E36', '#000A18'];
         const zScale = d3.scaleLinear().domain(domain).range(colors);
-
-
 
 // Draw Canvas
         function draw() {
@@ -128,45 +127,13 @@ export default class Audio extends Component {
           data.forEach((d, i) => {
             d.forEach((f, j) => {
               canvas.fillStyle = zScale(f);
-              canvas.fillRect(i, y[j], 1, sliceHeight[j]);
+              canvas.fillRect(i, HEIGHT - (j * sliceHeight), 1, sliceHeight);
             });
           });
         };
 
 // Initialize Draw Stack
         draw();
-
-
-
-
-        // const bands = [];
-        // freq.forEach((d, i) => {
-        //   bands.push(i * bandwidth)
-        // })
-
-        // setInterval(() => {
-        //   analyser.getFloatFrequencyData(freq)
-        //   this.newSpec(freq, fftBins);
-
-        //   // console.log(bands)
-
-        // }, 1000)
-
-
-// const srLog = Math.log10(sampleRate / 2);
-// const HEIGHT = srLog;
-// console.log(srLog)
-
-
-
-
-  // const zScale = d3.scaleLinear().domain([-Infinity, -50, 0]).range(['rgb(0,0,0)', 'rgba(0,0,255)', 'rgba(255,140,0)'])
-  // const sliceHeight = (HEIGHT / fftBins);
-
-      // canvas.fillRect(i, HEIGHT - Math.log10(j * bandwidth), 1, Math.log10(j * bandwidth) / HEIGHT);
-      // console.log(HEIGHT - Math.log10(j * bandwidth))
-
-
 
 
 
