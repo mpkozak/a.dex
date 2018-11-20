@@ -49,15 +49,25 @@ class App extends Component {
   track() {
       const tracking = window.tracking
 
-      tracking.ColorTracker.registerColor('white', (r, g, b) => {
-        if (r > 250 && g > 250 && b > 250) {
-          return true;
-        } else return false;
-      });
+      // tracking.ColorTracker.registerColor('white', (r, g, b) => {
+      //   if (r > 250 && g > 250 && b > 250) {
+      //     return true;
+      //   } else return false;
+      // });
 
       const oragne = {r: 97, g: 5, b: 5};
       tracking.ColorTracker.registerColor('orange', (r, g, b) => {
         return getColorDistance(oragne, {r: r, g: g, b: b}) < 25
+      });
+
+      const screwdriver = {r: 240, g: 58, b: 76};
+      tracking.ColorTracker.registerColor('red', (r, g, b) => {
+        return getColorDistance(screwdriver, {r: r, g: g, b: b}) < 70
+      });
+
+      const lighter = {r: 255, g: 195, b: 70};
+      tracking.ColorTracker.registerColor('blue', (r, g, b) => {
+        return getColorDistance(lighter, {r: r, g: g, b: b}) < 50
       });
 
       const getColorDistance = (target, actual) => {
@@ -68,9 +78,9 @@ class App extends Component {
         );
       };
 
-      const colors = new tracking.ColorTracker(['white', 'yellow', 'orange']);
-      colors.minDimension = 5;
-      colors.minGroupSize = 30;
+      const colors = new tracking.ColorTracker(['red', 'blue', 'orange']);
+      colors.minDimension = 3;
+      colors.minGroupSize = 500;
 
       colors.on('track', e => {
         if (e.data.length === 0) {
@@ -121,14 +131,14 @@ class App extends Component {
     if (!data) {
         gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + .5);
     } else data.forEach(d => {
-      if (d.color === 'orange') {
+      if (d.color === 'red') {
         const x = d.x + (d.width / 2);
         const freq = pitch * Math.pow(2, ((videoW - x)/(videoW / 4)));
         console.log('freq ', freq)
         osc.frequency.linearRampToValueAtTime(freq, audioCtx.currentTime + .1);
-      } else if (d.color === 'yellow') {
+      } else if (d.color === 'blue') {
         const y = d.y + (d.height / 2);
-        const vol = (videoH - y) / (videoH / 4) - .2;
+        const vol = (videoH - y) / (videoH / 2);
         console.log('vol ', vol)
         gain.gain.linearRampToValueAtTime(vol, audioCtx.currentTime + .05);
       };
