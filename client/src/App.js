@@ -15,7 +15,8 @@ class App extends Component {
       audioCtx: false,
       mic: false,
       gain: false,
-      osc: false
+      osc: false,
+      pitch: 220,
     };
     this.track = this.track.bind(this);
     this.drawRects = this.drawRects.bind(this);
@@ -31,7 +32,7 @@ class App extends Component {
 
         const gain = audioCtx.createGain();
         gain.gain.setValueAtTime(0, audioCtx.currentTime)
-        const osc = new OscillatorNode(audioCtx, {type: 'sine', frequency: 440});
+        const osc = new OscillatorNode(audioCtx, {type: 'sine', frequency: this.state.pitch});
         osc.start();
         osc.connect(gain);
         gain.connect(audioCtx.destination)
@@ -39,17 +40,16 @@ class App extends Component {
         this.setState(prevState => ({
           audioCtx, mic, gain, osc
         }));
-
-
       });
-
-        this.track();
+    this.track();
   }
+
+
 
   track() {
       const tracking = window.tracking
 
-      tracking.ColorTracker.registerColor('white', function(r, g, b) {
+      tracking.ColorTracker.registerColor('white', (r, g, b) => {
         if (r > 250 && g > 250 && b > 250) {
           return true;
         } else return false;
@@ -59,6 +59,7 @@ class App extends Component {
       tracking.ColorTracker.registerColor('orange', (r, g, b) => {
         return getColorDistance(oragne, {r: r, g: g, b: b}) < 25
       });
+
       const getColorDistance = (target, actual) => {
         return Math.sqrt(
           (target.r - actual.r) * (target.r - actual.r) +
@@ -67,72 +68,71 @@ class App extends Component {
         );
       };
 
-
-      const colors = new tracking.ColorTracker(['yellow', 'orange']);
-      colors.minDimension = 3;
+      const colors = new tracking.ColorTracker(['white', 'yellow', 'orange']);
+      colors.minDimension = 5;
       colors.minGroupSize = 30;
 
       colors.on('track', e => {
         if (e.data.length === 0) {
-          this.playTone(false, false, false);
-          this.drawRects([{x: 0, y: 0, width: 0, height: 0, color: 'rgb(0, 0, 0)'}]);
+          this.playTone(false);
+          // this.drawRects([{x: 0, y: 0, width: 0, height: 0, color: 'rgb(0, 0, 0)'}]);
+          this.drawRects(false);
         } else {
           this.drawRects(e.data);
-          e.data.forEach(d => {
-            const x = d.x + (d.width / 2);
-            const y = d.y + (d.height / 2);
-            this.playTone(x, y, d.color)
-          });
-
-
-          // const x = e.data[0].x + (e.data[0].width / 2);
-          // const y = e.data[0].y + (e.data[0].height / 2);
-          // this.playTone(x, y, color)
-
-
-          // this.playTone(e.data[0].x, e.data[0].y);
-          // console.log(e.data[0].x, e.data[0].y, e.data.length)
-
-          // e.data.forEach(match => {
-          //   console.log(match.x, match.y, match.color)
-          //   this.playTone(match.x, match.y)
-          // });
+          this.playTone(e.data);
         };
       });
 
       tracking.track('.Video', colors, {camera: true});
   }
 
+
+
   drawRects(data) {
-    const width = this.state.videoW;
-    const height = this.state.videoH;
+    const width = this.refs.canvas.clientWidth;
+    const height = this.refs.canvas.clientHeight;
+    // console.log(width, this.refs.video.clientWidth, height, this.refs.video.clientHeight)
     const canvas = this.refs.canvas.getContext('2d');
     this.refs.canvas.width = width;
     this.refs.canvas.height = height;
 
-    canvas.fillStyle = 'rgb(0, 0, 0)';
-    canvas.fillRect(0, 0, width, height);
+    // canvas.fillStyle = 'rgb(0, 0, 0)';
+    // canvas.fillStyle = 'red'
+    // canvas.fillRect(0, 0, width, height);
 
-
-    data.forEach(d => {
-      console.log(d.x, d.y)
+    if (data) data.forEach(d => {
       canvas.fillStyle = d.color;
       canvas.fillRect(width - (d.x + d.width), d.y, d.width, d.height);
+      // const xScale = width / this.state.videoW;
+      // const yScale = height / this.state.videoH;
+      // console.log(d.x, width, this.refs.video.clientWidth, d.y, height, this.refs.video.clientHeight)
+      // canvas.fillRect(width - (d.x + d.width) * xScale, d.y * yScale, d.width * xScale, d.height * yScale);
     })
   }
 
 
-  playTone(x, y, color) {
+
+  playTone(data) {
     const videoW = this.state.videoW;
     const videoH = this.state.videoH;
+    const audioCtx = this.state.audioCtx;
     const gain = this.state.gain;
     const osc = this.state.osc;
-    const audioCtx = this.state.audioCtx;
-    const freq = !x ? 440 : 440 * Math.pow(2, ((videoW - x)/(videoW / 2)));
-    const vol = !y ? 0 : (videoH - y) / videoH;
+    const pitch = this.state.pitch;
 
-    if (color === 'orange') osc.frequency.linearRampToValueAtTime(freq, audioCtx.currentTime + .1);
-    if (color === 'yellow') gain.gain.linearRampToValueAtTime(vol, audioCtx.currentTime + .1);
+    if (!data) {
+        gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + .5);
+    } else data.forEach(d => {
+      if (d.color === 'orange') {
+        const x = d.x + (d.width / 2);
+        const freq = pitch * Math.pow(2, ((videoW - x)/(videoW / 4)));
+        osc.frequency.linearRampToValueAtTime(freq, audioCtx.currentTime + .1);
+      } else if (d.color === 'yellow') {
+        const y = d.y + (d.height / 2);
+        const vol = (videoH - y) / (videoH / 4) - .2;
+        gain.gain.linearRampToValueAtTime(vol, audioCtx.currentTime + .05);
+      };
+    });
   }
 
 
@@ -145,6 +145,12 @@ class App extends Component {
 
     return (
       <div className='App'>
+        <div className='module double'>
+          <div className='module-park'>
+            <video className='Video' width={videoW} height={videoH} ref='video' preload='true' autoPlay loop muted></video>
+            <canvas className='tracker' ref='canvas' />
+          </div>
+        </div>
         <div className='module'>
           <Wave audioCtx={audioCtx} mic={mic} />
         </div>
@@ -157,24 +163,9 @@ class App extends Component {
         <div className='module'>
           <Note audioCtx={audioCtx} mic={mic} />
         </div>
-        <div className='module'>
-          <video className='Video' width={videoW} height={videoH} preload='true' autoPlay loop muted></video>
-        </div>
-        <div className='module'>
-          <canvas className='tracker' ref='canvas' />
-        </div>
       </div>
     );
   }
 }
 
 export default App;
-
-
-
-        // <div className='videobox'>
-        //   <video className='Video' width={videoW} height={videoH} preload='true' autoPlay loop muted></video>
-        //   <div className='videobox-hide' />
-        // </div>
-
-
