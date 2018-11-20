@@ -3,8 +3,8 @@ import tracking from '../../node_modules/tracking/build/tracking-min.js';
 import help from './_helpers.js';
 
 export default class Theremin extends Component {
-    constructor() {
-    super()
+    constructor(props) {
+    super(props)
     this.state = {
       audioCtx: false,
       vol: false,
@@ -13,7 +13,6 @@ export default class Theremin extends Component {
       colorVol: {r: 255, g: 195, b: 70},
       colorFreq: {r: 240, g: 58, b: 76},
       sensitivity: 50,
-
 
       videoW: 200,
       videoH: 150,
@@ -25,7 +24,6 @@ export default class Theremin extends Component {
 
   componentDidMount() {
     setTimeout(() => this.audioInit(this.props.audioCtx), 1000);
-    // this.audioInit(this.props.audioCtx);
   }
 
   audioInit(audioCtx) {

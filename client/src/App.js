@@ -33,9 +33,7 @@ class App extends Component {
 
     return (
       <div className='App'>
-        <div className='module double'>
-          <Theremin audioCtx={audioCtx} />
-        </div>
+
         <div className='module'>
           <Wave audioCtx={audioCtx} mic={mic} />
         </div>
@@ -54,3 +52,10 @@ class App extends Component {
 }
 
 export default App;
+
+
+        // <div className='module double'>
+        //   <Theremin audioCtx={audioCtx} />
+        // </div>
+
+

@@ -13,8 +13,8 @@ export default class Spec extends Component {
     this.drawSpec = this.drawSpec.bind(this);
   }
 
-  componentDidUpdate() {
-    this.getData(this.props.audioCtx, this.props.mic, this.state.scaleBase);
+  componentDidMount() {
+    setTimeout(() => this.getData(this.props.audioCtx, this.props.mic, this.state.scaleBase), 1000);
   }
 
   getData(audioCtx, mic, scaleBase) {
@@ -24,7 +24,6 @@ export default class Spec extends Component {
     analyser.maxDecibels = 0;
     analyser.smoothingTimeConstant = 0;
     mic.connect(analyser);
-    // analyser.connect(audioCtx.destination);
 
     const fftBins = analyser.frequencyBinCount;
     const data = new Array(this.state.slices).fill(new Float32Array(fftBins).fill(-Infinity));

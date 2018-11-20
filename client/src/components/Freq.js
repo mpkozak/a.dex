@@ -12,11 +12,8 @@ export default class Freq extends Component {
   }
 
   componentDidMount() {
+    setTimeout(() => this.getData(this.props.audioCtx, this.props.mic, this.state.scaleBase), 1000);
     d3.select(this.node).append('g').classed('freq', true);
-  }
-
-  componentDidUpdate() {
-    this.getData(this.props.audioCtx, this.props.mic, this.state.scaleBase);
   }
 
   getData(audioCtx, mic, scaleBase) {
@@ -26,7 +23,6 @@ export default class Freq extends Component {
     analyser.maxDecibels = 0;
     analyser.smoothingTimeConstant = 0;
     mic.connect(analyser);
-    // analyser.connect(audioCtx.destination);
 
     const fftBins = analyser.frequencyBinCount;
     const freq = new Uint8Array(fftBins);
