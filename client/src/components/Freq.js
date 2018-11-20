@@ -5,7 +5,7 @@ export default class Freq extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      scaleBase: 7, // valid range: 5-15
+      scaleBase: 10, // valid range: 5-15
     };
     this.getData = this.getData.bind(this);
     this.drawFreq = this.drawFreq.bind(this);
@@ -63,7 +63,6 @@ export default class Freq extends Component {
     // freq
     //   .attr('d', d => curveScale(d))
 
-
     const freq = d3.select('.freq').selectAll('rect').data(input);
     freq.enter().append('rect')
       .attr('x', (d, i) => xScale(i))
@@ -73,7 +72,6 @@ export default class Freq extends Component {
     freq
       .attr('y', d => height - yScale(d))
       .attr('height', d => yScale(d))
-
   }
 
   render() {

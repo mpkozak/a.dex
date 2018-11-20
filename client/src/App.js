@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import tracking from '../node_modules/tracking/build/tracking-min.js';
 import './App.css';
-import Wave from './components/Wave2.js';
-import Spec from './components/Spec2.js';
-import Freq from './components/Freq2.js';
-import Note from './components/Note2.js';
+import Wave from './components/Wave.js';
+import Spec from './components/Spec.js';
+import Freq from './components/Freq.js';
+import Note from './components/Note.js';
 
 class App extends Component {
   constructor() {
@@ -75,7 +75,6 @@ class App extends Component {
       colors.on('track', e => {
         if (e.data.length === 0) {
           this.playTone(false);
-          // this.drawRects([{x: 0, y: 0, width: 0, height: 0, color: 'rgb(0, 0, 0)'}]);
           this.drawRects(false);
         } else {
           this.drawRects(e.data);
@@ -91,7 +90,6 @@ class App extends Component {
   drawRects(data) {
     const width = this.refs.canvas.clientWidth;
     const height = this.refs.canvas.clientHeight;
-    // console.log(width, this.refs.video.clientWidth, height, this.refs.video.clientHeight)
     const canvas = this.refs.canvas.getContext('2d');
     this.refs.canvas.width = width;
     this.refs.canvas.height = height;
@@ -126,10 +124,12 @@ class App extends Component {
       if (d.color === 'orange') {
         const x = d.x + (d.width / 2);
         const freq = pitch * Math.pow(2, ((videoW - x)/(videoW / 4)));
+        console.log('freq ', freq)
         osc.frequency.linearRampToValueAtTime(freq, audioCtx.currentTime + .1);
       } else if (d.color === 'yellow') {
         const y = d.y + (d.height / 2);
         const vol = (videoH - y) / (videoH / 4) - .2;
+        console.log('vol ', vol)
         gain.gain.linearRampToValueAtTime(vol, audioCtx.currentTime + .05);
       };
     });
