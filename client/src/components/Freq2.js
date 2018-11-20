@@ -5,7 +5,7 @@ export default class Freq extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      scaleBase: 10, // valid range: 5-15
+      scaleBase: 7, // valid range: 5-15
     };
     this.getData = this.getData.bind(this);
     this.drawFreq = this.drawFreq.bind(this);
@@ -45,23 +45,35 @@ export default class Freq extends Component {
     const height = node.clientHeight;
 
     const xScale = d3.scaleLinear().domain([0, size - 1]).range([0, width]);
-    const yScale = d3.scaleLinear().domain([0, 255]).range([0, height]);
-    const curveScale = d3.line().curve(d3.curveMonotoneX);
+    const yScale = d3.scalePow().domain([0, 255]).range([0, height]);
+    // const curveScale = d3.line().curve(d3.curveMonotoneX);
 
-    const dataCurve = [];
+    // const dataCurve = [];
 
-    dataCurve.push([0, height]);
-    input.forEach((d, i) => {
-      dataCurve.push([xScale(i), height - yScale(d)]);
-    });
-    dataCurve.push([width, height]);
+    // dataCurve.push([0, height]);
+    // input.forEach((d, i) => {
+    //   dataCurve.push([xScale(i), height - yScale(d)]);
+    // });
+    // dataCurve.push([width, height]);
 
-    const freq = d3.select('.freq').selectAll('path').data([dataCurve]);
-    freq.enter().append('path')
-      .style('fill', 'rgba(255,0,255,.2')
+    // const freq = d3.select('.freq').selectAll('path').data([dataCurve]);
+    // freq.enter().append('path')
+    //   .style('fill', 'rgba(255,0,255,.2')
+    //   .style('stroke', 'none')
+    // freq
+    //   .attr('d', d => curveScale(d))
+
+
+    const freq = d3.select('.freq').selectAll('rect').data(input);
+    freq.enter().append('rect')
+      .attr('x', (d, i) => xScale(i))
+      .attr('width', width / input.length)
       .style('stroke', 'none')
+      .style('fill', 'rgba(255,0,255,.2')
     freq
-      .attr('d', d => curveScale(d))
+      .attr('y', d => height - yScale(d))
+      .attr('height', d => yScale(d))
+
   }
 
   render() {
