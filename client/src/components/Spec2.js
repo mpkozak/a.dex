@@ -23,8 +23,8 @@ export default class Spec extends Component {
     analyser.minDecibels = -100;
     analyser.maxDecibels = 0;
     analyser.smoothingTimeConstant = 0;
-    mic.connect(analyser)
-    analyser.connect(audioCtx.destination)
+    mic.connect(analyser);
+    // analyser.connect(audioCtx.destination);
 
     const fftBins = analyser.frequencyBinCount;
     const data = new Array(this.state.slices).fill(new Float32Array(fftBins).fill(-Infinity));

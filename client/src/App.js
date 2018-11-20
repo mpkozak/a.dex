@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-// import { tracking } from 'node_modules/tracking/build/tracking-min.js';
-// import tracking from './components/tracking-min.js';
 import tracking from '../node_modules/tracking/build/tracking-min.js';
 import './App.css';
 import Wave from './components/Wave2.js';
@@ -12,12 +10,15 @@ class App extends Component {
   constructor() {
     super()
     this.state = {
+      videoW: 200,
+      videoH: 150,
       audioCtx: false,
       mic: false,
       gain: false,
       osc: false
     };
     this.track = this.track.bind(this);
+    this.drawRects = this.drawRects.bind(this);
     this.playTone = this.playTone.bind(this);
   }
 
@@ -46,79 +47,121 @@ class App extends Component {
   }
 
   track() {
-      window.tracking.ColorTracker.registerColor('white', function(r, g, b) {
-      if (r > 250 && g > 250 && b > 250) {
-      return true;
-      }
-      return false;
+      const tracking = window.tracking
+
+      tracking.ColorTracker.registerColor('white', function(r, g, b) {
+        if (r > 250 && g > 250 && b > 250) {
+          return true;
+        } else return false;
       });
 
+      const oragne = {r: 97, g: 5, b: 5};
+      tracking.ColorTracker.registerColor('orange', (r, g, b) => {
+        return getColorDistance(oragne, {r: r, g: g, b: b}) < 25
+      });
+      const getColorDistance = (target, actual) => {
+        return Math.sqrt(
+          (target.r - actual.r) * (target.r - actual.r) +
+          (target.g - actual.g) * (target.g - actual.g) +
+          (target.b - actual.b) * (target.b - actual.b)
+        );
+      };
 
-      const colors = new window.tracking.ColorTracker(['white']);
+
+      const colors = new tracking.ColorTracker(['yellow', 'orange']);
+      colors.minDimension = 3;
+      colors.minGroupSize = 30;
 
       colors.on('track', e => {
         if (e.data.length === 0) {
-          // console.log('none')
-          this.playTone(false, false)
+          this.playTone(false, false, false);
+          this.drawRects([{x: 0, y: 0, width: 0, height: 0, color: 'rgb(0, 0, 0)'}]);
         } else {
-          this.playTone(e.data[0].x, e.data[0].y)
+          this.drawRects(e.data);
+          e.data.forEach(d => {
+            const x = d.x + (d.width / 2);
+            const y = d.y + (d.height / 2);
+            this.playTone(x, y, d.color)
+          });
+
+
+          // const x = e.data[0].x + (e.data[0].width / 2);
+          // const y = e.data[0].y + (e.data[0].height / 2);
+          // this.playTone(x, y, color)
+
+
+          // this.playTone(e.data[0].x, e.data[0].y);
           // console.log(e.data[0].x, e.data[0].y, e.data.length)
 
           // e.data.forEach(match => {
           //   console.log(match.x, match.y, match.color)
           //   this.playTone(match.x, match.y)
           // });
-        }
+        };
       });
 
-      window.tracking.track('.Video', colors, { camera: true });
+      tracking.track('.Video', colors, {camera: true});
   }
 
-  playTone(x, y) {
-    console.log(x, y)
+  drawRects(data) {
+    const width = this.state.videoW;
+    const height = this.state.videoH;
+    const canvas = this.refs.canvas.getContext('2d');
+    this.refs.canvas.width = width;
+    this.refs.canvas.height = height;
+
+    canvas.fillStyle = 'rgb(0, 0, 0)';
+    canvas.fillRect(0, 0, width, height);
+
+
+    data.forEach(d => {
+      console.log(d.x, d.y)
+      canvas.fillStyle = d.color;
+      canvas.fillRect(width - (d.x + d.width), d.y, d.width, d.height);
+    })
+  }
+
+
+  playTone(x, y, color) {
+    const videoW = this.state.videoW;
+    const videoH = this.state.videoH;
     const gain = this.state.gain;
     const osc = this.state.osc;
     const audioCtx = this.state.audioCtx;
-    // const freq = x * 100
-    const freq = !x ? 440 : 440 * Math.pow(2, ((200 - x)/100));
-    const vol = !y ? 0 : (200 - y) / 200;
-    console.log(freq, vol)
+    const freq = !x ? 440 : 440 * Math.pow(2, ((videoW - x)/(videoW / 2)));
+    const vol = !y ? 0 : (videoH - y) / videoH;
 
-    // if (osc) osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-    // if (gain) gain.gain.setValueAtTime(vol, audioCtx.currentTime);
-
-    osc.frequency.linearRampToValueAtTime(freq, audioCtx.currentTime + .1);
-    gain.gain.linearRampToValueAtTime(vol, audioCtx.currentTime + .1);
-
-    // osc.frequency.linearRampToValueAtTime(freq, audioCtx.currentTime + .01);
-    // gain.gain.exponentialRampToValueAtTime(vol, audioCtx.currentTime + .01);
+    if (color === 'orange') osc.frequency.linearRampToValueAtTime(freq, audioCtx.currentTime + .1);
+    if (color === 'yellow') gain.gain.linearRampToValueAtTime(vol, audioCtx.currentTime + .1);
   }
 
 
 
   render() {
+    const { videoW } = this.state;
+    const { videoH } = this.state;
     const { audioCtx } = this.state;
     const { mic } = this.state;
 
     return (
-      <div>
-        <div className='videobox'>
-          <video className='Video' width='200' height='200' preload='true' autoPlay loop muted></video>
-          <div className='videobox-hide' />
+      <div className='App'>
+        <div className='module'>
+          <Wave audioCtx={audioCtx} mic={mic} />
         </div>
-        <div className='App'>
-          <div className='module'>
-            <Wave audioCtx={audioCtx} mic={mic} />
-          </div>
-          <div className='module'>
-            <Spec audioCtx={audioCtx} mic={mic} />
-          </div>
-          <div className='module'>
-            <Freq audioCtx={audioCtx} mic={mic} />
-          </div>
-          <div className='module'>
-            <Note audioCtx={audioCtx} mic={mic} />
-          </div>
+        <div className='module'>
+          <Spec audioCtx={audioCtx} mic={mic} />
+        </div>
+        <div className='module'>
+          <Freq audioCtx={audioCtx} mic={mic} />
+        </div>
+        <div className='module'>
+          <Note audioCtx={audioCtx} mic={mic} />
+        </div>
+        <div className='module'>
+          <video className='Video' width={videoW} height={videoH} preload='true' autoPlay loop muted></video>
+        </div>
+        <div className='module'>
+          <canvas className='tracker' ref='canvas' />
         </div>
       </div>
     );
@@ -126,3 +169,12 @@ class App extends Component {
 }
 
 export default App;
+
+
+
+        // <div className='videobox'>
+        //   <video className='Video' width={videoW} height={videoH} preload='true' autoPlay loop muted></video>
+        //   <div className='videobox-hide' />
+        // </div>
+
+

@@ -1,9 +1,31 @@
+/*.videobox {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200px;
+  height: 200px;
+  z-index: 1;
+}
 
+.video-hide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200px;
+  height: 200px;
+  background-color: #222;
+  z-index: 2;
+}*/
 
-
+/*.tracker {
+  width: 100%;
+  height: 100%;
+}*/
 
 
 .App {
+  position: absolute;
+  z-index: 3;
   width: 100vw;
   height: 100vh;
   display: flex;
@@ -14,8 +36,12 @@
 
 .module {
   width: 48vw;
-  height: 48vh;
+  height: 32vh;
   margin: .1vh 1vw;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
 }
 
 .Spec {

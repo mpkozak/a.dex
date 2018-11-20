@@ -137,8 +137,8 @@ export default class Note extends Component {
     analyser.minDecibels = -100;
     analyser.maxDecibels = 0;
     analyser.smoothingTimeConstant = 0;
-    mic.connect(analyser)
-    analyser.connect(audioCtx.destination)
+    mic.connect(analyser);
+    // analyser.connect(audioCtx.destination);
 
     const fftBins = analyser.frequencyBinCount;
     const sampleRate = audioCtx.sampleRate;
