@@ -1,13 +1,13 @@
 const help = {};
 
 help.makeDomain = (extent, arr) => {
-  const num = arr.length;
-  const unit = (extent[1] - extent[0]) / (num - 1);
-  const out = [];
-  for (let i = 0; i < num; i++) {
-    out.push(extent[0] + i * unit);
+  const iter = arr.length;
+  const unit = (extent[1] - extent[0]) / (iter - 1);
+  const domain = [];
+  for (let i = 0; i < iter; i++) {
+    domain.push(extent[0] + i * unit);
   };
-  return out;
+  return domain;
 };
 
 help.getNote = (Hz) => {
@@ -21,9 +21,15 @@ help.getNote = (Hz) => {
   const note = Math.round(Math.round(n % 12) % 12);
   // console.log(n, note)
   return noteStr[note];
-}
+};
 
-
+help.getColorDist = (orig, match) => {
+  return Math.sqrt(
+    Math.pow((orig.r - match.r), 2) +
+    Math.pow((orig.g - match.g), 2) +
+    Math.pow((orig.b - match.b), 2)
+  );
+};
 
 
 module.exports = help;
