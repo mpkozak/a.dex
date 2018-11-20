@@ -55,14 +55,14 @@ class App extends Component {
       //   } else return false;
       // });
 
-      const oragne = {r: 97, g: 5, b: 5};
-      tracking.ColorTracker.registerColor('orange', (r, g, b) => {
-        return getColorDistance(oragne, {r: r, g: g, b: b}) < 25
-      });
+      // const oragne = {r: 97, g: 5, b: 5};
+      // tracking.ColorTracker.registerColor('orange', (r, g, b) => {
+      //   return getColorDistance(oragne, {r: r, g: g, b: b}) < 25
+      // });
 
       const screwdriver = {r: 240, g: 58, b: 76};
       tracking.ColorTracker.registerColor('red', (r, g, b) => {
-        return getColorDistance(screwdriver, {r: r, g: g, b: b}) < 70
+        return getColorDistance(screwdriver, {r: r, g: g, b: b}) < 50
       });
 
       const lighter = {r: 255, g: 195, b: 70};
@@ -78,7 +78,7 @@ class App extends Component {
         );
       };
 
-      const colors = new tracking.ColorTracker(['red', 'blue', 'orange']);
+      const colors = new tracking.ColorTracker(['red', 'blue']);
       colors.minDimension = 3;
       colors.minGroupSize = 500;
 
@@ -121,25 +121,39 @@ class App extends Component {
 
 
   playTone(data) {
-    const videoW = this.state.videoW;
-    const videoH = this.state.videoH;
+    // const videoW = this.state.videoW;
+    // const videoH = this.state.videoH;
+    const width = this.refs.video.clientWidth;
+    const height = this.refs.video.clientHeight;
     const audioCtx = this.state.audioCtx;
     const gain = this.state.gain;
     const osc = this.state.osc;
     const pitch = this.state.pitch;
 
     if (!data) {
-        gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + .5);
+      gain.gain.cancelScheduledValues(audioCtx.currentTime);
+      gain.gain.setValueAtTime(gain.gain.value, audioCtx.currentTime);
+      gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + .5);
+    // } else if (data.length === 1 && data[0].color !== 'blue') {
+    //   gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + .5);
     } else data.forEach(d => {
       if (d.color === 'red') {
-        const x = d.x + (d.width / 2);
-        const freq = pitch * Math.pow(2, ((videoW - x)/(videoW / 4)));
-        console.log('freq ', freq)
-        osc.frequency.linearRampToValueAtTime(freq, audioCtx.currentTime + .1);
+        // const x = d.x + (d.width / 2);
+        const x = d.x;
+        const freq = pitch * Math.pow(2, ((width - x)/(width / 4)));
+        // console.log('freq ', freq)
+
+        osc.frequency.cancelScheduledValues(audioCtx.currentTime);
+        osc.frequency.setValueAtTime(osc.frequency.value, audioCtx.currentTime);
+        osc.frequency.linearRampToValueAtTime(freq, audioCtx.currentTime + .01);
       } else if (d.color === 'blue') {
-        const y = d.y + (d.height / 2);
-        const vol = (videoH - y) / (videoH / 2);
-        console.log('vol ', vol)
+        // const y = d.y + (d.height / 2);
+        const y = d.y;
+        const vol = (height - y) / (height / 4) - .2;
+        // console.log('vol ', vol)
+
+        gain.gain.cancelScheduledValues(audioCtx.currentTime);
+        gain.gain.setValueAtTime(gain.gain.value, audioCtx.currentTime);
         gain.gain.linearRampToValueAtTime(vol, audioCtx.currentTime + .05);
       };
     });
@@ -161,21 +175,25 @@ class App extends Component {
             <canvas className='tracker' ref='canvas' />
           </div>
         </div>
-        <div className='module'>
-          <Wave audioCtx={audioCtx} mic={mic} />
-        </div>
-        <div className='module'>
-          <Spec audioCtx={audioCtx} mic={mic} />
-        </div>
-        <div className='module'>
-          <Freq audioCtx={audioCtx} mic={mic} />
-        </div>
-        <div className='module'>
-          <Note audioCtx={audioCtx} mic={mic} />
-        </div>
+
       </div>
     );
   }
 }
 
 export default App;
+
+        // <div className='module'>
+        //   <Wave audioCtx={audioCtx} mic={mic} />
+        // </div>
+        // <div className='module'>
+        //   <Spec audioCtx={audioCtx} mic={mic} />
+        // </div>
+        // <div className='module'>
+        //   <Freq audioCtx={audioCtx} mic={mic} />
+        // </div>
+        // <div className='module'>
+        //   <Note audioCtx={audioCtx} mic={mic} />
+        // </div>
+
+
