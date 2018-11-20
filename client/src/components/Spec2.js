@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3';
+import help from './_helpers.js';
 
 export default class Spec extends Component {
   constructor(props) {
@@ -40,23 +41,23 @@ export default class Spec extends Component {
 
   drawSpec(data, fftBins) {
     const canvas = this.refs.canvas.getContext('2d');
-    const WIDTH = this.state.slices;
-    const HEIGHT = fftBins;
-    const sliceHeight = (HEIGHT / fftBins);
-    this.refs.canvas.width = WIDTH;
-    this.refs.canvas.height = HEIGHT;
+    const width = this.state.slices;
+    const height = fftBins;
+    const sliceHeight = (height / fftBins);
+    this.refs.canvas.width = width;
+    this.refs.canvas.height = height;
 
-    const domain = [0, -15, -30, -45, -60, -75, -110, -Infinity];
-    const colors = ['#FEFEF5', '#F9FF7A', '#F3B226', '#E0610F', '#8A3B12', '#3D2E25', '#181E36', '#000A18'];
-    const zScale = d3.scaleLinear().domain(domain).range(colors);
+    const colors = ['#FEFEF5', '#FCFFB9', '#F9FF7A', '#F7DF4B', '#F3B226', '#EC851A', '#E0610F', '#BA460E', '#8A3B12', '#5F341D', '#3D2E25', '#28282B', '#181E36', '#09112D', '#000A18', '#000002'];
+    const domain = help.makeDomain([0, -120], colors);
+    const zScale = d3.scaleLog().domain(domain).range(colors);
 
     canvas.fillStyle = 'rgb(0, 0, 0)';
-    canvas.fillRect(0, 0, WIDTH, HEIGHT);
+    canvas.fillRect(0, 0, width, height);
 
     data.forEach((d, i) => {
       d.forEach((f, j) => {
         canvas.fillStyle = zScale(f);
-        canvas.fillRect(i, HEIGHT - (j * sliceHeight), 1, sliceHeight);
+        canvas.fillRect(i, height - (j * sliceHeight), 1, sliceHeight);
       });
     });
   }

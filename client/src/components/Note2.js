@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3';
+import help from './_helpers.js';
 
 const notes = [
   { str: 'C0', int: 16.35 },
@@ -147,16 +148,34 @@ export default class Note extends Component {
     setInterval(() => {
       analyser.getFloatFrequencyData(freq);
       const max = d3.max(freq);
-      const min = d3.min(freq)
-      const median = d3.median(freq)
+      const min = d3.min(freq);
+      const median = d3.median(freq);
       const index = freq.indexOf(max);
 
-      // const val = (max - median > median - min) ? index : 0
-      const val = index
+      const val = (max - median > median - min) ? index : 0;
+      // const val = index;
       this.setState(prevState => ({
         freq: val * bandwidth
       }))
-    }, 60);
+    }, 200);
+
+    // const setFreq = () => {
+    //   requestAnimationFrame(setFreq);
+
+    //   analyser.getFloatFrequencyData(freq);
+    //   const max = d3.max(freq);
+    //   const min = d3.min(freq);
+    //   const median = d3.median(freq);
+    //   const index = freq.indexOf(max);
+
+    //   // const val = (max - median > median - min) ? index : 0;
+    //   const val = index;
+    //   this.setState(prevState => ({
+    //     freq: val * bandwidth
+    //   }));
+    // };
+    // setFreq();
+
   }
 
   getNote(freq) {
@@ -173,9 +192,10 @@ export default class Note extends Component {
 
     return(
       <div>
-        <h1>{note.str}</h1>
+        <h1>{help.getNote(freq)}</h1>
         <h3>{Math.round(freq)} Hz</h3>
         <h6>variance: {Math.round(cents)} ct</h6>
+        <h4>{note.str}</h4>
       </div>
     );
   }
