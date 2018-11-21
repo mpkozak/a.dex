@@ -32,7 +32,7 @@ export default class App extends Component {
     const { mic } = this.state;
     const body = !mic ? <div>Loading...</div> : (
       <div className='App'>
-        <div className='module double'>
+        <div className='module-big'>
           <Theremin audioCtx={audioCtx} />
         </div>
         <div className='module'>

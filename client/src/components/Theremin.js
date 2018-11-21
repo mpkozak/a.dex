@@ -55,8 +55,6 @@ export default class Theremin extends Component {
       return help.getColorDist(this.state.colorFreq, {r: r, g: g, b: b}) <= this.state.sensitivity;
     });
 
-    console.log(this.refs.sensitivity.value)
-
     const colors = new tracking.ColorTracker(['Vol', 'Freq']);
     colors.minDimension = 3;
     colors.minGroupSize = 500;
@@ -65,7 +63,14 @@ export default class Theremin extends Component {
       this.trackerDraw(e.data);
       this.trackerModulate(e.data);
     });
-    tracking.track('.video', colors, {camera: true});
+
+    // tracking.track('.video', colors, {camera: true});
+
+    navigator.mediaDevices.getUserMedia({video: true})
+      .then(stream => {
+        this.refs.video.srcObject = stream;
+        tracking.track('.video', colors)
+      });
   }
 
   trackerDraw(data) {
@@ -86,11 +91,15 @@ export default class Theremin extends Component {
   }
 
   toggleColor(e) {
-    const frame = document.querySelector('.overlay')
-    const target = e.target.classList[1];
+    const frame = this.refs.canvas;
+    const classList = e.target.classList;
+    const target = classList[1];
+    classList.add('pulse');
+
 
     const getCoords = (e) => {
       this.setColor(e.offsetX, e.offsetY, target);
+      classList.remove('pulse');
       frame.removeEventListener('click', getCoords);
     };
     frame.addEventListener('click', getCoords);
@@ -104,7 +113,6 @@ export default class Theremin extends Component {
     canvas.drawImage(this.refs.video, 0, 0, width, height);
     const colorRaw = canvas.getImageData(width - x, y, 1, 1).data;
     const color = {r: colorRaw[0], g: colorRaw[1], b: colorRaw[2]};
-
 
     localStorage.setItem(target, JSON.stringify(color));
     this.setState(prevState => ({
