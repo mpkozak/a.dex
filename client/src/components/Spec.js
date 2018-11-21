@@ -9,12 +9,10 @@ export default class Spec extends Component {
       scaleBase: 10, // valid range: 5-15
       slices: 60
     };
-    this.getData = this.getData.bind(this);
-    this.drawSpec = this.drawSpec.bind(this);
   }
 
   componentDidMount() {
-    setTimeout(() => this.getData(this.props.audioCtx, this.props.mic, this.state.scaleBase), 1000);
+    this.getData(this.props.audioCtx, this.props.mic, this.state.scaleBase);
   }
 
   getData(audioCtx, mic, scaleBase) {

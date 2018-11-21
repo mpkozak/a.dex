@@ -30,34 +30,90 @@ export default class App extends Component {
   render() {
     const { audioCtx } = this.state;
     const { mic } = this.state;
+    const body = !mic ? <div>Loading...</div> : (
+      <div className='App'>
+        <div className='module double'>
+          <Theremin audioCtx={audioCtx} />
+        </div>
+        <div className='module'>
+          <Wave audioCtx={audioCtx} mic={mic} />
+        </div>
+        <div className='module'>
+          <Note audioCtx={audioCtx} mic={mic} />
+        </div>
+      </div>
+    );
 
     return (
-      <div className='App'>
-
-          <Theremin audioCtx={audioCtx} />
-
-
+      <div>
+        {body}
       </div>
     );
   }
 }
 
 
-        // <div className='module double'>
-        //   <Theremin audioCtx={audioCtx} />
-        // </div>
-        // <div className='module'>
-        //   <Wave audioCtx={audioCtx} mic={mic} />
-        // </div>
-        // <div className='module'>
-        //   <Spec audioCtx={audioCtx} mic={mic} />
-        // </div>
-        // <div className='module'>
-        //   <Freq audioCtx={audioCtx} mic={mic} />
-        // </div>
-        // <div className='module'>
-        //   <Note audioCtx={audioCtx} mic={mic} />
-        // </div>
 
+
+
+
+
+
+      // <div className='App'>
+      //   <div className='module double'>
+      //     <Theremin audioCtx={audioCtx} />
+      //   </div>
+      //   <div className='module'>
+      //     <Wave audioCtx={audioCtx} mic={mic} />
+      //   </div>
+      //   <div className='module'>
+      //     <Spec audioCtx={audioCtx} mic={mic} />
+      //   </div>
+      //   <div className='module'>
+      //     <Freq audioCtx={audioCtx} mic={mic} />
+      //   </div>
+      //   <div className='module'>
+      //     <Note audioCtx={audioCtx} mic={mic} />
+      //   </div>
+      // </div>
+
+
+
+    // const theremin = (
+    //   <div className='module double'>
+    //     <Theremin audioCtx={audioCtx} />
+    //   </div>
+    // );
+    // const wave = (
+    //   <div className='module'>
+    //     <Wave audioCtx={audioCtx} mic={mic} />
+    //   </div>
+    // );
+    // const spec = (
+    //   <div className='module'>
+    //     <Spec audioCtx={audioCtx} mic={mic} />
+    //   </div>
+    // );
+    // const freq = (
+    //   <div className='module'>
+    //     <Freq audioCtx={audioCtx} mic={mic} />
+    //   </div>
+    // );
+    // const note = (
+    //   <div className='module'>
+    //     <Note audioCtx={audioCtx} mic={mic} />
+    //   </div>
+    // );
+    // const body = !mic
+    //   ? <div>Loading...</div>
+    //   : (
+    //     <div className='App'>
+    //       {theremin}
+    //       {wave}
+    //       {spec}
+    //       {freq}
+    //       {note}
+    //     </div>
+    //   );
 
 

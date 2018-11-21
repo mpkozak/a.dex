@@ -18,7 +18,7 @@ export default class Theremin extends Component {
   }
 
   componentDidMount() {
-    setTimeout(() => this.audioInit(this.props.audioCtx), 1000);
+    this.audioInit(this.props.audioCtx)
     const colorVol = JSON.parse(localStorage.getItem('colorVol'));
     const colorFreq = JSON.parse(localStorage.getItem('colorFreq'));
     if (colorVol && colorFreq) {

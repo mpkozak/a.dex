@@ -10,12 +10,10 @@ export default class Note extends Component {
       freq: 0,
       refreshMs: 150
     };
-    this.getData = this.getData.bind(this);
-    this.getNote = this.getNote.bind(this);
   }
 
   componentDidMount() {
-    setTimeout(() => this.getData(this.props.audioCtx, this.props.mic, this.state.scaleBase), 1000);
+    this.getData(this.props.audioCtx, this.props.mic, this.state.scaleBase);
   }
 
   getData(audioCtx, mic, scaleBase) {
@@ -43,23 +41,6 @@ export default class Note extends Component {
         freq: val * bandwidth
       }))
     }, this.state.refreshMs);
-
-    // const setFreq = () => {
-    //   requestAnimationFrame(setFreq);
-
-    //   analyser.getFloatFrequencyData(freq);
-    //   const max = d3.max(freq);
-    //   const min = d3.min(freq);
-    //   const median = d3.median(freq);
-    //   const index = freq.indexOf(max);
-
-    //   // const val = (max - median > median - min) ? index : 0;
-    //   const val = index;
-    //   this.setState(prevState => ({
-    //     freq: val * bandwidth
-    //   }));
-    // };
-    // setFreq();
   }
 
   getNote(freq) {

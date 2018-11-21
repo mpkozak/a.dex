@@ -7,12 +7,10 @@ export default class Wave extends Component {
     this.state = {
       scaleBase: 10, // valid range: 5-15
     };
-    this.getData = this.getData.bind(this);
-    this.drawWave = this.drawWave.bind(this);
   }
 
   componentDidMount() {
-    setTimeout(() => this.getData(this.props.audioCtx, this.props.mic, this.state.scaleBase), 1000);
+    this.getData(this.props.audioCtx, this.props.mic, this.state.scaleBase);
     d3.select(this.node).append('g').classed('wave', true);
   }
 
