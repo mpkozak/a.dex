@@ -46,6 +46,7 @@ class App extends Component {
         <div className='module'>
           <Note audioCtx={audioCtx} mic={mic} />
         </div>
+
       </div>
     );
   }
@@ -57,5 +58,19 @@ export default App;
         // <div className='module double'>
         //   <Theremin audioCtx={audioCtx} />
         // </div>
+        // <div className='module'>
+        //   <Wave audioCtx={audioCtx} mic={mic} />
+        // </div>
+        // <div className='module'>
+        //   <Spec audioCtx={audioCtx} mic={mic} />
+        // </div>
+        // <div className='module'>
+        //   <Freq audioCtx={audioCtx} mic={mic} />
+        // </div>
+        // <div className='module'>
+        //   <Note audioCtx={audioCtx} mic={mic} />
+        // </div>
+
+
 
 

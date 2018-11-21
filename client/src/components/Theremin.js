@@ -10,13 +10,14 @@ export default class Theremin extends Component {
       vol: false,
       osc: false,
       baseHz: 220,
-      colorVol: {r: 255, g: 195, b: 70},
-      colorFreq: {r: 240, g: 58, b: 76},
+      colorVol: {r: 180, g: 160, b: 50},
+      colorFreq: {r: 130, g: 35, b: 30},
       sensitivity: 50,
 
       videoW: 200,
       videoH: 150,
     };
+    this.audioInit = this.audioInit.bind(this);
     this.trackerInit = this.trackerInit.bind(this);
     this.trackerDraw = this.trackerDraw.bind(this);
     this.trackerModulate = this.trackerModulate.bind(this);
