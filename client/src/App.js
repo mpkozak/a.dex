@@ -33,28 +33,31 @@ export default class App extends Component {
 
     return (
       <div className='App'>
-        <div className='module double'>
+
           <Theremin audioCtx={audioCtx} />
-        </div>
-        <div className='module'>
-          <Wave audioCtx={audioCtx} mic={mic} />
-        </div>
-        <div className='module'>
-          <Spec audioCtx={audioCtx} mic={mic} />
-        </div>
-        <div className='module'>
-          <Freq audioCtx={audioCtx} mic={mic} />
-        </div>
-        <div className='module'>
-          <Note audioCtx={audioCtx} mic={mic} />
-        </div>
+
+
       </div>
     );
   }
 }
 
 
-
+        // <div className='module double'>
+        //   <Theremin audioCtx={audioCtx} />
+        // </div>
+        // <div className='module'>
+        //   <Wave audioCtx={audioCtx} mic={mic} />
+        // </div>
+        // <div className='module'>
+        //   <Spec audioCtx={audioCtx} mic={mic} />
+        // </div>
+        // <div className='module'>
+        //   <Freq audioCtx={audioCtx} mic={mic} />
+        // </div>
+        // <div className='module'>
+        //   <Note audioCtx={audioCtx} mic={mic} />
+        // </div>
 
 
 

@@ -68,10 +68,10 @@ svg {
 
 .video-box {
   position: relative;
-  width: 40vmin;
-  height: 30vmin;
-  /*width: 400px;*/
-  /*height: 300px;*/
+  /*width: 40vmin;*/
+  /*height: 30vmin;*/
+  width: 400px;
+  height: 300px;
 }
 
 .video {

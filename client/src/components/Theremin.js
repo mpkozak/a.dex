@@ -10,19 +10,22 @@ export default class Theremin extends Component {
       vol: false,
       osc: false,
       baseHz: 220,
-      colorVol: {r: 180, g: 160, b: 50},
-      colorFreq: {r: 130, g: 35, b: 30},
+      colorVol: {r: 0, g: 0, b: 0},
+      colorFreq: {r: 0, g: 0, b: 0},
       sensitivity: 50
     };
-    this.audioInit = this.audioInit.bind(this);
-    this.trackerInit = this.trackerInit.bind(this);
-    this.trackerDraw = this.trackerDraw.bind(this);
-    this.trackerModulate = this.trackerModulate.bind(this);
     this.toggleColor = this.toggleColor.bind(this);
   }
 
   componentDidMount() {
     setTimeout(() => this.audioInit(this.props.audioCtx), 1000);
+    const colorVol = JSON.parse(localStorage.getItem('colorVol'));
+    const colorFreq = JSON.parse(localStorage.getItem('colorFreq'));
+    if (colorVol && colorFreq) {
+      this.setState(prevState => ({
+        colorVol, colorFreq
+      }));
+    };
   }
 
   audioInit(audioCtx) {
@@ -59,7 +62,6 @@ export default class Theremin extends Component {
       this.trackerDraw(e.data);
       this.trackerModulate(e.data);
     });
-
     tracking.track('.video', colors, {camera: true});
   }
 
@@ -73,41 +75,10 @@ export default class Theremin extends Component {
     const canvas = this.refs.canvas.getContext('2d');
 
     if (data) data.forEach(d => {
-      canvas.strokeStyle = d.color === 'Vol'
+      canvas.fillStyle = d.color === 'Vol'
         ? `rgb(${colorVol.r}, ${colorVol.g}, ${colorVol.b})`
         : `rgb(${colorFreq.r}, ${colorFreq.g}, ${colorFreq.b})`;
-      canvas.strokeRect(width - (d.x + d.width), d.y, d.width, d.height);
-    });
-  }
-
-  trackerModulate(data) {
-    const { audioCtx } = this.state;
-    const { vol } = this.state;
-    const { osc } = this.state;
-    const { baseHz } = this.state;
-    const width = this.refs.video.clientWidth;
-    const height = this.refs.video.clientHeight;
-
-    if (!data) {
-      vol.gain.cancelScheduledValues(audioCtx.currentTime);
-      vol.gain.setValueAtTime(vol.gain.value, audioCtx.currentTime);
-      vol.gain.linearRampToValueAtTime(0, audioCtx.currentTime + .5);
-    } else data.forEach(d => {
-      if (d.color === 'Freq') {
-        const x = d.x + (d.width / 2);
-        const freq = baseHz * Math.pow(2, ((width - x)/(width / 4)));
-        osc.frequency.cancelScheduledValues(audioCtx.currentTime);
-        osc.frequency.setValueAtTime(osc.frequency.value, audioCtx.currentTime);
-        osc.frequency.linearRampToValueAtTime(freq, audioCtx.currentTime + .05);
-        // console.log('freq ', freq)
-      } else if (d.color === 'Vol') {
-        const y = d.y + (d.height / 2);
-        const gain = (height - y) / (height / 4) - .2;
-        vol.gain.cancelScheduledValues(audioCtx.currentTime);
-        vol.gain.setValueAtTime(vol.gain.value, audioCtx.currentTime);
-        vol.gain.linearRampToValueAtTime(gain, audioCtx.currentTime + .05);
-        // console.log('gain ', gain)
-      };
+      canvas.fillRect(width - (d.x + d.width), d.y, d.width, d.height);
     });
   }
 
@@ -128,12 +99,48 @@ export default class Theremin extends Component {
     const height = this.refs.canvas.height;
 
     canvas.drawImage(this.refs.video, 0, 0, width, height);
-    const color = canvas.getImageData(width - x, y, 1, 1).data;
+    const colorRaw = canvas.getImageData(width - x, y, 1, 1).data;
+    const color = {r: colorRaw[0], g: colorRaw[1], b: colorRaw[2]};
 
+
+    localStorage.setItem(target, JSON.stringify(color));
     this.setState(prevState => ({
-      [target]: {r: color[0], g: color[1], b: color[2]}
+      [target]: color
     }));
+  };
+
+  trackerModulate(data) {
+    const { audioCtx } = this.state;
+    const { vol } = this.state;
+    const { osc } = this.state;
+    const { baseHz } = this.state;
+    const width = this.refs.video.clientWidth;
+    const height = this.refs.video.clientHeight;
+    const volumeNodes = data.filter(d => d.color === 'Vol').length;
+
+    if (!data || !volumeNodes) {
+      vol.gain.cancelScheduledValues(audioCtx.currentTime);
+      vol.gain.setValueAtTime(vol.gain.value, audioCtx.currentTime);
+      vol.gain.linearRampToValueAtTime(0, audioCtx.currentTime + .1);
+    } else data.forEach(d => {
+      if (d.color === 'Vol') {
+        const y = d.y + (d.height / 2);
+        const gain = (height - y) / (height);
+        vol.gain.cancelScheduledValues(audioCtx.currentTime);
+        vol.gain.setValueAtTime(vol.gain.value, audioCtx.currentTime);
+        vol.gain.linearRampToValueAtTime(gain, audioCtx.currentTime + .05);
+        // console.log('gain ', gain)
+      } else if (d.color === 'Freq') {
+        const x = d.x + (d.width / 2);
+        const freq = baseHz * Math.pow(2, ((width - x)/(width / 4)));
+        osc.frequency.cancelScheduledValues(audioCtx.currentTime);
+        osc.frequency.setValueAtTime(osc.frequency.value, audioCtx.currentTime);
+        osc.frequency.linearRampToValueAtTime(freq, audioCtx.currentTime + .05);
+        // console.log('freq ', freq)
+      };
+    });
   }
+
 
 
 
