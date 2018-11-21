@@ -9,12 +9,13 @@ export default class Theremin extends Component {
       audioCtx: false,
       vol: false,
       osc: false,
-      baseHz: 220,
+      baseHz: 110,
       colorVol: {r: 0, g: 0, b: 0},
       colorFreq: {r: 0, g: 0, b: 0},
-      sensitivity: 50
+      sensitivity: 30
     };
     this.toggleColor = this.toggleColor.bind(this);
+    this.handleSensitivity = this.handleSensitivity.bind(this);
   }
 
   componentDidMount() {
@@ -48,11 +49,13 @@ export default class Theremin extends Component {
     const tracking = window.tracking;
 
     tracking.ColorTracker.registerColor('Vol', (r, g, b) => {
-      return help.getColorDist(this.state.colorVol, {r: r, g: g, b: b}) <= this.refs.sensitivity.value;
+      return help.getColorDist(this.state.colorVol, {r: r, g: g, b: b}) <= this.state.sensitivity;
     });
     tracking.ColorTracker.registerColor('Freq', (r, g, b) => {
-      return help.getColorDist(this.state.colorFreq, {r: r, g: g, b: b}) <= this.refs.sensitivity.value;
+      return help.getColorDist(this.state.colorFreq, {r: r, g: g, b: b}) <= this.state.sensitivity;
     });
+
+    console.log(this.refs.sensitivity.value)
 
     const colors = new tracking.ColorTracker(['Vol', 'Freq']);
     colors.minDimension = 3;
@@ -116,13 +119,18 @@ export default class Theremin extends Component {
     const { baseHz } = this.state;
     const width = this.refs.video.clientWidth;
     const height = this.refs.video.clientHeight;
-    const volumeNodes = data.filter(d => d.color === 'Vol').length;
+    const volNodes = data.filter(d => d.color === 'Vol').length;
+    const freqNodes = data.filter(d => d.color === 'Freq').length;
 
-    if (!data || !volumeNodes) {
+    if (!data || !volNodes || !freqNodes) {
       vol.gain.cancelScheduledValues(audioCtx.currentTime);
       vol.gain.setValueAtTime(vol.gain.value, audioCtx.currentTime);
       vol.gain.linearRampToValueAtTime(0, audioCtx.currentTime + .1);
-    } else data.forEach(d => {
+    } else
+
+
+
+    data.forEach(d => {
       if (d.color === 'Vol') {
         const y = d.y + (d.height / 2);
         const gain = (height - y) / (height);
@@ -132,7 +140,7 @@ export default class Theremin extends Component {
         // console.log('gain ', gain)
       } else if (d.color === 'Freq') {
         const x = d.x + (d.width / 2);
-        const freq = baseHz * Math.pow(2, ((width - x)/(width / 4)));
+        const freq = baseHz * Math.pow(2, ((width - x)/(width / 5)));
         osc.frequency.cancelScheduledValues(audioCtx.currentTime);
         osc.frequency.setValueAtTime(osc.frequency.value, audioCtx.currentTime);
         osc.frequency.linearRampToValueAtTime(freq, audioCtx.currentTime + .05);
@@ -141,10 +149,17 @@ export default class Theremin extends Component {
     });
   }
 
+  handleSensitivity(e) {
+    const sensitivity = e.target.value;
+    this.setState(prevState => ({
+      sensitivity
+    }));
+  }
 
 
 
   render() {
+    const { sensitivity } = this.state;
     const { colorVol } = this.state;
     const { colorFreq } = this.state;
     const colorV = `rgb(${colorVol.r}, ${colorVol.g}, ${colorVol.b})`;
@@ -179,6 +194,8 @@ export default class Theremin extends Component {
             <input
               className='slider'
               ref='sensitivity'
+              onChange={this.handleSensitivity}
+              value={sensitivity}
               type='range'
               max='100'
               min='0'
