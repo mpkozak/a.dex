@@ -16,6 +16,7 @@ export default class Theremin extends Component {
     };
     this.toggleColor = this.toggleColor.bind(this);
     this.handleSensitivity = this.handleSensitivity.bind(this);
+    this.handleScroll = this.handleScroll.bind(this);
   }
 
   componentDidMount() {
@@ -27,6 +28,21 @@ export default class Theremin extends Component {
         colorVol, colorFreq
       }));
     };
+
+    // const knob = this.refs.knob;
+    // knob.addEventListener('wheel', this.handleScroll)
+
+
+// knob.bind('mousewheel', function(e){
+//   if(e.originalEvent.wheelDelta < 0) {
+//     this.handleScroll('down');
+//   } else {
+//     this.handleScroll('up');
+//   }
+//   return false;
+// });
+
+
   }
 
   audioInit(audioCtx) {
@@ -161,6 +177,24 @@ export default class Theremin extends Component {
   }
 
 
+  handleScroll(e) {
+    e.preventDefault();
+    const delta = e.deltaY / 50;
+    const current = this.state.sensitivity;
+    const sensitivity = current + delta;
+
+    // this.refs.knob.style.transform = `rotate(${e.deltaY}deg)`
+    this.setState(prevState => ({
+      sensitivity
+    }))
+    console.log(this.state.sensitivity)
+
+// 0 =
+
+
+
+  }
+
 
   render() {
     const { sensitivity } = this.state;
@@ -205,6 +239,16 @@ export default class Theremin extends Component {
               min='0'
             />
             <h4>Sensitivity</h4>
+            <svg
+              style={{'transform': `rotate(${sensitivity}deg)`}}
+              onWheel={this.handleScroll}
+              ref='knob'
+              height='100'
+              width='100'
+            >
+              <circle cx='50' cy='50' r='50' fill='green' />
+              <circle cx='50' cy='10' r='5' fill='black' />
+            </svg>
           </div>
         </div>
       </div>
