@@ -126,11 +126,7 @@ export default class Theremin extends Component {
       vol.gain.cancelScheduledValues(audioCtx.currentTime);
       vol.gain.setValueAtTime(vol.gain.value, audioCtx.currentTime);
       vol.gain.linearRampToValueAtTime(0, audioCtx.currentTime + .1);
-    } else
-
-
-
-    data.forEach(d => {
+    } else data.forEach(d => {
       if (d.color === 'Vol') {
         const y = d.y + (d.height / 2);
         const gain = (height - y) / (height);
