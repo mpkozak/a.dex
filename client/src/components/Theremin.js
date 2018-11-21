@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import tracking from '../../node_modules/tracking/build/tracking-min.js';
+import tracking from 'tracking';
 import help from './_helpers.js';
 
 export default class Theremin extends Component {
@@ -12,15 +12,13 @@ export default class Theremin extends Component {
       baseHz: 220,
       colorVol: {r: 180, g: 160, b: 50},
       colorFreq: {r: 130, g: 35, b: 30},
-      sensitivity: 50,
-
-      videoW: 200,
-      videoH: 150,
+      sensitivity: 50
     };
     this.audioInit = this.audioInit.bind(this);
     this.trackerInit = this.trackerInit.bind(this);
     this.trackerDraw = this.trackerDraw.bind(this);
     this.trackerModulate = this.trackerModulate.bind(this);
+    this.toggleColor = this.toggleColor.bind(this);
   }
 
   componentDidMount() {
@@ -46,14 +44,14 @@ export default class Theremin extends Component {
   trackerInit() {
     const tracking = window.tracking;
 
-    tracking.ColorTracker.registerColor('blue', (r, g, b) => {
+    tracking.ColorTracker.registerColor('Vol', (r, g, b) => {
       return help.getColorDist(this.state.colorVol, {r: r, g: g, b: b}) <= this.refs.sensitivity.value;
     });
-    tracking.ColorTracker.registerColor('red', (r, g, b) => {
+    tracking.ColorTracker.registerColor('Freq', (r, g, b) => {
       return help.getColorDist(this.state.colorFreq, {r: r, g: g, b: b}) <= this.refs.sensitivity.value;
     });
 
-    const colors = new tracking.ColorTracker(['blue', 'red']);
+    const colors = new tracking.ColorTracker(['Vol', 'Freq']);
     colors.minDimension = 3;
     colors.minGroupSize = 500;
 
@@ -66,15 +64,19 @@ export default class Theremin extends Component {
   }
 
   trackerDraw(data) {
-    const width = this.refs.canvas.clientWidth;
-    const height = this.refs.canvas.clientHeight;
+    const { colorVol } = this.state;
+    const { colorFreq } = this.state;
+    const width = this.refs.video.clientWidth;
+    const height = this.refs.video.clientHeight;
     this.refs.canvas.width = width;
     this.refs.canvas.height = height;
     const canvas = this.refs.canvas.getContext('2d');
 
     if (data) data.forEach(d => {
-      canvas.fillStyle = d.color;
-      canvas.fillRect(width - (d.x + d.width), d.y, d.width, d.height);
+      canvas.strokeStyle = d.color === 'Vol'
+        ? `rgb(${colorVol.r}, ${colorVol.g}, ${colorVol.b})`
+        : `rgb(${colorFreq.r}, ${colorFreq.g}, ${colorFreq.b})`;
+      canvas.strokeRect(width - (d.x + d.width), d.y, d.width, d.height);
     });
   }
 
@@ -91,14 +93,14 @@ export default class Theremin extends Component {
       vol.gain.setValueAtTime(vol.gain.value, audioCtx.currentTime);
       vol.gain.linearRampToValueAtTime(0, audioCtx.currentTime + .5);
     } else data.forEach(d => {
-      if (d.color === 'red') {
+      if (d.color === 'Freq') {
         const x = d.x + (d.width / 2);
         const freq = baseHz * Math.pow(2, ((width - x)/(width / 4)));
         osc.frequency.cancelScheduledValues(audioCtx.currentTime);
         osc.frequency.setValueAtTime(osc.frequency.value, audioCtx.currentTime);
         osc.frequency.linearRampToValueAtTime(freq, audioCtx.currentTime + .05);
         // console.log('freq ', freq)
-      } else if (d.color === 'blue') {
+      } else if (d.color === 'Vol') {
         const y = d.y + (d.height / 2);
         const gain = (height - y) / (height / 4) - .2;
         vol.gain.cancelScheduledValues(audioCtx.currentTime);
@@ -109,24 +111,74 @@ export default class Theremin extends Component {
     });
   }
 
+  toggleColor(e) {
+    const frame = document.querySelector('.overlay')
+    const target = e.target.classList[1];
+
+    const getCoords = (e) => {
+      this.setColor(e.offsetX, e.offsetY, target);
+      frame.removeEventListener('click', getCoords);
+    };
+    frame.addEventListener('click', getCoords);
+  }
+
+  setColor(x, y, target) {
+    const canvas = this.refs.canvas.getContext('2d');
+    const width = this.refs.canvas.width;
+    const height = this.refs.canvas.height;
+
+    canvas.drawImage(this.refs.video, 0, 0, width, height);
+    const color = canvas.getImageData(width - x, y, 1, 1).data;
+
+    this.setState(prevState => ({
+      [target]: {r: color[0], g: color[1], b: color[2]}
+    }));
+  }
+
 
 
   render() {
-    const { videoW } = this.state;
-    const { videoH } = this.state;
+    const { colorVol } = this.state;
+    const { colorFreq } = this.state;
+    const colorV = `rgb(${colorVol.r}, ${colorVol.g}, ${colorVol.b})`;
+    const colorF = `rgb(${colorFreq.r}, ${colorFreq.g}, ${colorFreq.b})`;
 
     return (
       <div className='Theremin'>
         <div className='video-box'>
-          <video className='video' ref='video' width={videoW} height={videoH} preload='true' autoPlay loop muted />
-          <canvas className='overlay' ref='canvas' />
-        </div>
-          <input
-            ref='sensitivity'
-            type='range'
-            max='100'
-            min='0'
+          <canvas
+            className='overlay'
+            ref='canvas'
           />
+          <video
+            className='video'
+            ref='video'
+            preload='true'
+            autoPlay loop muted
+          />
+        </div>
+        <div className='settings'>
+          <div className='colors'>
+            <div className='color'>
+              <div className='swatch colorVol' onClick={this.toggleColor} style={{backgroundColor: colorV}}/>
+              <h4>Volume</h4>
+            </div>
+            <div className='color'>
+              <div className='swatch colorFreq' onClick={this.toggleColor} style={{backgroundColor: colorF}}/>
+              <h4>Frequency</h4>
+            </div>
+          </div>
+          <div className='sensitivity'>
+            <input
+              className='slider'
+              ref='sensitivity'
+              type='range'
+              max='100'
+              min='0'
+            />
+            <h4>Sensitivity</h4>
+          </div>
+        </div>
       </div>
     );
   }

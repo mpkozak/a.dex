@@ -14,13 +14,14 @@
   height: 32vh;
   margin: .1vh 1vw;
   display: flex;
-  flex-flow: column nowrap;
+  flex-flow: row nowrap;
   align-items: center;
   justify-content: center;
 }
 
 .double {
-  width: 96vw;
+  width: 98vw;
+  background-color: rgba(0,0,0,.3);
 }
 
 
@@ -57,14 +58,20 @@ svg {
 
 
 .Theremin {
-
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: space-around;
 }
-
 
 .video-box {
   position: relative;
   width: 40vmin;
   height: 30vmin;
+  /*width: 400px;*/
+  /*height: 300px;*/
 }
 
 .video {
@@ -75,8 +82,8 @@ svg {
   height: 100%;
   z-index: 4;
   transform: rotateY(180deg);
-  opacity: .2;
-  border: 1px solid black;
+  /*opacity: .2;*/
+  /*border: 1px solid black;*/
 }
 
 .overlay {
@@ -86,6 +93,53 @@ svg {
   width: 100%;
   height: 100%;
   z-index: 5;
+  /*border: 1px solid black;*/
+}
+
+.Theremin .settings {
+  height: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.Theremin .colors {
+  /*width: 100%;*/
+  /*padding: 5%;*/
+/*  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-around;*/
+}
+
+.Theremin .color {
+  margin: 1vh;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.Theremin .swatch {
+  width: 5vmin;
+  height: 5vmin;
   border: 1px solid black;
 }
+
+.Theremin .sensitivity {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.Theremin .slider {
+  width: 50%;
+}
+
+
+
+
+
 

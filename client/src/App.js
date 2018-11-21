@@ -6,7 +6,7 @@ import Spec from './components/Spec.js';
 import Freq from './components/Freq.js';
 import Note from './components/Note.js';
 
-class App extends Component {
+export default class App extends Component {
   constructor() {
     super()
     this.state = {
@@ -33,7 +33,9 @@ class App extends Component {
 
     return (
       <div className='App'>
-
+        <div className='module double'>
+          <Theremin audioCtx={audioCtx} />
+        </div>
         <div className='module'>
           <Wave audioCtx={audioCtx} mic={mic} />
         </div>
@@ -46,30 +48,12 @@ class App extends Component {
         <div className='module'>
           <Note audioCtx={audioCtx} mic={mic} />
         </div>
-
       </div>
     );
   }
 }
 
-export default App;
 
-
-        // <div className='module double'>
-        //   <Theremin audioCtx={audioCtx} />
-        // </div>
-        // <div className='module'>
-        //   <Wave audioCtx={audioCtx} mic={mic} />
-        // </div>
-        // <div className='module'>
-        //   <Spec audioCtx={audioCtx} mic={mic} />
-        // </div>
-        // <div className='module'>
-        //   <Freq audioCtx={audioCtx} mic={mic} />
-        // </div>
-        // <div className='module'>
-        //   <Note audioCtx={audioCtx} mic={mic} />
-        // </div>
 
 
 
