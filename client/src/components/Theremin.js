@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import tracking from 'tracking';
 import help from './_helpers.js';
+import * as UI from './_UI.js'
 
 export default class Theremin extends Component {
     constructor(props) {
@@ -12,7 +13,7 @@ export default class Theremin extends Component {
       baseHz: 110,
       colorVol: {r: 0, g: 0, b: 0},
       colorFreq: {r: 0, g: 0, b: 0},
-      sensitivity: 30
+      sensitivity: 50
     };
     this.toggleColor = this.toggleColor.bind(this);
     this.handleSensitivity = this.handleSensitivity.bind(this);
@@ -179,20 +180,13 @@ export default class Theremin extends Component {
 
   handleScroll(e) {
     e.preventDefault();
-    const delta = e.deltaY / 50;
-    const current = this.state.sensitivity;
-    const sensitivity = current + delta;
-
-    // this.refs.knob.style.transform = `rotate(${e.deltaY}deg)`
-    this.setState(prevState => ({
-      sensitivity
-    }))
-    console.log(this.state.sensitivity)
-
-// 0 =
-
-
-
+    const delta = e.deltaY / 20;
+    const sensitivity = this.state.sensitivity + delta;
+    if (sensitivity >= 0 && sensitivity <= 100) {
+      this.setState(prevState => ({
+        sensitivity
+      }));
+    };
   }
 
 
@@ -229,26 +223,8 @@ export default class Theremin extends Component {
             </div>
           </div>
           <div className='sensitivity'>
-            <input
-              className='slider'
-              ref='sensitivity'
-              onChange={this.handleSensitivity}
-              value={sensitivity}
-              type='range'
-              max='100'
-              min='0'
-            />
+            <UI.knob scroll={(e) => this.handleScroll(e)} level={sensitivity} size={50} />
             <h4>Sensitivity</h4>
-            <svg
-              style={{'transform': `rotate(${sensitivity}deg)`}}
-              onWheel={this.handleScroll}
-              ref='knob'
-              height='100'
-              width='100'
-            >
-              <circle cx='50' cy='50' r='50' fill='green' />
-              <circle cx='50' cy='10' r='5' fill='black' />
-            </svg>
           </div>
         </div>
       </div>

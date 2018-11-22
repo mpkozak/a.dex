@@ -62,7 +62,6 @@
 }
 
 .Theremin .settings {
-  border: 1px solid green;
   margin: 5vmin;
   display: flex;
   flex-flow: column nowrap;
@@ -99,10 +98,6 @@
   flex-flow: row nowrap;
   align-items: center;
   justify-content: space-around;
-}
-
-.Theremin .slider {
-  width: 50%;
 }
 
 .pulse {
