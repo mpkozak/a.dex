@@ -4,24 +4,22 @@
   width: 100vw;
   height: 100vh;
   display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.modules {
+  display: flex;
   flex-flow: row wrap;
   align-items: center;
   justify-content: center;
 }
 
 .module {
-  width: 48vw;
-  height: 32vh;
+  width: 45vmin;
+  height: 30vmin;
   margin: 1vmin;
-  display: flex;
-  flex-flow: row nowrap;
-  align-items: center;
-  justify-content: center;
-}
-
-.module-big {
-  margin: 1vmin;
-  background-color: rgba(0,0,0,.3);
 }
 
 
@@ -29,30 +27,37 @@
 
 
 .Theremin {
+  width: 92vmin;
+  height: 60vmin;
+  margin: 1vmin;
   display: flex;
-  flex-flow: row wrap;
+  flex-flow: column nowrap;
   align-items: center;
   justify-content: center;
+  background-color: rgba(0,0,0,.3);
+  font-family: Copperplate;
+
+  /*border: 1px solid red;*/
 }
 
-.video-box {
+.Theremin .top {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-between;
+
+  /*border: 1px solid yellow;*/
+}
+
+.top .video-box {
   position: relative;
-  width: 60vmin;
-  height: 45vmin;
+  width: 52vmin;
+  height: 39vmin;
   margin: 1vmin;
+  overflow: hidden;
 }
 
-.video {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 4;
-  transform: rotateY(180deg);
-}
-
-.overlay {
+.video-box .overlay {
   position: absolute;
   top: 0;
   left: 0;
@@ -61,46 +66,44 @@
   z-index: 5;
 }
 
-.Theremin .settings {
-  margin: 5vmin;
-  display: flex;
-  flex-flow: column nowrap;
-  align-items: flex-start;
-  justify-content: center;
+.video-box .video {
+  position: absolute;
+  top: 0;
+  left:0;
+  width: 100%;
+  height: 100%;
+  z-index: 4;
+  transform: rotateY(180deg);
 }
 
-.Theremin .colors {
-  /*width: 100%;*/
-  /*padding: 5%;*/
-/*  display: flex;
-  flex-flow: row nowrap;
-  align-items: center;
-  justify-content: space-around;*/
+.top .color-box {
+  margin: 4vmin;
+
+  /*border: 1px solid green;*/
 }
 
-.Theremin .color {
-  margin: 1vh;
+.color-box .element {
+  margin: 1vmin;
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
   justify-content: flex-start;
+
+  /*border: 1px solid blue;*/
 }
 
-.Theremin .swatch {
+.color-box .header {
+  margin: 2vmin 2vmin 4vmin 2vmin;
+}
+
+.color-box .swatch {
   width: 5vmin;
   height: 5vmin;
   margin: .5vmin;
   border: 1px solid black;
 }
 
-.Theremin .sensitivity {
-  display: flex;
-  flex-flow: row nowrap;
-  align-items: center;
-  justify-content: space-around;
-}
-
-.pulse {
+.color-box .pulse {
   animation: pulsar 1s linear infinite;
 }
 
@@ -112,6 +115,63 @@
     opacity: 0;
   }
 }
+
+.Theremin .bottom {
+  width: 100%;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-around;
+
+  /*border: 1px solid white;*/
+}
+
+.bottom .control-box {
+  margin: 1vmin;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-around;
+  background-color: rgba(0,0,0,.2);
+  box-shadow: .1vmin .1vmin .2vmin #000000;
+  border: 1px solid black;
+}
+
+.control-box .component {
+  margin: .5vmin 3vmin 1vmin 3vmin;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: flex-start;
+
+  /*border: 1px solid blue;*/
+}
+
+.control-box .knob {
+  margin: 1vmin 2vmin;
+}
+
+.control-box .label {
+  padding: .5vmin 1vmin;
+  border: 1px solid black;
+  background-color: rgba(0,0,0,.5);
+  box-shadow: .1vmin .1vmin .2vmin #000000;
+  text-shadow:
+    -.1vmin -.1vmin 0.01vmin #000000,
+    .1vmin -.1vmin 0.01vmin #000000,
+    .1vmin .1vmin 0.01vmin #000000,
+    -.1vmin .1vmin 0.01vmin #000000;
+}
+
+
+
+
+
+
+
+
+
+
 
 
 

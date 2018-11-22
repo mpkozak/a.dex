@@ -1,42 +1,96 @@
 import React from 'react';
 
 export const knob = (props) => {
-  const diameter = props.size;
+  const size = props.size;
+  const diameter = 100;
   const radius = diameter / 2;
   const rectW = diameter / 25;
-  const rectH = rectW * 4;
+  const rectH = rectW * 5;
+
   const containerStyle = {
     position: 'relative',
-    width: diameter + 'px',
-    height: diameter + 'px',
+    width: size + 'vmin',
+    height: size + 'vmin',
     margin: '.5vmin'
-  }
-  const shadowStyle = {
+  };
+  const staticStyle = {
     position: 'absolute',
     left: 0,
     top: 0,
-    filter: 'drop-shadow(.5vmin .5vmin .25vmin #000000)'
-  }
-  const knobStyle = {
+    width: '100%',
+    height: '100%',
+    filter: 'drop-shadow(.5vmin .5vmin .5vmin #000000)'
+  };
+  const rotateStyle = {
     position: 'absolute',
     left: 0,
     top: 0,
+    width: '100%',
+    height: '100%',
     transform: `rotate(${props.level * 3.2 - 160}deg)`
-  }
+  };
 
   return (
-    <div style={containerStyle}>
-      <svg style={shadowStyle}>
-        <circle cx={radius} cy={radius} r={radius} fill='#000000' />
+    <div className='knob-svg' style={containerStyle}>
+      <svg style={staticStyle} height={diameter} width={diameter}>
+        <circle
+          cx={radius + '%'}
+          cy={radius + '%'}
+          r={radius + '%'}
+          fill='#000000'
+        />
       </svg>
-      <svg
-        onWheel={props.scroll}
-        style={knobStyle}
-        height={diameter}
-        width={diameter}
-      >
-        <circle cx={radius} cy={radius} r={radius - .5} fill='#333333' />
-        <rect x={radius - rectW / 2} y={diameter / 20} width={rectW} height={rectH} fill='#AAAAAA' />
+      <svg style={staticStyle} height={diameter} width={diameter}>
+        <defs>
+          <radialGradient
+            id='knob'
+            gradientUnits='objectBoundingBox'
+            cx='50%'
+            cy='50%'
+            r='100%'
+            fx='10%'
+            fy='10%'
+            fr='5%'
+          >
+            <stop offset='0%' stopColor='#FFFFFF' stopOpacity='.9375'/>
+            <stop offset='10%' stopColor='#FFFFFF' stopOpacity='.75'/>
+            <stop offset='40%' stopColor='#FFFFFF' stopOpacity='.5'/>
+            <stop offset='80%' stopColor='#FFFFFF' stopOpacity='.1875'/>
+          </radialGradient>
+        </defs>
+        <circle
+          cx={radius + '%'}
+          cy={radius + '%'}
+          r={radius - .5 + '%'}
+          fill='url(#knob)'
+        />
+      </svg>
+      <svg onWheel={props.scroll} style={rotateStyle} height={diameter} width={diameter}>
+        <defs>
+          <linearGradient
+            id='notch'
+            gradientUnits='objectBoundingBox'
+            x1='0%'
+            y1='0%'
+            x2='0%'
+            y2='100%'
+          >
+            <stop offset='0%' stopColor='#000000' stopOpacity='.5'/>
+            <stop offset='10%' stopColor='#000000' stopOpacity='.6'/>
+            <stop offset='50%' stopColor='#000000' stopOpacity='.7'/>
+            <stop offset='90%' stopColor='#000000' stopOpacity='.6'/>
+            <stop offset='100%' stopColor='#000000' stopOpacity='.5'/>
+          </linearGradient>
+        </defs>
+        <rect
+          x={radius - rectW / 2 + '%'}
+          y={rectW * 1.5 + '%'}
+          width={rectW + '%'}
+          height={rectH + '%'}
+          fill='url(#notch)'
+          stroke='#000000'
+          strokeWidth={rectW / 5 + '%'}
+        />
       </svg>
     </div>
   );

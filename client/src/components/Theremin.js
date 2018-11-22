@@ -29,22 +29,8 @@ export default class Theremin extends Component {
         colorVol, colorFreq
       }));
     };
-
-    // const knob = this.refs.knob;
-    // knob.addEventListener('wheel', this.handleScroll)
-
-
-// knob.bind('mousewheel', function(e){
-//   if(e.originalEvent.wheelDelta < 0) {
-//     this.handleScroll('down');
-//   } else {
-//     this.handleScroll('up');
-//   }
-//   return false;
-// });
-
-
   }
+
 
   audioInit(audioCtx) {
     const vol = audioCtx.createGain();
@@ -61,6 +47,7 @@ export default class Theremin extends Component {
 
     this.trackerInit();
   }
+
 
   trackerInit() {
     const tracking = window.tracking;
@@ -81,14 +68,13 @@ export default class Theremin extends Component {
       this.trackerModulate(e.data);
     });
 
-    // tracking.track('.video', colors, {camera: true});
-
     navigator.mediaDevices.getUserMedia({video: true})
       .then(stream => {
         this.refs.video.srcObject = stream;
         tracking.track('.video', colors)
       });
   }
+
 
   trackerDraw(data) {
     const { colorVol } = this.state;
@@ -107,12 +93,12 @@ export default class Theremin extends Component {
     });
   }
 
+
   toggleColor(e) {
     const frame = this.refs.canvas;
     const classList = e.target.classList;
     const target = classList[1];
     classList.add('pulse');
-
 
     const getCoords = (e) => {
       this.setColor(e.offsetX, e.offsetY, target);
@@ -121,6 +107,7 @@ export default class Theremin extends Component {
     };
     frame.addEventListener('click', getCoords);
   }
+
 
   setColor(x, y, target) {
     const canvas = this.refs.canvas.getContext('2d');
@@ -136,6 +123,7 @@ export default class Theremin extends Component {
       [target]: color
     }));
   };
+
 
   trackerModulate(data) {
     const { audioCtx } = this.state;
@@ -170,6 +158,7 @@ export default class Theremin extends Component {
     });
   }
 
+
   handleSensitivity(e) {
     const sensitivity = e.target.value;
     this.setState(prevState => ({
@@ -191,42 +180,85 @@ export default class Theremin extends Component {
 
 
   render() {
+    console.log(window.innerHeight)
     const { sensitivity } = this.state;
     const { colorVol } = this.state;
     const { colorFreq } = this.state;
     const colorV = `rgb(${colorVol.r}, ${colorVol.g}, ${colorVol.b})`;
     const colorF = `rgb(${colorFreq.r}, ${colorFreq.g}, ${colorFreq.b})`;
+    // const knobSize = this.state.audioCtx ? this.refs.video.clientWidth / 25 : 20;
+    const knobSize = Math.min(window.innerWidth, window.innerHeight) / 80;
 
     return (
       <div className='Theremin'>
-        <div className='video-box'>
-          <canvas
-            className='overlay'
-            ref='canvas'
-          />
-          <video
-            className='video'
-            ref='video'
-            preload='true'
-            autoPlay loop muted
-          />
-        </div>
-        <div className='settings'>
-          <div className='colors'>
-            <div className='color'>
-              <div className='swatch colorVol' onClick={this.toggleColor} style={{backgroundColor: colorV}}/>
-              <h4>Volume</h4>
+
+        <div className='top'>
+
+          <div className='video-box'>
+            <canvas
+              className='overlay'
+              ref='canvas'
+            />
+            <video
+              className='video'
+              ref='video'
+              preload='true'
+              autoPlay loop muted
+            />
+          </div>
+
+          <div className='color-box'>
+            <div className='element header'>
+              <h4>Set Colors:</h4>
             </div>
-            <div className='color'>
-              <div className='swatch colorFreq' onClick={this.toggleColor} style={{backgroundColor: colorF}}/>
-              <h4>Frequency</h4>
+            <div className='element'>
+              <div className='swatch colorVol' onClick={this.toggleColor} style={{backgroundColor: colorV}} />
+              <h6>Volume</h6>
+            </div>
+            <div className='element'>
+              <div className='swatch colorFreq' onClick={this.toggleColor} style={{backgroundColor: colorF}} />
+              <h6>Frequency</h6>
             </div>
           </div>
-          <div className='sensitivity'>
-            <UI.knob scroll={(e) => this.handleScroll(e)} level={sensitivity} size={50} />
-            <h4>Sensitivity</h4>
-          </div>
+
         </div>
+
+        <div className='bottom'>
+          <div className='control-box'>
+
+            <div className='component'>
+              <div className='knob'>
+                <UI.knob scroll={(e) => this.handleScroll(e)} level={sensitivity} size={knobSize} />
+              </div>
+              <h6 className='label'>Sensitivity</h6>
+            </div>
+
+            <div className='component'>
+              <div className='knob'>
+                <UI.knob scroll={(e) => this.handleScroll(e)} level={sensitivity} size={knobSize} />
+              </div>
+              <h6 className='label'>Range</h6>
+            </div>
+
+            <div className='component'>
+              <div className='knob'>
+                <UI.knob scroll={(e) => this.handleScroll(e)} level={sensitivity} size={knobSize} />
+              </div>
+              <h6 className='label'>Tone</h6>
+            </div>
+
+            <div className='component'>
+              <div className='knob' ref='knob'>
+                <UI.knob scroll={(e) => this.handleScroll(e)} level={sensitivity} size={knobSize} />
+              </div>
+              <h6 className='label'>Volume</h6>
+            </div>
+
+          </div>
+
+        </div>
+
+
       </div>
     );
   }

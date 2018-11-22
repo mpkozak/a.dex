@@ -32,14 +32,14 @@ export default class App extends Component {
     const { mic } = this.state;
     const body = !mic ? <div>Loading...</div> : (
       <div className='App'>
-        <div className='module-big'>
-          <Theremin audioCtx={audioCtx} />
-        </div>
-        <div className='module'>
-          <Wave audioCtx={audioCtx} mic={mic} />
-        </div>
-        <div className='module'>
-          <Note audioCtx={audioCtx} mic={mic} />
+        <Theremin audioCtx={audioCtx} />
+        <div className='modules'>
+          <div className='module'>
+            <Wave audioCtx={audioCtx} mic={mic} />
+          </div>
+          <div className='module'>
+            <Note audioCtx={audioCtx} mic={mic} />
+          </div>
         </div>
       </div>
     );
