@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import tracking from 'tracking';
 import help from './_helpers.js';
-import * as UI from './_UI.js'
+import * as UI from './_UI.js';
 
 export default class Theremin extends Component {
     constructor(props) {
@@ -13,10 +13,12 @@ export default class Theremin extends Component {
       baseHz: 110,
       colorVol: {r: 0, g: 0, b: 0},
       colorFreq: {r: 0, g: 0, b: 0},
-      sensitivity: 50
+      sense: {v: 50, max: 100},
+      range: {v: 5, max: 5},
+      tone: {v: 50, max: 100},
+      volume: {v: .5, max: 1}
     };
-    this.toggleColor = this.toggleColor.bind(this);
-    this.handleSensitivity = this.handleSensitivity.bind(this);
+    this.handleColor = this.handleColor.bind(this);
     this.handleScroll = this.handleScroll.bind(this);
   }
 
@@ -53,10 +55,10 @@ export default class Theremin extends Component {
     const tracking = window.tracking;
 
     tracking.ColorTracker.registerColor('Vol', (r, g, b) => {
-      return help.getColorDist(this.state.colorVol, {r: r, g: g, b: b}) <= this.state.sensitivity;
+      return help.getColorDist(this.state.colorVol, {r: r, g: g, b: b}) <= this.state.sense.v;
     });
     tracking.ColorTracker.registerColor('Freq', (r, g, b) => {
-      return help.getColorDist(this.state.colorFreq, {r: r, g: g, b: b}) <= this.state.sensitivity;
+      return help.getColorDist(this.state.colorFreq, {r: r, g: g, b: b}) <= this.state.sense.v;
     });
 
     const colors = new tracking.ColorTracker(['Vol', 'Freq']);
@@ -94,7 +96,41 @@ export default class Theremin extends Component {
   }
 
 
-  toggleColor(e) {
+  trackerModulate(data) {
+    const { audioCtx } = this.state;
+    const { vol } = this.state;
+    const { osc } = this.state;
+    const { baseHz } = this.state;
+    const width = this.refs.video.clientWidth;
+    const height = this.refs.video.clientHeight;
+    const volNodes = data.filter(d => d.color === 'Vol').length;
+    const freqNodes = data.filter(d => d.color === 'Freq').length;
+
+    if (!data || !volNodes || !freqNodes) {
+      vol.gain.cancelScheduledValues(audioCtx.currentTime);
+      vol.gain.setValueAtTime(vol.gain.value, audioCtx.currentTime);
+      vol.gain.linearRampToValueAtTime(0, audioCtx.currentTime + .1);
+    } else data.forEach(d => {
+      if (d.color === 'Vol') {
+        const y = d.y + (d.height / 2);
+        const gain = (height - y) / (height);
+        vol.gain.cancelScheduledValues(audioCtx.currentTime);
+        vol.gain.setValueAtTime(vol.gain.value, audioCtx.currentTime);
+        vol.gain.linearRampToValueAtTime(gain * this.state.volume.v, audioCtx.currentTime + .05);
+        // console.log('gain ', gain)
+      } else if (d.color === 'Freq') {
+        const x = d.x + (d.width / 2);
+        const freq = baseHz * Math.pow(2, ((width - x)/(width / this.state.range.v)));
+        osc.frequency.cancelScheduledValues(audioCtx.currentTime);
+        osc.frequency.setValueAtTime(osc.frequency.value, audioCtx.currentTime);
+        osc.frequency.linearRampToValueAtTime(freq, audioCtx.currentTime + .05);
+        // console.log('freq ', freq)
+      };
+    });
+  }
+
+
+  handleColor(e) {
     const frame = this.refs.canvas;
     const classList = e.target.classList;
     const target = classList[1];
@@ -125,69 +161,30 @@ export default class Theremin extends Component {
   };
 
 
-  trackerModulate(data) {
-    const { audioCtx } = this.state;
-    const { vol } = this.state;
-    const { osc } = this.state;
-    const { baseHz } = this.state;
-    const width = this.refs.video.clientWidth;
-    const height = this.refs.video.clientHeight;
-    const volNodes = data.filter(d => d.color === 'Vol').length;
-    const freqNodes = data.filter(d => d.color === 'Freq').length;
-
-    if (!data || !volNodes || !freqNodes) {
-      vol.gain.cancelScheduledValues(audioCtx.currentTime);
-      vol.gain.setValueAtTime(vol.gain.value, audioCtx.currentTime);
-      vol.gain.linearRampToValueAtTime(0, audioCtx.currentTime + .1);
-    } else data.forEach(d => {
-      if (d.color === 'Vol') {
-        const y = d.y + (d.height / 2);
-        const gain = (height - y) / (height);
-        vol.gain.cancelScheduledValues(audioCtx.currentTime);
-        vol.gain.setValueAtTime(vol.gain.value, audioCtx.currentTime);
-        vol.gain.linearRampToValueAtTime(gain, audioCtx.currentTime + .05);
-        // console.log('gain ', gain)
-      } else if (d.color === 'Freq') {
-        const x = d.x + (d.width / 2);
-        const freq = baseHz * Math.pow(2, ((width - x)/(width / 5)));
-        osc.frequency.cancelScheduledValues(audioCtx.currentTime);
-        osc.frequency.setValueAtTime(osc.frequency.value, audioCtx.currentTime);
-        osc.frequency.linearRampToValueAtTime(freq, audioCtx.currentTime + .05);
-        // console.log('freq ', freq)
-      };
-    });
-  }
-
-
-  handleSensitivity(e) {
-    const sensitivity = e.target.value;
-    this.setState(prevState => ({
-      sensitivity
-    }));
-  }
-
-
   handleScroll(e) {
     e.preventDefault();
-    const delta = e.deltaY / 20;
-    const sensitivity = this.state.sensitivity + delta;
-    if (sensitivity >= 0 && sensitivity <= 100) {
+    const key = e.target.parentNode.parentNode.classList[1];
+    const prev = this.state[key];
+    const delta = (e.deltaY * prev.max) / 2000;
+    const current = prev.v + delta;
+    if (current > 0 && current <= prev.max) {
       this.setState(prevState => ({
-        sensitivity
+        [key]: {...prevState[key], v: current}
       }));
     };
   }
 
 
   render() {
-    console.log(window.innerHeight)
-    const { sensitivity } = this.state;
+    const { sense } = this.state;
+    const { range } = this.state;
+    const { tone } = this.state;
+    const { volume } = this.state;
     const { colorVol } = this.state;
     const { colorFreq } = this.state;
     const colorV = `rgb(${colorVol.r}, ${colorVol.g}, ${colorVol.b})`;
     const colorF = `rgb(${colorFreq.r}, ${colorFreq.g}, ${colorFreq.b})`;
-    // const knobSize = this.state.audioCtx ? this.refs.video.clientWidth / 25 : 20;
-    const knobSize = Math.min(window.innerWidth, window.innerHeight) / 80;
+    const knobSize = Math.min(window.innerWidth, window.innerHeight) / 70;
 
     return (
       <div className='Theremin'>
@@ -212,11 +209,11 @@ export default class Theremin extends Component {
               <h4>Set Colors:</h4>
             </div>
             <div className='element'>
-              <div className='swatch colorVol' onClick={this.toggleColor} style={{backgroundColor: colorV}} />
+              <div className='swatch colorVol' onClick={this.handleColor} style={{backgroundColor: colorV}} />
               <h6>Volume</h6>
             </div>
             <div className='element'>
-              <div className='swatch colorFreq' onClick={this.toggleColor} style={{backgroundColor: colorF}} />
+              <div className='swatch colorFreq' onClick={this.handleColor} style={{backgroundColor: colorF}} />
               <h6>Frequency</h6>
             </div>
           </div>
@@ -227,29 +224,29 @@ export default class Theremin extends Component {
           <div className='control-box'>
 
             <div className='component'>
-              <div className='knob'>
-                <UI.knob scroll={(e) => this.handleScroll(e)} level={sensitivity} size={knobSize} />
+              <div className='knob sense'>
+                <UI.knob scroll={(e) => this.handleScroll(e)} level={(sense.v / sense.max) * 100} size={knobSize} />
               </div>
-              <h6 className='label'>Sensitivity</h6>
+              <h6 className='label'>Sense</h6>
             </div>
 
             <div className='component'>
-              <div className='knob'>
-                <UI.knob scroll={(e) => this.handleScroll(e)} level={sensitivity} size={knobSize} />
+              <div className='knob range'>
+                <UI.knob scroll={(e) => this.handleScroll(e)} level={(range.v / range.max) * 100} size={knobSize} />
               </div>
               <h6 className='label'>Range</h6>
             </div>
 
             <div className='component'>
-              <div className='knob'>
-                <UI.knob scroll={(e) => this.handleScroll(e)} level={sensitivity} size={knobSize} />
+              <div className='knob tone'>
+                <UI.knob scroll={(e) => this.handleScroll(e)} level={(tone.v / tone.max) * 100} size={knobSize} />
               </div>
               <h6 className='label'>Tone</h6>
             </div>
 
             <div className='component'>
-              <div className='knob' ref='knob'>
-                <UI.knob scroll={(e) => this.handleScroll(e)} level={sensitivity} size={knobSize} />
+              <div className='knob volume'>
+                <UI.knob scroll={(e) => this.handleScroll(e)} level={(volume.v / volume.max) * 100} size={knobSize} />
               </div>
               <h6 className='label'>Volume</h6>
             </div>

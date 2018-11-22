@@ -28,7 +28,7 @@
 
 .Theremin {
   width: 92vmin;
-  height: 60vmin;
+  /*height: 60vmin;*/
   margin: 1vmin;
   display: flex;
   flex-flow: column nowrap;
@@ -127,7 +127,7 @@
 }
 
 .bottom .control-box {
-  margin: 1vmin;
+  margin: 0 0 1vmin 0;
   display: flex;
   flex-flow: row nowrap;
   align-items: center;

@@ -19,7 +19,7 @@ export const knob = (props) => {
     top: 0,
     width: '100%',
     height: '100%',
-    filter: 'drop-shadow(.5vmin .5vmin .5vmin #000000)'
+    filter: 'drop-shadow(.3vmin .3vmin .3vmin #000000)'
   };
   const rotateStyle = {
     position: 'absolute',
@@ -61,11 +61,11 @@ export const knob = (props) => {
         <circle
           cx={radius + '%'}
           cy={radius + '%'}
-          r={radius - .5 + '%'}
+          r={radius - 1 + '%'}
           fill='url(#knob)'
         />
       </svg>
-      <svg onWheel={props.scroll} style={rotateStyle} height={diameter} width={diameter}>
+      <svg style={rotateStyle} height={diameter} width={diameter}>
         <defs>
           <linearGradient
             id='notch'
@@ -90,6 +90,14 @@ export const knob = (props) => {
           fill='url(#notch)'
           stroke='#000000'
           strokeWidth={rectW / 5 + '%'}
+        />
+      </svg>
+      <svg onWheel={props.scroll} style={staticStyle} height={diameter} width={diameter}>
+        <circle
+          cx={radius + '%'}
+          cy={radius + '%'}
+          r={radius + '%'}
+          fill='none'
         />
       </svg>
     </div>
