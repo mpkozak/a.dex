@@ -3,6 +3,9 @@ import tracking from 'tracking';
 import help from './_helpers.js';
 import * as UI from './_UI.js';
 
+import Wave from './Wave.js';
+import Note from './Note.js';
+
 export default class Theremin extends Component {
     constructor(props) {
     super(props)
@@ -39,6 +42,9 @@ export default class Theremin extends Component {
     vol.gain.setValueAtTime(0, audioCtx.currentTime);
 
     const osc = new OscillatorNode(audioCtx, {type: 'sine', frequency: this.state.baseHz});
+    // const osc = audioCtx.createOscillator();
+    // osc.type = 'sine';
+    // osc.frequency = this.state.baseHz;
     osc.start();
     osc.connect(vol);
     vol.connect(audioCtx.destination);
@@ -184,77 +190,78 @@ export default class Theremin extends Component {
     const { colorFreq } = this.state;
     const colorV = `rgb(${colorVol.r}, ${colorVol.g}, ${colorVol.b})`;
     const colorF = `rgb(${colorFreq.r}, ${colorFreq.g}, ${colorFreq.b})`;
-    const knobSize = Math.min(window.innerWidth, window.innerHeight) / 70;
+    const knobSize = Math.min(window.innerWidth, window.innerHeight) / 80;
 
     return (
-      <div className='Theremin'>
 
-        <div className='top'>
+      <div className='App'>
 
-          <div className='video-box'>
-            <canvas
-              className='overlay'
-              ref='canvas'
-            />
-            <video
-              className='video'
-              ref='video'
-              preload='true'
-              autoPlay loop muted
-            />
+        <div className='Theremin'>
+          <div className='top'>
+            <div className='video-box'>
+              <canvas
+                className='overlay'
+                ref='canvas'
+              />
+              <video
+                className='video'
+                ref='video'
+                preload='true'
+                autoPlay loop muted
+              />
+            </div>
+            <div className='color-box'>
+              <div className='element header'>
+                <h4>Set Colors:</h4>
+              </div>
+              <div className='element'>
+                <div className='swatch colorVol' onClick={this.handleColor} style={{backgroundColor: colorV}} />
+                <h6>Volume</h6>
+              </div>
+              <div className='element'>
+                <div className='swatch colorFreq' onClick={this.handleColor} style={{backgroundColor: colorF}} />
+                <h6>Frequency</h6>
+              </div>
+            </div>
           </div>
-
-          <div className='color-box'>
-            <div className='element header'>
-              <h4>Set Colors:</h4>
-            </div>
-            <div className='element'>
-              <div className='swatch colorVol' onClick={this.handleColor} style={{backgroundColor: colorV}} />
-              <h6>Volume</h6>
-            </div>
-            <div className='element'>
-              <div className='swatch colorFreq' onClick={this.handleColor} style={{backgroundColor: colorF}} />
-              <h6>Frequency</h6>
+          <div className='bottom'>
+            <div className='control-box'>
+              <div className='component'>
+                <div className='knob sense'>
+                  <UI.knob scroll={(e) => this.handleScroll(e)} level={(sense.v / sense.max) * 100} size={knobSize} />
+                </div>
+                <h6 className='label'>Sense</h6>
+              </div>
+              <div className='component'>
+                <div className='knob range'>
+                  <UI.knob scroll={(e) => this.handleScroll(e)} level={(range.v / range.max) * 100} size={knobSize} />
+                </div>
+                <h6 className='label'>Range</h6>
+              </div>
+              <div className='component'>
+                <div className='knob tone'>
+                  <UI.knob scroll={(e) => this.handleScroll(e)} level={(tone.v / tone.max) * 100} size={knobSize} />
+                </div>
+                <h6 className='label'>Tone</h6>
+              </div>
+              <div className='component'>
+                <div className='knob volume'>
+                  <UI.knob scroll={(e) => this.handleScroll(e)} level={(volume.v / volume.max) * 100} size={knobSize} />
+                </div>
+                <h6 className='label'>Volume</h6>
+              </div>
             </div>
           </div>
-
         </div>
 
-        <div className='bottom'>
-          <div className='control-box'>
-
-            <div className='component'>
-              <div className='knob sense'>
-                <UI.knob scroll={(e) => this.handleScroll(e)} level={(sense.v / sense.max) * 100} size={knobSize} />
-              </div>
-              <h6 className='label'>Sense</h6>
-            </div>
-
-            <div className='component'>
-              <div className='knob range'>
-                <UI.knob scroll={(e) => this.handleScroll(e)} level={(range.v / range.max) * 100} size={knobSize} />
-              </div>
-              <h6 className='label'>Range</h6>
-            </div>
-
-            <div className='component'>
-              <div className='knob tone'>
-                <UI.knob scroll={(e) => this.handleScroll(e)} level={(tone.v / tone.max) * 100} size={knobSize} />
-              </div>
-              <h6 className='label'>Tone</h6>
-            </div>
-
-            <div className='component'>
-              <div className='knob volume'>
-                <UI.knob scroll={(e) => this.handleScroll(e)} level={(volume.v / volume.max) * 100} size={knobSize} />
-              </div>
-              <h6 className='label'>Volume</h6>
-            </div>
-
+        <div className='modules'>
+          <div className='module'>
+            <Wave ctx={this.props.audioCtx} src={this.props.mic} />
           </div>
-
+          <div className='module'>
+            <Note ctx={this.props.audioCtx} src={this.props.mic} />
+          </div>
         </div>
-
 
       </div>
     );

@@ -10,17 +10,17 @@ export default class Wave extends Component {
   }
 
   componentDidMount() {
-    this.getData(this.props.audioCtx, this.props.mic, this.state.scaleBase);
+    this.getData(this.props.ctx, this.props.src, this.state.scaleBase);
     d3.select(this.node).append('g').classed('wave', true);
   }
 
-  getData(audioCtx, mic, scaleBase) {
-    const analyser = audioCtx.createAnalyser();
+  getData(ctx, src, scaleBase) {
+    const analyser = ctx.createAnalyser();
     analyser.fftSize = Math.pow(2, scaleBase);
     analyser.minDecibels = -100;
     analyser.maxDecibels = 0;
     analyser.smoothingTimeConstant = 0;
-    mic.connect(analyser);
+    src.connect(analyser);
 
     const fftBins = analyser.frequencyBinCount;
     const wave = new Uint8Array(fftBins);

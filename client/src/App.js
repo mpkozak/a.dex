@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import './App.css';
 import Theremin from './components/Theremin.js';
-import Wave from './components/Wave.js';
-import Spec from './components/Spec.js';
-import Freq from './components/Freq.js';
-import Note from './components/Note.js';
+// import Wave from './components/Wave.js';
+// import Spec from './components/Spec.js';
+// import Freq from './components/Freq.js';
+// import Note from './components/Note.js';
 
 export default class App extends Component {
   constructor() {
@@ -30,19 +30,7 @@ export default class App extends Component {
   render() {
     const { audioCtx } = this.state;
     const { mic } = this.state;
-    const body = !mic ? <div>Loading...</div> : (
-      <div className='App'>
-        <Theremin audioCtx={audioCtx} />
-        <div className='modules'>
-          <div className='module'>
-            <Wave audioCtx={audioCtx} mic={mic} />
-          </div>
-          <div className='module'>
-            <Note audioCtx={audioCtx} mic={mic} />
-          </div>
-        </div>
-      </div>
-    );
+    const body = !audioCtx ? <div>Loading...</div> : <Theremin audioCtx={audioCtx} mic={mic} />;
 
     return (
       <div>
@@ -55,16 +43,16 @@ export default class App extends Component {
 
 
       //   <div className='module'>
-      //     <Wave audioCtx={audioCtx} mic={mic} />
+      //     <Wave ctx={audioCtx} src={mic} />
       //   </div>
       //   <div className='module'>
-      //     <Spec audioCtx={audioCtx} mic={mic} />
+      //     <Spec ctx={audioCtx} src={mic} />
       //   </div>
       //   <div className='module'>
-      //     <Freq audioCtx={audioCtx} mic={mic} />
+      //     <Freq ctx={audioCtx} src={mic} />
       //   </div>
       //   <div className='module'>
-      //     <Note audioCtx={audioCtx} mic={mic} />
+      //     <Note ctx={audioCtx} src={mic} />
       //   </div>
 
 
