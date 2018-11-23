@@ -6,24 +6,23 @@ import * as UI from './_UI.js';
 // import Wave from './Wave.js';
 // import Note from './Note.js';
 
+
 export default class Theremin extends Component {
     constructor(props) {
     super(props)
     this.state = {
-      colorVol: {r: 0, g: 0, b: 0},
+      colorGain: {r: 0, g: 0, b: 0},
       colorFreq: {r: 0, g: 0, b: 0},
-      ctx: false,
       audio: {},
-      baseHz: 220,
-      offsetHz: 5,
-      tone: {v: 2200, max: 3000},
-      volume: {v: 0, max: 1},
+      tone: {v: 1500, max: 3000},
+      volume: {v: .25, max: 1},
 
-      range: {v: 5, max: 6},
-      sense: {v: 50, max: 100},
+      range: {v: 4, max: 6},
+      sense: {v: 30, max: 100},
 
       data: [],
-
+      dataGain: [],
+      dataFreq: [],
 
 
       // vol: false,
@@ -34,32 +33,34 @@ export default class Theremin extends Component {
       // ,
     };
     this.handleClickColor = this.handleClickColor.bind(this);
-    // this.handleScroll = this.handleScroll.bind(this);
+    this.handleScrollParam = this.handleScrollParam.bind(this);
   }
 
+
   componentDidMount() {
-    const colorVol = JSON.parse(localStorage.getItem('colorVol'));
+    const colorGain = JSON.parse(localStorage.getItem('colorGain'));
     const colorFreq = JSON.parse(localStorage.getItem('colorFreq'));
-    if (colorVol && colorFreq) {
-      this.setState(prevState => ({ colorVol, colorFreq }));
+    if (colorGain && colorFreq) {
+      this.setState(prevState => ({ colorGain, colorFreq }));
     };
-
-    const ctx = this.props.ctx;
-    this.setState(prevState => ({ ctx }));
-    this.audioInit(ctx);
-
+    this.audioInit(this.props.ctx);
     this.trackerInit();
   }
 
+
   componentDidUpdate() {
     this.trackerDraw();
-    // this.trackerModulate(this.state.data);
-    // this.setTone(this.state.tone);
+    this.audioRefreshGain();
+    this.audioRefreshFreq();
+    this.audioRefreshTone();
   }
 
+
   audioInit(ctx) {
-    const osc1 = new OscillatorNode(ctx, {type: 'sine', frequency: this.state.baseHz});
-    const osc2 = new OscillatorNode(ctx, {type: 'sine', frequency: this.state.baseHz + this.state.offsetHz});
+    const baseHz = 220;
+    const offsetHz = 0;
+    const osc1 = new OscillatorNode(ctx, {type: 'sine', frequency: baseHz});
+    const osc2 = new OscillatorNode(ctx, {type: 'sine', frequency: baseHz + offsetHz});
     const fmGain = new GainNode(ctx, {gain: this.state.tone.v});
     const masterGain = new GainNode(ctx);
     const masterOut = ctx.destination;
@@ -69,38 +70,47 @@ export default class Theremin extends Component {
     osc2.connect(masterGain);
     masterGain.connect(masterOut);
 
-    masterGain.gain.setValueAtTime(this.state.volume.v, ctx.currentTime);
+    // osc1.connect(masterGain);
+    // masterGain.connect(masterOut);
+
+    masterGain.gain.setValueAtTime(0, ctx.currentTime);
     osc1.start();
     osc2.start();
 
     const audio = {
-      // ctx: ctx,
+      ctx: ctx,
+      baseHz: baseHz,
+      offsetHz: offsetHz,
       osc1: osc1,
       osc2: osc2,
       fmGain: fmGain,
       masterGain: masterGain,
-      masterOut: masterOut
+      masterOut: masterOut,
+      latency: .05
     };
     this.setState(prevState => ({ audio }));
   }
 
+
   trackerInit() {
     const tracking = window.tracking;
 
-    tracking.ColorTracker.registerColor('Vol', (r, g, b) => {
-      return help.getColorDist(this.state.colorVol, {r: r, g: g, b: b}) <= this.state.sense.v;
+    tracking.ColorTracker.registerColor('Gain', (r, g, b) => {
+      return help.getColorDist(this.state.colorGain, {r: r, g: g, b: b}) <= this.state.sense.v;
     });
     tracking.ColorTracker.registerColor('Freq', (r, g, b) => {
       return help.getColorDist(this.state.colorFreq, {r: r, g: g, b: b}) <= this.state.sense.v;
     });
-    const colors = new tracking.ColorTracker(['Vol', 'Freq']);
+    const colors = new tracking.ColorTracker(['Gain', 'Freq']);
 
     colors.minDimension = 3;
     colors.minGroupSize = 500;
 
     colors.on('track', e => {
       const data = e.data;
-      this.setState(prevState => ({ data }));
+      const dataGain = data.filter(d => d.color === 'Gain');
+      const dataFreq = data.filter(d => d.color === 'Freq');
+      this.setState(prevState => ({ data, dataGain, dataFreq }));
     });
 
     navigator.mediaDevices.getUserMedia({video: true})
@@ -109,6 +119,7 @@ export default class Theremin extends Component {
         tracking.track('.video', colors);
       });
   }
+
 
   handleClickColor(e) {
     const frame = this.refs.canvas;
@@ -119,10 +130,10 @@ export default class Theremin extends Component {
     const getCoords = (e) => {
       classList.remove('pulse');
       frame.removeEventListener('click', getCoords);
-      // this.setColor(e.offsetX, e.offsetY, target);
 
       const width = this.refs.canvas.width;
       const height = this.refs.canvas.height;
+
       const canvasCtx = this.refs.canvas.getContext('2d');
       canvasCtx.globalAlpha = 1;
 
@@ -138,90 +149,8 @@ export default class Theremin extends Component {
     frame.addEventListener('click', getCoords);
   }
 
-  // setColor(x, y, target) {
-  //   const width = this.refs.canvas.width;
-  //   const height = this.refs.canvas.height;
-  //   const canvasCtx = this.refs.canvas.getContext('2d');
-  //   canvasCtx.globalAlpha = 1;
 
-  //   canvasCtx.drawImage(this.refs.video, 0, 0, width, height);
-  //   const colorRaw = canvasCtx.getImageData(width - x, y, 1, 1).data;
-  //   const color = {r: colorRaw[0], g: colorRaw[1], b: colorRaw[2]};
-
-  //   localStorage.setItem(target, JSON.stringify(color));
-  //   this.setState(prevState => ({
-  //     [target]: color
-  //   }));
-  // }
-
-  trackerDraw() {
-    const { colorVol } = this.state;
-    const { colorFreq } = this.state;
-    const width = this.refs.video.clientWidth;
-    const height = this.refs.video.clientHeight;
-    this.refs.canvas.width = width;
-    this.refs.canvas.height = height;
-    const canvasCtx = this.refs.canvas.getContext('2d');
-
-    canvasCtx.globalAlpha = .5;
-    canvasCtx.strokeStyle = '#FFFFFF';
-    canvasCtx.lineWidth = 1;
-
-    this.state.data.forEach(d => {
-      canvasCtx.fillStyle = d.color === 'Vol'
-        ? `rgb(${colorVol.r}, ${colorVol.g}, ${colorVol.b})`
-        : `rgb(${colorFreq.r}, ${colorFreq.g}, ${colorFreq.b})`;
-      canvasCtx.fillRect(width - (d.x + d.width), d.y, d.width, d.height);
-      canvasCtx.strokeRect(width - (d.x + d.width), d.y, d.width, d.height);
-    });
-  }
-
-
-
-
-
-
-  trackerModulate(data) {
-    const { audioCtx } = this.state;
-    const { vol } = this.state;
-    const { osc } = this.state;
-    const { fm } = this.state;
-    const { baseHz } = this.state;
-    const width = this.refs.video.clientWidth;
-    const height = this.refs.video.clientHeight;
-    const volNodes = data.filter(d => d.color === 'Vol').length;
-    const freqNodes = data.filter(d => d.color === 'Freq').length;
-
-    if (!data || !volNodes || !freqNodes) {
-      vol.gain.cancelScheduledValues(audioCtx.currentTime);
-      vol.gain.setValueAtTime(vol.gain.value, audioCtx.currentTime);
-      vol.gain.linearRampToValueAtTime(0, audioCtx.currentTime + .1);
-    } else data.forEach(d => {
-      if (d.color === 'Vol') {
-        const y = d.y + (d.height / 2);
-        const gain = (height - y) / (height);
-        vol.gain.cancelScheduledValues(audioCtx.currentTime);
-        vol.gain.setValueAtTime(vol.gain.value, audioCtx.currentTime);
-        vol.gain.linearRampToValueAtTime(gain * this.state.volume.v, audioCtx.currentTime + .05);
-      } else if (d.color === 'Freq') {
-        const x = d.x + (d.width / 2);
-        const oscFreq = baseHz * Math.pow(2, ((width - x)/(width / this.state.range.v)));
-        const fmFreq = (baseHz + this.state.fmOffset) * Math.pow(2, ((width - x)/(width / this.state.range.v)));
-        osc.frequency.cancelScheduledValues(audioCtx.currentTime);
-        osc.frequency.setValueAtTime(osc.frequency.value, audioCtx.currentTime);
-        osc.frequency.linearRampToValueAtTime(oscFreq, audioCtx.currentTime + .05);
-        fm.frequency.cancelScheduledValues(audioCtx.currentTime);
-        fm.frequency.setValueAtTime(osc.frequency.value, audioCtx.currentTime);
-        fm.frequency.linearRampToValueAtTime(fmFreq, audioCtx.currentTime + .05);
-      };
-    });
-  }
-
-
-
-
-
-  handleScroll(e) {
+  handleScrollParam(e) {
     e.preventDefault();
     const key = e.target.parentNode.parentNode.classList[1];
     const prev = this.state[key];
@@ -234,51 +163,120 @@ export default class Theremin extends Component {
     };
   }
 
-  setTone(tone) {
-    const { audioCtx } = this.state;
-    const { oscGain } = this.state;
-    oscGain.gain.cancelScheduledValues(audioCtx.currentTime);
-    oscGain.gain.setValueAtTime(oscGain.gain.value, audioCtx.currentTime);
-    oscGain.gain.linearRampToValueAtTime(tone.v, audioCtx.currentTime + .05);
+
+  trackerDraw() {
+    const { colorGain } = this.state;
+    const { colorFreq } = this.state;
+    const width = this.refs.video.clientWidth;
+    const height = this.refs.video.clientHeight;
+    this.refs.canvas.width = width;
+    this.refs.canvas.height = height;
+
+    const canvasCtx = this.refs.canvas.getContext('2d');
+    canvasCtx.globalAlpha = .7;
+    canvasCtx.strokeStyle = '#FFFFFF';
+    canvasCtx.lineWidth = 1;
+
+    this.state.data.forEach(d => {
+      canvasCtx.fillStyle = d.color === 'Gain'
+        ? `rgb(${colorGain.r}, ${colorGain.g}, ${colorGain.b})`
+        : `rgb(${colorFreq.r}, ${colorFreq.g}, ${colorFreq.b})`;
+      canvasCtx.fillRect(width - (d.x + d.width), d.y, d.width, d.height);
+      canvasCtx.strokeRect(width - (d.x + d.width), d.y, d.width, d.height);
+    });
+  }
+
+
+  audioRefreshGain() {
+    const { dataGain } = this.state;
+    const { dataFreq } = this.state;
+    const { audio } = this.state;
+    const height = this.refs.video.clientHeight;
+
+    const ctx = audio.ctx;
+    const masterGain = audio.masterGain;
+    const latency = audio.latency;
+
+    if (dataGain.length === 0 || dataFreq.length === 0) {
+      masterGain.gain.cancelScheduledValues(ctx.currentTime);
+      masterGain.gain.setValueAtTime(masterGain.gain.value, ctx.currentTime);
+      masterGain.gain.linearRampToValueAtTime(0, ctx.currentTime + .1);
+    // } else if (dataGain) {
+    } else {
+      dataGain.forEach(d => {
+        const y = d.y + (d.height / 2);
+        const level = (height - y) / height;
+        masterGain.gain.cancelScheduledValues(ctx.currentTime);
+        masterGain.gain.setValueAtTime(masterGain.gain.value, ctx.currentTime);
+        masterGain.gain.linearRampToValueAtTime(level * this.state.volume.v, ctx.currentTime + latency);
+      });
+    };
+  }
+
+
+  audioRefreshFreq() {
+    const { dataFreq } = this.state;
+    const { audio } = this.state;
+    const width = this.refs.video.clientWidth;
+
+    const ctx = audio.ctx;
+    const osc1 = audio.osc1;
+    const osc2 = audio.osc2;
+    const latency = audio.latency;
+
+    dataFreq.forEach(d => {
+      const x = d.x + (d.width / 2);
+      const freq1 = audio.baseHz * Math.pow(2, (width - x)/(width / this.state.range.v));
+      osc1.frequency.cancelScheduledValues(ctx.currentTime);
+      osc1.frequency.setValueAtTime(osc1.frequency.value, ctx.currentTime);
+      osc1.frequency.linearRampToValueAtTime(freq1, ctx.currentTime + latency);
+      const freq2 = (audio.baseHz + audio.offsetHz) * Math.pow(2, (width - x)/(width / this.state.range.v));
+      osc2.frequency.cancelScheduledValues(ctx.currentTime);
+      osc2.frequency.setValueAtTime(osc2.frequency.value, ctx.currentTime);
+      osc2.frequency.linearRampToValueAtTime(freq2, ctx.currentTime + latency);
+    });
+  }
+
+
+  audioRefreshTone() {
+    const { audio } = this.state;
+    const now = audio.ctx.currentTime;
+    const fmGain = audio.fmGain;
+    const latency = audio.latency;
+
+    fmGain.gain.cancelScheduledValues(now);
+    fmGain.gain.setValueAtTime(fmGain.gain.value, now);
+    fmGain.gain.linearRampToValueAtTime(this.state.tone.v, now + latency);
   }
 
 
   render() {
-    const { colorVol } = this.state;
+    const { colorGain } = this.state;
     const { colorFreq } = this.state;
-    const colorV = `rgb(${colorVol.r}, ${colorVol.g}, ${colorVol.b})`;
+    const colorV = `rgb(${colorGain.r}, ${colorGain.g}, ${colorGain.b})`;
     const colorF = `rgb(${colorFreq.r}, ${colorFreq.g}, ${colorFreq.b})`;
 
-    // const { sense } = this.state;
-    // const { range } = this.state;
-    // const { tone } = this.state;
-    // const { volume } = this.state;
-    // const knobSize = 5;
+    const { sense } = this.state;
+    const { range } = this.state;
+    const { tone } = this.state;
+    const { volume } = this.state;
+    const knobSize = 5;
 
     return (
       <div className='App'>
-
         <div className='Theremin'>
 
           <div className='top'>
             <div className='video-box'>
-              <canvas
-                className='overlay'
-                ref='canvas'
-              />
-              <video
-                className='video'
-                ref='video'
-                preload='true'
-                autoPlay loop muted
-              />
+              <canvas className='canvas' ref='canvas'/>
+              <video className='video' ref='video' preload='true' autoPlay loop muted/>
             </div>
             <div className='color-box'>
               <div className='element header'>
                 <h4>Set Colors:</h4>
               </div>
               <div className='element'>
-                <div className='swatch colorVol' onClick={this.handleClickColor} style={{backgroundColor: colorV}} />
+                <div className='swatch colorGain' onClick={this.handleClickColor} style={{backgroundColor: colorV}} />
                 <h6>Volume</h6>
               </div>
               <div className='element'>
@@ -288,76 +286,38 @@ export default class Theremin extends Component {
             </div>
           </div>
 
+          <div className='bottom'>
+            <div className='control-box'>
+              <div className='component'>
+                <div className='knob sense'>
+                  <UI.knob scroll={(e) => this.handleScrollParam(e)} level={(sense.v / sense.max) * 100} size={knobSize} />
+                </div>
+                <h6 className='label'>Sense</h6>
+              </div>
+              <div className='component'>
+                <div className='knob range'>
+                  <UI.knob scroll={(e) => this.handleScrollParam(e)} level={(range.v / range.max) * 100} size={knobSize} />
+                </div>
+                <h6 className='label'>Range</h6>
+              </div>
+              <div className='component'>
+                <div className='knob tone'>
+                  <UI.knob scroll={(e) => this.handleScrollParam(e)} level={(tone.v / tone.max) * 100} size={knobSize} />
+                </div>
+                <h6 className='label'>Tone</h6>
+              </div>
+              <div className='component'>
+                <div className='knob volume'>
+                  <UI.knob scroll={(e) => this.handleScrollParam(e)} level={(volume.v / volume.max) * 100} size={knobSize} />
+                </div>
+                <h6 className='label'>Volume</h6>
+              </div>
+            </div>
+          </div>
 
         </div>
-
       </div>
     );
   }
 }
-
-
-
-
-
-
-        // <div className='Theremin'>
-        //   <div className='top'>
-        //     <div className='video-box'>
-        //       <canvas
-        //         className='overlay'
-        //         ref='canvas'
-        //       />
-        //       <video
-        //         className='video'
-        //         ref='video'
-        //         preload='true'
-        //         autoPlay loop muted
-        //       />
-        //     </div>
-        //     <div className='color-box'>
-        //       <div className='element header'>
-        //         <h4>Set Colors:</h4>
-        //       </div>
-        //       <div className='element'>
-        //         <div className='swatch colorVol' onClick={this.handleColor} style={{backgroundColor: colorV}} />
-        //         <h6>Volume</h6>
-        //       </div>
-        //       <div className='element'>
-        //         <div className='swatch colorFreq' onClick={this.handleColor} style={{backgroundColor: colorF}} />
-        //         <h6>Frequency</h6>
-        //       </div>
-        //     </div>
-        //   </div>
-        //   <div className='bottom'>
-        //     <div className='control-box'>
-        //       <div className='component'>
-        //         <div className='knob sense'>
-        //           <UI.knob scroll={(e) => this.handleScroll(e)} level={(sense.v / sense.max) * 100} size={knobSize} />
-        //         </div>
-        //         <h6 className='label'>Sense</h6>
-        //       </div>
-        //       <div className='component'>
-        //         <div className='knob range'>
-        //           <UI.knob scroll={(e) => this.handleScroll(e)} level={(range.v / range.max) * 100} size={knobSize} />
-        //         </div>
-        //         <h6 className='label'>Range</h6>
-        //       </div>
-        //       <div className='component'>
-        //         <div className='knob tone'>
-        //           <UI.knob scroll={(e) => this.handleScroll(e)} level={(tone.v / tone.max) * 100} size={knobSize} />
-        //         </div>
-        //         <h6 className='label'>Tone</h6>
-        //       </div>
-        //       <div className='component'>
-        //         <div className='knob volume'>
-        //           <UI.knob scroll={(e) => this.handleScroll(e)} level={(volume.v / volume.max) * 100} size={knobSize} />
-        //         </div>
-        //         <h6 className='label'>Volume</h6>
-        //       </div>
-        //     </div>
-        //   </div>
-        // </div>
-
-
 
