@@ -17,14 +17,17 @@ export default class App extends Component {
 
   componentDidMount() {
     const AudioContext = window.AudioContext || window.webkitAudioContext;
-    navigator.mediaDevices.getUserMedia({audio: true})
-      .then(stream => {
-        const audioCtx = new AudioContext();
-        const mic = audioCtx.createMediaStreamSource(stream);
-        this.setState(prevState => ({
-          audioCtx, mic
-        }));
-      });
+    // navigator.mediaDevices.getUserMedia({audio: true})
+    //   .then(stream => {
+    //     const audioCtx = new AudioContext();
+    //     const mic = audioCtx.createMediaStreamSource(stream);
+    //     this.setState(prevState => ({
+    //       audioCtx, mic
+    //     }));
+    //   });
+
+    const audioCtx = new AudioContext();
+    this.setState(prevState => ({ audioCtx }));
   }
 
   render() {

@@ -29,5 +29,22 @@ help.getColorDist = (orig, match) => {
   );
 };
 
+help.makeDistortion = (amt, sr) => {
+  const arr = new Float32Array(sr);
+  const deg = Math.PI / 180;
+  for (let i = 0; i < sr; i++) {
+    const x = (i * 2) / sr - 1;
+    arr[i] = (3 + amt) * x * 20 * deg / (Math.PI + amt * Math.abs(x));
+  };
+  return arr;
+};
+
+help.setAudioParam = (param, val, ctx, delay) => {
+  param.cancelScheduledValues(ctx.currentTime);
+  param.setValueAtTime(param.value, ctx.currentTime);
+  param.linearRampToValueAtTime(val, ctx.currentTime + delay);
+}
+
+
 
 module.exports = help;

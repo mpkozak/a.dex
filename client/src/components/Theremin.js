@@ -63,26 +63,18 @@ export default class Theremin extends Component {
     const masterGain = new GainNode(ctx, {gain: 0});
     const masterOut = ctx.destination;
 
+    // const makeDist = (amt) => {
+    //   const sRate = ctx.sampleRate;
+    //   const arr = new Float32Array(sRate);
+    //   const deg = Math.PI / 180;
+    //   for (let i = 0; i < sRate; i++) {
+    //     const x = i * 2 / sRate - 1;
+    //     arr[i] = (3 + amt) * x * 20 * deg / (Math.PI + amt * Math.abs(x));
+    //   };
+    //   return arr;
+    // }
 
-
-function makeDistortionCurve(amount) {
-  var k = typeof amount === 'number' ? amount : 50,
-    n_samples = 44100,
-    curve = new Float32Array(n_samples),
-    deg = Math.PI / 180,
-    i = 0,
-    x;
-  for ( ; i < n_samples; ++i ) {
-    x = i * 2 / n_samples - 1;
-    curve[i] = ( 3 + k ) * x * 20 * deg / ( Math.PI + k * Math.abs(x) );
-  }
-  return curve;
-};
-
-const distortion = ctx.createWaveShaper();
-distortion.curve = makeDistortionCurve(100);
-distortion.oversample = '4x';
-
+    const dist = new WaveShaperNode(ctx, {curve: help.makeDistortion(0, ctx.sampleRate), oversample: '4x'});
 
 
     osc1.connect(fmGain);
@@ -90,8 +82,8 @@ distortion.oversample = '4x';
     osc2.connect(lpf);
     lpf.connect(masterGain);
 
-    // lpf.connect(distortion);
-    // distortion.connect(masterGain);
+    // lpf.connect(dist);
+    // dist.connect(masterGain);
 
     masterGain.connect(masterOut);
 
@@ -178,7 +170,7 @@ distortion.oversample = '4x';
     const prev = this.state[key];
     const delta = (e.deltaY * prev.max) / 2000;
     const current = prev.v + delta;
-    if (current > 0 && current <= prev.max) {
+    if (current >= 0 && current <= prev.max) {
       this.setState(prevState => ({
         [key]: {...prevState[key], v: current}
       }));
@@ -220,16 +212,18 @@ distortion.oversample = '4x';
     const latency = audio.latency;
 
     if (!dataGain.length || !dataFreq.length) {
-      masterGain.gain.cancelScheduledValues(ctx.currentTime);
-      masterGain.gain.setValueAtTime(masterGain.gain.value, ctx.currentTime);
-      masterGain.gain.linearRampToValueAtTime(0, ctx.currentTime + (latency * 2));
+      help.setAudioParam(masterGain.gain, 0, ctx, latency * 2);
+      // masterGain.gain.cancelScheduledValues(ctx.currentTime);
+      // masterGain.gain.setValueAtTime(masterGain.gain.value, ctx.currentTime);
+      // masterGain.gain.linearRampToValueAtTime(0, ctx.currentTime + (latency * 2));
     } else {
       dataGain.forEach(d => {
         const y = d.y + (d.height / 2);
-        const level = (height - y) / height;
-        masterGain.gain.cancelScheduledValues(ctx.currentTime);
-        masterGain.gain.setValueAtTime(masterGain.gain.value, ctx.currentTime);
-        masterGain.gain.linearRampToValueAtTime(level * this.state.volume.v, ctx.currentTime + latency);
+        const level = (height - y) / height * this.state.volume.v;
+        help.setAudioParam(masterGain.gain, level, ctx, latency);
+        // masterGain.gain.cancelScheduledValues(ctx.currentTime);
+        // masterGain.gain.setValueAtTime(masterGain.gain.value, ctx.currentTime);
+        // masterGain.gain.linearRampToValueAtTime(level, ctx.currentTime + latency);
       });
     };
   }
@@ -248,13 +242,15 @@ distortion.oversample = '4x';
     dataFreq.forEach(d => {
       const x = d.x + (d.width / 2);
       const freq1 = audio.baseHz * Math.pow(2, (width - x)/(width / this.state.range.v));
-      osc1.frequency.cancelScheduledValues(ctx.currentTime);
-      osc1.frequency.setValueAtTime(osc1.frequency.value, ctx.currentTime);
-      osc1.frequency.linearRampToValueAtTime(freq1, ctx.currentTime + latency);
+      help.setAudioParam(osc1.frequency, freq1, ctx, latency);
+      // osc1.frequency.cancelScheduledValues(ctx.currentTime);
+      // osc1.frequency.setValueAtTime(osc1.frequency.value, ctx.currentTime);
+      // osc1.frequency.linearRampToValueAtTime(freq1, ctx.currentTime + latency);
       const freq2 = (audio.baseHz + this.state.fmWidth.v) * Math.pow(2, (width - x)/(width / this.state.range.v));
-      osc2.frequency.cancelScheduledValues(ctx.currentTime);
-      osc2.frequency.setValueAtTime(osc2.frequency.value, ctx.currentTime);
-      osc2.frequency.linearRampToValueAtTime(freq2, ctx.currentTime + latency);
+      help.setAudioParam(osc2.frequency, freq2, ctx, latency);
+      // osc2.frequency.cancelScheduledValues(ctx.currentTime);
+      // osc2.frequency.setValueAtTime(osc2.frequency.value, ctx.currentTime);
+      // osc2.frequency.linearRampToValueAtTime(freq2, ctx.currentTime + latency);
     });
   }
 
@@ -264,9 +260,10 @@ distortion.oversample = '4x';
     const fmGain = audio.fmGain;
     const latency = audio.latency;
 
-    fmGain.gain.cancelScheduledValues(ctx.currentTime);
-    fmGain.gain.setValueAtTime(fmGain.gain.value, ctx.currentTime);
-    fmGain.gain.linearRampToValueAtTime(this.state.fmDepth.v, ctx.currentTime + latency);
+    help.setAudioParam(fmGain.gain, this.state.fmDepth.v, ctx, latency);
+    // fmGain.gain.cancelScheduledValues(ctx.currentTime);
+    // fmGain.gain.setValueAtTime(fmGain.gain.value, ctx.currentTime);
+    // fmGain.gain.linearRampToValueAtTime(this.state.fmDepth.v, ctx.currentTime + latency);
   }
 
 
@@ -276,9 +273,10 @@ distortion.oversample = '4x';
     const lpf = audio.lpf;
     const latency = audio.latency;
 
-    lpf.frequency.cancelScheduledValues(ctx.currentTime);
-    lpf.frequency.setValueAtTime(lpf.frequency.value, ctx.currentTime);
-    lpf.frequency.linearRampToValueAtTime(this.state.tone.v, ctx.currentTime + latency);
+    help.setAudioParam(lpf.frequency, this.state.tone.v, ctx, latency);
+    // lpf.frequency.cancelScheduledValues(ctx.currentTime);
+    // lpf.frequency.setValueAtTime(lpf.frequency.value, ctx.currentTime);
+    // lpf.frequency.linearRampToValueAtTime(this.state.tone.v, ctx.currentTime + latency);
   }
 
 

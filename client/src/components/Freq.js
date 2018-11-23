@@ -2,19 +2,14 @@ import React, { Component } from 'react';
 import * as d3 from 'd3';
 
 export default class Freq extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      scaleBase: 10, // valid range: 5-15
-    };
-  }
 
   componentDidMount() {
-    this.getData(this.props.ctx, this.props.src, this.state.scaleBase);
+    this.getData(this.props.ctx, this.props.src);
     d3.select(this.node).append('g').classed('freq', true);
   }
 
-  getData(ctx, src, scaleBase) {
+  getData(ctx, src) {
+    const scaleBase = 10;
     const analyser = ctx.createAnalyser();
     analyser.fftSize = Math.pow(2, scaleBase);
     analyser.minDecibels = -100;
