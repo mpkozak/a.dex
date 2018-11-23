@@ -3,7 +3,7 @@ import tracking from 'tracking';
 import help from './_helpers.js';
 import * as UI from './_UI.js';
 
-// import Wave from './Wave.js';
+import Wave from './Wave.js';
 // import Note from './Note.js';
 
 
@@ -24,7 +24,7 @@ export default class Theremin extends Component {
       dataGain: [],
       dataFreq: [],
 
-
+      mute: false,
       // vol: false,
       // osc: false,
       // oscGain: false,
@@ -50,9 +50,11 @@ export default class Theremin extends Component {
 
   componentDidUpdate() {
     this.trackerDraw();
-    this.audioRefreshGain();
-    this.audioRefreshFreq();
-    this.audioRefreshTone();
+    if (!this.state.mute) {
+      this.audioRefreshGain();
+      this.audioRefreshFreq();
+      this.audioRefreshTone();
+    };
   }
 
 
@@ -62,7 +64,7 @@ export default class Theremin extends Component {
     const osc1 = new OscillatorNode(ctx, {type: 'sine', frequency: baseHz});
     const osc2 = new OscillatorNode(ctx, {type: 'sine', frequency: baseHz + offsetHz});
     const fmGain = new GainNode(ctx, {gain: this.state.tone.v});
-    const masterGain = new GainNode(ctx);
+    const masterGain = new GainNode(ctx, {gain: 0});
     const masterOut = ctx.destination;
 
     osc1.connect(fmGain);
@@ -70,10 +72,7 @@ export default class Theremin extends Component {
     osc2.connect(masterGain);
     masterGain.connect(masterOut);
 
-    // osc1.connect(masterGain);
-    // masterGain.connect(masterOut);
-
-    masterGain.gain.setValueAtTime(0, ctx.currentTime);
+    // masterGain.gain.setValueAtTime(0, ctx.currentTime);
     osc1.start();
     osc2.start();
 
@@ -84,6 +83,7 @@ export default class Theremin extends Component {
       osc1: osc1,
       osc2: osc2,
       fmGain: fmGain,
+      fm: true,
       masterGain: masterGain,
       masterOut: masterOut,
       latency: .05
@@ -197,11 +197,11 @@ export default class Theremin extends Component {
     const masterGain = audio.masterGain;
     const latency = audio.latency;
 
-    if (dataGain.length === 0 || dataFreq.length === 0) {
+    if (!dataGain.length || !dataFreq.length) {
+      // this.audioMute();
       masterGain.gain.cancelScheduledValues(ctx.currentTime);
       masterGain.gain.setValueAtTime(masterGain.gain.value, ctx.currentTime);
-      masterGain.gain.linearRampToValueAtTime(0, ctx.currentTime + .1);
-    // } else if (dataGain) {
+      masterGain.gain.linearRampToValueAtTime(0, ctx.currentTime + (latency * 2));
     } else {
       dataGain.forEach(d => {
         const y = d.y + (d.height / 2);
@@ -240,14 +240,80 @@ export default class Theremin extends Component {
 
   audioRefreshTone() {
     const { audio } = this.state;
-    const now = audio.ctx.currentTime;
+    const ctx = audio.ctx;
     const fmGain = audio.fmGain;
     const latency = audio.latency;
 
-    fmGain.gain.cancelScheduledValues(now);
-    fmGain.gain.setValueAtTime(fmGain.gain.value, now);
-    fmGain.gain.linearRampToValueAtTime(this.state.tone.v, now + latency);
+    fmGain.gain.cancelScheduledValues(ctx.currentTime);
+    fmGain.gain.setValueAtTime(fmGain.gain.value, ctx.currentTime);
+    fmGain.gain.linearRampToValueAtTime(this.state.tone.v, ctx.currentTime + latency);
   }
+
+
+
+
+
+
+
+  audioToggleFm() {
+    console.log(this.state.audio.ctx.currentTime - this.state.audio.ctx.getOutputTimestamp().contextTime)
+    const { audio } = this.state;
+    const osc1 = audio.osc1;
+    const osc2 = audio.osc2;
+    const fmGain = audio.fmGain;
+    const masterGain = audio.masterGain;
+
+    const volume = this.state.volume.v;
+    this.setState(prevState => ({
+      volume: {...prevState.volume, v: 0}
+    }));
+
+    this.audioMute();
+
+    if (audio.fm) {
+      osc2.disconnect(masterGain);
+      fmGain.disconnect(osc2.frequency);
+      osc1.disconnect(fmGain);
+      osc1.connect(masterGain);
+      // masterGain.connect(masterOut);
+    } else {
+      osc1.disconnect(masterGain);
+      osc1.connect(fmGain);
+      fmGain.connect(osc2.frequency);
+      osc2.connect(masterGain);
+      // masterGain.connect(masterOut);
+    };
+
+    this.setState(prevState => ({
+      audio: {...prevState.audio, fm: !prevState.audio.fm},
+      // mute: false,
+      // volume: {...prevState.volume, v: volume},
+      // tone: {...prevState.tone, v: tone}
+    }));
+
+    this.audioMute();
+  }
+
+
+  audioMute() {
+    // const level = val ? val : 0
+    const { audio } = this.state;
+    const ctx = audio.ctx;
+    const masterGain = audio.masterGain;
+    const latency = audio.latency;
+
+    this.setState(prevState => ({mute: !prevState.mute}));
+    // this.setState(prevState => ({mute: true}));
+
+    masterGain.gain.cancelScheduledValues(ctx.currentTime);
+    masterGain.gain.setValueAtTime(masterGain.gain.value, ctx.currentTime);
+    masterGain.gain.linearRampToValueAtTime(0, ctx.currentTime + .1);
+
+  }
+
+
+
+
 
 
   render() {
@@ -287,6 +353,7 @@ export default class Theremin extends Component {
           </div>
 
           <div className='bottom'>
+          <button onClick={() => this.audioToggleFm()}>FM toggle</button>
             <div className='control-box'>
               <div className='component'>
                 <div className='knob sense'>
@@ -316,6 +383,13 @@ export default class Theremin extends Component {
           </div>
 
         </div>
+
+        <div className='modules'>
+        <div className='module'>
+          <Wave ctx={this.props.ctx} src={this.state.audio.masterGain} />
+        </div>
+        </div>
+
       </div>
     );
   }
