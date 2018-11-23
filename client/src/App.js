@@ -30,7 +30,7 @@ export default class App extends Component {
   render() {
     const { audioCtx } = this.state;
     const { mic } = this.state;
-    const body = !audioCtx ? <div>Loading...</div> : <Theremin audioCtx={audioCtx} mic={mic} />;
+    const body = !audioCtx ? <div>Loading...</div> : <Theremin ctx={audioCtx} src={mic} />;
 
     return (
       <div>
