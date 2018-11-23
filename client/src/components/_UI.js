@@ -1,7 +1,8 @@
 import React from 'react';
 
 export const knob = (props) => {
-  const size = props.size;
+  const sizeUnit = Math.min(window.innerWidth, window.innerHeight) / 400;
+  const size = sizeUnit * props.size;
   const diameter = 100;
   const radius = diameter / 2;
   const rectW = diameter / 25;

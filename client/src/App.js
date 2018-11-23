@@ -41,7 +41,6 @@ export default class App extends Component {
 }
 
 
-
       //   <div className='module'>
       //     <Wave ctx={audioCtx} src={mic} />
       //   </div>

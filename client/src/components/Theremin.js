@@ -13,12 +13,13 @@ export default class Theremin extends Component {
       audioCtx: false,
       vol: false,
       osc: false,
-      baseHz: 110,
+      fm: false,
+      baseHz: 220,
       colorVol: {r: 0, g: 0, b: 0},
       colorFreq: {r: 0, g: 0, b: 0},
       sense: {v: 50, max: 100},
-      range: {v: 5, max: 5},
-      tone: {v: 50, max: 100},
+      range: {v: 5, max: 6},
+      tone: {v: 2200, max: 3000},
       volume: {v: .5, max: 1}
     };
     this.handleColor = this.handleColor.bind(this);
@@ -38,19 +39,44 @@ export default class Theremin extends Component {
 
 
   audioInit(audioCtx) {
+    const out = audioCtx.destination;
     const vol = audioCtx.createGain();
     vol.gain.setValueAtTime(0, audioCtx.currentTime);
 
+
     const osc = new OscillatorNode(audioCtx, {type: 'sine', frequency: this.state.baseHz});
-    // const osc = audioCtx.createOscillator();
+    // let osc = audioCtx.createOscillator();
     // osc.type = 'sine';
-    // osc.frequency = this.state.baseHz;
-    osc.start();
+    // osc.frequency = 440;
+
+    const fm = new OscillatorNode(audioCtx, {type: 'sine', frequency: this.state.baseHz + 5});
+    // let fm = audioCtx.createOscillator();
+    // fm.type = 'sine';
+    // fm.frequency = this.state.baseHz;
+
+    let oscGain = new GainNode(audioCtx, {gain: 2200})
+    // audioCtx.createGain();
+    // oscGain.gain = 3000;
+
+    osc.connect(oscGain);
+    oscGain.connect(fm.frequency);
+    fm.connect(vol);
+    vol.connect(out);
+
+
     osc.connect(vol);
-    vol.connect(audioCtx.destination);
+    vol.connect(out);
+
+
+
+    osc.start();
+    fm.start();
+
+
+
 
     this.setState(prevState => ({
-      audioCtx, vol, osc
+      audioCtx, vol, osc, fm
     }));
 
     this.trackerInit();
@@ -106,6 +132,7 @@ export default class Theremin extends Component {
     const { audioCtx } = this.state;
     const { vol } = this.state;
     const { osc } = this.state;
+    const { fm } = this.state;
     const { baseHz } = this.state;
     const width = this.refs.video.clientWidth;
     const height = this.refs.video.clientHeight;
@@ -126,11 +153,19 @@ export default class Theremin extends Component {
         // console.log('gain ', gain)
       } else if (d.color === 'Freq') {
         const x = d.x + (d.width / 2);
-        const freq = baseHz * Math.pow(2, ((width - x)/(width / this.state.range.v)));
+        // const freq = baseHz * Math.pow(2, ((width - x)/(width / this.state.range.v)));
+        // osc.frequency.cancelScheduledValues(audioCtx.currentTime);
+        // osc.frequency.setValueAtTime(osc.frequency.value, audioCtx.currentTime);
+        // osc.frequency.linearRampToValueAtTime(freq, audioCtx.currentTime + .05);
+        // console.log('freq ', freq)
+        const oscFreq = baseHz * Math.pow(2, ((width - x)/(width / this.state.range.v)));
+        const fmFreq = (baseHz + 5) * Math.pow(2, ((width - x)/(width / this.state.range.v)));
         osc.frequency.cancelScheduledValues(audioCtx.currentTime);
         osc.frequency.setValueAtTime(osc.frequency.value, audioCtx.currentTime);
-        osc.frequency.linearRampToValueAtTime(freq, audioCtx.currentTime + .05);
-        // console.log('freq ', freq)
+        osc.frequency.linearRampToValueAtTime(oscFreq, audioCtx.currentTime + .05);
+        fm.frequency.cancelScheduledValues(audioCtx.currentTime);
+        fm.frequency.setValueAtTime(osc.frequency.value, audioCtx.currentTime);
+        fm.frequency.linearRampToValueAtTime(fmFreq, audioCtx.currentTime + .05);
       };
     });
   }
@@ -190,7 +225,7 @@ export default class Theremin extends Component {
     const { colorFreq } = this.state;
     const colorV = `rgb(${colorVol.r}, ${colorVol.g}, ${colorVol.b})`;
     const colorF = `rgb(${colorFreq.r}, ${colorFreq.g}, ${colorFreq.b})`;
-    const knobSize = Math.min(window.innerWidth, window.innerHeight) / 80;
+    const knobSize = 5;
 
     return (
 
@@ -254,14 +289,8 @@ export default class Theremin extends Component {
           </div>
         </div>
 
-        <div className='modules'>
-          <div className='module'>
-            <Wave ctx={this.props.audioCtx} src={this.props.mic} />
-          </div>
-          <div className='module'>
-            <Note ctx={this.props.audioCtx} src={this.props.mic} />
-          </div>
-        </div>
+
+
 
       </div>
     );
