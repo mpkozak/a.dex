@@ -5,6 +5,7 @@ import * as UI from './_UI.js';
 
 import Wave from './Wave.js';
 // import Note from './Note.js';
+import Spec from './Spec.js';
 
 
 export default class Theremin extends Component {
@@ -14,23 +15,18 @@ export default class Theremin extends Component {
       colorGain: {r: 0, g: 0, b: 0},
       colorFreq: {r: 0, g: 0, b: 0},
       audio: {},
-      tone: {v: 1500, max: 3000},
-      volume: {v: .25, max: 1},
 
-      range: {v: 4, max: 6},
       sense: {v: 30, max: 100},
+      range: {v: 4, max: 6},
+      tone: {v: 2200, max: 4400},
+      volume: {v: .5, max: 1},
+      fmWidth: {v: 1, max: 10},
+      fmDepth: {v: 1500, max: 3000},
 
       data: [],
       dataGain: [],
       dataFreq: [],
 
-      mute: false,
-      // vol: false,
-      // osc: false,
-      // oscGain: false,
-      // fm: false,
-      // ,
-      // ,
     };
     this.handleClickColor = this.handleClickColor.bind(this);
     this.handleScrollParam = this.handleScrollParam.bind(this);
@@ -50,38 +46,64 @@ export default class Theremin extends Component {
 
   componentDidUpdate() {
     this.trackerDraw();
-    if (!this.state.mute) {
-      this.audioRefreshGain();
-      this.audioRefreshFreq();
-      this.audioRefreshTone();
-    };
+    this.audioRefreshGain();
+    this.audioRefreshFreq();
+    this.audioRefreshFm();
+    this.audioRefreshTone();
+    // console.log(this.state.audio.ctx.currentTime - this.state.audio.ctx.getOutputTimestamp().contextTime);
   }
 
 
   audioInit(ctx) {
     const baseHz = 220;
-    const offsetHz = 0;
     const osc1 = new OscillatorNode(ctx, {type: 'sine', frequency: baseHz});
-    const osc2 = new OscillatorNode(ctx, {type: 'sine', frequency: baseHz + offsetHz});
-    const fmGain = new GainNode(ctx, {gain: this.state.tone.v});
+    const osc2 = new OscillatorNode(ctx, {type: 'sine', frequency: baseHz + this.state.fmWidth.v});
+    const lpf = new BiquadFilterNode(ctx, {type: 'lowpass', Q: 1, frequency: this.state.tone.v});
+    const fmGain = new GainNode(ctx, {gain: this.state.fmDepth.v});
     const masterGain = new GainNode(ctx, {gain: 0});
     const masterOut = ctx.destination;
 
+
+
+function makeDistortionCurve(amount) {
+  var k = typeof amount === 'number' ? amount : 50,
+    n_samples = 44100,
+    curve = new Float32Array(n_samples),
+    deg = Math.PI / 180,
+    i = 0,
+    x;
+  for ( ; i < n_samples; ++i ) {
+    x = i * 2 / n_samples - 1;
+    curve[i] = ( 3 + k ) * x * 20 * deg / ( Math.PI + k * Math.abs(x) );
+  }
+  return curve;
+};
+
+const distortion = ctx.createWaveShaper();
+distortion.curve = makeDistortionCurve(100);
+distortion.oversample = '4x';
+
+
+
     osc1.connect(fmGain);
     fmGain.connect(osc2.frequency);
-    osc2.connect(masterGain);
+    osc2.connect(lpf);
+    lpf.connect(masterGain);
+
+    // lpf.connect(distortion);
+    // distortion.connect(masterGain);
+
     masterGain.connect(masterOut);
 
-    // masterGain.gain.setValueAtTime(0, ctx.currentTime);
     osc1.start();
     osc2.start();
 
     const audio = {
       ctx: ctx,
       baseHz: baseHz,
-      offsetHz: offsetHz,
       osc1: osc1,
       osc2: osc2,
+      lpf: lpf,
       fmGain: fmGain,
       fm: true,
       masterGain: masterGain,
@@ -198,7 +220,6 @@ export default class Theremin extends Component {
     const latency = audio.latency;
 
     if (!dataGain.length || !dataFreq.length) {
-      // this.audioMute();
       masterGain.gain.cancelScheduledValues(ctx.currentTime);
       masterGain.gain.setValueAtTime(masterGain.gain.value, ctx.currentTime);
       masterGain.gain.linearRampToValueAtTime(0, ctx.currentTime + (latency * 2));
@@ -230,15 +251,14 @@ export default class Theremin extends Component {
       osc1.frequency.cancelScheduledValues(ctx.currentTime);
       osc1.frequency.setValueAtTime(osc1.frequency.value, ctx.currentTime);
       osc1.frequency.linearRampToValueAtTime(freq1, ctx.currentTime + latency);
-      const freq2 = (audio.baseHz + audio.offsetHz) * Math.pow(2, (width - x)/(width / this.state.range.v));
+      const freq2 = (audio.baseHz + this.state.fmWidth.v) * Math.pow(2, (width - x)/(width / this.state.range.v));
       osc2.frequency.cancelScheduledValues(ctx.currentTime);
       osc2.frequency.setValueAtTime(osc2.frequency.value, ctx.currentTime);
       osc2.frequency.linearRampToValueAtTime(freq2, ctx.currentTime + latency);
     });
   }
 
-
-  audioRefreshTone() {
+  audioRefreshFm() {
     const { audio } = this.state;
     const ctx = audio.ctx;
     const fmGain = audio.fmGain;
@@ -246,77 +266,25 @@ export default class Theremin extends Component {
 
     fmGain.gain.cancelScheduledValues(ctx.currentTime);
     fmGain.gain.setValueAtTime(fmGain.gain.value, ctx.currentTime);
-    fmGain.gain.linearRampToValueAtTime(this.state.tone.v, ctx.currentTime + latency);
+    fmGain.gain.linearRampToValueAtTime(this.state.fmDepth.v, ctx.currentTime + latency);
   }
 
 
-
-
-
-
-
-  audioToggleFm() {
-    console.log(this.state.audio.ctx.currentTime - this.state.audio.ctx.getOutputTimestamp().contextTime)
-    const { audio } = this.state;
-    const osc1 = audio.osc1;
-    const osc2 = audio.osc2;
-    const fmGain = audio.fmGain;
-    const masterGain = audio.masterGain;
-
-    const volume = this.state.volume.v;
-    this.setState(prevState => ({
-      volume: {...prevState.volume, v: 0}
-    }));
-
-    this.audioMute();
-
-    if (audio.fm) {
-      osc2.disconnect(masterGain);
-      fmGain.disconnect(osc2.frequency);
-      osc1.disconnect(fmGain);
-      osc1.connect(masterGain);
-      // masterGain.connect(masterOut);
-    } else {
-      osc1.disconnect(masterGain);
-      osc1.connect(fmGain);
-      fmGain.connect(osc2.frequency);
-      osc2.connect(masterGain);
-      // masterGain.connect(masterOut);
-    };
-
-    this.setState(prevState => ({
-      audio: {...prevState.audio, fm: !prevState.audio.fm},
-      // mute: false,
-      // volume: {...prevState.volume, v: volume},
-      // tone: {...prevState.tone, v: tone}
-    }));
-
-    this.audioMute();
-  }
-
-
-  audioMute() {
-    // const level = val ? val : 0
+  audioRefreshTone() {
     const { audio } = this.state;
     const ctx = audio.ctx;
-    const masterGain = audio.masterGain;
+    const lpf = audio.lpf;
     const latency = audio.latency;
 
-    this.setState(prevState => ({mute: !prevState.mute}));
-    // this.setState(prevState => ({mute: true}));
-
-    masterGain.gain.cancelScheduledValues(ctx.currentTime);
-    masterGain.gain.setValueAtTime(masterGain.gain.value, ctx.currentTime);
-    masterGain.gain.linearRampToValueAtTime(0, ctx.currentTime + .1);
-
+    lpf.frequency.cancelScheduledValues(ctx.currentTime);
+    lpf.frequency.setValueAtTime(lpf.frequency.value, ctx.currentTime);
+    lpf.frequency.linearRampToValueAtTime(this.state.tone.v, ctx.currentTime + latency);
   }
-
-
-
-
 
 
   render() {
+    const { masterGain } = this.state.audio;
+
     const { colorGain } = this.state;
     const { colorFreq } = this.state;
     const colorV = `rgb(${colorGain.r}, ${colorGain.g}, ${colorGain.b})`;
@@ -326,10 +294,26 @@ export default class Theremin extends Component {
     const { range } = this.state;
     const { tone } = this.state;
     const { volume } = this.state;
+    const { fmDepth } = this.state;
+    const { fmWidth } = this.state;
     const knobSize = 5;
+
+    const modules = !masterGain
+      ? <div />
+      : (
+        <div className='modules'>
+          <div className='module'>
+            <Wave ctx={this.props.ctx} src={masterGain} />
+          </div>
+          <div className='module'>
+            <Spec ctx={this.props.ctx} src={masterGain} />
+          </div>
+        </div>
+      );
 
     return (
       <div className='App'>
+
         <div className='Theremin'>
 
           <div className='top'>
@@ -353,7 +337,6 @@ export default class Theremin extends Component {
           </div>
 
           <div className='bottom'>
-          <button onClick={() => this.audioToggleFm()}>FM toggle</button>
             <div className='control-box'>
               <div className='component'>
                 <div className='knob sense'>
@@ -379,16 +362,25 @@ export default class Theremin extends Component {
                 </div>
                 <h6 className='label'>Volume</h6>
               </div>
+
+              <div className='component'>
+                <div className='knob fmDepth'>
+                  <UI.knob scroll={(e) => this.handleScrollParam(e)} level={(fmDepth.v / fmDepth.max) * 100} size={knobSize} />
+                </div>
+                <h6 className='label'>Depth</h6>
+              </div>
+              <div className='component'>
+                <div className='knob fmWidth'>
+                  <UI.knob scroll={(e) => this.handleScrollParam(e)} level={(fmWidth.v / fmWidth.max) * 100} size={knobSize} />
+                </div>
+                <h6 className='label'>Width</h6>
+              </div>
             </div>
           </div>
 
         </div>
 
-        <div className='modules'>
-        <div className='module'>
-          <Wave ctx={this.props.ctx} src={this.state.audio.masterGain} />
-        </div>
-        </div>
+        {modules}
 
       </div>
     );

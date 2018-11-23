@@ -10,8 +10,8 @@ export default class Wave extends Component {
   }
 
   componentDidMount() {
-    setTimeout(() => this.getData(this.props.ctx, this.props.src, this.state.scaleBase), 1000)
-    // this.getData(this.props.ctx, this.props.src, this.state.scaleBase);
+    // setTimeout(() => this.getData(this.props.ctx, this.props.src, this.state.scaleBase), 1000)
+    this.getData(this.props.ctx, this.props.src, this.state.scaleBase);
     d3.select(this.node).append('g').classed('wave', true);
   }
 
