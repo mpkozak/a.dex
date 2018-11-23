@@ -294,7 +294,7 @@ export default class Theremin extends Component {
     const { volume } = this.state;
     const { fmDepth } = this.state;
     const { fmWidth } = this.state;
-    const knobSize = 5;
+    const knobSize = 10;
 
     const modules = !masterGain
       ? <div />
@@ -306,11 +306,20 @@ export default class Theremin extends Component {
           <div className='module'>
             <Spec ctx={this.props.ctx} src={masterGain} />
           </div>
+
+
+          <div className='module'>
+          </div>
+
+
         </div>
       );
 
     return (
+
       <div className='App'>
+
+            <UI.meter size={50} />
 
         <div className='Theremin'>
 

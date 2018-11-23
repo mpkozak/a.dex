@@ -1,7 +1,7 @@
 import React from 'react';
 
 export const knob = (props) => {
-  const sizeUnit = Math.min(window.innerWidth, window.innerHeight) / 400;
+  const sizeUnit = Math.min(window.innerWidth, window.innerHeight) / 100;
   const size = sizeUnit * props.size;
   const diameter = 100;
   const radius = diameter / 2;
@@ -10,8 +10,8 @@ export const knob = (props) => {
 
   const containerStyle = {
     position: 'relative',
-    width: size + 'vmin',
-    height: size + 'vmin',
+    width: size + 'px',
+    height: size + 'px',
     margin: '.5vmin'
   };
   const staticStyle = {
@@ -33,7 +33,7 @@ export const knob = (props) => {
 
   return (
     <div className='knob-svg' style={containerStyle}>
-      <svg style={staticStyle} height={diameter} width={diameter}>
+      <svg style={staticStyle} width={diameter} height={diameter}>
         <circle
           cx={radius + '%'}
           cy={radius + '%'}
@@ -41,7 +41,7 @@ export const knob = (props) => {
           fill='#000000'
         />
       </svg>
-      <svg style={staticStyle} height={diameter} width={diameter}>
+      <svg style={staticStyle} width={diameter} height={diameter}>
         <defs>
           <radialGradient
             id='knob'
@@ -66,7 +66,7 @@ export const knob = (props) => {
           fill='url(#knob)'
         />
       </svg>
-      <svg style={rotateStyle} height={diameter} width={diameter}>
+      <svg style={rotateStyle} width={diameter} height={diameter}>
         <defs>
           <linearGradient
             id='notch'
@@ -93,7 +93,7 @@ export const knob = (props) => {
           strokeWidth={rectW / 5 + '%'}
         />
       </svg>
-      <svg onWheel={props.scroll} style={staticStyle} height={diameter} width={diameter}>
+      <svg onWheel={props.scroll} style={staticStyle} width={diameter} height={diameter}>
         <circle
           cx={radius + '%'}
           cy={radius + '%'}
@@ -103,7 +103,71 @@ export const knob = (props) => {
       </svg>
     </div>
   );
+};
+
+
+
+
+
+
+
+export const meter = (props) => {
+  const sizeUnit = Math.min(window.innerWidth, window.innerHeight) / 100;
+  const size = sizeUnit * props.size;
+  const width = size;
+  const height = size * (3 / 5);
+
+  const containerStyle = {
+    position: 'relative',
+    width: width + 'px',
+    height: height + 'px',
+    margin: '.5vmin',
+    // border: '1px solid green'
+  };
+
+
+  return (
+    <div className='meter-svg' style={containerStyle}>
+      <svg width={width} height={height}>
+      <rect
+        x='0%'
+        y='0%'
+        rx={width / 25}
+        ry={width / 25}
+        width='100%'
+        height='100%'
+        fill='#272119'
+        // stroke='#000000'
+        // strokeWidth='1%'
+      />
+
+      <rect
+        x={(width * .1) / 2}
+        y={(width * .1) / 2}
+        rx={width / 100}
+        ry={width / 100}
+        width={width - (width * .1)}
+        height={height  - (width * .1)}
+        fill='#F9DF95'
+        stroke='#000000'
+        strokeWidth='1%'
+      />
+
+      <path
+        d={`
+          M ${width * (1.5 / 8)} ${height * (3.5 / 8)}
+          Q ${width * (4 / 8)} ${height * (2.5 / 8)},
+          ${width * (6.5 / 8)} ${height * (3.5 / 8)}
+        `}
+
+        stroke='#000000'
+        fill='#F9DF95'
+        // fill='none'
+      />
+
+      </svg>
+
+
+    </div>
+  )
 }
-
-
-
