@@ -13,8 +13,10 @@ export default class Theremin extends Component {
       audioCtx: false,
       vol: false,
       osc: false,
+      oscGain: false,
       fm: false,
       baseHz: 220,
+      fmOffset: 5,
       colorVol: {r: 0, g: 0, b: 0},
       colorFreq: {r: 0, g: 0, b: 0},
       sense: {v: 50, max: 100},
@@ -37,26 +39,21 @@ export default class Theremin extends Component {
     };
   }
 
+  componentDidUpdate() {
+    this.setTone(this.state.tone)
+  }
+
 
   audioInit(audioCtx) {
     const out = audioCtx.destination;
     const vol = audioCtx.createGain();
     vol.gain.setValueAtTime(0, audioCtx.currentTime);
 
-
     const osc = new OscillatorNode(audioCtx, {type: 'sine', frequency: this.state.baseHz});
-    // let osc = audioCtx.createOscillator();
-    // osc.type = 'sine';
-    // osc.frequency = 440;
+    const fm = new OscillatorNode(audioCtx, {type: 'sine', frequency: this.state.baseHz + this.state.fmOffset});
 
-    const fm = new OscillatorNode(audioCtx, {type: 'sine', frequency: this.state.baseHz + 5});
-    // let fm = audioCtx.createOscillator();
-    // fm.type = 'sine';
-    // fm.frequency = this.state.baseHz;
+    const oscGain = new GainNode(audioCtx, {gain: this.state.tone.v});
 
-    let oscGain = new GainNode(audioCtx, {gain: 2200})
-    // audioCtx.createGain();
-    // oscGain.gain = 3000;
 
     osc.connect(oscGain);
     oscGain.connect(fm.frequency);
@@ -76,7 +73,7 @@ export default class Theremin extends Component {
 
 
     this.setState(prevState => ({
-      audioCtx, vol, osc, fm
+      audioCtx, vol, osc, fm, oscGain
     }));
 
     this.trackerInit();
@@ -150,16 +147,10 @@ export default class Theremin extends Component {
         vol.gain.cancelScheduledValues(audioCtx.currentTime);
         vol.gain.setValueAtTime(vol.gain.value, audioCtx.currentTime);
         vol.gain.linearRampToValueAtTime(gain * this.state.volume.v, audioCtx.currentTime + .05);
-        // console.log('gain ', gain)
       } else if (d.color === 'Freq') {
         const x = d.x + (d.width / 2);
-        // const freq = baseHz * Math.pow(2, ((width - x)/(width / this.state.range.v)));
-        // osc.frequency.cancelScheduledValues(audioCtx.currentTime);
-        // osc.frequency.setValueAtTime(osc.frequency.value, audioCtx.currentTime);
-        // osc.frequency.linearRampToValueAtTime(freq, audioCtx.currentTime + .05);
-        // console.log('freq ', freq)
         const oscFreq = baseHz * Math.pow(2, ((width - x)/(width / this.state.range.v)));
-        const fmFreq = (baseHz + 5) * Math.pow(2, ((width - x)/(width / this.state.range.v)));
+        const fmFreq = (baseHz + this.state.fmOffset) * Math.pow(2, ((width - x)/(width / this.state.range.v)));
         osc.frequency.cancelScheduledValues(audioCtx.currentTime);
         osc.frequency.setValueAtTime(osc.frequency.value, audioCtx.currentTime);
         osc.frequency.linearRampToValueAtTime(oscFreq, audioCtx.currentTime + .05);
@@ -213,6 +204,14 @@ export default class Theremin extends Component {
         [key]: {...prevState[key], v: current}
       }));
     };
+  }
+
+  setTone(tone) {
+    const { audioCtx } = this.state;
+    const { oscGain } = this.state;
+    oscGain.gain.cancelScheduledValues(audioCtx.currentTime);
+    oscGain.gain.setValueAtTime(oscGain.gain.value, audioCtx.currentTime);
+    oscGain.gain.linearRampToValueAtTime(tone.v, audioCtx.currentTime + .05);
   }
 
 
