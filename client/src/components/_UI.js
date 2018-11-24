@@ -111,63 +111,150 @@ export const knob = (props) => {
 
 
 
+
+
+
+
+
+
+
 export const meter = (props) => {
   const sizeUnit = Math.min(window.innerWidth, window.innerHeight) / 100;
   const size = sizeUnit * props.size;
   const width = size;
   const height = size * (3 / 5);
+  const radius = Math.sqrt(Math.pow(0.95 * height, 2) + Math.pow(width / 2, 2));
+
+  const ticks = [
+    {vu: -20, deg: -42, strokeWidth: '1%', stroke: '#000000'},
+    {vu: -10, deg: -30, strokeWidth: '1%', stroke: '#000000'},
+    {vu: -7, deg: -18, strokeWidth: '1%', stroke: '#000000'},
+    {vu: -6, deg: -12, strokeWidth: '.5%', stroke: '#000000'},
+    {vu: -5, deg: -6, strokeWidth: '1%', stroke: '#000000'},
+    {vu: -4, deg: 0, strokeWidth: '.5%', stroke: '#000000'},
+    {vu: -3, deg: 5, strokeWidth: '1%', stroke: '#000000'},
+    {vu: -2, deg: 10, strokeWidth: '.5%', stroke: '#000000'},
+    {vu: -1, deg: 15, strokeWidth: '.5%', stroke: '#000000'},
+    {vu: 0, deg: 20, strokeWidth: '1%', stroke: '#FF0000'},
+    {vu: 1, deg: 25, strokeWidth: '.5%', stroke: '#FF0000'},
+    {vu: 2, deg: 30, strokeWidth: '.5%', stroke: '#FF0000'},
+    {vu: 3, deg: 35, strokeWidth: '1%', stroke: '#FF0000'},
+    {vu: 'start', deg: -51, strokeWidth: '6%', stroke: '#F9DF95', dash: '0, 48, 10, 30'},
+    {vu: 'end', deg: 51, strokeWidth: '6%', stroke: '#F9DF95', dash: '0, 48, 10, 30'},
+  ];
+  ticks.forEach(d => d.rad = d.deg * (Math.PI / 180));
 
   const containerStyle = {
     position: 'relative',
     width: width + 'px',
     height: height + 'px',
     margin: '.5vmin',
-    // border: '1px solid green'
   };
-
 
   return (
     <div className='meter-svg' style={containerStyle}>
       <svg width={width} height={height}>
-      <rect
-        x='0%'
-        y='0%'
-        rx={width / 25}
-        ry={width / 25}
-        width='100%'
-        height='100%'
-        fill='#272119'
-        // stroke='#000000'
-        // strokeWidth='1%'
-      />
 
-      <rect
-        x={(width * .1) / 2}
-        y={(width * .1) / 2}
-        rx={width / 100}
-        ry={width / 100}
-        width={width - (width * .1)}
-        height={height  - (width * .1)}
-        fill='#F9DF95'
-        stroke='#000000'
-        strokeWidth='1%'
-      />
+        <defs>
+          <path
+            d={`
+              M ${width * (1 / 8)} ${height * (2.5 / 8)}
+              Q ${width * (4 / 8)} ${height * (1 / 8)},
+              ${width * (7 / 8)} ${height * (2.5 / 8)}
+            `}
+            pathLength='100'
+            id='arc'
+          />
+        </defs>
 
-      <path
-        d={`
-          M ${width * (1.5 / 8)} ${height * (3.5 / 8)}
-          Q ${width * (4 / 8)} ${height * (2.5 / 8)},
-          ${width * (6.5 / 8)} ${height * (3.5 / 8)}
-        `}
+        <g id='box'>
+          <rect
+            id='box-outer'
+            x='0%'
+            y='0%'
+            width='100%'
+            height='100%'
+            rx={width / 25}
+            ry={width / 25}
+            fill='#272119'
+            stroke='none'
+          />
+          <rect
+            id='box-inner'
+            x={(width * .1) / 2}
+            y={(width * .1) / 2}
+            width={width - (width * .1)}
+            height={height  - (width * .1)}
+            rx={width / 100}
+            ry={width / 100}
+            fill='#F9DF95'
+            stroke='#000000'
+            strokeWidth='1%'
+          />
+        </g>
 
-        stroke='#000000'
-        fill='#F9DF95'
-        // fill='none'
-      />
+        <g id='scale'>
+          <use href='#arc'
+            id='arc-black'
+            transform={`translate(0, ${height * .15})`}
+            fill='none'
+            stroke='#000000'
+            strokeWidth='1%'
+            strokeDasharray='0, 8, 58.5, 33.5'
+          />
+          <use href='#arc'
+            id='arc-red'
+            transform={`translate(0, ${height * .15})`}
+            fill='none'
+            stroke='#FF0000'
+            strokeWidth='1%'
+            strokeDasharray='0, 66.5, 25.5, 8'
+          />
+          <use href='#arc'
+            id='arc-double-red'
+            transform={`translate(0, ${height * .15})`}
+            fill='none'
+            stroke='#FF0000'
+            strokeWidth='5%'
+            strokeDasharray='0, 67.5, 25.5, 7'
+          />
+          {ticks.map(d => {
+            const hyp = Math.sqrt(Math.pow(Math.sin(d.rad) * radius, 2) + Math.pow(.95 * height, 2))
+            return (
+              <line
+                key={d.vu}
+                x1={width / 2}
+                y1={.95 * height}
+                // x2={(width / 2) + Math.sin(d.rad) * radius}
+                // y2={(.95 * height) - Math.abs(Math.cos(d.rad) * radius)}
+                x2={(width / 2) + Math.sin(d.rad) * hyp}
+                y2={0}
+                stroke={d.stroke}
+                strokeWidth={d.strokeWidth}
+                pathLength='100'
+                strokeDasharray={d.dash ? d.dash : '0, 54.5, 19, 26.5'}
+              />
+            );
+          })}
+          <use href='#arc'
+            transform={`translate(0, -${height * .025})`}
+            id='matte-top'
+            fill='none'
+            stroke='#F9DF95'
+            strokeWidth='9%'
+          />
+          <use href='#arc'
+            id='matte-bottom'
+            transform={`translate(0, ${height * .15})`}
+            fill='#F9DF95'
+            stroke='none'
+          />
+        </g>
 
       </svg>
-
 
     </div>
   )
 }
+
+
