@@ -338,7 +338,7 @@ export default class Theremin extends Component {
 
       <div className='App'>
 
-        <UI.meter size={50} />
+        <UI.meter size={50} peak={true} />
 
         <div className='Theremin'>
 
