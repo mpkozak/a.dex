@@ -24,7 +24,6 @@ export default class Theremin extends Component {
       data: [],
       dataGain: [],
       dataFreq: [],
-
     };
     this.handleClickColor = this.handleClickColor.bind(this);
     this.handleClickParam = this.handleClickParam.bind(this);
@@ -126,6 +125,8 @@ export default class Theremin extends Component {
       const dataGain = data.filter(d => d.color === 'Gain');
       const dataFreq = data.filter(d => d.color === 'Freq');
       this.setState(prevState => ({ data, dataGain, dataFreq }));
+    this.audioRefreshGain();
+    this.audioRefreshFreq();
     });
 
     navigator.mediaDevices.getUserMedia({video: true})
@@ -232,18 +233,18 @@ export default class Theremin extends Component {
     const latency = audio.latency;
 
     if (!dataGain.length || !dataFreq.length) {
-      help.setAudioParam(masterGain.gain, 0, ctx, latency * 2);
-      // masterGain.gain.cancelScheduledValues(ctx.currentTime);
-      // masterGain.gain.setValueAtTime(masterGain.gain.value, ctx.currentTime);
-      // masterGain.gain.linearRampToValueAtTime(0, ctx.currentTime + (latency * 2));
+      // help.setAudioParam(masterGain.gain, 0, ctx, latency * 2);
+      masterGain.gain.cancelScheduledValues(ctx.currentTime);
+      masterGain.gain.setValueAtTime(masterGain.gain.value, ctx.currentTime);
+      masterGain.gain.linearRampToValueAtTime(0, ctx.currentTime + (latency * 2));
     } else {
       dataGain.forEach(d => {
         const y = d.y + (d.height / 2);
         const level = (height - y) / height * params.volume.v;
-        help.setAudioParam(masterGain.gain, level, ctx, latency);
-        // masterGain.gain.cancelScheduledValues(ctx.currentTime);
-        // masterGain.gain.setValueAtTime(masterGain.gain.value, ctx.currentTime);
-        // masterGain.gain.linearRampToValueAtTime(level, ctx.currentTime + latency);
+        // help.setAudioParam(masterGain.gain, level, ctx, latency);
+        masterGain.gain.cancelScheduledValues(ctx.currentTime);
+        masterGain.gain.setValueAtTime(masterGain.gain.value, ctx.currentTime);
+        masterGain.gain.linearRampToValueAtTime(level, ctx.currentTime + latency);
       });
     };
   }
@@ -263,17 +264,18 @@ export default class Theremin extends Component {
     dataFreq.forEach(d => {
       const x = d.x + (d.width / 2);
       const freq1 = audio.baseHz * Math.pow(2, (width - x)/(width / params.range.v));
-      help.setAudioParam(osc1.frequency, freq1, ctx, latency);
-      // osc1.frequency.cancelScheduledValues(ctx.currentTime);
-      // osc1.frequency.setValueAtTime(osc1.frequency.value, ctx.currentTime);
-      // osc1.frequency.linearRampToValueAtTime(freq1, ctx.currentTime + latency);
+      // help.setAudioParam(osc1.frequency, freq1, ctx, latency);
+      osc1.frequency.cancelScheduledValues(ctx.currentTime);
+      osc1.frequency.setValueAtTime(osc1.frequency.value, ctx.currentTime);
+      osc1.frequency.linearRampToValueAtTime(freq1, ctx.currentTime + latency);
       const freq2 = (audio.baseHz + params.fmWidth.v) * Math.pow(2, (width - x)/(width / params.range.v));
-      help.setAudioParam(osc2.frequency, freq2, ctx, latency);
-      // osc2.frequency.cancelScheduledValues(ctx.currentTime);
-      // osc2.frequency.setValueAtTime(osc2.frequency.value, ctx.currentTime);
-      // osc2.frequency.linearRampToValueAtTime(freq2, ctx.currentTime + latency);
+      // help.setAudioParam(osc2.frequency, freq2, ctx, latency);
+      osc2.frequency.cancelScheduledValues(ctx.currentTime);
+      osc2.frequency.setValueAtTime(osc2.frequency.value, ctx.currentTime);
+      osc2.frequency.linearRampToValueAtTime(freq2, ctx.currentTime + latency);
     });
   }
+
 
   audioRefreshFm() {
     const { audio } = this.state;
@@ -282,10 +284,10 @@ export default class Theremin extends Component {
     const fmGain = audio.fmGain;
     const latency = audio.latency;
 
-    help.setAudioParam(fmGain.gain, params.fmDepth.v, ctx, latency);
-    // fmGain.gain.cancelScheduledValues(ctx.currentTime);
-    // fmGain.gain.setValueAtTime(fmGain.gain.value, ctx.currentTime);
-    // fmGain.gain.linearRampToValueAtTime(this.state.fmDepth.v, ctx.currentTime + latency);
+    // help.setAudioParam(fmGain.gain, params.fmDepth.v, ctx, latency);
+    fmGain.gain.cancelScheduledValues(ctx.currentTime);
+    fmGain.gain.setValueAtTime(fmGain.gain.value, ctx.currentTime);
+    fmGain.gain.linearRampToValueAtTime(params.fmDepth.v, ctx.currentTime + latency);
   }
 
 
@@ -296,10 +298,10 @@ export default class Theremin extends Component {
     const lpf = audio.lpf;
     const latency = audio.latency;
 
-    help.setAudioParam(lpf.frequency, params.tone.v, ctx, latency);
-    // lpf.frequency.cancelScheduledValues(ctx.currentTime);
-    // lpf.frequency.setValueAtTime(lpf.frequency.value, ctx.currentTime);
-    // lpf.frequency.linearRampToValueAtTime(this.state.tone.v, ctx.currentTime + latency);
+    // help.setAudioParam(lpf.frequency, params.tone.v, ctx, latency);
+    lpf.frequency.cancelScheduledValues(ctx.currentTime);
+    lpf.frequency.setValueAtTime(lpf.frequency.value, ctx.currentTime);
+    lpf.frequency.linearRampToValueAtTime(params.tone.v, ctx.currentTime + latency);
   }
 
 

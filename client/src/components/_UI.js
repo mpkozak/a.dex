@@ -1,7 +1,5 @@
 import React from 'react';
 
-
-
 export const knob = (props) => {
   const sizeUnit = Math.min(window.innerWidth, window.innerHeight) / 100;
   const size = sizeUnit * props.size;
@@ -24,10 +22,6 @@ export const knob = (props) => {
     height: '100%',
     filter: `drop-shadow(${size / 200}vmin ${size / 200}vmin ${size / 200}vmin #000000)`
   };
-
-  // onMouseMove={props.drag}
-   // onMouseDown={props.drag}
-// draggable={true} onDrag={props.drag}
 
   return (
     <div className='knob-svg' style={containerStyle}>
@@ -117,18 +111,33 @@ export const meter = (props) => {
   const radius = Math.sqrt(Math.pow(0.95 * height, 2) + Math.pow(width / 2, 2));
 
   const ticks = [
-    {vu: -20, deg: -42, strokeWidth: '1%', stroke: '#000000'},
-    {vu: -10, deg: -30, strokeWidth: '1%', stroke: '#000000'},
-    {vu: -7, deg: -18, strokeWidth: '1%', stroke: '#000000'},
-    {vu: -6, deg: -12, strokeWidth: '.5%', stroke: '#000000'},
-    {vu: -5, deg: -6, strokeWidth: '1%', stroke: '#000000'},
-    {vu: -4, deg: 0, strokeWidth: '.5%', stroke: '#000000'},
+    // {vu: -20, deg: -40, strokeWidth: '1%', stroke: '#000000'},
+    // {vu: -10, deg: -25, strokeWidth: '1%', stroke: '#000000'},
+    // {vu: -7, deg: -15, strokeWidth: '1%', stroke: '#000000'},
+    // {vu: -6, deg: -10, strokeWidth: '.5%', stroke: '#000000'},
+    // {vu: -5, deg: -5, strokeWidth: '1%', stroke: '#000000'},
+    // {vu: -4, deg: 0, strokeWidth: '.5%', stroke: '#000000'},
+    // {vu: -3, deg: 6, strokeWidth: '1%', stroke: '#000000'},
+    // {vu: -2, deg: 11, strokeWidth: '.5%', stroke: '#000000'},
+    // {vu: -1, deg: 16, strokeWidth: '.5%', stroke: '#000000'},
+    // {vu: 0, deg: 21, strokeWidth: '1%', stroke: '#FF0000'},
+    // {vu: 1, deg: 26, strokeWidth: '.5%', stroke: '#FF0000'},
+    // {vu: 2, deg: 31, strokeWidth: '.5%', stroke: '#FF0000'},
+    // {vu: 3, deg: 36, strokeWidth: '1%', stroke: '#FF0000'},
+
+
+    {vu: -20, deg: -40, strokeWidth: '1%', stroke: '#000000'},
+    {vu: -10, deg: -26, strokeWidth: '1%', stroke: '#000000'},
+    {vu: -7, deg: -15, strokeWidth: '1%', stroke: '#000000'},
+    {vu: -6, deg: -10.5, strokeWidth: '.4%', stroke: '#000000'},
+    {vu: -5, deg: -5, strokeWidth: '1%', stroke: '#000000'},
+    {vu: -4, deg: -.5, strokeWidth: '.4%', stroke: '#000000'},
     {vu: -3, deg: 5, strokeWidth: '1%', stroke: '#000000'},
-    {vu: -2, deg: 10, strokeWidth: '.5%', stroke: '#000000'},
-    {vu: -1, deg: 15, strokeWidth: '.5%', stroke: '#000000'},
+    {vu: -2, deg: 10, strokeWidth: '.4%', stroke: '#000000'},
+    {vu: -1, deg: 15, strokeWidth: '.4%', stroke: '#000000'},
     {vu: 0, deg: 20, strokeWidth: '1%', stroke: '#FF0000'},
-    {vu: 1, deg: 25, strokeWidth: '.5%', stroke: '#FF0000'},
-    {vu: 2, deg: 30, strokeWidth: '.5%', stroke: '#FF0000'},
+    {vu: 1, deg: 25, strokeWidth: '.4%', stroke: '#FF0000'},
+    {vu: 2, deg: 30, strokeWidth: '.4%', stroke: '#FF0000'},
     {vu: 3, deg: 35, strokeWidth: '1%', stroke: '#FF0000'},
     {vu: 'start', deg: -51, strokeWidth: '6%', stroke: '#F9DF95', dash: '0, 48, 10, 30'},
     {vu: 'end', deg: 51, strokeWidth: '6%', stroke: '#F9DF95', dash: '0, 48, 10, 30'},
@@ -149,8 +158,27 @@ export const meter = (props) => {
     height: '100%',
     // filter: 'drop-shadow(1vmin 1vmin 1vmin #000000)'
   };
+  const bigText = {
+    fontFamily: 'Helvetica, sans-serif',
+    fontSize: height / 9 + 'px',
+    // fontWeight: '300'
+  }
+  const signText = {
+    fontFamily: 'Helvetica, sans-serif',
+    fontSize: height / 9 + 'px',
+    fontWeight: '200'
+
+  }
+
+  const path = document.querySelector('#arc') ? document.querySelector('#arc') : null;
+  const pathLength = path ? path.getTotalLength() : null;
+  // console.log(pathLength)
+
+
+
 
   return (
+
     <div className='meter-svg' style={containerStyle}>
       <svg style={svgStyle} width={width} height={height}>
 
@@ -195,7 +223,7 @@ export const meter = (props) => {
             transform={`translate(0, ${height * .15})`}
             fill='none'
             stroke='#000000'
-            strokeWidth='1%'
+            strokeWidth='.8%'
             strokeDasharray='0, 8, 58.5, 33.5'
           />
           <use id='arc-red'
@@ -203,7 +231,7 @@ export const meter = (props) => {
             transform={`translate(0, ${height * .15})`}
             fill='none'
             stroke='#FF0000'
-            strokeWidth='1%'
+            strokeWidth='.8%'
             strokeDasharray='0, 66.5, 25.5, 8'
           />
           <use id='arc-double-red'
@@ -215,7 +243,7 @@ export const meter = (props) => {
             strokeDasharray='0, 67.5, 25.5, 7'
           />
           {ticks.map(d => {
-            const hyp = Math.sqrt(Math.pow(Math.sin(d.rad) * radius, 2) + Math.pow(.95 * height, 2))
+            const hyp = Math.sqrt(Math.pow(Math.sin(d.rad) * radius, 2) + Math.pow(.95 * height, 2));
             return (
               <line id={`arc-tick-${d.vu}`}
                 key={d.vu}
@@ -232,6 +260,9 @@ export const meter = (props) => {
               />
             );
           })}
+        </g>
+
+        <g id='meter-3'>
           <use id='arc-matte-top'
             href='#arc'
             transform={`translate(0, -${height * .025})`}
@@ -247,16 +278,47 @@ export const meter = (props) => {
           />
         </g>
 
-        <g id='text'>
-
-
+        <g id='meter-4'>
+          <text
+            x={width / 2}
+            y={height / 1.7}
+            style={bigText}
+            fill='#000000'
+            textAnchor='middle'
+            alignmentBaseline='middle'
+            textLength={width / 9}
+            lengthAdjust='spacingAndGlyphs'
+          >
+          VU
+          </text>
+          <text
+            x={width * .12}
+            y={height / 4}
+            style={signText}
+            fill='#000000'
+            textAnchor='middle'
+            alignmentBaseline='middle'
+            textLength={width / 25}
+            lengthAdjust='spacingAndGlyphs'
+          >
+          -
+          </text>
+          <text
+            x={width * .88}
+            y={height / 4}
+            style={signText}
+            fill='#FF0000'
+            textAnchor='middle'
+            alignmentBaseline='middle'
+            textLength={width / 25}
+            lengthAdjust='spacingAndGlyphs'
+          >
+          +
+          </text>
         </g>
 
 
-
-
       </svg>
-
     </div>
   )
 }
