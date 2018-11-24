@@ -2,11 +2,9 @@ import React, { Component } from 'react';
 import tracking from 'tracking';
 import help from './_helpers.js';
 import * as UI from './_UI.js';
-
-import Wave from './Wave.js';
+// import Wave from './Wave.js';
 // import Note from './Note.js';
-import Spec from './Spec.js';
-
+// import Spec from './Spec.js';
 
 export default class Theremin extends Component {
     constructor(props) {
@@ -15,20 +13,21 @@ export default class Theremin extends Component {
       colorGain: {r: 0, g: 0, b: 0},
       colorFreq: {r: 0, g: 0, b: 0},
       audio: {},
-
-      sense: {v: 30, max: 100},
-      range: {v: 4, max: 6},
-      tone: {v: 2200, max: 4400},
-      volume: {v: .5, max: 1},
-      fmWidth: {v: 1, max: 10},
-      fmDepth: {v: 1500, max: 3000},
-
+      params: {
+        sense: {v: 30, max: 100},
+        range: {v: 4, max: 6},
+        tone: {v: 2200, max: 4400},
+        volume: {v: .5, max: 1},
+        fmWidth: {v: 1, max: 10},
+        fmDepth: {v: 1500, max: 3000},
+      },
       data: [],
       dataGain: [],
       dataFreq: [],
 
     };
     this.handleClickColor = this.handleClickColor.bind(this);
+    this.handleClickParam = this.handleClickParam.bind(this);
     this.handleScrollParam = this.handleScrollParam.bind(this);
   }
 
@@ -55,11 +54,13 @@ export default class Theremin extends Component {
 
 
   audioInit(ctx) {
+    const { params } = this.state;
     const baseHz = 220;
+
     const osc1 = new OscillatorNode(ctx, {type: 'sine', frequency: baseHz});
-    const osc2 = new OscillatorNode(ctx, {type: 'sine', frequency: baseHz + this.state.fmWidth.v});
-    const lpf = new BiquadFilterNode(ctx, {type: 'lowpass', Q: 1, frequency: this.state.tone.v});
-    const fmGain = new GainNode(ctx, {gain: this.state.fmDepth.v});
+    const osc2 = new OscillatorNode(ctx, {type: 'sine', frequency: baseHz + params.fmWidth.v});
+    const lpf = new BiquadFilterNode(ctx, {type: 'lowpass', Q: 1, frequency: params.tone.v});
+    const fmGain = new GainNode(ctx, {gain: params.fmDepth.v});
     const masterGain = new GainNode(ctx, {gain: 0});
     const masterOut = ctx.destination;
 
@@ -74,8 +75,7 @@ export default class Theremin extends Component {
     //   return arr;
     // }
 
-    const dist = new WaveShaperNode(ctx, {curve: help.makeDistortion(0, ctx.sampleRate), oversample: '4x'});
-
+    // const dist = new WaveShaperNode(ctx, {curve: help.makeDistortion(0, ctx.sampleRate), oversample: '4x'});
 
     osc1.connect(fmGain);
     fmGain.connect(osc2.frequency);
@@ -108,12 +108,13 @@ export default class Theremin extends Component {
 
   trackerInit() {
     const tracking = window.tracking;
+    const { params } = this.state;
 
     tracking.ColorTracker.registerColor('Gain', (r, g, b) => {
-      return help.getColorDist(this.state.colorGain, {r: r, g: g, b: b}) <= this.state.sense.v;
+      return help.getColorDist(this.state.colorGain, {r: r, g: g, b: b}) <= params.sense.v;
     });
     tracking.ColorTracker.registerColor('Freq', (r, g, b) => {
-      return help.getColorDist(this.state.colorFreq, {r: r, g: g, b: b}) <= this.state.sense.v;
+      return help.getColorDist(this.state.colorFreq, {r: r, g: g, b: b}) <= params.sense.v;
     });
     const colors = new tracking.ColorTracker(['Gain', 'Freq']);
 
@@ -164,15 +165,33 @@ export default class Theremin extends Component {
   }
 
 
-  handleScrollParam(e) {
+  handleClickParam(e, key) {
     e.preventDefault();
-    const key = e.target.parentNode.parentNode.classList[1];
-    const prev = this.state[key];
-    const delta = (e.deltaY * prev.max) / 2000;
+    const handleDrag = (e) => {
+      this.updateParam((e.movementX - e.movementY) / 500, key);
+    };
+    window.addEventListener('mousemove', handleDrag);
+    const clearEvent = () => {
+      window.removeEventListener('mousemove', handleDrag);
+      window.removeEventListener('mousemove', clearEvent);
+    };
+    window.addEventListener('mouseup', clearEvent);
+  }
+
+
+  handleScrollParam(e, key) {
+    e.preventDefault();
+    this.updateParam(e.deltaY / 2000, key);
+  }
+
+
+  updateParam(amt, key) {
+    const prev = this.state.params[key];
+    const delta = amt * prev.max;
     const current = prev.v + delta;
     if (current >= 0 && current <= prev.max) {
       this.setState(prevState => ({
-        [key]: {...prevState[key], v: current}
+        params: {...prevState.params, [key]: {...prevState.params[key], v: current}}
       }));
     };
   }
@@ -205,6 +224,7 @@ export default class Theremin extends Component {
     const { dataGain } = this.state;
     const { dataFreq } = this.state;
     const { audio } = this.state;
+    const { params } = this.state;
     const height = this.refs.video.clientHeight;
 
     const ctx = audio.ctx;
@@ -219,7 +239,7 @@ export default class Theremin extends Component {
     } else {
       dataGain.forEach(d => {
         const y = d.y + (d.height / 2);
-        const level = (height - y) / height * this.state.volume.v;
+        const level = (height - y) / height * params.volume.v;
         help.setAudioParam(masterGain.gain, level, ctx, latency);
         // masterGain.gain.cancelScheduledValues(ctx.currentTime);
         // masterGain.gain.setValueAtTime(masterGain.gain.value, ctx.currentTime);
@@ -232,6 +252,7 @@ export default class Theremin extends Component {
   audioRefreshFreq() {
     const { dataFreq } = this.state;
     const { audio } = this.state;
+    const { params } = this.state;
     const width = this.refs.video.clientWidth;
 
     const ctx = audio.ctx;
@@ -241,12 +262,12 @@ export default class Theremin extends Component {
 
     dataFreq.forEach(d => {
       const x = d.x + (d.width / 2);
-      const freq1 = audio.baseHz * Math.pow(2, (width - x)/(width / this.state.range.v));
+      const freq1 = audio.baseHz * Math.pow(2, (width - x)/(width / params.range.v));
       help.setAudioParam(osc1.frequency, freq1, ctx, latency);
       // osc1.frequency.cancelScheduledValues(ctx.currentTime);
       // osc1.frequency.setValueAtTime(osc1.frequency.value, ctx.currentTime);
       // osc1.frequency.linearRampToValueAtTime(freq1, ctx.currentTime + latency);
-      const freq2 = (audio.baseHz + this.state.fmWidth.v) * Math.pow(2, (width - x)/(width / this.state.range.v));
+      const freq2 = (audio.baseHz + params.fmWidth.v) * Math.pow(2, (width - x)/(width / params.range.v));
       help.setAudioParam(osc2.frequency, freq2, ctx, latency);
       // osc2.frequency.cancelScheduledValues(ctx.currentTime);
       // osc2.frequency.setValueAtTime(osc2.frequency.value, ctx.currentTime);
@@ -256,11 +277,12 @@ export default class Theremin extends Component {
 
   audioRefreshFm() {
     const { audio } = this.state;
+    const { params } = this.state;
     const ctx = audio.ctx;
     const fmGain = audio.fmGain;
     const latency = audio.latency;
 
-    help.setAudioParam(fmGain.gain, this.state.fmDepth.v, ctx, latency);
+    help.setAudioParam(fmGain.gain, params.fmDepth.v, ctx, latency);
     // fmGain.gain.cancelScheduledValues(ctx.currentTime);
     // fmGain.gain.setValueAtTime(fmGain.gain.value, ctx.currentTime);
     // fmGain.gain.linearRampToValueAtTime(this.state.fmDepth.v, ctx.currentTime + latency);
@@ -269,57 +291,52 @@ export default class Theremin extends Component {
 
   audioRefreshTone() {
     const { audio } = this.state;
+    const { params } = this.state;
     const ctx = audio.ctx;
     const lpf = audio.lpf;
     const latency = audio.latency;
 
-    help.setAudioParam(lpf.frequency, this.state.tone.v, ctx, latency);
+    help.setAudioParam(lpf.frequency, params.tone.v, ctx, latency);
     // lpf.frequency.cancelScheduledValues(ctx.currentTime);
     // lpf.frequency.setValueAtTime(lpf.frequency.value, ctx.currentTime);
     // lpf.frequency.linearRampToValueAtTime(this.state.tone.v, ctx.currentTime + latency);
   }
 
 
-  render() {
-    const { masterGain } = this.state.audio;
+  makeControlBox() {
+    const { params } = this.state;
+    const knobSize = 10;
 
+    const components = Object.keys(params).map((d, i) => {
+      return (
+        <div className='component' key={i}>
+          <div className='knob'>
+            <UI.knob click={(e) => this.handleClickParam(e, d)} scroll={(e) => this.handleScrollParam(e, d)} level={(params[d].v / params[d].max) * 100} size={knobSize} />
+          </div>
+          <h6 className='label'>{d}</h6>
+        </div>
+      );
+    });
+
+    return (
+      <div className='control-box'>
+        {components}
+      </div>
+    );
+  }
+
+
+  render() {
     const { colorGain } = this.state;
     const { colorFreq } = this.state;
     const colorV = `rgb(${colorGain.r}, ${colorGain.g}, ${colorGain.b})`;
     const colorF = `rgb(${colorFreq.r}, ${colorFreq.g}, ${colorFreq.b})`;
 
-    const { sense } = this.state;
-    const { range } = this.state;
-    const { tone } = this.state;
-    const { volume } = this.state;
-    const { fmDepth } = this.state;
-    const { fmWidth } = this.state;
-    const knobSize = 10;
-
-    const modules = !masterGain
-      ? <div />
-      : (
-        <div className='modules'>
-          <div className='module'>
-            <Wave ctx={this.props.ctx} src={masterGain} />
-          </div>
-          <div className='module'>
-            <Spec ctx={this.props.ctx} src={masterGain} />
-          </div>
-
-
-          <div className='module'>
-          </div>
-
-
-        </div>
-      );
-
     return (
 
       <div className='App'>
 
-            <UI.meter size={50} />
+        <UI.meter size={50} />
 
         <div className='Theremin'>
 
@@ -344,53 +361,86 @@ export default class Theremin extends Component {
           </div>
 
           <div className='bottom'>
-            <div className='control-box'>
-              <div className='component'>
-                <div className='knob sense'>
-                  <UI.knob scroll={(e) => this.handleScrollParam(e)} level={(sense.v / sense.max) * 100} size={knobSize} />
-                </div>
-                <h6 className='label'>Sense</h6>
-              </div>
-              <div className='component'>
-                <div className='knob range'>
-                  <UI.knob scroll={(e) => this.handleScrollParam(e)} level={(range.v / range.max) * 100} size={knobSize} />
-                </div>
-                <h6 className='label'>Range</h6>
-              </div>
-              <div className='component'>
-                <div className='knob tone'>
-                  <UI.knob scroll={(e) => this.handleScrollParam(e)} level={(tone.v / tone.max) * 100} size={knobSize} />
-                </div>
-                <h6 className='label'>Tone</h6>
-              </div>
-              <div className='component'>
-                <div className='knob volume'>
-                  <UI.knob scroll={(e) => this.handleScrollParam(e)} level={(volume.v / volume.max) * 100} size={knobSize} />
-                </div>
-                <h6 className='label'>Volume</h6>
-              </div>
-
-              <div className='component'>
-                <div className='knob fmDepth'>
-                  <UI.knob scroll={(e) => this.handleScrollParam(e)} level={(fmDepth.v / fmDepth.max) * 100} size={knobSize} />
-                </div>
-                <h6 className='label'>Depth</h6>
-              </div>
-              <div className='component'>
-                <div className='knob fmWidth'>
-                  <UI.knob scroll={(e) => this.handleScrollParam(e)} level={(fmWidth.v / fmWidth.max) * 100} size={knobSize} />
-                </div>
-                <h6 className='label'>Width</h6>
-              </div>
-            </div>
+            {this.makeControlBox()}
           </div>
 
         </div>
-
-        {modules}
 
       </div>
     );
   }
 }
+
+
+
+    // const { masterGain } = this.state.audio;
+    // const modules = !masterGain
+    //   ? <div />
+    //   : (
+    //     <div className='modules'>
+    //       <div className='module'>
+    //         <Wave ctx={this.props.ctx} src={masterGain} />
+    //       </div>
+    //       <div className='module'>
+    //         <Spec ctx={this.props.ctx} src={masterGain} />
+    //       </div>
+    //     </div>
+    //   );
+
+
+
+        // {modules}
+
+
+
+    // const { sense } = this.state;
+    // const { range } = this.state;
+    // const { tone } = this.state;
+    // const { volume } = this.state;
+    // const { fmDepth } = this.state;
+    // const { fmWidth } = this.state;
+    // const knobSize = 10;
+
+
+
+            // <div className='control-box'>
+            //   <div className='component'>
+            //     <div className='knob sense'>
+            //       <UI.knob scroll={(e) => this.handleScrollParam(e, 'sense')} level={(sense.v / sense.max) * 100} size={knobSize} />
+            //     </div>
+            //     <h6 className='label'>Sense</h6>
+            //   </div>
+            //   <div className='component'>
+            //     <div className='knob range'>
+            //       <UI.knob scroll={(e) => this.handleScrollParam(e, 'range')} level={(range.v / range.max) * 100} size={knobSize} />
+            //     </div>
+            //     <h6 className='label'>Range</h6>
+            //   </div>
+            //   <div className='component'>
+            //     <div className='knob tone'>
+            //       <UI.knob scroll={(e) => this.handleScrollParam(e, 'tone')} level={(tone.v / tone.max) * 100} size={knobSize} />
+            //     </div>
+            //     <h6 className='label'>Tone</h6>
+            //   </div>
+            //   <div className='component'>
+            //     <div className='knob volume'>
+            //       <UI.knob scroll={(e) => this.handleScrollParam(e, 'volume')} level={(volume.v / volume.max) * 100} size={knobSize} />
+            //     </div>
+            //     <h6 className='label'>Volume</h6>
+            //   </div>
+
+            //   <div className='component'>
+            //     <div className='knob fmDepth'>
+            //       <UI.knob scroll={(e) => this.handleScrollParam(e, 'fmDepth')} level={(fmDepth.v / fmDepth.max) * 100} size={knobSize} />
+            //     </div>
+            //     <h6 className='label'>Depth</h6>
+            //   </div>
+            //   <div className='component'>
+            //     <div className='knob fmWidth'>
+            //       <UI.knob scroll={(e) => this.handleScrollParam(e, 'fmWidth')} level={(fmWidth.v / fmWidth.max) * 100} size={knobSize} />
+            //     </div>
+            //     <h6 className='label'>Width</h6>
+            //   </div>
+            // </div>
+
 

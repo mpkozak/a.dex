@@ -1,9 +1,11 @@
 import React from 'react';
 
+
+
 export const knob = (props) => {
   const sizeUnit = Math.min(window.innerWidth, window.innerHeight) / 100;
   const size = sizeUnit * props.size;
-  const diameter = 100;
+  const diameter = size;
   const radius = diameter / 2;
   const rectW = diameter / 25;
   const rectH = rectW * 5;
@@ -14,37 +16,25 @@ export const knob = (props) => {
     height: size + 'px',
     margin: '.5vmin'
   };
-  const staticStyle = {
+  const svgStyle = {
     position: 'absolute',
     left: 0,
     top: 0,
     width: '100%',
     height: '100%',
-    filter: 'drop-shadow(.3vmin .3vmin .3vmin #000000)'
+    filter: `drop-shadow(${size / 200}vmin ${size / 200}vmin ${size / 200}vmin #000000)`
   };
-  const rotateStyle = {
-    position: 'absolute',
-    left: 0,
-    top: 0,
-    width: '100%',
-    height: '100%',
-    transform: `rotate(${props.level * 3.2 - 160}deg)`
-  };
+
+  // onMouseMove={props.drag}
+   // onMouseDown={props.drag}
+// draggable={true} onDrag={props.drag}
 
   return (
     <div className='knob-svg' style={containerStyle}>
-      <svg style={staticStyle} width={diameter} height={diameter}>
-        <circle
-          cx={radius + '%'}
-          cy={radius + '%'}
-          r={radius + '%'}
-          fill='#000000'
-        />
-      </svg>
-      <svg style={staticStyle} width={diameter} height={diameter}>
+      <svg style={svgStyle} width={diameter} height={diameter} onMouseDown={props.click} onWheel={props.scroll}>
+
         <defs>
-          <radialGradient
-            id='knob'
+          <radialGradient id='knob-light-gradient'
             gradientUnits='objectBoundingBox'
             cx='50%'
             cy='50%'
@@ -58,18 +48,7 @@ export const knob = (props) => {
             <stop offset='40%' stopColor='#FFFFFF' stopOpacity='.5'/>
             <stop offset='80%' stopColor='#FFFFFF' stopOpacity='.1875'/>
           </radialGradient>
-        </defs>
-        <circle
-          cx={radius + '%'}
-          cy={radius + '%'}
-          r={radius - 1 + '%'}
-          fill='url(#knob)'
-        />
-      </svg>
-      <svg style={rotateStyle} width={diameter} height={diameter}>
-        <defs>
-          <linearGradient
-            id='notch'
+          <linearGradient id='knob-notch-gradient'
             gradientUnits='objectBoundingBox'
             x1='0%'
             y1='0%'
@@ -83,36 +62,48 @@ export const knob = (props) => {
             <stop offset='100%' stopColor='#000000' stopOpacity='.5'/>
           </linearGradient>
         </defs>
-        <rect
-          x={radius - rectW / 2 + '%'}
-          y={rectW * 1.5 + '%'}
-          width={rectW + '%'}
-          height={rectH + '%'}
-          fill='url(#notch)'
-          stroke='#000000'
-          strokeWidth={rectW / 5 + '%'}
-        />
-      </svg>
-      <svg onWheel={props.scroll} style={staticStyle} width={diameter} height={diameter}>
-        <circle
-          cx={radius + '%'}
-          cy={radius + '%'}
-          r={radius + '%'}
-          fill='none'
-        />
+
+        <g id='knob-1'>
+          <circle id='knob-base'
+            cx={radius}
+            cy={radius}
+            r={radius}
+            fill='#000000'
+          />
+          <circle id='knob-light'
+            cx={radius}
+            cy={radius}
+            r={radius - 1}
+            fill='url(#knob-light-gradient)'
+          />
+        </g>
+
+        <g id='knob-2'>
+          <rect id='knob-notch'
+            x={radius - rectW / 2}
+            y={rectW * 1.5}
+            width={rectW}
+            height={rectH}
+            fill='url(#knob-notch-gradient)'
+            stroke='#000000'
+            strokeWidth={rectW / 5}
+            transform={`rotate(${props.level * 3.2 - 160}, ${radius}, ${radius})`}
+          />
+        </g>
+
+        <g id='knob-3'>
+          <circle id='knob-overlay'
+            cx={radius}
+            cy={radius}
+            r={radius}
+            fill='none'
+          />
+        </g>
+
       </svg>
     </div>
   );
 };
-
-
-
-
-
-
-
-
-
 
 
 
@@ -150,37 +141,42 @@ export const meter = (props) => {
     height: height + 'px',
     margin: '.5vmin',
   };
+  const svgStyle = {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    width: '100%',
+    height: '100%',
+    // filter: 'drop-shadow(1vmin 1vmin 1vmin #000000)'
+  };
 
   return (
     <div className='meter-svg' style={containerStyle}>
-      <svg width={width} height={height}>
+      <svg style={svgStyle} width={width} height={height}>
 
         <defs>
-          <path
+          <path id='arc'
             d={`
               M ${width * (1 / 8)} ${height * (2.5 / 8)}
               Q ${width * (4 / 8)} ${height * (1 / 8)},
               ${width * (7 / 8)} ${height * (2.5 / 8)}
             `}
             pathLength='100'
-            id='arc'
           />
         </defs>
 
-        <g id='box'>
-          <rect
-            id='box-outer'
-            x='0%'
-            y='0%'
-            width='100%'
-            height='100%'
+        <g id='meter-1'>
+          <rect id='box-outer'
+            x='0'
+            y='0'
+            width={width}
+            height={height}
             rx={width / 25}
             ry={width / 25}
             fill='#272119'
             stroke='none'
           />
-          <rect
-            id='box-inner'
+          <rect id='box-inner'
             x={(width * .1) / 2}
             y={(width * .1) / 2}
             width={width - (width * .1)}
@@ -193,25 +189,25 @@ export const meter = (props) => {
           />
         </g>
 
-        <g id='scale'>
-          <use href='#arc'
-            id='arc-black'
+        <g id='meter-2'>
+          <use id='arc-black'
+            href='#arc'
             transform={`translate(0, ${height * .15})`}
             fill='none'
             stroke='#000000'
             strokeWidth='1%'
             strokeDasharray='0, 8, 58.5, 33.5'
           />
-          <use href='#arc'
-            id='arc-red'
+          <use id='arc-red'
+            href='#arc'
             transform={`translate(0, ${height * .15})`}
             fill='none'
             stroke='#FF0000'
             strokeWidth='1%'
             strokeDasharray='0, 66.5, 25.5, 8'
           />
-          <use href='#arc'
-            id='arc-double-red'
+          <use id='arc-double-red'
+            href='#arc'
             transform={`translate(0, ${height * .15})`}
             fill='none'
             stroke='#FF0000'
@@ -221,7 +217,7 @@ export const meter = (props) => {
           {ticks.map(d => {
             const hyp = Math.sqrt(Math.pow(Math.sin(d.rad) * radius, 2) + Math.pow(.95 * height, 2))
             return (
-              <line
+              <line id={`arc-tick-${d.vu}`}
                 key={d.vu}
                 x1={width / 2}
                 y1={.95 * height}
@@ -236,20 +232,28 @@ export const meter = (props) => {
               />
             );
           })}
-          <use href='#arc'
+          <use id='arc-matte-top'
+            href='#arc'
             transform={`translate(0, -${height * .025})`}
-            id='matte-top'
             fill='none'
             stroke='#F9DF95'
             strokeWidth='9%'
           />
-          <use href='#arc'
-            id='matte-bottom'
+          <use id='arc-matte-bottom'
+            href='#arc'
             transform={`translate(0, ${height * .15})`}
             fill='#F9DF95'
             stroke='none'
           />
         </g>
+
+        <g id='text'>
+
+
+        </g>
+
+
+
 
       </svg>
 
