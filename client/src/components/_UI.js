@@ -127,8 +127,8 @@ export const meter = (props) => {
     {vu: 1, deg: 25, strokeWidth: '.4%', stroke: redColor, label: false},
     {vu: 2, deg: 30, strokeWidth: '.4%', stroke: redColor, label: false},
     {vu: 3, deg: 35, strokeWidth: '1%', stroke: redColor, label: true},
-    {vu: 'start', deg: -51, strokeWidth: '6%', stroke: boxInnerColor, label: false, dash: '0, 48, 10, 30'},
-    {vu: 'end', deg: 51, strokeWidth: '6%', stroke: boxInnerColor, label: false, dash: '0, 48, 10, 30'},
+    // {vu: 'start', deg: -51, strokeWidth: '6%', stroke: boxInnerColor, label: false, dash: '0, 48, 10, 30'},
+    // {vu: 'end', deg: 51, strokeWidth: '6%', stroke: boxInnerColor, label: false, dash: '0, 48, 10, 30'},
   ];
   ticks.forEach(d => d.rad = d.deg * (Math.PI / 180));
 
@@ -169,11 +169,11 @@ export const meter = (props) => {
     fontSize: height / 25 + 'px',
     fontWeight: '400'
   };
-  const sigText = {
-    fontFamily: 'Times, Times New Roman, serif',
-    fontSize: height / 24 + 'px',
-    fontWeight: '800'
-  };
+  // const sigText = {
+  //   fontFamily: 'Times, Times New Roman, serif',
+  //   fontSize: height / 24 + 'px',
+  //   fontWeight: '800'
+  // };
 
   return (
     <div className='meter-svg' style={containerStyle}>
@@ -233,6 +233,76 @@ export const meter = (props) => {
             <stop offset='38%' stopColor='#FF352E' stopOpacity='.1'/>
             <stop offset='50%' stopColor='#FF352E' stopOpacity='0'/>
           </radialGradient>
+
+
+
+          <mask id='meter-mask'>
+            <rect width='100%' height='100%' fill='white'/>
+            <line
+              x1={width / 2}
+              y1={.95 * height}
+              x2={(width / 2) + Math.sin(-51 * (Math.PI / 180)) * Math.sqrt(Math.pow(Math.sin(-51 * (Math.PI / 180)) * radius, 2) + Math.pow(.95 * height, 2))}
+              y2={0}
+              stroke='black'
+              strokeWidth='6%'
+            />
+            <line
+              x1={width / 2}
+              y1={.95 * height}
+              x2={(width / 2) + Math.sin(51 * (Math.PI / 180)) * Math.sqrt(Math.pow(Math.sin(51 * (Math.PI / 180)) * radius, 2) + Math.pow(.95 * height, 2))}
+              y2={0}
+              stroke='black'
+              strokeWidth='6%'
+            />
+            <use
+              href='#meter-arc'
+              transform={`translate(0, -${height * .025})`}
+              fill='none'
+              stroke='black'
+              strokeWidth='9%'
+            />
+            <use
+              href='#meter-arc'
+              transform={`translate(0, ${height * .15})`}
+              fill='black'
+              stroke='none'
+            />
+            <rect
+              x='0'
+              y='0'
+              width={width * (1.1 / 8)}
+              height={height}
+              fill='black'
+              stroke='none'
+            />
+            <rect
+              x={width * (6.9 / 8)}
+              y='0'
+              width={width * (1.1 / 8)}
+              height={height}
+              fill='black'
+              stroke='none'
+            />
+            <rect
+              x='0'
+              y='0'
+              width={width}
+              height={height * (1 / 4)}
+              fill='black'
+              stroke='none'
+            />
+            <rect
+              x='0'
+              y={height * .45}
+              width={width}
+              height={height * .55}
+              fill='black'
+              stroke='none'
+            />
+          </mask>
+
+
+
         </defs>
 
         <g id='meter-1'>
@@ -259,7 +329,7 @@ export const meter = (props) => {
           />
         </g>
 
-        <g id='meter-2'>
+        <g id='meter-2' mask='url(#meter-mask)'>
           <use id='meter-arc-black'
             href='#meter-arc'
             transform={`translate(0, ${height * .15})`}
@@ -309,12 +379,14 @@ export const meter = (props) => {
             fill='none'
             stroke={boxInnerColor}
             strokeWidth='9%'
+            display='none'
           />
           <use id='meter-arc-matte-bottom'
             href='#meter-arc'
             transform={`translate(0, ${height * .15})`}
             fill={boxInnerColor}
             stroke='none'
+            display='none'
           />
         </g>
 

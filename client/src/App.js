@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import './App.css';
 import Theremin from './components/Theremin.js';
-// import Wave from './components/Wave.js';
-// import Spec from './components/Spec.js';
 // import Freq from './components/Freq.js';
 // import Note from './components/Note.js';
+// import Spec from './components/Spec.js';
+// import Vu from './components/Vu.js';
+// import Wave from './components/Wave.js';
 // import * as UI from './components/_UI.js';
 
 export default class App extends Component {

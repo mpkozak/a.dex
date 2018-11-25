@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import tracking from 'tracking';
 import help from './_helpers.js';
 import * as UI from './_UI.js';
-// import Wave from './Wave.js';
+// import Freq from './Freq.js';
 // import Note from './Note.js';
 // import Spec from './Spec.js';
+import Vu from './Vu.js';
+// import Wave from './Wave.js';
 
 export default class Theremin extends Component {
     constructor(props) {
@@ -48,6 +50,7 @@ export default class Theremin extends Component {
     this.audioRefreshFreq();
     this.audioRefreshFm();
     this.audioRefreshTone();
+    // console.log(this.state.audio.ctx.baseLatency)
     // console.log(this.state.audio.ctx.currentTime - this.state.audio.ctx.getOutputTimestamp().contextTime);
   }
 
@@ -107,13 +110,12 @@ export default class Theremin extends Component {
 
   trackerInit() {
     const tracking = window.tracking;
-    const { params } = this.state;
 
     tracking.ColorTracker.registerColor('Gain', (r, g, b) => {
-      return help.getColorDist(this.state.colorGain, {r: r, g: g, b: b}) <= params.sense.v;
+      return help.getColorDist(this.state.colorGain, {r: r, g: g, b: b}) <= this.state.params.sense.v;
     });
     tracking.ColorTracker.registerColor('Freq', (r, g, b) => {
-      return help.getColorDist(this.state.colorFreq, {r: r, g: g, b: b}) <= params.sense.v;
+      return help.getColorDist(this.state.colorFreq, {r: r, g: g, b: b}) <= this.state.params.sense.v;
     });
     const colors = new tracking.ColorTracker(['Gain', 'Freq']);
 
@@ -233,18 +235,18 @@ export default class Theremin extends Component {
     const latency = audio.latency;
 
     if (!dataGain.length || !dataFreq.length) {
-      // help.setAudioParam(masterGain.gain, 0, ctx, latency * 2);
-      masterGain.gain.cancelScheduledValues(ctx.currentTime);
-      masterGain.gain.setValueAtTime(masterGain.gain.value, ctx.currentTime);
-      masterGain.gain.linearRampToValueAtTime(0, ctx.currentTime + (latency * 2));
+      help.setAudioParam(masterGain.gain, 0, ctx, latency * 2);
+      // masterGain.gain.cancelScheduledValues(ctx.currentTime);
+      // masterGain.gain.setValueAtTime(masterGain.gain.value, ctx.currentTime);
+      // masterGain.gain.linearRampToValueAtTime(0, ctx.currentTime + (latency * 2));
     } else {
       dataGain.forEach(d => {
         const y = d.y + (d.height / 2);
         const level = (height - y) / height * params.volume.v;
-        // help.setAudioParam(masterGain.gain, level, ctx, latency);
-        masterGain.gain.cancelScheduledValues(ctx.currentTime);
-        masterGain.gain.setValueAtTime(masterGain.gain.value, ctx.currentTime);
-        masterGain.gain.linearRampToValueAtTime(level, ctx.currentTime + latency);
+        help.setAudioParam(masterGain.gain, level, ctx, latency);
+        // masterGain.gain.cancelScheduledValues(ctx.currentTime);
+        // masterGain.gain.setValueAtTime(masterGain.gain.value, ctx.currentTime);
+        // masterGain.gain.linearRampToValueAtTime(level, ctx.currentTime + latency);
       });
     };
   }
@@ -264,15 +266,15 @@ export default class Theremin extends Component {
     dataFreq.forEach(d => {
       const x = d.x + (d.width / 2);
       const freq1 = audio.baseHz * Math.pow(2, (width - x)/(width / params.range.v));
-      // help.setAudioParam(osc1.frequency, freq1, ctx, latency);
-      osc1.frequency.cancelScheduledValues(ctx.currentTime);
-      osc1.frequency.setValueAtTime(osc1.frequency.value, ctx.currentTime);
-      osc1.frequency.linearRampToValueAtTime(freq1, ctx.currentTime + latency);
+      help.setAudioParam(osc1.frequency, freq1, ctx, latency);
+      // osc1.frequency.cancelScheduledValues(ctx.currentTime);
+      // osc1.frequency.setValueAtTime(osc1.frequency.value, ctx.currentTime);
+      // osc1.frequency.linearRampToValueAtTime(freq1, ctx.currentTime + latency);
       const freq2 = (audio.baseHz + params.fmWidth.v) * Math.pow(2, (width - x)/(width / params.range.v));
-      // help.setAudioParam(osc2.frequency, freq2, ctx, latency);
-      osc2.frequency.cancelScheduledValues(ctx.currentTime);
-      osc2.frequency.setValueAtTime(osc2.frequency.value, ctx.currentTime);
-      osc2.frequency.linearRampToValueAtTime(freq2, ctx.currentTime + latency);
+      help.setAudioParam(osc2.frequency, freq2, ctx, latency);
+      // osc2.frequency.cancelScheduledValues(ctx.currentTime);
+      // osc2.frequency.setValueAtTime(osc2.frequency.value, ctx.currentTime);
+      // osc2.frequency.linearRampToValueAtTime(freq2, ctx.currentTime + latency);
     });
   }
 
@@ -284,10 +286,10 @@ export default class Theremin extends Component {
     const fmGain = audio.fmGain;
     const latency = audio.latency;
 
-    // help.setAudioParam(fmGain.gain, params.fmDepth.v, ctx, latency);
-    fmGain.gain.cancelScheduledValues(ctx.currentTime);
-    fmGain.gain.setValueAtTime(fmGain.gain.value, ctx.currentTime);
-    fmGain.gain.linearRampToValueAtTime(params.fmDepth.v, ctx.currentTime + latency);
+    help.setAudioParam(fmGain.gain, params.fmDepth.v, ctx, latency);
+    // fmGain.gain.cancelScheduledValues(ctx.currentTime);
+    // fmGain.gain.setValueAtTime(fmGain.gain.value, ctx.currentTime);
+    // fmGain.gain.linearRampToValueAtTime(params.fmDepth.v, ctx.currentTime + latency);
   }
 
 
@@ -298,10 +300,10 @@ export default class Theremin extends Component {
     const lpf = audio.lpf;
     const latency = audio.latency;
 
-    // help.setAudioParam(lpf.frequency, params.tone.v, ctx, latency);
-    lpf.frequency.cancelScheduledValues(ctx.currentTime);
-    lpf.frequency.setValueAtTime(lpf.frequency.value, ctx.currentTime);
-    lpf.frequency.linearRampToValueAtTime(params.tone.v, ctx.currentTime + latency);
+    help.setAudioParam(lpf.frequency, params.tone.v, ctx, latency);
+    // lpf.frequency.cancelScheduledValues(ctx.currentTime);
+    // lpf.frequency.setValueAtTime(lpf.frequency.value, ctx.currentTime);
+    // lpf.frequency.linearRampToValueAtTime(params.tone.v, ctx.currentTime + latency);
   }
 
 
@@ -334,11 +336,27 @@ export default class Theremin extends Component {
     const colorV = `rgb(${colorGain.r}, ${colorGain.g}, ${colorGain.b})`;
     const colorF = `rgb(${colorFreq.r}, ${colorFreq.g}, ${colorFreq.b})`;
 
+
+
+
+
+    const { masterGain } = this.state.audio;
+    const modules = !masterGain
+      ? <div />
+      : (
+        <div className='modules'>
+          <div className='module'>
+            <Vu ctx={this.props.ctx} src={masterGain} />
+          </div>
+        </div>
+      );
+
+
     return (
 
       <div className='App'>
 
-        <UI.meter size={50} peak={true} />
+          {modules}
 
         <div className='Theremin'>
 
@@ -368,10 +386,16 @@ export default class Theremin extends Component {
 
         </div>
 
+
       </div>
     );
   }
 }
+
+
+
+
+        // <UI.meter size={50} peak={true} />
 
 
 
@@ -385,6 +409,9 @@ export default class Theremin extends Component {
     //       </div>
     //       <div className='module'>
     //         <Spec ctx={this.props.ctx} src={masterGain} />
+    //       </div>
+    //       <div className='module'>
+    //         <Vu ctx={this.props.ctx} src={masterGain} />
     //       </div>
     //     </div>
     //   );
