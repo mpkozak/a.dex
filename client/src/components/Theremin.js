@@ -232,7 +232,7 @@ export default class Theremin extends Component {
       const y = dataGain.y + (dataGain.height / 2);
       const level = (height - y) / height * this.state.params.volume.v;
       help.setAudioParam(masterGain.gain, level, ctx, latency);
-    } else if (!dataFreq) {
+    } else {
       help.setAudioParam(masterGain.gain, 0, ctx, latency * 2);
     };
   }
