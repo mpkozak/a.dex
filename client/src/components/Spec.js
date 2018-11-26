@@ -2,45 +2,39 @@ import React, { Component } from 'react';
 import * as d3 from 'd3';
 import help from './_helpers.js';
 
+
 export default class Spec extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      scaleBase: 10, // valid range: 5-15
-      slices: 60
-    };
-  }
 
   componentDidMount() {
-    this.getData(this.props.ctx, this.props.src, this.state.scaleBase);
+    this.getData(this.props.ctx, this.props.src);
   }
 
-  getData(ctx, src, scaleBase) {
-    const analyser = ctx.createAnalyser();
-    analyser.fftSize = Math.pow(2, scaleBase);
-    analyser.minDecibels = -100;
-    analyser.maxDecibels = 0;
-    analyser.smoothingTimeConstant = 0;
+
+  getData(ctx, src) {
+    const scaleBase = 10;
+    const slices = 60;
+    const analyser = new AnalyserNode(ctx, {fftSize: Math.pow(2, scaleBase), minDecibels: -100, maxDecibels: 0, smoothingTimeConstant: 0});
     src.connect(analyser);
 
     const fftBins = analyser.frequencyBinCount;
-    const data = new Array(this.state.slices).fill(new Float32Array(fftBins).fill(-Infinity));
+    const data = new Array(slices).fill(new Float32Array(fftBins).fill(-Infinity));
 
-    const draw = () => {
-      requestAnimationFrame(draw);
+    const animate = () => {
+      requestAnimationFrame(animate);
       data.shift();
       data.push(new Float32Array(fftBins));
       analyser.getFloatFrequencyData(data[data.length - 1]);
-      this.drawSpec(data, fftBins);
+      this.drawSpec(data);
     };
-    draw();
+    animate();
   }
 
-  drawSpec(data, fftBins) {
+
+  drawSpec(data) {
     const canvas = this.refs.canvas.getContext('2d');
-    const width = this.state.slices;
-    const height = fftBins;
-    const sliceHeight = (height / fftBins);
+    const width = data.length;
+    const height = data[0].length;
+    const sliceHeight = 1;
     this.refs.canvas.width = width;
     this.refs.canvas.height = height;
 
@@ -58,6 +52,7 @@ export default class Spec extends Component {
       });
     });
   }
+
 
   render() {
     return (

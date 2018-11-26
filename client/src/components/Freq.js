@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3';
 
+
 export default class Freq extends Component {
 
   componentDidMount() {
@@ -8,25 +9,23 @@ export default class Freq extends Component {
     d3.select(this.node).append('g').classed('freq', true);
   }
 
+
   getData(ctx, src) {
     const scaleBase = 10;
-    const analyser = ctx.createAnalyser();
-    analyser.fftSize = Math.pow(2, scaleBase);
-    analyser.minDecibels = -100;
-    analyser.maxDecibels = 0;
-    analyser.smoothingTimeConstant = 0;
+    const analyser = new AnalyserNode(ctx, {fftSize: Math.pow(2, scaleBase), minDecibels: -100, maxDecibels: -30, smoothingTimeConstant: 0});
     src.connect(analyser);
 
     const fftBins = analyser.frequencyBinCount;
     const freq = new Uint8Array(fftBins);
 
-    const draw = () => {
-      requestAnimationFrame(draw);
+    const animate = () => {
+      requestAnimationFrame(animate);
       analyser.getByteFrequencyData(freq);
       this.drawFreq(freq, fftBins);
     };
-    draw();
+    animate();
   }
+
 
   drawFreq(input, size) {
     const node = this.node;
@@ -35,8 +34,8 @@ export default class Freq extends Component {
 
     const xScale = d3.scaleLinear().domain([0, size - 1]).range([0, width]);
     const yScale = d3.scalePow().domain([0, 255]).range([0, height]);
-    // const curveScale = d3.line().curve(d3.curveMonotoneX);
 
+    // const curveScale = d3.line().curve(d3.curveMonotoneX);
     // const dataCurve = [];
 
     // dataCurve.push([0, height]);
@@ -62,6 +61,7 @@ export default class Freq extends Component {
       .attr('y', d => height - yScale(d))
       .attr('height', d => yScale(d))
   }
+
 
   render() {
     return (

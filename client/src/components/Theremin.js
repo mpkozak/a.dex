@@ -5,7 +5,7 @@ import * as UI from './_UI.js';
 // import Freq from './Freq.js';
 // import Note from './Note.js';
 // import Spec from './Spec.js';
-import Vu from './Vu.js';
+// import Vu from './Vu.js';
 // import Wave from './Wave.js';
 
 export default class Theremin extends Component {
@@ -127,8 +127,8 @@ export default class Theremin extends Component {
       const dataGain = data.filter(d => d.color === 'Gain');
       const dataFreq = data.filter(d => d.color === 'Freq');
       this.setState(prevState => ({ data, dataGain, dataFreq }));
-    this.audioRefreshGain();
-    this.audioRefreshFreq();
+    // this.audioRefreshGain();
+    // this.audioRefreshFreq();
     });
 
     navigator.mediaDevices.getUserMedia({video: true})
@@ -227,12 +227,10 @@ export default class Theremin extends Component {
     const { dataGain } = this.state;
     const { dataFreq } = this.state;
     const { audio } = this.state;
-    const { params } = this.state;
-    const height = this.refs.video.clientHeight;
-
     const ctx = audio.ctx;
     const masterGain = audio.masterGain;
     const latency = audio.latency;
+    const height = this.refs.video.clientHeight;
 
     if (!dataGain.length || !dataFreq.length) {
       help.setAudioParam(masterGain.gain, 0, ctx, latency * 2);
@@ -242,7 +240,7 @@ export default class Theremin extends Component {
     } else {
       dataGain.forEach(d => {
         const y = d.y + (d.height / 2);
-        const level = (height - y) / height * params.volume.v;
+        const level = (height - y) / height * this.state.params.volume.v;
         help.setAudioParam(masterGain.gain, level, ctx, latency);
         // masterGain.gain.cancelScheduledValues(ctx.currentTime);
         // masterGain.gain.setValueAtTime(masterGain.gain.value, ctx.currentTime);
@@ -255,22 +253,20 @@ export default class Theremin extends Component {
   audioRefreshFreq() {
     const { dataFreq } = this.state;
     const { audio } = this.state;
-    const { params } = this.state;
-    const width = this.refs.video.clientWidth;
-
     const ctx = audio.ctx;
     const osc1 = audio.osc1;
     const osc2 = audio.osc2;
     const latency = audio.latency;
+    const width = this.refs.video.clientWidth;
 
     dataFreq.forEach(d => {
       const x = d.x + (d.width / 2);
-      const freq1 = audio.baseHz * Math.pow(2, (width - x)/(width / params.range.v));
+      const freq1 = audio.baseHz * Math.pow(2, (width - x)/(width / this.state.params.range.v));
       help.setAudioParam(osc1.frequency, freq1, ctx, latency);
       // osc1.frequency.cancelScheduledValues(ctx.currentTime);
       // osc1.frequency.setValueAtTime(osc1.frequency.value, ctx.currentTime);
       // osc1.frequency.linearRampToValueAtTime(freq1, ctx.currentTime + latency);
-      const freq2 = (audio.baseHz + params.fmWidth.v) * Math.pow(2, (width - x)/(width / params.range.v));
+      const freq2 = (audio.baseHz + this.state.params.fmWidth.v) * Math.pow(2, (width - x)/(width / this.state.params.range.v));
       help.setAudioParam(osc2.frequency, freq2, ctx, latency);
       // osc2.frequency.cancelScheduledValues(ctx.currentTime);
       // osc2.frequency.setValueAtTime(osc2.frequency.value, ctx.currentTime);
@@ -281,29 +277,27 @@ export default class Theremin extends Component {
 
   audioRefreshFm() {
     const { audio } = this.state;
-    const { params } = this.state;
     const ctx = audio.ctx;
     const fmGain = audio.fmGain;
     const latency = audio.latency;
 
-    help.setAudioParam(fmGain.gain, params.fmDepth.v, ctx, latency);
+    help.setAudioParam(fmGain.gain, this.state.params.fmDepth.v, ctx, latency);
     // fmGain.gain.cancelScheduledValues(ctx.currentTime);
     // fmGain.gain.setValueAtTime(fmGain.gain.value, ctx.currentTime);
-    // fmGain.gain.linearRampToValueAtTime(params.fmDepth.v, ctx.currentTime + latency);
+    // fmGain.gain.linearRampToValueAtTime(this.state.params.fmDepth.v, ctx.currentTime + latency);
   }
 
 
   audioRefreshTone() {
     const { audio } = this.state;
-    const { params } = this.state;
     const ctx = audio.ctx;
     const lpf = audio.lpf;
     const latency = audio.latency;
 
-    help.setAudioParam(lpf.frequency, params.tone.v, ctx, latency);
+    help.setAudioParam(lpf.frequency, this.state.params.tone.v, ctx, latency);
     // lpf.frequency.cancelScheduledValues(ctx.currentTime);
     // lpf.frequency.setValueAtTime(lpf.frequency.value, ctx.currentTime);
-    // lpf.frequency.linearRampToValueAtTime(params.tone.v, ctx.currentTime + latency);
+    // lpf.frequency.linearRampToValueAtTime(this.state.params.tone.v, ctx.currentTime + latency);
   }
 
 
@@ -336,140 +330,34 @@ export default class Theremin extends Component {
     const colorV = `rgb(${colorGain.r}, ${colorGain.g}, ${colorGain.b})`;
     const colorF = `rgb(${colorFreq.r}, ${colorFreq.g}, ${colorFreq.b})`;
 
-
-
-
-
-    const { masterGain } = this.state.audio;
-    const modules = !masterGain
-      ? <div />
-      : (
-        <div className='modules'>
-          <div className='module'>
-            <Vu ctx={this.props.ctx} src={masterGain} />
-          </div>
-        </div>
-      );
-
-
     return (
+      <div className='Theremin'>
 
-      <div className='App'>
-
-          {modules}
-
-        <div className='Theremin'>
-
-          <div className='top'>
-            <div className='video-box'>
-              <canvas className='canvas' ref='canvas'/>
-              <video className='video' ref='video' preload='true' autoPlay loop muted/>
+        <div className='top'>
+          <div className='video-box'>
+            <canvas className='canvas' ref='canvas'/>
+            <video className='video' ref='video' preload='true' autoPlay loop muted/>
+          </div>
+          <div className='color-box'>
+            <div className='element header'>
+              <h4>Set Colors:</h4>
             </div>
-            <div className='color-box'>
-              <div className='element header'>
-                <h4>Set Colors:</h4>
-              </div>
-              <div className='element'>
-                <div className='swatch colorGain' onClick={this.handleClickColor} style={{backgroundColor: colorV}} />
-                <h6>Volume</h6>
-              </div>
-              <div className='element'>
-                <div className='swatch colorFreq' onClick={this.handleClickColor} style={{backgroundColor: colorF}} />
-                <h6>Frequency</h6>
-              </div>
+            <div className='element'>
+              <div className='swatch colorGain' onClick={this.handleClickColor} style={{backgroundColor: colorV}} />
+              <h6>Volume</h6>
+            </div>
+            <div className='element'>
+              <div className='swatch colorFreq' onClick={this.handleClickColor} style={{backgroundColor: colorF}} />
+              <h6>Frequency</h6>
             </div>
           </div>
-
-          <div className='bottom'>
-            {this.makeControlBox()}
-          </div>
-
         </div>
 
+        <div className='bottom'>
+          {this.makeControlBox()}
+        </div>
 
       </div>
     );
   }
 }
-
-
-
-
-        // <UI.meter size={50} peak={true} />
-
-
-
-    // const { masterGain } = this.state.audio;
-    // const modules = !masterGain
-    //   ? <div />
-    //   : (
-    //     <div className='modules'>
-    //       <div className='module'>
-    //         <Wave ctx={this.props.ctx} src={masterGain} />
-    //       </div>
-    //       <div className='module'>
-    //         <Spec ctx={this.props.ctx} src={masterGain} />
-    //       </div>
-    //       <div className='module'>
-    //         <Vu ctx={this.props.ctx} src={masterGain} />
-    //       </div>
-    //     </div>
-    //   );
-
-
-
-        // {modules}
-
-
-
-    // const { sense } = this.state;
-    // const { range } = this.state;
-    // const { tone } = this.state;
-    // const { volume } = this.state;
-    // const { fmDepth } = this.state;
-    // const { fmWidth } = this.state;
-    // const knobSize = 10;
-
-
-
-            // <div className='control-box'>
-            //   <div className='component'>
-            //     <div className='knob sense'>
-            //       <UI.knob scroll={(e) => this.handleScrollParam(e, 'sense')} level={(sense.v / sense.max) * 100} size={knobSize} />
-            //     </div>
-            //     <h6 className='label'>Sense</h6>
-            //   </div>
-            //   <div className='component'>
-            //     <div className='knob range'>
-            //       <UI.knob scroll={(e) => this.handleScrollParam(e, 'range')} level={(range.v / range.max) * 100} size={knobSize} />
-            //     </div>
-            //     <h6 className='label'>Range</h6>
-            //   </div>
-            //   <div className='component'>
-            //     <div className='knob tone'>
-            //       <UI.knob scroll={(e) => this.handleScrollParam(e, 'tone')} level={(tone.v / tone.max) * 100} size={knobSize} />
-            //     </div>
-            //     <h6 className='label'>Tone</h6>
-            //   </div>
-            //   <div className='component'>
-            //     <div className='knob volume'>
-            //       <UI.knob scroll={(e) => this.handleScrollParam(e, 'volume')} level={(volume.v / volume.max) * 100} size={knobSize} />
-            //     </div>
-            //     <h6 className='label'>Volume</h6>
-            //   </div>
-
-            //   <div className='component'>
-            //     <div className='knob fmDepth'>
-            //       <UI.knob scroll={(e) => this.handleScrollParam(e, 'fmDepth')} level={(fmDepth.v / fmDepth.max) * 100} size={knobSize} />
-            //     </div>
-            //     <h6 className='label'>Depth</h6>
-            //   </div>
-            //   <div className='component'>
-            //     <div className='knob fmWidth'>
-            //       <UI.knob scroll={(e) => this.handleScrollParam(e, 'fmWidth')} level={(fmWidth.v / fmWidth.max) * 100} size={knobSize} />
-            //     </div>
-            //     <h6 className='label'>Width</h6>
-            //   </div>
-            // </div>
-
-

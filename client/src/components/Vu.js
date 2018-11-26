@@ -1,65 +1,68 @@
 import React, { Component } from 'react';
-import * as d3 from 'd3';
-import * as UI from './_UI.js';
+// import * as d3 from 'd3';
+import {VuMeter} from './_UI.js';
+
 
 export default class Wave extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      rms: 0,
+      rmsScale: 0,
+      rmsVU: 0,
+      peak: false,
+    };
+  }
+
 
   componentDidMount() {
     this.getData(this.props.ctx, this.props.src);
-    d3.select(this.node).append('g').classed('wave', true);
+    // setInterval(() => console.log(this.state.rms, 'vu ', this.state.rmsVU, 'degrees ', this.state.rmsScale), 1000)
   }
 
+
   getData(ctx, src) {
-    const scaleBase = 15;
-    const analyser = ctx.createAnalyser();
-    analyser.fftSize = Math.pow(2, scaleBase);
-    analyser.minDecibels = -100;
-    analyser.maxDecibels = 0;
-    analyser.smoothingTimeConstant = 0;
+    const scaleBase = 10;
+    const analyser = new AnalyserNode(ctx, {fftSize: Math.pow(2, scaleBase), minDecibels: -200, maxDecibels: 0, smoothingTimeConstant: 0});
     src.connect(analyser);
 
     const fftBins = analyser.frequencyBinCount;
     const wave = new Float32Array(fftBins);
+    // const ms = (fftBins / ctx.sampleRate) * 1000;
+    // console.log(ms)
 
-    const draw = () => {
-      requestAnimationFrame(draw);
+    const animate = () => {
+      requestAnimationFrame(animate);
       analyser.getFloatTimeDomainData(wave);
+      const sum2 = wave.reduce((a, b) => a + Math.pow(b, 2), 0);
+      const rms = Math.sqrt(sum2 / fftBins);
+      const rmsScale = (Math.log(rms) + 5) * 10;
+      if (rms > .5) this.handlePeak();
 
-      let sum = 0;
-      wave.forEach(d => sum += Math.pow(d, 2));
-      const rms = Math.sqrt(sum / fftBins);
-      console.log(rms)
+      const rmsDBFS = 20 * Math.log10(rms);
+      const rmsVU = rmsDBFS + 20;
+      // const rmsDBu = rmsDBFS + 24;
+      // const dbuV = 0.77459667;
+      // const volts = dbuV * Math.pow(10, rmsDBu / 20);
+      // console.log('rms ', rms, 'dbfs ', rmsDBFS, 'volts ', volts, 'vu ', rmsVU, 'dbu ', rmsDBu)
 
+      this.setState(prevState => ({ rms, rmsVU, rmsScale }));
     };
-    draw();
+    animate();
   }
 
-  drawWave(input, size) {
-  //   const node = this.node;
-  //   const width = node.clientWidth;
-  //   const height = node.clientHeight;
-  //   const margin = 10;
 
-  //   const xScale = d3.scaleLinear().domain([0, size - 1]).range([0, width]);
-  //   const yScale = d3.scaleLinear().domain([0 - margin, 255 + margin]).range([0, height]);
-  //   const curveScale = d3.line().curve(d3.curveLinear);
-
-  //   const dataCurve = [];
-  //   input.forEach((d, i) => {
-  //     dataCurve.push([xScale(i), yScale(d)]);
-  //   });
-
-  //   const wave = d3.select('.wave').selectAll('path').data([dataCurve]);
-  //   wave.enter().append('path')
-  //     .style('fill', 'none')
-  //     .style('stroke', '#66DD66')
-  //   wave
-  //     .attr('d', d => curveScale(d))
+  handlePeak() {
+    this.setState(prevState => ({ peak: true }));
+    setTimeout(() => {
+      this.setState(prevState => ({ peak: false }));
+    }, 1000);
   }
+
 
   render() {
     return (
-      <UI.meter size={50} peak={true} />
+      <VuMeter rms={this.state.rmsScale} peak={this.state.peak} />
     );
   }
 }

@@ -2,46 +2,44 @@ import React, { Component } from 'react';
 import * as d3 from 'd3';
 import help from './_helpers.js';
 
+
 export default class Note extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      scaleBase: 15, // valid range: 5-15
-      freq: 0,
-      refreshMs: 150
+      Hz: 0
     };
   }
 
+
   componentDidMount() {
-    this.getData(this.props.ctx, this.props.src, this.state.scaleBase);
+    this.getData(this.props.ctx, this.props.src);
   }
 
-  getData(ctx, src, scaleBase) {
-    const analyser = ctx.createAnalyser();
-    analyser.fftSize = Math.pow(2, scaleBase);
-    analyser.minDecibels = -100;
-    analyser.maxDecibels = 0;
-    analyser.smoothingTimeConstant = 0;
+
+  getData(ctx, src) {
+    const scaleBase = 15;
+    const refreshMs = 150;
+    const analyser = new AnalyserNode(ctx, {fftSize: Math.pow(2, scaleBase), minDecibels: -100, maxDecibels: -30, smoothingTimeConstant: 0});
     src.connect(analyser);
 
     const fftBins = analyser.frequencyBinCount;
     const bandwidth = (ctx.sampleRate / 2) / fftBins;
     const freq = new Float32Array(fftBins);
 
-    setInterval(() => {
+    const animate = () => {
       analyser.getFloatFrequencyData(freq);
       const max = d3.max(freq);
       const min = d3.min(freq);
       const median = d3.median(freq);
       const index = freq.indexOf(max);
-
-      // const val = index;
       const val = (max - median > median - min) ? index : 0;
-      this.setState(prevState => ({
-        freq: val * bandwidth
-      }))
-    }, this.state.refreshMs);
+      const Hz = val * bandwidth;
+      this.setState(prevState => ({ Hz }));
+    };
+    setInterval(animate, refreshMs);
   }
+
 
   getNote(freq) {
     const data = help.getNote(freq);
@@ -54,12 +52,13 @@ export default class Note extends Component {
     );
   }
 
+
   render() {
-    const { freq } = this.state;
+    const { Hz } = this.state;
 
     return (
       <div className='Note'>
-        {freq ? this.getNote(freq) : ''}
+        {Hz ? this.getNote(Hz) : ''}
       </div>
     );
   }
