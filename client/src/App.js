@@ -62,9 +62,6 @@ export default class App extends Component {
             <div className='module'>
               <Vu ctx={audioCtx} src={mic} />
             </div>
-            <div className='module'>
-              <Note ctx={audioCtx} src={mic} />
-            </div>
           </div>
 
         </div>

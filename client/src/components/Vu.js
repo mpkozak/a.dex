@@ -120,7 +120,7 @@ export default class Wave extends Component {
       fontWeight: '600'
     };
     const needle = {
-      transitionDuration: '50ms',
+      transitionDuration: '100ms',
       transitionTimingFunction: 'ease-in'
     };
 
@@ -194,6 +194,19 @@ export default class Wave extends Component {
             <stop offset='75%' stopColor='#000000' stopOpacity='.1'/>
             <stop offset='100%' stopColor='#000000' stopOpacity='0'/>
           </linearGradient>
+          <linearGradient id='meter-needle-coil-gradient'
+            gradientUnits='objectBoundingBox'
+            spreadMethod='repeat'
+            x1='0%'
+            y1='0%'
+            x2='3%'
+            y2='0%'
+          >
+            <stop offset='0%' stopColor='#3A2411' stopOpacity='.5'/>
+            <stop offset='1%' stopColor='#68411E' stopOpacity='1'/>
+            <stop offset='50%' stopColor='#68411E' stopOpacity='1'/>
+            <stop offset='100%' stopColor='#3A2411' stopOpacity='.5'/>
+          </linearGradient>
           <mask id='meter-mask'>
             <rect width='100%' height='100%' fill='white'/>
             <line
@@ -258,6 +271,20 @@ export default class Wave extends Component {
               stroke='none'
             />
           </mask>
+          <mask id='meter-inner-mask'>
+          <rect width='100%' height='100%' fill='black'/>
+            <rect
+              x={(width * .1) / 2}
+              y={(width * .1) / 2}
+              width={width - (width * .1)}
+              height={height  - (width * .1)}
+              rx={width / 100}
+              ry={width / 100}
+              fill='white'
+              stroke='black'
+              strokeWidth='1%'
+            />
+          </mask>
         </defs>
 
         <g id='meter-1'>
@@ -281,6 +308,17 @@ export default class Wave extends Component {
             fill={boxInnerColor}
             stroke='#000000'
             strokeWidth='1%'
+          />
+          <rect id='meter-needle-base'
+            x={width *.45}
+            y={height * .87}
+            rx='10%'
+            width={width * .1}
+            height={height * .1}
+            fill='#0F0D0A'
+            stroke='#000000'
+            strokeWidth='.5%'
+            mask='url(#meter-inner-mask)'
           />
         </g>
 
@@ -432,18 +470,8 @@ export default class Wave extends Component {
           />
         </g>
 
-        <g id='meter-5'>
-          <rect id='meter-needle'
-            x={width / 2}
-            y={height * .2}
-            width='.2%'
-            height={height * .75}
-            style={needle}
-            fill='#000000'
-            stroke='none'
-            transform={`rotate(${rotation}, ${width / 2}, ${height * .95})`}
-          />
-          <rect id='meter-needle'
+        <g id='meter-5' mask='url(#meter-inner-mask)'>
+          <rect id='meter-needle-shadow'
             x={width / 2}
             y={height * .22}
             width='.4%'
@@ -453,7 +481,43 @@ export default class Wave extends Component {
             stroke='none'
             transform={`translate(${width * (rotation / 10000)}, ${height * ((rotation / 5000) + .02)}) rotate(${rotation}, ${width / 2}, ${height * .95})`}
           />
+          <g id='meter-needle-group'
+            transform={`rotate(${rotation}, ${width / 2}, ${height * .95})`}
+            style={needle}
+          >
+            <rect id='meter-needle'
+              x={width / 2}
+              y={height * .2}
+              width='.2%'
+              height={height * .75}
+              fill='#000000'
+              stroke='none'
+            />
+            <rect id='meter-needle-coil-inner'
+              x={width * .465}
+              y={height * .905}
+              width={width * .07}
+              height={height * .025}
+              rx='.2%'
+              fill='#333333'
+              stroke='#000000'
+              strokeWidth='.1%'
+            />
+            <rect id='meter-needle-coil'
+              x={width * .47}
+              y={height * .9}
+              width={width * .06}
+              height={height * .04}
+              rx='.5%'
+              fill='url(#meter-needle-coil-gradient)'
+              stroke='#000000'
+              strokeWidth='.4%'
+            />
+          </g>
         </g>
+
+
+
 
       </svg>
     );
@@ -475,5 +539,41 @@ export default class Wave extends Component {
 
 
       // <VuMeter rms={this.state.rmsScale} peak={this.state.peak} />
+
+
+
+
+        // <g id='meter-5' mask='url(#meter-inner-mask)'>
+        //   <rect id='meter-needle'
+        //     x={width / 2}
+        //     y={height * .2}
+        //     width='.2%'
+        //     height={height * .75}
+        //     style={needle}
+        //     fill='#000000'
+        //     stroke='none'
+        //     transform={`rotate(${rotation}, ${width / 2}, ${height * .95})`}
+        //   />
+        //   <rect id='meter-needle-coil'
+        //     x={width * .47}
+        //     y={height * .88}
+        //     width={width * .06}
+        //     height={height * .04}
+        //     fill='white'
+        //     transform={`rotate(${rotation}, ${width / 2}, ${height * .95})`}
+        //   />
+        //   <rect id='meter-needle'
+        //     x={width / 2}
+        //     y={height * .22}
+        //     width='.4%'
+        //     height={height * .73}
+        //     style={needle}
+        //     fill='url(#meter-needle-shadow-gradient)'
+        //     stroke='none'
+        //     transform={`translate(${width * (rotation / 10000)}, ${height * ((rotation / 5000) + .02)}) rotate(${rotation}, ${width / 2}, ${height * .95})`}
+        //   />
+        // </g>
+
+
 
 
