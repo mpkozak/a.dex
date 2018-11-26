@@ -45,9 +45,9 @@ export default class Note extends Component {
     const data = help.getNote(freq);
     return(
       <div>
-        <h1>{data.str}</h1>
-        <h2>{Math.round(freq)} Hz</h2>
-        <h4>variance: {data.cents} ct</h4>
+        <h3>{data.str}</h3>
+        <h4>{Math.round(freq)} Hz</h4>
+        <h6>variance: {data.cents} ct</h6>
       </div>
     );
   }

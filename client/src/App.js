@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import './App.css';
 import Theremin from './components/Theremin.js';
-import Freq from './components/Freq.js';
+// import Freq from './components/Freq.js';
 import Note from './components/Note.js';
-import Spec from './components/Spec.js';
+// import Spec from './components/Spec.js';
 import Vu from './components/Vu.js';
 import Wave from './components/Wave.js';
 
@@ -27,9 +27,11 @@ export default class App extends Component {
         this.setState(prevState => ({ audioCtx, mic }));
       });
 
+// Enable CTX without microphone
     // const audioCtx = new AudioContext();
     // this.setState(prevState => ({ audioCtx }));
 
+// Enable CTX + start test tone
     // const audioCtx = new AudioContext();
     // const osc1 = new OscillatorNode(audioCtx, {type: 'sine', frequency: 1000});
     // const masterGain = new GainNode(audioCtx, {gain: .01});
@@ -37,7 +39,6 @@ export default class App extends Component {
     // masterGain.connect(audioCtx.destination);
     // osc1.start();
     // this.setState(prevState => ({ audioCtx, mic: masterGain }));
-
   }
 
 
@@ -46,12 +47,24 @@ export default class App extends Component {
     const { mic } = this.state;
     if (mic) {
       return (
-        <div className='modules'>
+        <div>
 
-          <Theremin ctx={audioCtx} />
+          <div className='instruments'>
+            <div className='instrument'>
+              <Theremin ctx={audioCtx} />
+            </div>
+          </div>
 
-          <div className='module'>
-            <Vu ctx={audioCtx} src={mic} />
+          <div className='modules'>
+            <div className='module'>
+              <Wave ctx={audioCtx} src={mic} />
+            </div>
+            <div className='module'>
+              <Vu ctx={audioCtx} src={mic} />
+            </div>
+            <div className='module'>
+              <Note ctx={audioCtx} src={mic} />
+            </div>
           </div>
 
         </div>
@@ -71,26 +84,28 @@ export default class App extends Component {
 
 
 
-        // <div className='modules'>
+          // <div className='instruments'>
+          //   <div className='instrument'>
+          //     <Theremin ctx={audioCtx} />
+          //   </div>
+          // </div>
 
-        //   <Theremin ctx={audioCtx} />
-
-        //   <div className='module'>
-        //     <Vu ctx={audioCtx} src={mic} />
-        //   </div>
-        //   <div className='module'>
-        //     <Wave ctx={audioCtx} src={mic} />
-        //   </div>
-        //   <div className='module'>
-        //     <Spec ctx={audioCtx} src={mic} />
-        //   </div>
-        //   <div className='module'>
-        //     <Freq ctx={audioCtx} src={mic} />
-        //   </div>
-        //   <div className='module'>
-        //     <Note ctx={audioCtx} src={mic} />
-        //   </div>
-
-        // </div>
+          // <div className='modules'>
+          //   <div className='module'>
+          //     <Wave ctx={audioCtx} src={mic} />
+          //   </div>
+          //   <div className='module'>
+          //     <Vu ctx={audioCtx} src={mic} />
+          //   </div>
+          //   <div className='module'>
+          //     <Spec ctx={audioCtx} src={mic} />
+          //   </div>
+          //   <div className='module'>
+          //     <Freq ctx={audioCtx} src={mic} />
+          //   </div>
+          //   <div className='module'>
+          //     <Note ctx={audioCtx} src={mic} />
+          //   </div>
+          // </div>
 
 

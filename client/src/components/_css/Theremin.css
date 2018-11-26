@@ -1,0 +1,144 @@
+.Theremin {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,.3);
+  font-family: Copperplate;
+
+  /*border: 1px solid red;*/
+}
+
+.Theremin .top {
+  width: 100%;
+  height: 65%;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-around;
+
+  /*border: 1px solid yellow;*/
+}
+
+.Theremin .bottom {
+  width: 100%;
+  height: 35%;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: flex-start;
+
+  /*border: 1px solid white;*/
+}
+
+.top .video-box {
+  position: relative;
+  /*width: 52vmin;*/
+  /*height: 39vmin;*/
+  width: 48vmin;
+  height: 36vmin;
+
+  /*border: 1px solid red;*/
+}
+
+.top .color-box {
+  width: 30%;
+  height: 60%;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-start;
+  justify-content: center;
+
+  /*border: 1px solid green;*/
+}
+
+.video-box .video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 4;
+  transform: rotateY(180deg);
+}
+
+.video-box .canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+}
+
+.color-box .element {
+  margin: 2%;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: flex-start;
+
+  /*border: 1px solid blue;*/
+}
+
+.color-box .header {
+  align-self: center;
+}
+
+.color-box .swatch {
+  width: 5vmin;
+  height: 5vmin;
+  margin: .5vmin;
+  border: 1px solid black;
+}
+
+.color-box .pulse {
+  animation: pulsar 1s linear infinite;
+}
+
+@keyframes pulsar {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.bottom .control-box {
+  width: 98%;
+  height: 95%;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.control-box .component {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: flex-start;
+
+  /*border: 1px solid blue;*/
+}
+
+.control-box .knob {
+  margin: 5%;
+}
+
+.Theremin .label {
+  padding: .5vmin 1vmin;
+  border: 1px solid black;
+  background-color: rgba(0,0,0,.5);
+  box-shadow: .1vmin .1vmin .2vmin #000000;
+  text-shadow:
+    -.1vmin -.1vmin 0.01vmin #000000,
+    .1vmin -.1vmin 0.01vmin #000000,
+    .1vmin .1vmin 0.01vmin #000000,
+    -.1vmin .1vmin 0.01vmin #000000;
+}
+
+.Theremin .box {
+  background-color: rgba(0,0,0,.2);
+  box-shadow: .1vmin .1vmin .2vmin #000000;
+  border: 1px solid black;
+}

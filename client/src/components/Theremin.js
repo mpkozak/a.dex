@@ -2,11 +2,7 @@ import React, { Component } from 'react';
 import tracking from 'tracking';
 import help from './_helpers.js';
 import * as UI from './_UI.js';
-// import Freq from './Freq.js';
-// import Note from './Note.js';
-// import Spec from './Spec.js';
-// import Vu from './Vu.js';
-// import Wave from './Wave.js';
+import './_css/Theremin.css';
 
 export default class Theremin extends Component {
     constructor(props) {
@@ -24,8 +20,8 @@ export default class Theremin extends Component {
         fmDepth: {v: 1500, max: 3000},
       },
       data: [],
-      dataGain: [],
-      dataFreq: [],
+      dataGain: false,
+      dataFreq: false,
     };
     this.handleClickColor = this.handleClickColor.bind(this);
     this.handleClickParam = this.handleClickParam.bind(this);
@@ -124,11 +120,11 @@ export default class Theremin extends Component {
 
     colors.on('track', e => {
       const data = e.data;
-      const dataGain = data.filter(d => d.color === 'Gain');
-      const dataFreq = data.filter(d => d.color === 'Freq');
+      const gain = data.filter(d => d.color === 'Gain');
+      const dataGain = gain.length > 0 ? gain[0] : false;
+      const freq = data.filter(d => d.color === 'Freq');
+      const dataFreq = freq.length > 0 ? freq[0] : false;
       this.setState(prevState => ({ data, dataGain, dataFreq }));
-    // this.audioRefreshGain();
-    // this.audioRefreshFreq();
     });
 
     navigator.mediaDevices.getUserMedia({video: true})
@@ -232,20 +228,12 @@ export default class Theremin extends Component {
     const latency = audio.latency;
     const height = this.refs.video.clientHeight;
 
-    if (!dataGain.length || !dataFreq.length) {
+    if (dataGain) {
+      const y = dataGain.y + (dataGain.height / 2);
+      const level = (height - y) / height * this.state.params.volume.v;
+      help.setAudioParam(masterGain.gain, level, ctx, latency);
+    } else if (!dataFreq) {
       help.setAudioParam(masterGain.gain, 0, ctx, latency * 2);
-      // masterGain.gain.cancelScheduledValues(ctx.currentTime);
-      // masterGain.gain.setValueAtTime(masterGain.gain.value, ctx.currentTime);
-      // masterGain.gain.linearRampToValueAtTime(0, ctx.currentTime + (latency * 2));
-    } else {
-      dataGain.forEach(d => {
-        const y = d.y + (d.height / 2);
-        const level = (height - y) / height * this.state.params.volume.v;
-        help.setAudioParam(masterGain.gain, level, ctx, latency);
-        // masterGain.gain.cancelScheduledValues(ctx.currentTime);
-        // masterGain.gain.setValueAtTime(masterGain.gain.value, ctx.currentTime);
-        // masterGain.gain.linearRampToValueAtTime(level, ctx.currentTime + latency);
-      });
     };
   }
 
@@ -259,19 +247,13 @@ export default class Theremin extends Component {
     const latency = audio.latency;
     const width = this.refs.video.clientWidth;
 
-    dataFreq.forEach(d => {
-      const x = d.x + (d.width / 2);
+    if (dataFreq) {
+      const x = dataFreq.x + (dataFreq.width / 2)
       const freq1 = audio.baseHz * Math.pow(2, (width - x)/(width / this.state.params.range.v));
-      help.setAudioParam(osc1.frequency, freq1, ctx, latency);
-      // osc1.frequency.cancelScheduledValues(ctx.currentTime);
-      // osc1.frequency.setValueAtTime(osc1.frequency.value, ctx.currentTime);
-      // osc1.frequency.linearRampToValueAtTime(freq1, ctx.currentTime + latency);
       const freq2 = (audio.baseHz + this.state.params.fmWidth.v) * Math.pow(2, (width - x)/(width / this.state.params.range.v));
+      help.setAudioParam(osc1.frequency, freq1, ctx, latency);
       help.setAudioParam(osc2.frequency, freq2, ctx, latency);
-      // osc2.frequency.cancelScheduledValues(ctx.currentTime);
-      // osc2.frequency.setValueAtTime(osc2.frequency.value, ctx.currentTime);
-      // osc2.frequency.linearRampToValueAtTime(freq2, ctx.currentTime + latency);
-    });
+    };
   }
 
 
@@ -282,9 +264,6 @@ export default class Theremin extends Component {
     const latency = audio.latency;
 
     help.setAudioParam(fmGain.gain, this.state.params.fmDepth.v, ctx, latency);
-    // fmGain.gain.cancelScheduledValues(ctx.currentTime);
-    // fmGain.gain.setValueAtTime(fmGain.gain.value, ctx.currentTime);
-    // fmGain.gain.linearRampToValueAtTime(this.state.params.fmDepth.v, ctx.currentTime + latency);
   }
 
 
@@ -295,9 +274,6 @@ export default class Theremin extends Component {
     const latency = audio.latency;
 
     help.setAudioParam(lpf.frequency, this.state.params.tone.v, ctx, latency);
-    // lpf.frequency.cancelScheduledValues(ctx.currentTime);
-    // lpf.frequency.setValueAtTime(lpf.frequency.value, ctx.currentTime);
-    // lpf.frequency.linearRampToValueAtTime(this.state.params.tone.v, ctx.currentTime + latency);
   }
 
 
@@ -317,7 +293,7 @@ export default class Theremin extends Component {
     });
 
     return (
-      <div className='control-box'>
+      <div className='control-box box'>
         {components}
       </div>
     );
@@ -334,21 +310,25 @@ export default class Theremin extends Component {
       <div className='Theremin'>
 
         <div className='top'>
-          <div className='video-box'>
+          <div className='video-box box'>
             <canvas className='canvas' ref='canvas'/>
             <video className='video' ref='video' preload='true' autoPlay loop muted/>
           </div>
-          <div className='color-box'>
-            <div className='element header'>
-              <h4>Set Colors:</h4>
+          <div className='color-box box'>
+            <div className='element header label'>
+              <h4>Set Colors</h4>
             </div>
             <div className='element'>
               <div className='swatch colorGain' onClick={this.handleClickColor} style={{backgroundColor: colorV}} />
-              <h6>Volume</h6>
+              <div className='label'>
+                <h6>Volume</h6>
+              </div>
             </div>
             <div className='element'>
               <div className='swatch colorFreq' onClick={this.handleClickColor} style={{backgroundColor: colorF}} />
-              <h6>Frequency</h6>
+              <div className='label'>
+                <h6>Frequency</h6>
+              </div>
             </div>
           </div>
         </div>
