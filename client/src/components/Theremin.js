@@ -166,15 +166,15 @@ export default class Theremin extends Component {
 
   handleClickParam(e, key) {
     e.preventDefault();
-    const handleDrag = (e) => {
+    var handleDrag = (e) => {
       this.updateParam((e.movementX - e.movementY) / 500, key);
     };
     window.addEventListener('mousemove', handleDrag);
-    const clearEvent = () => {
+    var clearEvent = () => {
       window.removeEventListener('mousemove', handleDrag);
-      window.removeEventListener('mousemove', clearEvent);
+      window.removeEventListener('mouseup', clearEvent);
     };
-    window.addEventListener('mouseup', clearEvent);
+     window.addEventListener('mouseup', clearEvent);
   }
 
 
@@ -221,7 +221,7 @@ export default class Theremin extends Component {
 
   audioRefreshGain() {
     const { dataGain } = this.state;
-    const { dataFreq } = this.state;
+    // const { dataFreq } = this.state;
     const { audio } = this.state;
     const ctx = audio.ctx;
     const masterGain = audio.masterGain;
