@@ -1,3 +1,89 @@
+
+
+
+
+
+
+
+{/* Frame Group */}
+        <g id='frame' clipPath='url(#master-clip)'>
+{/* Outer Frame */}
+          <g id='frame-outer'>
+            <rect id='outer-base'
+              x='0'
+              y='0'
+              width={width}
+              height={height}
+              rx={width / 50}
+              ry={width / 50}
+              fill={colorFrame}
+              stroke='#000000'
+              strokeWidth='.4%'
+            />
+            <g id='outer-shadow'>
+              <rect fill='url(#frame-outer-shadow-horizontal)' x='0' y='0' width={width} height={height} rx={width / 50} ry={width / 50} stroke='none'/>
+              <rect fill='url(#frame-outer-shadow-vertical)' x='0' y='0' width={width} height={height} rx={width / 50} ry={width / 50} stroke='none'/>
+              <rect fill='url(#frame-outer-shadow-diagonal)' x='0' y='0' width={width} height={height} rx={width / 50} ry={width / 50} stroke='none'/>
+            </g>
+          </g>
+{/* Inner Frame */}
+          <g id='frame-inner'>
+            <rect id='inner-base'
+              x={width * .025}
+              y={width * .025}
+              width={width * .95}
+              height={height  - (width * .05)}
+              rx={width / 50}
+              ry={width / 50}
+              fill={colorFrame}
+              stroke='#000000'
+              strokeWidth='.4%'
+              strokeOpacity='.8'
+            />
+            <g id='inner-shadow'>
+              <rect fill='url(#frame-inner-shadow-corners)' x={width * .025} y={width * .025} width={width * .95} height={height  - (width * .05)} rx={width / 50} ry={width / 50} stroke='none'/>
+              <rect fill='url(#frame-inner-shadow-horizontal)' x={width * .025} y={width * .025} width={width * .95} height={height  - (width * .05)} rx={width / 50} ry={width / 50} stroke='none'/>
+              <rect fill='url(#frame-inner-shadow-vertical)' x={width * .025} y={width * .025} width={width * .95} height={height  - (width * .05)} rx={width / 50} ry={width / 50} stroke='none'/>
+              <rect fill='url(#frame-inner-shadow-diagonal)' x={width * .025} y={width * .025} width={width * .95} height={height  - (width * .05)} rx={width / 50} ry={width / 50} stroke='none'/>
+            </g>
+          </g>
+        </g>s
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   drawMeter() {
     const rms = this.state.rmsScale !== -Infinity ? this.state.rmsScale : 0;
     const peak = this.state.peak;

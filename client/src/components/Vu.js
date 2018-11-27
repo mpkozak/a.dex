@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 // import * as d3 from 'd3';
+import * as template from './_templates.js';
 
 
 export default class Wave extends Component {
@@ -27,7 +28,7 @@ export default class Wave extends Component {
 
     const fftBins = analyser.frequencyBinCount;
     const wave = new Float32Array(fftBins);
-    const ms = (fftBins / ctx.sampleRate) * 1000;
+    // const ms = (fftBins / ctx.sampleRate) * 1000;
     // console.log(ms)
 
     // const animate = () => {
@@ -77,7 +78,7 @@ export default class Wave extends Component {
   }
 
 
-  drawMeter() {
+  drawSvg() {
     const rms = this.state.rmsScale !== -Infinity ? this.state.rmsScale : 0;
     const peak = this.state.peak;
     const rotation = rms >= -50 ? rms : -50;
@@ -88,7 +89,6 @@ export default class Wave extends Component {
     const path = document.querySelector('#arc-scale') ? document.querySelector('#arc-scale') : null;
     const pathLength = path ? path.getTotalLength() : null;
 
-    const colorFrame = '#3A3125';
     const colorBg = '#D5BD79'
     const colorRed = '#C12822';
 
@@ -144,70 +144,8 @@ export default class Wave extends Component {
     };
 
     return (
-      <svg className='Vu' viewBox={`0 0 ${width} ${height}`} style={svgStyle}>
+      <g style={svgStyle}>
         <defs>
-{/* Master Clip Path */}
-          <clipPath id='master-clip'>
-            <rect x='0' y='0' width={width} height={height} rx={width / 50} ry={width / 50}/>
-          </clipPath>
-{/* Needle Clip Path */}
-          <clipPath id='needle-clip'>
-            <rect x={width * .05} y={width * .05} width={width - (width * .1)} height={height  - (width * .1)} rx={width / 100} ry={width / 100} stroke='none'/>
-          </clipPath>
-{/* Outer Frame Gradients */}
-          <linearGradient id='frame-outer-shadow-horizontal' x1='0%' y1='0%' x2='0%' y2='100%' gradientUnits='objectBoundingBox'>
-            <stop offset='0%' stopColor='#000000' stopOpacity='.5'/>
-            <stop offset='4%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='96%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='100%' stopColor='#000000' stopOpacity='.5'/>
-          </linearGradient>
-          <linearGradient id='frame-outer-shadow-vertical' x1='0%' y1='0%' x2='100%' y2='0%' gradientUnits='objectBoundingBox'>
-            <stop offset='0%' stopColor='#000000' stopOpacity='.5'/>
-            <stop offset='2%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='98%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='100%' stopColor='#000000' stopOpacity='.5'/>
-          </linearGradient>
-          <linearGradient id='frame-outer-shadow-diagonal' x1='0%' y1='0%' x2='100%' y2='100%' gradientUnits='objectBoundingBox'>
-            <stop offset='0%' stopColor='#FFFFFF' stopOpacity='.1'/>
-            <stop offset='50%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='100%' stopColor='#000000' stopOpacity='.4'/>
-          </linearGradient>
-{/* Inner Frame Gradients */}
-          <linearGradient id='frame-inner-shadow-horizontal' x1='0%' y1='0%' x2='0%' y2='100%' gradientUnits='objectBoundingBox'>
-            <stop offset='0%' stopColor='#000000' stopOpacity='.5'/>
-            <stop offset='4%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='96%' stopColor='#000000' stopOpacity='.4'/>
-            <stop offset='100%' stopColor='#000000' stopOpacity='0'/>
-          </linearGradient>
-          <linearGradient id='frame-inner-shadow-vertical' x1='0%' y1='0%' x2='100%' y2='0%' gradientUnits='objectBoundingBox'>
-            <stop offset='0%' stopColor='#000000' stopOpacity='.5'/>
-            <stop offset='2%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='98%' stopColor='#000000' stopOpacity='.4'/>
-            <stop offset='100%' stopColor='#000000' stopOpacity='0'/>
-          </linearGradient>
-          <radialGradient id='frame-inner-shadow-corners' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
-            <stop offset='0%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='50%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='63%' stopColor='#000000' stopOpacity='.1'/>
-            <stop offset='70%' stopColor='#000000' stopOpacity='.5'/>
-          </radialGradient>
-          <linearGradient id='frame-inner-shadow-diagonal' x1='0%' y1='0%' x2='100%' y2='100%' gradientUnits='objectBoundingBox'>
-            <stop offset='0%' stopColor='#000000' stopOpacity='.4'/>
-            <stop offset='45%' stopColor='#000000' stopOpacity='.3'/>
-            <stop offset='50%' stopColor='#000000' stopOpacity='.7'/>
-            <stop offset='55%' stopColor='#000000' stopOpacity='.2'/>
-            <stop offset='94%' stopColor='#FFFFFF' stopOpacity='.1'/>
-            <stop offset='100%' stopColor='#000000' stopOpacity='.2'/>
-          </linearGradient>
-{/* Needle Cutout Gradient */}
-          <radialGradient id='panel-needle-cutout' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
-            <stop offset='0%' stopColor='#000000'/>
-            <stop offset='10%' stopColor='#202326'/>
-            <stop offset='40%' stopColor='#0F0D0A'/>
-            <stop offset='42%' stopColor='#131517'/>
-            <stop offset='45%' stopColor='#202326'/>
-            <stop offset='50%' stopColor='#000000'/>
-          </radialGradient>
 {/* LED Gradients */}
           <radialGradient id='panel-led-glow' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
             <stop offset='0%' stopColor='#AB2D1E' stopOpacity='0'/>
@@ -290,78 +228,81 @@ export default class Wave extends Component {
             pathLength='100'
           />
         </defs>
-{/* Frame Group */}
-        <g id='frame' clipPath='url(#master-clip)'>
-{/* Outer Frame */}
-          <g id='frame-outer'>
-            <rect id='outer-base'
-              x='0'
-              y='0'
-              width={width}
-              height={height}
-              rx={width / 50}
-              ry={width / 50}
-              fill={colorFrame}
-              stroke='#000000'
-              strokeWidth='.4%'
-            />
-            <g id='outer-shadow'>
-              <rect fill='url(#frame-outer-shadow-horizontal)' x='0' y='0' width={width} height={height} rx={width / 50} ry={width / 50} stroke='none'/>
-              <rect fill='url(#frame-outer-shadow-vertical)' x='0' y='0' width={width} height={height} rx={width / 50} ry={width / 50} stroke='none'/>
-              <rect fill='url(#frame-outer-shadow-diagonal)' x='0' y='0' width={width} height={height} rx={width / 50} ry={width / 50} stroke='none'/>
-            </g>
-          </g>
-{/* Inner Frame */}
-          <g id='frame-inner'>
-            <rect id='inner-base'
-              x={width * .025}
-              y={width * .025}
-              width={width * .95}
-              height={height  - (width * .05)}
-              rx={width / 50}
-              ry={width / 50}
-              fill={colorFrame}
-              stroke='#000000'
-              strokeWidth='.4%'
-              strokeOpacity='.8'
-            />
-            <g id='inner-shadow'>
-              <rect fill='url(#frame-inner-shadow-corners)' x={width * .025} y={width * .025} width={width * .95} height={height  - (width * .05)} rx={width / 50} ry={width / 50} stroke='none'/>
-              <rect fill='url(#frame-inner-shadow-horizontal)' x={width * .025} y={width * .025} width={width * .95} height={height  - (width * .05)} rx={width / 50} ry={width / 50} stroke='none'/>
-              <rect fill='url(#frame-inner-shadow-vertical)' x={width * .025} y={width * .025} width={width * .95} height={height  - (width * .05)} rx={width / 50} ry={width / 50} stroke='none'/>
-              <rect fill='url(#frame-inner-shadow-diagonal)' x={width * .025} y={width * .025} width={width * .95} height={height  - (width * .05)} rx={width / 50} ry={width / 50} stroke='none'/>
-            </g>
-          </g>
-        </g>
-{/* Panel Group*/}
-        <g id='panel'>
-{/* Panel Background */}
-          <g id='panel-bg'>
+
+
+
+
+
+{/* GOOD BELOW GOOD BELOW GOOD BELOW */}
+
+
+
+
+
+
+
+
+
+
+{/* Needle Cutout Gradient */}
+          <radialGradient id='panel-needle-cutout' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
+            <stop offset='0%' stopColor='#000000'/>
+            <stop offset='10%' stopColor='#202326'/>
+            <stop offset='40%' stopColor='#0F0D0A'/>
+            <stop offset='42%' stopColor='#131517'/>
+            <stop offset='45%' stopColor='#202326'/>
+            <stop offset='50%' stopColor='#000000'/>
+          </radialGradient>
+
+
+{/* Module Frame */}
+        {template.moduleFrame()}
+{/* Panel Background Group */}
+        <g className='panel-bg'>
 {/* Base Layer */}
-            <rect id='bg-base'
-              x={width * .05}
-              y={width * .05}
-              width={width * .9}
-              height={height  - (width * .1)}
-              rx={width / 100}
-              ry={width / 100}
-              fill={colorBg}
-              stroke='#000000'
-              strokeWidth='.3%'
-            />
+          <rect className='panel-base'
+            x={5}
+            y={5}
+            width={90}
+            height={50}
+            rx={1}
+            ry={1}
+            fill={colorBg}
+            stroke='#000000'
+            strokeWidth='.3%'
+          />
 {/* Needle Cutout */}
-            <rect id='bg-needleCutout'
-              x={width * .45}
-              y={height * .87}
-              rx={width * .1}
-              width={width * .1}
-              height={height * .1}
-              fill='url(#panel-needle-cutout)'
-              stroke='#000000'
-              strokeWidth='.3%'
-              clipPath='url(#needle-clip)'
-            />
-          </g>
+          <rect className='panel-cutout'
+            x={45}
+            y={52.2}
+            rx={10}
+            width={10}
+            height={6}
+            fill='url(#panel-needle-cutout)'
+            stroke='#000000'
+            strokeWidth='.3%'
+            clipPath='url(#module-screen-clip)'
+          />
+        </g>
+
+
+
+
+
+
+
+
+
+{/* GOOD ABOVE GOOD ABOVE GOOD ABOVE */}
+
+
+
+
+
+
+
+
+
 {/* Panel Text Group */}
           <g id='panel-text' opacity='.8'>
 {/* 'VU' */}
@@ -526,7 +467,7 @@ export default class Wave extends Component {
             })}
           </g>
 {/* Needle Group */}
-          <g id='panel-needle' clipPath='url(#needle-clip)'>
+          <g id='panel-needle' clipPath='url(#module-screen-clip)'>
 {/* Needle Shadow */}
             <rect id='needle-shadow'
               x={width * .5}
@@ -580,15 +521,16 @@ export default class Wave extends Component {
             <rect fill='url(#panel-shadow-diagonal)' x={width * .05} y={width * .05} width={width - (width * .1)} height={height  - (width * .1)} rx={width / 100} ry={width / 100} stroke='none'/>
           </g>
         </g>
-      </svg>
     );
   }
 
 
   render() {
     return (
-      <div>
-        {this.drawMeter()}
+      <div className='module'>
+        <svg viewBox='0 0 100 60'>
+          {this.drawSvg()}
+        </svg>
       </div>
     );
   }

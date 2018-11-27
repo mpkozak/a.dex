@@ -58,6 +58,19 @@ export const moduleDefs = () => {
           <stop offset='94%' stopColor='#FFFFFF' stopOpacity={.1}/>
           <stop offset='100%' stopColor='#000000' stopOpacity={.2}/>
         </linearGradient>
+{/* Panel Gradients */}
+        <linearGradient id='panel-shadow-diagonal' x1='0%' y1='0%' x2='100%' y2='100%' gradientUnits='objectBoundingBox'>
+          <stop offset='0%' stopColor='#000000' stopOpacity={.35}/>
+          <stop offset='35%' stopColor='#000000' stopOpacity={.2}/>
+          <stop offset='50%' stopColor='#000000' stopOpacity={.15}/>
+          <stop offset='100%' stopColor='#000000' stopOpacity={.05}/>
+        </linearGradient>
+        <radialGradient id='panel-glare' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
+          <stop offset='0%' stopColor='#000000' stopOpacity={0}/>
+          <stop offset='50%' stopColor='#000000' stopOpacity={.1}/>
+          <stop offset='66%' stopColor='#000000' stopOpacity={.3}/>
+          <stop offset='70%' stopColor='#000000' stopOpacity={.5}/>
+        </radialGradient>
       </defs>
     </svg>
   );
@@ -119,6 +132,14 @@ export const moduleFrame = () => {
 
 
 
-// export const moduleDefs
+// export const modulePanelShadow  = () => {
+//   return (
+//     <g>
 
+//     </g>
+
+
+
+//   );
+// };
 

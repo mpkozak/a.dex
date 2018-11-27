@@ -54,6 +54,7 @@ export default class App extends Component {
 
           <div className='modules'>
               <Wave ctx={audioCtx} src={mic} />
+              <Vu ctx={audioCtx} src={mic} />
           </div>
 
         </div>
