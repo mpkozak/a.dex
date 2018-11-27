@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 // import * as d3 from 'd3';
-// import {VuMeter} from './_UI.js';
 
 
 export default class Wave extends Component {
@@ -29,7 +28,7 @@ export default class Wave extends Component {
     const fftBins = analyser.frequencyBinCount;
     const wave = new Float32Array(fftBins);
     const ms = (fftBins / ctx.sampleRate) * 1000;
-    console.log(ms)
+    // console.log(ms)
 
     // const animate = () => {
     //   analyser.getFloatTimeDomainData(wave);
@@ -76,9 +75,6 @@ export default class Wave extends Component {
       this.setState(prevState => ({ peak: false }));
     }, 1000);
   }
-
-
-
 
 
   drawMeter() {
@@ -154,11 +150,6 @@ export default class Wave extends Component {
           <clipPath id='master-clip'>
             <rect x='0' y='0' width={width} height={height} rx={width / 50} ry={width / 50}/>
           </clipPath>
-{/* Panel Clip Path
-          <clipPath id='panel-clip'>
-            <rect x={width * .05} y={width * .05} width={width - (width * .1)} height={height  - (width * .1)} rx={width / 100} ry={width / 100} strokeWidth='.1%'/>
-          </clipPath>
-*/}
 {/* Needle Clip Path */}
           <clipPath id='needle-clip'>
             <rect x={width * .05} y={width * .05} width={width - (width * .1)} height={height  - (width * .1)} rx={width / 100} ry={width / 100} stroke='none'/>
@@ -182,7 +173,6 @@ export default class Wave extends Component {
             <stop offset='100%' stopColor='#000000' stopOpacity='.4'/>
           </linearGradient>
 {/* Inner Frame Gradients */}
-
           <linearGradient id='frame-inner-shadow-horizontal' x1='0%' y1='0%' x2='0%' y2='100%' gradientUnits='objectBoundingBox'>
             <stop offset='0%' stopColor='#000000' stopOpacity='.5'/>
             <stop offset='4%' stopColor='#000000' stopOpacity='0'/>
@@ -195,7 +185,6 @@ export default class Wave extends Component {
             <stop offset='98%' stopColor='#000000' stopOpacity='.4'/>
             <stop offset='100%' stopColor='#000000' stopOpacity='0'/>
           </linearGradient>
-
           <radialGradient id='frame-inner-shadow-corners' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
             <stop offset='0%' stopColor='#000000' stopOpacity='0'/>
             <stop offset='50%' stopColor='#000000' stopOpacity='0'/>
@@ -210,51 +199,6 @@ export default class Wave extends Component {
             <stop offset='94%' stopColor='#FFFFFF' stopOpacity='.1'/>
             <stop offset='100%' stopColor='#000000' stopOpacity='.2'/>
           </linearGradient>
-{/*
-
-          <radialGradient id='frame-inner-shadow-corners' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
-            <stop offset='0%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='50%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='63%' stopColor='#000000' stopOpacity='.1'/>
-            <stop offset='70%' stopColor='#000000' stopOpacity='.5'/>
-          </radialGradient>
-          <linearGradient id='frame-inner-shadow-diagonal' x1='0%' y1='0%' x2='100%' y2='100%' gradientUnits='objectBoundingBox'>
-            <stop offset='0%' stopColor='#000000' stopOpacity='.3'/>
-            <stop offset='50%' stopColor='#000000' stopOpacity='.3'/>
-            <stop offset='100%' stopColor='#000000' stopOpacity='0'/>
-          </linearGradient>
-
-
-
-*/}
-{/*
-
-          <linearGradient id='frame-inner-shadow-diagonal' x1='0%' y1='0%' x2='100%' y2='100%' gradientUnits='objectBoundingBox'>
-            <stop offset='0%' stopColor='#000000' stopOpacity='.4'/>
-            <stop offset='50%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='100%' stopColor='#FFFFFF' stopOpacity='.06'/>
-          </linearGradient>
-
-          <linearGradient id='frame-inner-shadow-horizontal' x1='0%' y1='0%' x2='0%' y2='100%' gradientUnits='objectBoundingBox'>
-            <stop offset='0%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='4%' stopColor='#000000' stopOpacity='.5'/>
-            <stop offset='96%' stopColor='#000000' stopOpacity='.5'/>
-            <stop offset='100%' stopColor='#000000' stopOpacity='0'/>
-          </linearGradient>
-          <linearGradient id='frame-x-shadow-vertical' x1='0%' y1='0%' x2='100%' y2='0%' gradientUnits='objectBoundingBox'>
-            <stop offset='0%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='2%' stopColor='#000000' stopOpacity='.5'/>
-            <stop offset='98%' stopColor='#000000' stopOpacity='.5'/>
-            <stop offset='100%' stopColor='#000000' stopOpacity='0'/>
-          </linearGradient>
-          <linearGradient id='frame-inner-shadow-diagonal' x1='0%' y1='0%' x2='100%' y2='100%' gradientUnits='objectBoundingBox'>
-            <stop offset='0%' stopColor='#000000' stopOpacity='.4'/>
-            <stop offset='50%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='100%' stopColor='#FFFFFF' stopOpacity='.1'/>
-          </linearGradient>
-
-
- */}
 {/* Needle Cutout Gradient */}
           <radialGradient id='panel-needle-cutout' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
             <stop offset='0%' stopColor='#000000'/>
@@ -328,56 +272,7 @@ export default class Wave extends Component {
             <stop offset='80%' stopColor='#000000' stopOpacity='.2'/>
             <stop offset='100%' stopColor='#000000' stopOpacity='.6'/>
           </linearGradient>
-
-{/*
-
-          <mask id='frame-mask-upper'>
-            <rect width='100%' height='100%' fill='white'/>
-            <path d={`M 0 0 H ${width} V ${height}`} fill='black'/>
-          </mask>
-          <mask id='frame-mask-lower'>
-            <rect width='100%' height='100%' fill='white'/>
-            <path d={`M 0 0 V ${height} H ${width}`} fill='black'/>
-          </mask>
-
-
-
-          <mask id='panel-mask'>
-            <rect width='100%' height='100%' fill='black'/>
-            <rect
-              x={width * .05}
-              y={width * .05}
-              width={width - (width * .1)}
-              height={height  - (width * .1)}
-              rx={width / 100}
-              ry={width / 100}
-              fill='white'
-              stroke='black'
-              strokeWidth='.25%'
-            />
-          </mask>
-          <mask id='panel-arc-mask'>
-            <rect width='100%' height='100%' fill='white'/>
-            <line
-              x1={width * .5}
-              y1={height * .95}
-              x2={(width * .5) + Math.sin(-51 * (Math.PI / 180)) * Math.sqrt(Math.pow(Math.sin(-51 * (Math.PI / 180)) * radius, 2) + Math.pow(height * .95, 2))}
-              y2='0'
-              stroke='black'
-              strokeWidth='6%'/>
-            <line
-              x1={width * .5}
-              y1={height * .95}
-              x2={(width * .5) + Math.sin(51 * (Math.PI / 180)) * Math.sqrt(Math.pow(Math.sin(51 * (Math.PI / 180)) * radius, 2) + Math.pow(height * .95, 2))}
-              y2='0'
-              stroke='black'
-              strokeWidth='6%'/>
-            <use href='#arc-scale' transform={`translate(0, -${height * .025})`} fill='none' stroke='black' strokeWidth='9%'/>
-            <use href='#arc-scale' transform={`translate(0, ${height * .15})`} fill='black' stroke='none'/>
-          </mask>
-*/}
-
-
+{/* Meter Arc Mask */}
           <mask id='panel-arc-mask'>
             <rect width='100%' height='100%' fill='white'/>
             <line x1={width * .5} y1={height * .95} x2={(width * .5) + Math.sin(-51 * (Math.PI / 180)) * Math.sqrt(Math.pow(Math.sin(-51 * (Math.PI / 180)) * radius, 2) + Math.pow(height * .95, 2))} y2='0' stroke='black' strokeWidth='6%'/>
@@ -385,10 +280,7 @@ export default class Wave extends Component {
             <use href='#arc-scale' transform={`translate(0, -${height * .025})`} fill='none' stroke='black' strokeWidth='9%'/>
             <use href='#arc-scale' transform={`translate(0, ${height * .15})`} fill='black' stroke='none'/>
           </mask>
-
-
-
-
+{/* Meter Arc Curve Path */}
           <path id='arc-scale'
             d={`
               M ${width * (1 / 8)} ${height * (2.5 / 8)}
@@ -397,8 +289,6 @@ export default class Wave extends Component {
             `}
             pathLength='100'
           />
-
-
         </defs>
 {/* Frame Group */}
         <g id='frame' clipPath='url(#master-clip)'>
@@ -473,7 +363,7 @@ export default class Wave extends Component {
             />
           </g>
 {/* Panel Text Group */}
-          <g id='panel-text'>
+          <g id='panel-text' opacity='.8'>
 {/* 'VU' */}
             <text id='text-vu'
               x={width * .5}
@@ -554,7 +444,6 @@ export default class Wave extends Component {
               y={height * .85}
               style={textSerif}
               fill='#000000'
-              opacity='.8'
               textAnchor='end'
               alignmentBaseline='middle'
               textLength={(width / 42) * 6}
@@ -584,8 +473,6 @@ export default class Wave extends Component {
               cy={height * .41}
               r={height / 32}
               fill={peak ? '#FF452F' : '#AB2D1E'}
-              // stroke='#000000'
-              // strokeWidth='.1%'
             />
             <g id='led-shadow'>
               <circle fill='url(#panel-led-shadow-dark)' cx={width * .88} cy={height * .41} r={height / 32} stroke='none'/>
@@ -692,50 +579,10 @@ export default class Wave extends Component {
           <g id='panel-shadow'>
             <rect fill='url(#panel-shadow-diagonal)' x={width * .05} y={width * .05} width={width - (width * .1)} height={height  - (width * .1)} rx={width / 100} ry={width / 100} stroke='none'/>
           </g>
-{/* End Panel Group */}
         </g>
-
-
-
-
-{/*
- <g id='panel-arc-mask'>
-            <rect width='100%' height='100%' fill='white'/>
-            <line x1={width * .5} y1={height * .95} x2={(width * .5) + Math.sin(-51 * (Math.PI / 180)) * Math.sqrt(Math.pow(Math.sin(-51 * (Math.PI / 180)) * radius, 2) + Math.pow(height * .95, 2))} y2='0' stroke='black' strokeWidth='6%'/>
-            <line x1={width * .5} y1={height * .95} x2={(width * .5) + Math.sin(51 * (Math.PI / 180)) * Math.sqrt(Math.pow(Math.sin(51 * (Math.PI / 180)) * radius, 2) + Math.pow(height * .95, 2))} y2='0' stroke='black' strokeWidth='6%'/>
-            <use href='#arc-scale' transform={`translate(0, -${height * .025})`} fill='none' stroke='black' strokeWidth='9%'/>
-            <use href='#arc-scale' transform={`translate(0, ${height * .15})`} fill='black' stroke='none'/>
-          </g>
-*/}
-
-
-{/* */}
-
-{/**/}
-
-
-{/**/}
-
-
-
-
-
       </svg>
     );
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   render() {
@@ -746,9 +593,3 @@ export default class Wave extends Component {
     );
   }
 }
-
-
-
-      // <VuMeter rms={this.state.rmsScale} peak={this.state.peak} />
-
-

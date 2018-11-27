@@ -64,12 +64,16 @@
 .Vu {
   /*width: 100%;*/
   /*height: 100%;*/
+  box-shadow: .5vmin .5vmin 1vmin #000000;
+  border-radius: 1vmin;
 }
 
 .Wave {
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0,0,0,.3);
+  /*width: 100%;*/
+  /*height: 100%;*/
+  box-shadow: .5vmin .5vmin 1vmin #000000;
+  border-radius: 1vmin;
+/*  background-color: rgba(0,0,0,.3);*/
 }
 
 
