@@ -49,11 +49,6 @@ export default class App extends Component {
       return (
         <div>
 
-          <div className='instruments'>
-            <div className='instrument'>
-              <Theremin ctx={audioCtx} />
-            </div>
-          </div>
 
           <div className='modules'>
             <div className='module'>

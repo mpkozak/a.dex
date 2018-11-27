@@ -11,19 +11,22 @@ export default class Wave extends Component {
 
 
   getData(ctx, src) {
-    const scaleBase = 10;
+    const scaleBase = 11;
     const analyser = new AnalyserNode(ctx, {fftSize: Math.pow(2, scaleBase), minDecibels: -100, maxDecibels: 0, smoothingTimeConstant: 0});
     src.connect(analyser);
 
     const fftBins = analyser.frequencyBinCount;
-    const wave = new Uint8Array(fftBins);
+    const wave = new Float32Array(fftBins);
+    const ms = (fftBins / ctx.sampleRate) * 1000;
+    console.log(ms)
 
     const animate = () => {
       requestAnimationFrame(animate);
-      analyser.getByteTimeDomainData(wave);
+      analyser.getFloatTimeDomainData(wave);
       this.drawWave(wave, fftBins);
     };
     animate();
+    // setInterval(() => animate(), ms)
   }
 
 
@@ -37,10 +40,11 @@ export default class Wave extends Component {
     // const node = this.node;
     const width = 100
     const height = 60;
-    const margin = 50;
+    const margin = 5;
+    // console.log(d3.extent(data))
 
     const xScale = d3.scaleLinear().domain([0, data.length - 1]).range([0, width]);
-    const yScale = d3.scaleLinear().domain([0 - margin, 255 + margin]).range([0, height]);
+    const yScale = d3.scaleLinear().domain([-1, 1]).range([0 + margin, height - margin]);
     const curveScale = d3.line().curve(d3.curveLinear);
 
     const dataCurve = [];
@@ -48,13 +52,28 @@ export default class Wave extends Component {
       dataCurve.push([xScale(i), yScale(d)]);
     });
 
+    // const extent = d3.extent(data);
+    // const power = extent.map(d => Math.pow(10,d))
+    // const log = extent.map(d => 20 * Math.log10(d))
+    // console.log(power, log)
+
+    const curvePath = d3.select('.wave').append('path').attr('d', curveScale(dataCurve)).remove();
+    const curveNode = curvePath.node()
+    const curvePathLength = curveNode.getTotalLength();
+    const curveOpacity = (200 - Math.sqrt(curvePathLength)) / 200;
+
+// d3.select('.wave').selectAll('path').remove()
     const wave = d3.select('.wave').selectAll('path').data([dataCurve]);
     wave.enter().append('path')
       .style('fill', 'none')
-      .style('stroke-width', 0.1)
-      .style('stroke', '#88FF88')
+      .style('stroke-width', 0.15)
+      .style('stroke', '#A0FFA0')
+      .attr('d', d => curveScale(d))
+      .style('opacity', curveOpacity)
     wave
       .attr('d', d => curveScale(d))
+      .style('opacity', curveOpacity)
+      // .style('stroke', `rgba(100,255,100,${curveOpacity}`)
   }
 
 
@@ -64,7 +83,6 @@ export default class Wave extends Component {
     // const height = node.clientHeight;
     const width = 100;
     const height = width * (3 / 5);
-// viewBox={`0 0 ${width} ${height}`}
 
     const colorFrame = '#3A3125';
 
@@ -221,7 +239,6 @@ export default class Wave extends Component {
               );
             })}
             {gridLines.map((d, i) => {
-              console.log((i % 2 + 2) / 20)
               return (
                 <line
                   key={d + 1}

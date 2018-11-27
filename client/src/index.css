@@ -9,9 +9,9 @@
 
 body {
   /*background-color: #222222;*/
-  /*background-color: #28327F;*/
-background: rgb(60,77,195);
-background: radial-gradient(circle, rgba(60,77,195,1) 0%, rgba(40,50,127,1) 35%, rgba(2,0,36,1) 100%);
+  background-color: #28327F;
+/*background: rgb(60,77,195);*/
+/*background: radial-gradient(circle, rgba(60,77,195,1) 0%, rgba(40,50,127,1) 35%, rgba(2,0,36,1) 100%);*/
   font-family: helvetica, sans-serif;
 }
 
