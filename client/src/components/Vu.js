@@ -181,13 +181,6 @@ export default class Wave extends Component {
             <stop offset='47%' stopColor='#000000' stopOpacity='1'/>
             <stop offset='50%' stopColor='#000000' stopOpacity='0'/>
           </radialGradient>
-{/* Panel Shadow Gradient */}
-          <linearGradient id='panel-shadow-diagonal' x1='0%' y1='0%' x2='100%' y2='100%' gradientUnits='objectBoundingBox'>
-            <stop offset='0%' stopColor='#000000' stopOpacity='.35'/>
-            <stop offset='35%' stopColor='#000000' stopOpacity='.2'/>
-            <stop offset='50%' stopColor='#000000' stopOpacity='.15'/>
-            <stop offset='100%' stopColor='#000000' stopOpacity='.05'/>
-          </linearGradient>
 {/* Needle Shadow Gradient */}
           <linearGradient id='panel-needle-shadow' x1='0%' y1='0%' x2='100%' y2='0%' gradientUnits='objectBoundingBox'>
             <stop offset='0%' stopColor='#000000' stopOpacity='0'/>
@@ -218,15 +211,6 @@ export default class Wave extends Component {
             <use href='#arc-scale' transform={`translate(0, -${height * .025})`} fill='none' stroke='black' strokeWidth='9%'/>
             <use href='#arc-scale' transform={`translate(0, ${height * .15})`} fill='black' stroke='none'/>
           </mask>
-{/* Meter Arc Curve Path */}
-          <path id='arc-scale'
-            d={`
-              M ${width * (1 / 8)} ${height * (2.5 / 8)}
-              Q ${width * (4 / 8)} ${height * (1 / 8)},
-              ${width * (7 / 8)} ${height * (2.5 / 8)}
-            `}
-            pathLength='100'
-          />
         </defs>
 
 
@@ -253,6 +237,13 @@ export default class Wave extends Component {
             <stop offset='45%' stopColor='#202326'/>
             <stop offset='50%' stopColor='#000000'/>
           </radialGradient>
+
+{/* Meter Arc Curve Path */}
+          <path id='arc-scale'
+            d={`M ${12.5} ${18.75} Q ${50} ${7.5}, ${87.5} ${18.75}`}
+            pathLength={100}
+          />
+
 
 
 {/* Module Frame */}
@@ -284,6 +275,93 @@ export default class Wave extends Component {
             clipPath='url(#module-screen-clip)'
           />
         </g>
+{/* Panel Text Group */}
+          <g className='panel-text' opacity='.8'>
+{/* 'VU' */}
+            <text
+              x={50}
+              y={36}
+              style={textBigHeavy}
+              textLength={11.11}
+              fill='#000000'
+              textAnchor='middle'
+              alignmentBaseline='middle'
+              lengthAdjust='spacingAndGlyphs'
+            >VU</text>
+{/* 'Scale @...' */}
+            <text
+              x={50}
+              y={42}
+              style={textSmall}
+              fill='#000000'
+              textAnchor='middle'
+              alignmentBaseline='middle'
+            >@ 0 VU = -20 dBFS</text>
+{/* '-' */}
+            <text
+              x={12}
+              y={14.4}
+              style={textBig}
+              textLength={4}
+              fill='#000000'
+              textAnchor='middle'
+              alignmentBaseline='middle'
+              lengthAdjust='spacingAndGlyphs'
+            >-</text>
+{/* '+' */}
+            <text
+              x={88}
+              y={14.4}
+              style={textBig}
+              fill={colorRed}
+              textAnchor='middle'
+              alignmentBaseline='middle'
+              lengthAdjust='spacingAndGlyphs'
+            >+</text>
+{/* '[Scale Values]' */}
+            {ticks.map(d => {
+              const pct = (d.deg + 46) / 92;
+              const point = path ? path.getPointAtLength(pct * pathLength) : null;
+              const txt = Math.abs(d.vu)
+              if (d.label) {
+                return (
+                  <text
+                    key={d.vu}
+                    x={point ? point.x : 0}
+                    y={point ? point.y : 0}
+                    style={textMedium}
+                    textLength={2.38 * txt.toString().length}
+                    fill={d.vu >= 0 ? colorRed : '#000000'}
+                    textAnchor='middle'
+                    alignmentBaseline='middle'
+                    lengthAdjust='spacingAndGlyphs'
+                  >{txt}</text>
+                );
+              } else return null;
+            })}
+{/* 'PEAK' */}
+            <text
+              x={88}
+              y={30}
+              style={textSmallHeavy}
+              textLength={8.33}
+              fill='#000000'
+              textAnchor='middle'
+              alignmentBaseline='middle'
+              lengthAdjust='spacingAndGlyphs'
+            >PEAK</text>
+{/* 'KOZAK' */}
+            <text
+              x={88}
+              y={51}
+              style={textSerif}
+              textLength={14.3}
+              fill='#000000'
+              textAnchor='end'
+              alignmentBaseline='middle'
+              lengthAdjust='spacingAndGlyphs'
+            >KOZAK</text>
+          </g>
 
 
 
@@ -303,101 +381,21 @@ export default class Wave extends Component {
 
 
 
-{/* Panel Text Group */}
-          <g id='panel-text' opacity='.8'>
-{/* 'VU' */}
-            <text id='text-vu'
-              x={width * .5}
-              y={height * .6}
-              style={textBigHeavy}
-              fill='#000000'
-              textAnchor='middle'
-              alignmentBaseline='middle'
-              textLength={width / 9}
-              lengthAdjust='spacingAndGlyphs'
-            >VU</text>
-{/* 'Scale @...' */}
-            <text id='text-vu'
-              x={width * .5}
-              y={height * .7}
-              style={textSmall}
-              fill='#000000'
-              textAnchor='middle'
-              alignmentBaseline='middle'
-            >@ 0 VU = -20 dBFS</text>
-{/* '-' */}
-            <text id='text-minus'
-              x={width * .12}
-              y={height * .24}
-              style={textBig}
-              fill='#000000'
-              textAnchor='middle'
-              alignmentBaseline='middle'
-              textLength={width / 25}
-              lengthAdjust='spacingAndGlyphs'
-            >-</text>
-{/* '+' */}
-            <text id='text-plus'
-              x={width * .88}
-              y={height * .24}
-              style={textBig}
-              fill={colorRed}
-              textAnchor='middle'
-              alignmentBaseline='middle'
-              textLength={width / 25}
-              lengthAdjust='spacingAndGlyphs'
-            >+</text>
-{/* '[Scale Values]' */}
-            {ticks.map(d => {
-              const pct = (d.deg + 46) / 92;
-              const point = path ? path.getPointAtLength(pct * pathLength) : null;
-              const txt = Math.abs(d.vu)
-              if (d.label) {
-                return (
-                  <text id={`text-scale${d.vu}`}
-                    key={d.vu}
-                    x={point ? point.x : 0}
-                    y={point ? point.y : 0}
-                    style={textMedium}
-                    fill={d.vu >= 0 ? colorRed : '#000000'}
-                    textAnchor='middle'
-                    alignmentBaseline='middle'
-                    textLength={(width / 42) * txt.toString().length}
-                    lengthAdjust='spacingAndGlyphs'
-                  >{txt}</text>
-                );
-              } else return null;
-            })}
-{/* 'PEAK' */}
-            <text id='text-peak'
-              x={width * .88}
-              y={height * .5}
-              style={textSmallHeavy}
-              fill='#000000'
-              textAnchor='middle'
-              alignmentBaseline='middle'
-              textLength={width / 12}
-              lengthAdjust='spacingAndGlyphs'
-            >PEAK</text>
-{/* 'KOZAK' */}
-            <text id='text-name'
-              x={width * .88}
-              y={height * .85}
-              style={textSerif}
-              fill='#000000'
-              textAnchor='end'
-              alignmentBaseline='middle'
-              textLength={(width / 42) * 6}
-              lengthAdjust='spacingAndGlyphs'
-            >KOZAK</text>
-          </g>
+
+
+
+
+
+
+
+
 {/* LED Group */}
           <g id='panel-led'>
 {/* LED Shadow */}
             <circle id='led-shadowPanel' fill='url(#panel-led-shadow-panel)'
-              cx={width * .8825}
-              cy={height * .4125}
-              r={height / 28}
+              cx={88.75}
+              cy={24.75}
+              r={2.14}
               stroke='none'
             />
 {/* LED Hole */}
