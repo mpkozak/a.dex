@@ -1,6 +1,4 @@
 import React from 'react';
-// import * as d3 from 'd3';
-
 
 export const knob = (props) => {
   const sizeUnit = Math.min(window.innerWidth, window.innerHeight) / 100;
@@ -101,64 +99,6 @@ export const knob = (props) => {
   );
 };
 
-
-export const frame = (
-        <svg width='0' height='0' fill='none' stroke='none' opacity='0'>
-{/* Master Clip Path */}
-          <clipPath id='master-clip'>
-            <rect x='0' y='0' width='100' height='60' rx='2' ry='2'/>
-          </clipPath>
-{/* Screen Clip Path */}
-          <clipPath id='screen-clip'>
-            <rect x='5' y='5' width='90' height='50' rx='1' ry='1' stroke='none'/>
-          </clipPath>
-{/* Outer Frame Gradients */}
-          <linearGradient id='frame-outer-shadow-horizontal' x1='0%' y1='0%' x2='0%' y2='100%' gradientUnits='objectBoundingBox'>
-            <stop offset='0%' stopColor='#000000' stopOpacity='.5'/>
-            <stop offset='4%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='96%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='100%' stopColor='#000000' stopOpacity='.5'/>
-          </linearGradient>
-          <linearGradient id='frame-outer-shadow-vertical' x1='0%' y1='0%' x2='100%' y2='0%' gradientUnits='objectBoundingBox'>
-            <stop offset='0%' stopColor='#000000' stopOpacity='.5'/>
-            <stop offset='2%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='98%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='100%' stopColor='#000000' stopOpacity='.5'/>
-          </linearGradient>
-          <linearGradient id='frame-outer-shadow-diagonal' x1='0%' y1='0%' x2='100%' y2='100%' gradientUnits='objectBoundingBox'>
-            <stop offset='0%' stopColor='#FFFFFF' stopOpacity='.1'/>
-            <stop offset='50%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='100%' stopColor='#000000' stopOpacity='.4'/>
-          </linearGradient>
-{/* Inner Frame Gradients */}
-          <linearGradient id='frame-inner-shadow-horizontal' x1='0%' y1='0%' x2='0%' y2='100%' gradientUnits='objectBoundingBox'>
-            <stop offset='0%' stopColor='#000000' stopOpacity='.5'/>
-            <stop offset='4%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='96%' stopColor='#000000' stopOpacity='.4'/>
-            <stop offset='100%' stopColor='#000000' stopOpacity='0'/>
-          </linearGradient>
-          <linearGradient id='frame-inner-shadow-vertical' x1='0%' y1='0%' x2='100%' y2='0%' gradientUnits='objectBoundingBox'>
-            <stop offset='0%' stopColor='#000000' stopOpacity='.5'/>
-            <stop offset='2%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='98%' stopColor='#000000' stopOpacity='.4'/>
-            <stop offset='100%' stopColor='#000000' stopOpacity='0'/>
-          </linearGradient>
-          <radialGradient id='frame-inner-shadow-corners' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
-            <stop offset='0%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='50%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='63%' stopColor='#000000' stopOpacity='.1'/>
-            <stop offset='70%' stopColor='#000000' stopOpacity='.5'/>
-          </radialGradient>
-          <linearGradient id='frame-inner-shadow-diagonal' x1='0%' y1='0%' x2='100%' y2='100%' gradientUnits='objectBoundingBox'>
-            <stop offset='0%' stopColor='#000000' stopOpacity='.4'/>
-            <stop offset='45%' stopColor='#000000' stopOpacity='.3'/>
-            <stop offset='50%' stopColor='#000000' stopOpacity='.7'/>
-            <stop offset='55%' stopColor='#000000' stopOpacity='.2'/>
-            <stop offset='94%' stopColor='#FFFFFF' stopOpacity='.1'/>
-            <stop offset='100%' stopColor='#000000' stopOpacity='.2'/>
-          </linearGradient>
-        </svg>
-);
 
 
 

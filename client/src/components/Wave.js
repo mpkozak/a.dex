@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3';
-import * as UI from './_UI.js';
+// import * as UI from './_UI.js';
+import * as template from './_templates.js';
 
 
 export default class Wave extends Component {
 
   componentDidMount() {
     this.getData(this.props.ctx, this.props.src);
-    // d3.select(this.node).append('g').classed('wave', true);
   }
 
 
@@ -32,17 +32,9 @@ export default class Wave extends Component {
 
 
   drawWave(data) {
-    // const element = document.querySelector('#wave-svg') ? document.querySelector('#wave-svg') : null
-    // const element = document.querySelector('#panel') ? document.querySelector('#wave') : null
-    // console.log(element)
-    // const node = element;
-    // const node = d3.select(this.node).select('.wave')
-    // console.log(node)
-    // const node = this.node;
     const width = 100
     const height = 60;
     const margin = 5;
-    // console.log(d3.extent(data))
 
     const xScale = d3.scaleLinear().domain([0, data.length - 1]).range([0, width]);
     const yScale = d3.scaleLinear().domain([-1, 1]).range([0 + margin, height - margin]);
@@ -63,7 +55,6 @@ export default class Wave extends Component {
     const curvePathLength = curveNode.getTotalLength();
     const curveOpacity = (200 - Math.sqrt(curvePathLength)) / 200;
 
-// d3.select('.wave').selectAll('path').remove()
     const wave = d3.select('.wave').selectAll('path').data([dataCurve]);
     wave.enter().append('path')
       .style('fill', 'none')
@@ -79,14 +70,6 @@ export default class Wave extends Component {
 
 
   drawModule() {
-    // const node = this.node;
-    // const width = node.clientWidth;
-    // const height = node.clientHeight;
-    const width = 100;
-    const height = width * (3 / 5);
-
-    const colorFrame = '#3A3125';
-
     const gridLines = [];
     let num = 2.75;
     for (let i = 0; i <= 20; i++) {
@@ -98,90 +81,48 @@ export default class Wave extends Component {
       <g>
         <defs>
           <radialGradient id='panel-glare' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
-            <stop offset='0%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='50%' stopColor='#000000' stopOpacity='.1'/>
-            <stop offset='66%' stopColor='#000000' stopOpacity='.3'/>
-            <stop offset='70%' stopColor='#000000' stopOpacity='.5'/>
+            <stop offset='0%' stopColor='#000000' stopOpacity={0}/>
+            <stop offset='50%' stopColor='#000000' stopOpacity={.1}/>
+            <stop offset='66%' stopColor='#000000' stopOpacity={.3}/>
+            <stop offset='70%' stopColor='#000000' stopOpacity={.5}/>
           </radialGradient>
           <linearGradient id='panel-shadow-diagonal' x1='0%' y1='0%' x2='100%' y2='100%' gradientUnits='objectBoundingBox'>
-            <stop offset='0%' stopColor='#000000' stopOpacity='.35'/>
-            <stop offset='35%' stopColor='#000000' stopOpacity='.2'/>
-            <stop offset='50%' stopColor='#000000' stopOpacity='.15'/>
-            <stop offset='100%' stopColor='#000000' stopOpacity='.05'/>
+            <stop offset='0%' stopColor='#000000' stopOpacity={.35}/>
+            <stop offset='35%' stopColor='#000000' stopOpacity={.2}/>
+            <stop offset='50%' stopColor='#000000' stopOpacity={.15}/>
+            <stop offset='100%' stopColor='#000000' stopOpacity={.05}/>
           </linearGradient>
         </defs>
 
+        {template.moduleFrame()}
 
 
-
-        <g id='frame' clipPath='url(#master-clip)'>
-          <g id='frame-outer'>
-            <rect id='outer-base'
-              x='0'
-              y='0'
-              width=
-              height={height}
-              rx={width / 50}
-              ry={width / 50}
-              fill={colorFrame}
-              stroke='#000000'
-              strokeWidth='.4%'
-            />
-            <g id='outer-shadow'>
-              <rect fill='url(#frame-outer-shadow-horizontal)' x='0' y='0' width={width} height={height} rx={width / 50} ry={width / 50} stroke='none'/>
-              <rect fill='url(#frame-outer-shadow-vertical)' x='0' y='0' width={width} height={height} rx={width / 50} ry={width / 50} stroke='none'/>
-              <rect fill='url(#frame-outer-shadow-diagonal)' x='0' y='0' width={width} height={height} rx={width / 50} ry={width / 50} stroke='none'/>
-            </g>
-          </g>
-          <g id='frame-inner'>
-            <rect id='inner-base'
-              x={width * .025}
-              y={width * .025}
-              width={width * .95}
-              height={height  - (width * .05)}
-              rx={width / 50}
-              ry={width / 50}
-              fill={colorFrame}
-              stroke='#000000'
-              strokeWidth='.4%'
-              strokeOpacity='.8'
-            />
-            <g id='inner-shadow'>
-              <rect fill='url(#frame-inner-shadow-corners)' x={width * .025} y={width * .025} width={width * .95} height={height  - (width * .05)} rx={width / 50} ry={width / 50} stroke='none'/>
-              <rect fill='url(#frame-inner-shadow-horizontal)' x={width * .025} y={width * .025} width={width * .95} height={height  - (width * .05)} rx={width / 50} ry={width / 50} stroke='none'/>
-              <rect fill='url(#frame-inner-shadow-vertical)' x={width * .025} y={width * .025} width={width * .95} height={height  - (width * .05)} rx={width / 50} ry={width / 50} stroke='none'/>
-              <rect fill='url(#frame-inner-shadow-diagonal)' x={width * .025} y={width * .025} width={width * .95} height={height  - (width * .05)} rx={width / 50} ry={width / 50} stroke='none'/>
-            </g>
-          </g>
-        </g>
-
-        <g id='panel'>
+        <g className='panel'>
           <g id='panel-bg'>
             <rect id='bg-base'
-              x={width * .05}
-              y={width * .05}
-              width={width * .9}
-              height={height  - (width * .1)}
-              rx={width / 100}
-              ry={width / 100}
+              x={5}
+              y={5}
+              width={90}
+              height={50}
+              rx={1}
+              ry={1}
               fill='#052205'
               stroke='#000000'
               strokeWidth='.3%'
             />
           </g>
-          <g id='panel-grid' clipPath='url(#screen-clip)'>
+          <g id='panel-grid' clipPath='url(#module-screen-clip)'>
             {gridLines.map((d, i) => {
               return (
                 <line
                   key={d}
                   x1={d}
-                  y1='6'
+                  y1={6}
                   x2={d}
-                  y2='54'
+                  y2={54}
                   stroke='#FFFFFF'
-                  // strokeWidth='.1'
                   strokeWidth={(i % 2 + 2) / 20}
-                  strokeOpacity='.3'
+                  strokeOpacity={.3}
                 />
               );
             })}
@@ -189,31 +130,29 @@ export default class Wave extends Component {
               return (
                 <line
                   key={d + 1}
-                  x1='6'
+                  x1={6}
                   y1={d}
-                  x2='94'
+                  x2={94}
                   y2={d}
                   stroke='#FFFFFF'
-                  // strokeWidth='.1'
                   strokeWidth={(i % 2 + 2) / 20}
-                  strokeOpacity='.3'
+                  strokeOpacity={.3}
                 />
               );
             })}
-
           </g>
 
 
-        <g className='wave' clipPath='url(#screen-clip)'/>
+          <g className='wave' clipPath='url(#module-screen-clip)'/>
+
+
           <g id='panel-shadow'>
-            <rect fill='url(#frame-outer-shadow-vertical)' x={width * .05} y={width * .05} width={width - (width * .1)} height={height  - (width * .1)} rx={width / 100} ry={width / 100} stroke='none'/>
-            <rect fill='url(#frame-outer-shadow-horizontal)' x={width * .05} y={width * .05} width={width - (width * .1)} height={height  - (width * .1)} rx={width / 100} ry={width / 100} stroke='none'/>
-            <rect fill='url(#panel-shadow-diagonal)' x={width * .05} y={width * .05} width={width - (width * .1)} height={height  - (width * .1)} rx={width / 100} ry={width / 100} stroke='none'/>
-            <rect fill='url(#panel-glare)' x={width * .05} y={width * .05} width={width - (width * .1)} height={height  - (width * .1)} rx={width / 100} ry={width / 100} stroke='none'/>
+            <rect fill='url(#frame-outer-shadow-vertical)' x={5} y={5} width={90} height={50} rx={1} ry={1} stroke='none'/>
+            <rect fill='url(#frame-outer-shadow-horizontal)' x={5} y={5} width={90} height={50} rx={1} ry={1} stroke='none'/>
+            <rect fill='url(#panel-shadow-diagonal)' x={5} y={5} width={90} height={50} rx={1} ry={1} stroke='none'/>
+            <rect fill='url(#panel-glare)' x={5} y={5} width={90} height={50} rx={1} ry={1} stroke='none'/>
           </g>
         </g>
-
-
 
 
       </g>
@@ -226,12 +165,8 @@ export default class Wave extends Component {
 
   render() {
     return (
-      <div>
-        <svg
-          className='Wave'
-          ref={node => this.node = node}
-          viewBox='0 0 100 60'
-        >
+      <div className='module'>
+        <svg viewBox='0 0 100 60'>
           {this.drawModule()}
         </svg>
       </div>
