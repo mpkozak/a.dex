@@ -6,6 +6,7 @@ import Note from './components/Note.js';
 // import Spec from './components/Spec.js';
 import Vu from './components/Vu.js';
 import Wave from './components/Wave.js';
+import * as UI from './components/_UI.js';
 
 
 export default class App extends Component {
@@ -48,14 +49,12 @@ export default class App extends Component {
     if (mic) {
       return (
         <div>
+          {UI.frame}
 
 
           <div className='modules'>
             <div className='module'>
               <Wave ctx={audioCtx} src={mic} />
-            </div>
-            <div className='module'>
-              <Vu ctx={audioCtx} src={mic} />
             </div>
           </div>
 

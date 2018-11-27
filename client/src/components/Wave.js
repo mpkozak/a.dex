@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3';
+import * as UI from './_UI.js';
 
 
 export default class Wave extends Component {
@@ -96,83 +97,29 @@ export default class Wave extends Component {
     return (
       <g>
         <defs>
-{/* Master Clip Path */}
-          <clipPath id='wave-master-clip'>
-            <rect x='0' y='0' width={width} height={height} rx={width / 50} ry={width / 50}/>
-          </clipPath>
-{/* Screen Clip Path */}
-          <clipPath id='wave-screen-clip'>
-            <rect x={width * .05} y={width * .05} width={width - (width * .1)} height={height  - (width * .1)} rx={width / 100} ry={width / 100} stroke='none'/>
-          </clipPath>
-{/* Outer Frame Gradients */}
-          <linearGradient id='frame-outer-shadow-horizontal' x1='0%' y1='0%' x2='0%' y2='100%' gradientUnits='objectBoundingBox'>
-            <stop offset='0%' stopColor='#000000' stopOpacity='.5'/>
-            <stop offset='4%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='96%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='100%' stopColor='#000000' stopOpacity='.5'/>
-          </linearGradient>
-          <linearGradient id='frame-outer-shadow-vertical' x1='0%' y1='0%' x2='100%' y2='0%' gradientUnits='objectBoundingBox'>
-            <stop offset='0%' stopColor='#000000' stopOpacity='.5'/>
-            <stop offset='2%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='98%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='100%' stopColor='#000000' stopOpacity='.5'/>
-          </linearGradient>
-          <linearGradient id='frame-outer-shadow-diagonal' x1='0%' y1='0%' x2='100%' y2='100%' gradientUnits='objectBoundingBox'>
-            <stop offset='0%' stopColor='#FFFFFF' stopOpacity='.1'/>
-            <stop offset='50%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='100%' stopColor='#000000' stopOpacity='.4'/>
-          </linearGradient>
-{/* Inner Frame Gradients */}
-          <linearGradient id='frame-inner-shadow-horizontal' x1='0%' y1='0%' x2='0%' y2='100%' gradientUnits='objectBoundingBox'>
-            <stop offset='0%' stopColor='#000000' stopOpacity='.5'/>
-            <stop offset='4%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='96%' stopColor='#000000' stopOpacity='.4'/>
-            <stop offset='100%' stopColor='#000000' stopOpacity='0'/>
-          </linearGradient>
-          <linearGradient id='frame-inner-shadow-vertical' x1='0%' y1='0%' x2='100%' y2='0%' gradientUnits='objectBoundingBox'>
-            <stop offset='0%' stopColor='#000000' stopOpacity='.5'/>
-            <stop offset='2%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='98%' stopColor='#000000' stopOpacity='.4'/>
-            <stop offset='100%' stopColor='#000000' stopOpacity='0'/>
-          </linearGradient>
-          <radialGradient id='frame-inner-shadow-corners' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
-            <stop offset='0%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='50%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='63%' stopColor='#000000' stopOpacity='.1'/>
-            <stop offset='70%' stopColor='#000000' stopOpacity='.5'/>
-          </radialGradient>
-          <linearGradient id='frame-inner-shadow-diagonal' x1='0%' y1='0%' x2='100%' y2='100%' gradientUnits='objectBoundingBox'>
-            <stop offset='0%' stopColor='#000000' stopOpacity='.4'/>
-            <stop offset='45%' stopColor='#000000' stopOpacity='.3'/>
-            <stop offset='50%' stopColor='#000000' stopOpacity='.7'/>
-            <stop offset='55%' stopColor='#000000' stopOpacity='.2'/>
-            <stop offset='94%' stopColor='#FFFFFF' stopOpacity='.1'/>
-            <stop offset='100%' stopColor='#000000' stopOpacity='.2'/>
-          </linearGradient>
-
           <radialGradient id='panel-glare' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
             <stop offset='0%' stopColor='#000000' stopOpacity='0'/>
             <stop offset='50%' stopColor='#000000' stopOpacity='.1'/>
             <stop offset='66%' stopColor='#000000' stopOpacity='.3'/>
             <stop offset='70%' stopColor='#000000' stopOpacity='.5'/>
           </radialGradient>
-        </defs>
           <linearGradient id='panel-shadow-diagonal' x1='0%' y1='0%' x2='100%' y2='100%' gradientUnits='objectBoundingBox'>
             <stop offset='0%' stopColor='#000000' stopOpacity='.35'/>
             <stop offset='35%' stopColor='#000000' stopOpacity='.2'/>
             <stop offset='50%' stopColor='#000000' stopOpacity='.15'/>
             <stop offset='100%' stopColor='#000000' stopOpacity='.05'/>
           </linearGradient>
+        </defs>
 
 
 
 
-        <g id='frame' clipPath='url(#wave-master-clip)'>
+        <g id='frame' clipPath='url(#master-clip)'>
           <g id='frame-outer'>
             <rect id='outer-base'
               x='0'
               y='0'
-              width={width}
+              width=
               height={height}
               rx={width / 50}
               ry={width / 50}
@@ -222,7 +169,7 @@ export default class Wave extends Component {
               strokeWidth='.3%'
             />
           </g>
-          <g id='panel-grid' clipPath='url(#wave-screen-clip)'>
+          <g id='panel-grid' clipPath='url(#screen-clip)'>
             {gridLines.map((d, i) => {
               return (
                 <line
@@ -257,7 +204,7 @@ export default class Wave extends Component {
           </g>
 
 
-        <g className='wave' clipPath='url(#wave-screen-clip)'/>
+        <g className='wave' clipPath='url(#screen-clip)'/>
           <g id='panel-shadow'>
             <rect fill='url(#frame-outer-shadow-vertical)' x={width * .05} y={width * .05} width={width - (width * .1)} height={height  - (width * .1)} rx={width / 100} ry={width / 100} stroke='none'/>
             <rect fill='url(#frame-outer-shadow-horizontal)' x={width * .05} y={width * .05} width={width - (width * .1)} height={height  - (width * .1)} rx={width / 100} ry={width / 100} stroke='none'/>
