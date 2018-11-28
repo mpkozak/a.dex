@@ -1,7 +1,7 @@
 .App {
   /*position: absolute;*/
   z-index: 3;
-  width: 100vw;
+  /*width: 100vw;*/
   /*height: 100vh;*/
   display: flex;
   flex-flow: column nowrap;
@@ -56,14 +56,14 @@
 }
 
 .inst h6 {
-  padding: 1vmin 0;
+  padding: 2vmin 1vmin;
   text-align: left;
 }
 
 .inst {
-  /*width: 80vmin;*/
+  width: 80vmin;
   margin: 1vmin 2vmin 5vmin 2vmin;
-  padding: 0 30vmin;
+  /*padding: 0 30vmin;*/
 }
 
 

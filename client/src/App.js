@@ -60,7 +60,7 @@ export default class App extends Component {
             {/* <Spec ctx={audioCtx} src={mic} /> */}
             {/* <Note ctx={audioCtx} src={mic} /> */}
             {/* <Freq ctx={audioCtx} src={mic} /> */}
-          </div>
+
 
 
           <div className='inst'>
@@ -75,6 +75,11 @@ export default class App extends Component {
               <li>Volume is controlled by moving the corresponding color object up and down.</li>
               <li>Pitch is controlled by moving the corresponding color object left and right.</li>
             </ul>
+          </div>
+
+
+
+
           </div>
 
 
