@@ -23,7 +23,6 @@ export default class Wave extends Component {
   }
 
   componentDidUpdate() {
-    // console.log('updated')
     this.moveNeedle(this.state.rmsVU, this.state.peak);
   }
 
@@ -44,14 +43,13 @@ export default class Wave extends Component {
       analyser.getFloatTimeDomainData(wave);
       const sum2 = wave.reduce((a, b) => a + Math.pow(b, 2), 0);
       const rms = Math.sqrt(sum2 / fftBins);
+      const rmsDBFS = 20 * Math.log10(rms);
+      const rmsVU = rmsDBFS + 20;
 
-      if (rms > .5) {
+      if (rmsVU > 12) {
         peak = true;
         setTimeout(() => peak = false, 1000);
       };
-
-      const rmsDBFS = 20 * Math.log10(rms);
-      const rmsVU = rmsDBFS + 20;
 
       // this.moveNeedle(rmsVU, peak)
       this.setState(prevState => ({ rmsVU, peak }));
@@ -64,8 +62,6 @@ export default class Wave extends Component {
       // const dbuV = 0.77459667;
       // const volts = dbuV * Math.pow(10, rmsDBu / 20);
   }
-
-
 
   moveNeedle(rmsVU, peak) {
     // const { rmsVU } = this.state;
