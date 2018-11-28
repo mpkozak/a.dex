@@ -1,23 +1,26 @@
 import React, { Component } from 'react';
 import tracking from 'tracking';
-import help from './_helpers.js';
-import * as UI from './_UI.js';
+import help from '../_helpers.js';
+import * as UI from '../_UI.js';
 import './_css/Theremin.css';
 
 export default class Theremin extends Component {
     constructor(props) {
     super(props)
     this.state = {
-      colorGain: {r: 0, g: 0, b: 0},
-      colorFreq: {r: 0, g: 0, b: 0},
+      config: false,
+      // colorGain: {r: 0, g: 0, b: 0},
+      // colorFreq: {r: 0, g: 0, b: 0},
+      colorGain: {r: null, g: null, b: null},
+      colorFreq: {r: null, g: null, b: null},
       audio: {},
       params: {
         sense: {v: 30, max: 100},
         range: {v: 4, max: 6},
         tone: {v: 2200, max: 4400},
         volume: {v: .5, max: 1},
-        fmWidth: {v: 1, max: 10},
-        fmDepth: {v: 1500, max: 3000},
+        fmWidth: {v: 0, max: 10},
+        fmDepth: {v: 0, max: 3000},
       },
       data: [],
       dataGain: false,
@@ -33,7 +36,8 @@ export default class Theremin extends Component {
     const colorGain = JSON.parse(localStorage.getItem('colorGain'));
     const colorFreq = JSON.parse(localStorage.getItem('colorFreq'));
     if (colorGain && colorFreq) {
-      this.setState(prevState => ({ colorGain, colorFreq }));
+      const config = true;
+      this.setState(prevState => ({ config, colorGain, colorFreq }));
     };
     this.audioInit(this.props.ctx);
     this.trackerInit();

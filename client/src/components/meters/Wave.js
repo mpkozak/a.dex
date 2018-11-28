@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3';
-import * as template from './_templates.js';
+import * as template from '../_templates.js';
 
 
 export default class Wave extends Component {
@@ -8,9 +8,18 @@ export default class Wave extends Component {
     this.analyserInit(this.props.ctx, this.props.src);
   }
 
+  componentDidUpdate() {
+    console.log('wave updated')
+  }
+
   analyserInit(ctx, src) {
     const scaleBase = 11;
-    const analyser = new AnalyserNode(ctx, {fftSize: Math.pow(2, scaleBase), minDecibels: -100, maxDecibels: 0, smoothingTimeConstant: 0});
+    const analyser = new AnalyserNode(ctx, {fftSize: Math.pow(2, scaleBase), minDecibels: -100, maxDecibels: -30, smoothingTimeConstant: 0});
+    // const analyser = ctx.createAnalyser();
+    // analyser.fftSize = Math.pow(2, scaleBase);
+    // analyser.minDecibels = -100;
+    // analyser.maxDecibels = 0;
+    // analyser.smoothingTimeConstant = 0;
     src.connect(analyser);
 
     const fftBins = analyser.frequencyBinCount;
@@ -31,8 +40,11 @@ export default class Wave extends Component {
     const height = 60;
     const margin = 5;
 
+    const extent = d3.extent(data)
+
     const xScale = d3.scaleLinear().domain([0, data.length - 1]).range([0, width]);
-    const yScale = d3.scaleLinear().domain([-1, 1]).range([0 + margin, height - margin]);
+    // const yScale = d3.scaleLinear().domain([-1, 1]).range([0 + margin, height - margin]);
+    const yScale = d3.scaleLinear().domain([extent[0] - .1, extent[1] + .1]).range([0 + margin, height - margin]);
     const curveScale = d3.line().curve(d3.curveLinear);
 
     const dataCurve = [];
@@ -43,12 +55,12 @@ export default class Wave extends Component {
     const curvePath = d3.select('#wave-svg-d3').append('path').attr('d', curveScale(dataCurve)).remove();
     const curveNode = curvePath.node()
     const curvePathLength = curveNode.getTotalLength();
-    const curveOpacity = (200 - Math.sqrt(curvePathLength)) / 200;
+    const curveOpacity = (width - Math.sqrt(curvePathLength)) / (width - 10);
 
     const wave = d3.select('#wave-svg-d3').selectAll('path').data([dataCurve]);
     wave.enter().append('path')
       .style('fill', 'none')
-      .style('stroke-width', 0.15)
+      .style('stroke-width', '.15%')
       .style('stroke', '#A0FFA0')
     wave
       .attr('d', d => curveScale(d))

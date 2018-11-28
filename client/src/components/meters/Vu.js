@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3';
-import * as template from './_templates.js';
+import * as template from '../_templates.js';
 
 
 export default class Wave extends Component {
@@ -23,12 +23,18 @@ export default class Wave extends Component {
   }
 
   componentDidUpdate() {
-    this.moveNeedle(this.state.rmsVU, this.state.peak);
+    // console.log('vu updated')
+    // this.moveNeedle(this.state.rmsVU, this.state.peak);
   }
 
   analyserInit(ctx, src) {
     const scaleBase = 10;
-    const analyser = new AnalyserNode(ctx, {fftSize: Math.pow(2, scaleBase), minDecibels: -200, maxDecibels: 0, smoothingTimeConstant: 0});
+    const analyser = new AnalyserNode(ctx, {fftSize: Math.pow(2, scaleBase), minDecibels: -100, maxDecibels: 0, smoothingTimeConstant: 1});
+    // const analyser = ctx.createAnalyser();
+    // analyser.fftSize = Math.pow(2, scaleBase);
+    // analyser.minDecibels = -100;
+    // analyser.maxDecibels = 0;
+    // analyser.smoothingTimeConstant = 0;
     src.connect(analyser);
 
     const fftBins = analyser.frequencyBinCount;
@@ -41,6 +47,7 @@ export default class Wave extends Component {
     const animate = () => {
       requestAnimationFrame(animate);
       analyser.getFloatTimeDomainData(wave);
+      // console.log(d3.extent(wave))
       const sum2 = wave.reduce((a, b) => a + Math.pow(b, 2), 0);
       const rms = Math.sqrt(sum2 / fftBins);
       const rmsDBFS = 20 * Math.log10(rms);
@@ -51,8 +58,8 @@ export default class Wave extends Component {
         setTimeout(() => peak = false, 1000);
       };
 
-      // this.moveNeedle(rmsVU, peak)
-      this.setState(prevState => ({ rmsVU, peak }));
+      this.moveNeedle(rmsVU, peak)
+      // this.setState(prevState => ({ rmsVU, peak }));
     };
     animate();
 
@@ -142,22 +149,15 @@ export default class Wave extends Component {
 
 
   drawSvg() {
-
 // works after re-render
     // const path = document.querySelector('#vu-arc-scale') ? document.querySelector('#vu-arc-scale') : null;
     // const pathLength = path ? path.getTotalLength() : null;
 
-// doesn't work but should
-    const path = document.querySelector('#vu-arc-scale')
+// KEEP BELOW AS IS
+    const path = document.querySelector('#vu-arc-scale');
     const pathLength = path.getTotalLength();
-
-// calculated path length
-    // const pathLength = 76.11;
-
-
     const radius = Math.sqrt(Math.pow(57, 2) + Math.pow(50, 2));
 
-// KEEP BELOW AS IS
     const colorBg = '#D5BD79'
     const colorRed = '#C12822';
 
@@ -177,17 +177,13 @@ export default class Wave extends Component {
       {vu: 3, deg: 35, strokeWidth: '1%', stroke: colorRed, label: true}
     ];
     ticks.forEach(d => d.rad = d.deg * (Math.PI / 180));
-    // const vu = ticks.map(d => d.vu)
-    // const deg = ticks.map(d => d.deg)
-
-
 
 // KEEP ABOVE AS IS
 
 
 
     const vuNeedle = {
-      transitionDuration: '100ms',
+      transitionDuration: '50ms',
       transitionTimingFunction: 'ease-in'
     };
 
