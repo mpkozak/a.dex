@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import Theremin from './components/Theremin.js';
 // import Freq from './components/Freq.js';
-import Note from './components/Note.js';
+// import Note from './components/Note.js';
 // import Spec from './components/Spec.js';
 import Vu from './components/Vu.js';
 import Wave from './components/Wave.js';
@@ -49,13 +49,13 @@ export default class App extends Component {
     if (mic) {
       return (
         <div>
-          {template.moduleDefs()}
-
-
-          <div className='modules'>
-              <Vu ctx={audioCtx} src={mic} />
+          <div className='instrument'>
+            <Theremin ctx={audioCtx} />
           </div>
-
+          <div className='modules'>
+            <Wave ctx={audioCtx} src={mic} />
+            <Vu ctx={audioCtx} src={mic} />
+          </div>
         </div>
       );
     } else return <div>Loading...</div>;
@@ -65,6 +65,7 @@ export default class App extends Component {
   render() {
     return (
       <div className='App'>
+        {template.moduleDefs()}
         {this.showModules()}
       </div>
     );

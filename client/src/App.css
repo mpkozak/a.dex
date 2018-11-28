@@ -31,11 +31,11 @@
 
 
 .instruments {
-  width: 100%;
+/*  width: 100%;
   display: flex;
   flex-flow: row wrap;
   align-items: center;
-  justify-content: center;
+  justify-content: center;*/
 }
 
 .instrument {
