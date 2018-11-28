@@ -6,11 +6,11 @@ import * as template from './_templates.js';
 export default class Wave extends Component {
 
   componentDidMount() {
-    this.getData(this.props.ctx, this.props.src);
+    this.analyserInit(this.props.ctx, this.props.src);
   }
 
 
-  getData(ctx, src) {
+  analyserInit(ctx, src) {
     const scaleBase = 11;
     const analyser = new AnalyserNode(ctx, {fftSize: Math.pow(2, scaleBase), minDecibels: -100, maxDecibels: 0, smoothingTimeConstant: 0});
     src.connect(analyser);
@@ -18,7 +18,6 @@ export default class Wave extends Component {
     const fftBins = analyser.frequencyBinCount;
     const wave = new Float32Array(fftBins);
     // const ms = (fftBins / ctx.sampleRate) * 1000;
-    // console.log(ms)
 
     const animate = () => {
       requestAnimationFrame(animate);
@@ -67,31 +66,34 @@ export default class Wave extends Component {
     //   num += 4.5;
     //   gridLines.push(num);
     // };
+    const colorBg = '#052205'
 
     const gridLines = [7.25, 11.75, 16.25, 20.75, 25.25, 29.75, 34.25, 38.75, 43.25, 47.75, 52.25, 56.75, 61.25, 65.75, 70.25, 74.75, 79.25, 83.75, 88.25, 92.75];
 
     return (
       <g>
-{/* Module Frame */}
+  {/* Module Frame */}
         {template.moduleFrame()}
-{/* Panel Background Group */}
+
+  {/* Panel Background Group */}
         <g className='panel-bg'>
-{/* Base Layer */}
-          <rect className='panel-base'
+    {/* Base Layer */}
+          <rect
             x={5}
             y={5}
             width={90}
             height={50}
             rx={1}
             ry={1}
-            fill='#052205'
+            fill={colorBg}
             stroke='#000000'
             strokeWidth='.3%'
           />
         </g>
-{/* Grid Lines Group */}
+
+  {/* Grid Lines Group */}
         <g className='panel-grid' clipPath='url(#module-screen-clip)'>
-{/* Vertical Lines */}
+    {/* Vertical Lines */}
           {gridLines.map((d, i) => {
             return (
               <line
@@ -106,7 +108,7 @@ export default class Wave extends Component {
               />
             );
           })}
-{/* Horizontal Lines */}
+    {/* Horizontal Lines */}
           {gridLines.map((d, i) => {
             return (
               <line
@@ -122,10 +124,12 @@ export default class Wave extends Component {
             );
           })}
         </g>
-{/* D3 Node Link */}
+
+  {/* D3 Node Link */}
         <g id='wave-svg-d3' clipPath='url(#module-screen-clip)'/>
-{/* Panel Shadow */}
-        <g className='panel-shadow'>
+
+  {/* Panel Shadows Group */}
+        <g className='panel-shadows'>
           <rect fill='url(#frame-outer-shadow-vertical)' x={5} y={5} width={90} height={50} rx={1} ry={1} stroke='none'/>
           <rect fill='url(#frame-outer-shadow-horizontal)' x={5} y={5} width={90} height={50} rx={1} ry={1} stroke='none'/>
           <rect fill='url(#panel-shadow-diagonal)' x={5} y={5} width={90} height={50} rx={1} ry={1} stroke='none'/>
@@ -146,6 +150,3 @@ export default class Wave extends Component {
     );
   }
 }
-
-
-

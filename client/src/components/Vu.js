@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-// import * as d3 from 'd3';
+import * as d3 from 'd3';
 import * as template from './_templates.js';
 
 
@@ -16,12 +16,11 @@ export default class Wave extends Component {
 
 
   componentDidMount() {
-    this.getData(this.props.ctx, this.props.src);
-    // setInterval(() => console.log(this.state.rms, 'vu ', this.state.rmsVU, 'degrees ', this.state.rmsScale), 1000)
+    this.analyserInit(this.props.ctx, this.props.src);
   }
 
 
-  getData(ctx, src) {
+  analyserInit(ctx, src) {
     const scaleBase = 10;
     const analyser = new AnalyserNode(ctx, {fftSize: Math.pow(2, scaleBase), minDecibels: -200, maxDecibels: 0, smoothingTimeConstant: 0});
     src.connect(analyser);
@@ -36,7 +35,13 @@ export default class Wave extends Component {
     //   const sum2 = wave.reduce((a, b) => a + Math.pow(b, 2), 0);
     //   const rms = Math.sqrt(sum2 / fftBins);
     //   const rmsScale = (Math.log(rms) + 5) * 10;
-    //   if (rms > .5) this.handlePeak();
+    //   // if (rms > .5) this.handlePeak();
+
+    //   let peak;
+    //   if (rms > .5) {
+    //     peak = true;
+    //     setTimeout(() => peak = false, 1000)
+    //   }
 
     //   const rmsDBFS = 20 * Math.log10(rms);
     //   const rmsVU = rmsDBFS + 20;
@@ -44,8 +49,9 @@ export default class Wave extends Component {
     //   // const dbuV = 0.77459667;
     //   // const volts = dbuV * Math.pow(10, rmsDBu / 20);
     //   // console.log('rms ', rms, 'dbfs ', rmsDBFS, 'volts ', volts, 'vu ', rmsVU, 'dbu ', rmsDBu)
+    //   this.moveNeedle(rmsScale, peak)
 
-    //   this.setState(prevState => ({ rms, rmsVU, rmsScale }));
+    //   // this.setState(prevState => ({ rms, rmsVU, rmsScale }));
     // };
     // setInterval(() => animate(), ms);
 
@@ -55,7 +61,14 @@ export default class Wave extends Component {
       const sum2 = wave.reduce((a, b) => a + Math.pow(b, 2), 0);
       const rms = Math.sqrt(sum2 / fftBins);
       const rmsScale = (Math.log(rms) + 5) * 10;
-      if (rms > .5) this.handlePeak();
+      // if (rms > .5) this.handlePeak();
+
+      let peak;
+      if (rms > .5) {
+        peak = true;
+        setTimeout(() => peak = false, 1000)
+      }
+
 
       const rmsDBFS = 20 * Math.log10(rms);
       const rmsVU = rmsDBFS + 20;
@@ -64,30 +77,98 @@ export default class Wave extends Component {
       // const volts = dbuV * Math.pow(10, rmsDBu / 20);
       // console.log('rms ', rms, 'dbfs ', rmsDBFS, 'volts ', volts, 'vu ', rmsVU, 'dbu ', rmsDBu)
 
-      this.setState(prevState => ({ rms, rmsVU, rmsScale }));
+
+
+      this.moveNeedle(rmsScale, peak)
+      // this.setState(prevState => ({ rms, rmsVU, rmsScale }));
     };
     animate();
   }
 
 
-  handlePeak() {
-    this.setState(prevState => ({ peak: true }));
-    setTimeout(() => {
-      this.setState(prevState => ({ peak: false }));
-    }, 1000);
+  // handlePeak() {
+  //   this.setState(prevState => ({ peak: true }));
+  //   setTimeout(() => {
+  //     this.setState(prevState => ({ peak: false }));
+  //   }, 1000);
+  //   console.log(this.state.peak, this.prevState)
+  // }
+
+
+  moveNeedle(rmsScale, peak) {
+    const rmsScale = (Math.log(rms) + 5) * 10;
+    const rotation = rmsScale >= -50 ? rmsScale : -50;
+
+    const needleShadow = d3.select('#vu-svg-d3-needleShadow').data([rotation]);
+    needleShadow
+      .attr('transform', d => `translate(${d * .01}, ${(d * .012) + 1.2})rotate(${d}, ${50}, ${57})`);
+
+    const needle = d3.select('#vu-svg-d3-needle').data([rotation]);
+    needle
+      .attr('transform', d => `rotate(${d}, ${50}, ${57})`);
+
+
+
+
+
+    if (peak) {
+      const led = d3.select('#vu-svg-d3-led').data([peak])
+      led
+        .attr('fill', '#FF452F')
+      led.transition().duration(1000)
+        .attr('fill', '#AB2D1E')
+      const ledHalo = d3.select('#vu-svg-d3-ledHalo').data([peak])
+      ledHalo
+        // .attr('fill', 'url(#led-glow)')
+        .attr('opacity', 1)
+
+      ledHalo.transition().duration(1000)
+        // .attr('fill', 'none')
+        .attr('opacity', 0)
+    }
+
+
+
+
+
+
+
+
+
+    // const led = d3.select('#vu-svg-d3-led')
+    // led
+    //   .attr('fill', peak ? '#FF452F' : '#AB2D1E')
+    // const ledHalo = d3.select('#vu-svg-d3-ledHalo')
+    // ledHalo
+    //   .attr('fill', peak ? 'url(#led-glow)' : 'none')
+
+
+
   }
 
 
-  drawSvg() {
-    const rms = this.state.rmsScale !== -Infinity ? this.state.rmsScale : 0;
-    const peak = this.state.peak;
-    const rotation = rms >= -50 ? rms : -50;
 
-    const width = 100;
-    const height = width * (3 / 5);
-    const radius = Math.sqrt(Math.pow(0.95 * height, 2) + Math.pow(width / 2, 2));
-    const path = document.querySelector('#arc-scale') ? document.querySelector('#arc-scale') : null;
+
+
+
+
+
+
+
+
+  drawSvg() {
+
+    const radius = Math.sqrt(Math.pow(57, 2) + Math.pow(50, 2));
+    const path = document.querySelector('#vu-arc-scale') ? document.querySelector('#vu-arc-scale') : null;
+    // const path = document.querySelector('#vu-arc-scale')
     const pathLength = path ? path.getTotalLength() : null;
+
+
+
+// KEEP BELOW AS IS
+    // const { peak } = this.state;
+
+    // const rms = this.state.rmsScale !== -Infinity ? this.state.rmsScale : 0;
 
     const colorBg = '#D5BD79'
     const colorRed = '#C12822';
@@ -109,126 +190,55 @@ export default class Wave extends Component {
     ];
     ticks.forEach(d => d.rad = d.deg * (Math.PI / 180));
 
+
+    const vuNeedle = {
+      // transitionDuration: '100ms',
+      // transitionTimingFunction: 'ease-in'
+    };
+
+
+// KEEP ABOVE AS IS
+
+
+
     const svgStyle = {
       fontFamily: 'Helvetica, sans-serif'
     };
-    const textBigHeavy = {
-      fontSize: height / 9 + 'px',
+    const textLargeHeavy = {
+      fontSize: 7 + 'px',
       fontWeight: '400'
     };
-    const textBig = {
-      fontSize: height / 9 + 'px',
+    const textLarge = {
+      fontSize: 7 + 'px',
       fontWeight: '200'
     };
     const textMedium = {
-      fontSize: height / 18 + 'px',
+      fontSize: 3.5 + 'px',
       fontWeight: '200'
     };
     const textSmallHeavy = {
-      fontSize: height / 25 + 'px',
+      fontSize: 2.5 + 'px',
       fontWeight: '400'
     };
     const textSmall = {
-      fontSize: height / 25 + 'px',
+      fontSize: 2.5 + 'px',
       fontStyle: 'italic',
       fontWeight: '200'
     };
-    const textSerif = {
+    const textMediumSerif = {
       fontFamily: 'Times, Times New Roman, serif',
-      fontSize: height / 18 + 'px',
+      fontSize: 3.5 + 'px',
       fontWeight: '600'
-    };
-    const needle = {
-      transitionDuration: '100ms',
-      transitionTimingFunction: 'ease-in'
     };
 
     return (
       <g style={svgStyle}>
-        <defs>
-{/* LED Gradients */}
-          <radialGradient id='panel-led-glow' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
-            <stop offset='0%' stopColor='#AB2D1E' stopOpacity='0'/>
-            <stop offset='26%' stopColor='#FF352E' stopOpacity='.4'/>
-            <stop offset='30%' stopColor='#FF352E' stopOpacity='.3'/>
-            <stop offset='32%' stopColor='#FF352E' stopOpacity='.2'/>
-            <stop offset='38%' stopColor='#FF352E' stopOpacity='.1'/>
-            <stop offset='50%' stopColor='#FF352E' stopOpacity='0'/>
-          </radialGradient>
-          <radialGradient id='panel-led-shadow-panel' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
-            <stop offset='0%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='30%' stopColor='#000000' stopOpacity='1'/>
-            <stop offset='50%' stopColor='#000000' stopOpacity='0'/>
-          </radialGradient>
-          <radialGradient id='panel-led-shadow-dark' cx='50%' cy='50%' r='98%' fx='51%' fy='51%' fr='2%' gradientUnits='objectBoundingBox'>
-            <stop offset='0%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='20%' stopColor='#000000' stopOpacity='.05'/>
-            <stop offset='35%' stopColor='#000000' stopOpacity='.2'/>
-            <stop offset='45%' stopColor='#000000' stopOpacity='.4'/>
-            <stop offset='50%' stopColor='#000000' stopOpacity='.7'/>
-            <stop offset='55%' stopColor='#000000' stopOpacity='1'/>
-          </radialGradient>
-          <radialGradient id='panel-led-shadow-light' cx='50%' cy='50%' r='100%' fx='35%' fy='35%' fr='5%' gradientUnits='objectBoundingBox'>
-            <stop offset='0%' stopColor='#FFFFFF' stopOpacity='.8'/>
-            <stop offset='1%' stopColor='#FFFFFF' stopOpacity='.6'/>
-            <stop offset='3%' stopColor='#FFFFFF' stopOpacity='.4'/>
-            <stop offset='20%' stopColor='#FFFFFF' stopOpacity='.2'/>
-            <stop offset='50%' stopColor='#FFFFFF' stopOpacity='0'/>
-          </radialGradient>
-          <radialGradient id='panel-led-hole' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
-            <stop offset='0%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='40%' stopColor='#000000' stopOpacity='.4'/>
-            <stop offset='47%' stopColor='#000000' stopOpacity='1'/>
-            <stop offset='50%' stopColor='#000000' stopOpacity='0'/>
-          </radialGradient>
-{/* Needle Shadow Gradient */}
-          <linearGradient id='panel-needle-shadow' x1='0%' y1='0%' x2='100%' y2='0%' gradientUnits='objectBoundingBox'>
-            <stop offset='0%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='25%' stopColor='#000000' stopOpacity='.1'/>
-            <stop offset='50%' stopColor='#000000' stopOpacity='.4'/>
-            <stop offset='75%' stopColor='#000000' stopOpacity='.1'/>
-            <stop offset='100%' stopColor='#000000' stopOpacity='0'/>
-          </linearGradient>
-{/* Needle Coil Gradients */}
-          <linearGradient id='panel-needle-coil' x1='0%' y1='0%' x2='3%' y2='0%' gradientUnits='objectBoundingBox' spreadMethod='repeat'>
-            <stop offset='0%' stopColor='#3A2411' stopOpacity='.5'/>
-            <stop offset='1%' stopColor='#68411E' stopOpacity='1'/>
-            <stop offset='50%' stopColor='#68411E' stopOpacity='1'/>
-            <stop offset='100%' stopColor='#3A2411' stopOpacity='.5'/>
-          </linearGradient>
-          <linearGradient id='panel-needle-coil-shadow' x1='0%' y1='0%' x2='0%' y2='100%' gradientUnits='objectBoundingBox'>
-            <stop offset='0%' stopColor='#000000' stopOpacity='.6'/>
-            <stop offset='20%' stopColor='#000000' stopOpacity='.2'/>
-            <stop offset='50%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='80%' stopColor='#000000' stopOpacity='.2'/>
-            <stop offset='100%' stopColor='#000000' stopOpacity='.6'/>
-          </linearGradient>
-{/* Meter Arc Mask */}
-          <mask id='panel-arc-mask'>
-            <rect width='100%' height='100%' fill='white'/>
-            <line x1={width * .5} y1={height * .95} x2={(width * .5) + Math.sin(-51 * (Math.PI / 180)) * Math.sqrt(Math.pow(Math.sin(-51 * (Math.PI / 180)) * radius, 2) + Math.pow(height * .95, 2))} y2='0' stroke='black' strokeWidth='6%'/>
-            <line x1={width * .5} y1={height * .95} x2={(width * .5) + Math.sin(51 * (Math.PI / 180)) * Math.sqrt(Math.pow(Math.sin(51 * (Math.PI / 180)) * radius, 2) + Math.pow(height * .95, 2))} y2='0' stroke='black' strokeWidth='6%'/>
-            <use href='#arc-scale' transform={`translate(0, -${height * .025})`} fill='none' stroke='black' strokeWidth='9%'/>
-            <use href='#arc-scale' transform={`translate(0, ${height * .15})`} fill='black' stroke='none'/>
-          </mask>
-        </defs>
-
-
-
 
 
 {/* GOOD BELOW GOOD BELOW GOOD BELOW */}
 
-
-
-
-
-
-
-
-
-
-{/* Needle Cutout Gradient */}
+        <defs>
+    {/* Needle Cutout Gradient */}
           <radialGradient id='panel-needle-cutout' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
             <stop offset='0%' stopColor='#000000'/>
             <stop offset='10%' stopColor='#202326'/>
@@ -237,21 +247,82 @@ export default class Wave extends Component {
             <stop offset='45%' stopColor='#202326'/>
             <stop offset='50%' stopColor='#000000'/>
           </radialGradient>
+    {/* LED Gradients */}
+          <radialGradient id='led-panel-shadow' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
+            <stop offset='0%' stopColor='#000000' stopOpacity='0'/>
+            <stop offset='30%' stopColor='#000000' stopOpacity='1'/>
+            <stop offset='50%' stopColor='#000000' stopOpacity='0'/>
+          </radialGradient>
+          <radialGradient id='led-panel-hole' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
+            <stop offset='0%' stopColor='#000000' stopOpacity='0'/>
+            <stop offset='40%' stopColor='#000000' stopOpacity='.4'/>
+            <stop offset='47%' stopColor='#000000' stopOpacity='1'/>
+            <stop offset='50%' stopColor='#000000' stopOpacity='0'/>
+          </radialGradient>
+          <radialGradient id='led-shadow-dark' cx='50%' cy='50%' r='98%' fx='51%' fy='51%' fr='2%' gradientUnits='objectBoundingBox'>
+            <stop offset='0%' stopColor='#000000' stopOpacity='0'/>
+            <stop offset='20%' stopColor='#000000' stopOpacity='.05'/>
+            <stop offset='35%' stopColor='#000000' stopOpacity='.2'/>
+            <stop offset='45%' stopColor='#000000' stopOpacity='.4'/>
+            <stop offset='50%' stopColor='#000000' stopOpacity='.7'/>
+            <stop offset='55%' stopColor='#000000' stopOpacity='1'/>
+          </radialGradient>
+          <radialGradient id='led-shadow-light' cx='50%' cy='50%' r='100%' fx='35%' fy='35%' fr='5%' gradientUnits='objectBoundingBox'>
+            <stop offset='0%' stopColor='#FFFFFF' stopOpacity='.8'/>
+            <stop offset='1%' stopColor='#FFFFFF' stopOpacity='.6'/>
+            <stop offset='3%' stopColor='#FFFFFF' stopOpacity='.4'/>
+            <stop offset='20%' stopColor='#FFFFFF' stopOpacity='.2'/>
+            <stop offset='50%' stopColor='#FFFFFF' stopOpacity='0'/>
+          </radialGradient>
+          <radialGradient id='led-glow' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
+            <stop offset='0%' stopColor='#AB2D1E' stopOpacity='0'/>
+            <stop offset='26%' stopColor='#FF352E' stopOpacity='.4'/>
+            <stop offset='30%' stopColor='#FF352E' stopOpacity='.3'/>
+            <stop offset='32%' stopColor='#FF352E' stopOpacity='.2'/>
+            <stop offset='38%' stopColor='#FF352E' stopOpacity='.1'/>
+            <stop offset='50%' stopColor='#FF352E' stopOpacity='0'/>
+          </radialGradient>
+    {/* Needle Shadow Gradient */}
+          <linearGradient id='needle-shadow' x1='0%' y1='0%' x2='100%' y2='0%' gradientUnits='objectBoundingBox'>
+            <stop offset='0%' stopColor='#000000' stopOpacity='0'/>
+            <stop offset='25%' stopColor='#000000' stopOpacity='.1'/>
+            <stop offset='50%' stopColor='#000000' stopOpacity='.4'/>
+            <stop offset='75%' stopColor='#000000' stopOpacity='.1'/>
+            <stop offset='100%' stopColor='#000000' stopOpacity='0'/>
+          </linearGradient>
+    {/* Needle Coil Gradients */}
+          <linearGradient id='needle-coil' x1='0%' y1='0%' x2='3%' y2='0%' gradientUnits='objectBoundingBox' spreadMethod='repeat'>
+            <stop offset='0%' stopColor='#3A2411' stopOpacity='.5'/>
+            <stop offset='1%' stopColor='#68411E' stopOpacity='1'/>
+            <stop offset='50%' stopColor='#68411E' stopOpacity='1'/>
+            <stop offset='100%' stopColor='#3A2411' stopOpacity='.5'/>
+          </linearGradient>
+          <linearGradient id='needle-coil-shadow' x1='0%' y1='0%' x2='0%' y2='100%' gradientUnits='objectBoundingBox'>
+            <stop offset='0%' stopColor='#000000' stopOpacity='.6'/>
+            <stop offset='20%' stopColor='#000000' stopOpacity='.2'/>
+            <stop offset='50%' stopColor='#000000' stopOpacity='0'/>
+            <stop offset='80%' stopColor='#000000' stopOpacity='.2'/>
+            <stop offset='100%' stopColor='#000000' stopOpacity='.6'/>
+          </linearGradient>
+    {/* VU Arc Curve Path */}
+    {/*      <path id='arc-scale' d={`M ${12.5} ${18.75} Q ${50} ${7.5}, ${87.5} ${18.75}`} pathLength={100}/>*/}
+    {/* Meter Arc Mask */}
+          <mask id='arc-mask'>
+            <rect width={100} height={100} fill='white'/>
+            <line x1={50} y1={57} x2={50 + Math.sin(-51 * (Math.PI / 180)) * Math.sqrt(Math.pow(Math.sin(-51 * (Math.PI / 180)) * radius, 2) + Math.pow(57, 2))} y2={0} stroke='black' strokeWidth='6%'/>
+            <line x1={50} y1={57} x2={50 + Math.sin(51 * (Math.PI / 180)) * Math.sqrt(Math.pow(Math.sin(51 * (Math.PI / 180)) * radius, 2) + Math.pow(57, 2))} y2={0} stroke='black' strokeWidth='6%'/>
+            <use href='#vu-arc-scale' transform={`translate(${0}, ${-1.5})`} fill='none' stroke='black' strokeWidth='9%'/>
+            <use href='#vu-arc-scale' transform={`translate(${0}, ${9})`} fill='black' stroke='none'/>
+          </mask>
+        </defs>
 
-{/* Meter Arc Curve Path */}
-          <path id='arc-scale'
-            d={`M ${12.5} ${18.75} Q ${50} ${7.5}, ${87.5} ${18.75}`}
-            pathLength={100}
-          />
-
-
-
-{/* Module Frame */}
+  {/* Module Frame */}
         {template.moduleFrame()}
-{/* Panel Background Group */}
+
+  {/* Panel Background Group */}
         <g className='panel-bg'>
-{/* Base Layer */}
-          <rect className='panel-base'
+    {/* Base Layer */}
+          <rect
             x={5}
             y={5}
             width={90}
@@ -262,8 +333,8 @@ export default class Wave extends Component {
             stroke='#000000'
             strokeWidth='.3%'
           />
-{/* Needle Cutout */}
-          <rect className='panel-cutout'
+    {/* Needle Cutout */}
+          <rect
             x={45}
             y={52.2}
             rx={10}
@@ -275,250 +346,242 @@ export default class Wave extends Component {
             clipPath='url(#module-screen-clip)'
           />
         </g>
-{/* Panel Text Group */}
-          <g className='panel-text' opacity='.8'>
-{/* 'VU' */}
-            <text
-              x={50}
-              y={36}
-              style={textBigHeavy}
-              textLength={11.11}
-              fill='#000000'
-              textAnchor='middle'
-              alignmentBaseline='middle'
-              lengthAdjust='spacingAndGlyphs'
-            >VU</text>
-{/* 'Scale @...' */}
-            <text
-              x={50}
-              y={42}
-              style={textSmall}
-              fill='#000000'
-              textAnchor='middle'
-              alignmentBaseline='middle'
-            >@ 0 VU = -20 dBFS</text>
-{/* '-' */}
-            <text
-              x={12}
-              y={14.4}
-              style={textBig}
-              textLength={4}
-              fill='#000000'
-              textAnchor='middle'
-              alignmentBaseline='middle'
-              lengthAdjust='spacingAndGlyphs'
-            >-</text>
-{/* '+' */}
-            <text
-              x={88}
-              y={14.4}
-              style={textBig}
-              fill={colorRed}
-              textAnchor='middle'
-              alignmentBaseline='middle'
-              lengthAdjust='spacingAndGlyphs'
-            >+</text>
-{/* '[Scale Values]' */}
-            {ticks.map(d => {
-              const pct = (d.deg + 46) / 92;
-              const point = path ? path.getPointAtLength(pct * pathLength) : null;
-              const txt = Math.abs(d.vu)
-              if (d.label) {
-                return (
-                  <text
-                    key={d.vu}
-                    x={point ? point.x : 0}
-                    y={point ? point.y : 0}
-                    style={textMedium}
-                    textLength={2.38 * txt.toString().length}
-                    fill={d.vu >= 0 ? colorRed : '#000000'}
-                    textAnchor='middle'
-                    alignmentBaseline='middle'
-                    lengthAdjust='spacingAndGlyphs'
-                  >{txt}</text>
-                );
-              } else return null;
-            })}
-{/* 'PEAK' */}
-            <text
-              x={88}
-              y={30}
-              style={textSmallHeavy}
-              textLength={8.33}
-              fill='#000000'
-              textAnchor='middle'
-              alignmentBaseline='middle'
-              lengthAdjust='spacingAndGlyphs'
-            >PEAK</text>
-{/* 'KOZAK' */}
-            <text
-              x={88}
-              y={51}
-              style={textSerif}
-              textLength={14.3}
-              fill='#000000'
-              textAnchor='end'
-              alignmentBaseline='middle'
-              lengthAdjust='spacingAndGlyphs'
-            >KOZAK</text>
-          </g>
 
-
-
-
-
-
-
-
-
-{/* GOOD ABOVE GOOD ABOVE GOOD ABOVE */}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-{/* LED Group */}
-          <g id='panel-led'>
-{/* LED Shadow */}
-            <circle id='led-shadowPanel' fill='url(#panel-led-shadow-panel)'
-              cx={88.75}
-              cy={24.75}
-              r={2.14}
-              stroke='none'
-            />
-{/* LED Hole */}
-            <circle id='led-hole'
-              cx={width * .88}
-              cy={height * .41}
-              r={height / 29}
-              fill='url(#panel-led-hole)'
-              stroke='none'
-            />
-{/* LED Base */}
-            <circle id='led-base'
-              cx={width * .88}
-              cy={height * .41}
-              r={height / 32}
-              fill={peak ? '#FF452F' : '#AB2D1E'}
-            />
-            <g id='led-shadow'>
-              <circle fill='url(#panel-led-shadow-dark)' cx={width * .88} cy={height * .41} r={height / 32} stroke='none'/>
-              <circle fill='url(#panel-led-shadow-light)' cx={width * .88} cy={height * .41} r={height / 32} stroke='none'/>
-            </g>
-{/* LED Illuminated Halo Layer */}
-            <circle id='led-halo'
-              cx={width * .88}
-              cy={height * .41}
-              r={height / 16}
-              fill={peak ? 'url(#panel-led-glow)' : 'none'}
-              stroke='none'
-            />
-          </g>
-{/* Panel Scale */}
-          <g id='panel-arc' mask='url(#panel-arc-mask)'>
-{/* Black Arc */}
-            <use id='arc-black'
-              href='#arc-scale'
-              transform={`translate(0, ${height * .15})`}
-              fill='none'
-              stroke='#000000'
-              strokeWidth='.8%'
-              strokeDasharray='0, 8, 58.5, 33.5'
-            />
-{/* Red Arc */}
-            <use id='arc-red'
-              href='#arc-scale'
-              transform={`translate(0, ${height * .15})`}
-              fill='none'
-              stroke={colorRed}
-              strokeWidth='5%'
-              strokeDasharray='0, 67.5, 25.5, 7'
-            />
-{/* Tick Marks */}
-            {ticks.map(d => {
-              const hyp = Math.sqrt(Math.pow(Math.sin(d.rad) * radius, 2) + Math.pow(height * .95, 2));
+  {/* Panel Text Group */}
+        <g className='panel-text' opacity={.8}>
+    {/* 'VU' */}
+          <text
+            x={50}
+            y={36}
+            style={textLargeHeavy}
+            textLength={11.11}
+            fill='#000000'
+            textAnchor='middle'
+            alignmentBaseline='middle'
+            lengthAdjust='spacingAndGlyphs'
+          >VU</text>
+    {/* 'Scale @...' */}
+          <text
+            x={50}
+            y={42}
+            style={textSmall}
+            fill='#000000'
+            textAnchor='middle'
+            alignmentBaseline='middle'
+          >@ 0 VU = -20 dBFS</text>
+    {/* '-' */}
+          <text
+            x={12}
+            y={14.4}
+            style={textLarge}
+            textLength={4}
+            fill='#000000'
+            textAnchor='middle'
+            alignmentBaseline='middle'
+            lengthAdjust='spacingAndGlyphs'
+          >-</text>
+    {/* '+' */}
+          <text
+            x={88}
+            y={14.4}
+            style={textLarge}
+            fill={colorRed}
+            textAnchor='middle'
+            alignmentBaseline='middle'
+            lengthAdjust='spacingAndGlyphs'
+          >+</text>
+    {/* '[Scale Values]' */}
+          {ticks.map(d => {
+            const pct = (d.deg + 46) / 92;
+            const point = path ? path.getPointAtLength(pct * pathLength) : null;
+            const txt = Math.abs(d.vu)
+            if (d.label) {
               return (
-                <line id={`arc-tic${d.vu}`}
+                <text
                   key={d.vu}
-                  x1={width * .5}
-                  y1={height * .95}
-                  x2={(width * .5) + (Math.sin(d.rad) * hyp)}
-                  y2='0'
-                  stroke={d.stroke}
-                  strokeWidth={d.strokeWidth}
-                  pathLength='100'
-                  strokeDasharray={d.dash ? d.dash : '0, 54.5, 19, 26.5'}
-                />
+                  x={point ? point.x : 0}
+                  y={point ? point.y : 0}
+                  style={textMedium}
+                  textLength={2.38 * txt.toString().length}
+                  fill={d.vu >= 0 ? colorRed : '#000000'}
+                  textAnchor='middle'
+                  alignmentBaseline='middle'
+                  lengthAdjust='spacingAndGlyphs'
+                >{txt}</text>
               );
-            })}
+            } else return null;
+          })}
+    {/* 'PEAK' */}
+          <text
+            x={88}
+            y={30}
+            style={textSmallHeavy}
+            textLength={8.33}
+            fill='#000000'
+            textAnchor='middle'
+            alignmentBaseline='middle'
+            lengthAdjust='spacingAndGlyphs'
+          >PEAK</text>
+    {/* 'KOZAK' */}
+          <text
+            x={88}
+            y={51}
+            style={textMediumSerif}
+            textLength={14.3}
+            fill='#000000'
+            textAnchor='end'
+            alignmentBaseline='middle'
+            lengthAdjust='spacingAndGlyphs'
+          >KOZAK</text>
+        </g>
+
+  {/* LED Group */}
+        <g className='panel-led'>
+    {/* LED Panel Shadow */}
+          <circle
+            cx={88.75}
+            cy={24.75}
+            r={2.14}
+            fill='url(#led-panel-shadow)'
+            stroke='none'
+          />
+    {/* LED Panel Hole */}
+          <circle
+            cx={88}
+            cy={24.6}
+            r={2.07}
+            fill='url(#led-panel-hole)'
+            stroke='none'
+          />
+    {/* LED Base Layer */}
+          <circle id='vu-svg-d3-led'
+            cx={88}
+            cy={24.6}
+            r={1.875}
+            // fill={peak ? '#FF452F' : '#AB2D1E'}
+            fill='#AB2D1E'
+            stroke='none'
+          />
+    {/* LED Countour Shadows */}
+          <g className='led-shadows'>
+            <circle fill='url(#led-shadow-dark)' cx={88} cy={24.6} r={1.875} stroke='none'/>
+            <circle fill='url(#led-shadow-light)' cx={88} cy={24.6} r={1.875} stroke='none'/>
           </g>
-{/* Needle Group */}
-          <g id='panel-needle' clipPath='url(#module-screen-clip)'>
-{/* Needle Shadow */}
-            <rect id='needle-shadow'
-              x={width * .5}
-              y={height * .22}
-              width='.4%'
-              height={height * .73}
-              style={needle}
-              fill='url(#panel-needle-shadow)'
+    {/* LED Illumination Halo Layer */}
+          <circle id='vu-svg-d3-ledHalo'
+            cx={88}
+            cy={24.6}
+            r={3.75}
+            // fill={peak ? 'url(#led-glow)' : 'none'}
+            fill='url(#led-glow)'
+            stroke='none'
+            opacity={0}
+          />
+        </g>
+
+  {/* Panel Scale Group */}
+        <g className='panel-scale' mask='url(#arc-mask)'>
+    {/* Black Arc */}
+          <use
+            href='#vu-arc-scale'
+            transform={`translate(${0}, ${9})`}
+            fill='none'
+            stroke='#000000'
+            strokeWidth={.93}
+            // strokeWidth='.8%'
+            strokeDasharray={`${0}, ${8}, ${58.5}, ${33.5}`}
+          />
+    {/* Red Arc */}
+          <use
+            href='#vu-arc-scale'
+            transform={`translate(${0}, ${9})`}
+            fill='none'
+            stroke={colorRed}
+            strokeWidth='5%'
+            pathLength={100}
+            strokeDasharray={`${0}, ${67.5}, ${25.5}, ${7}`}
+          />
+    {/* Tick Marks */}
+          {ticks.map(d => {
+            const hyp = Math.sqrt(Math.pow(Math.sin(d.rad) * radius, 2) + Math.pow(57, 2));
+            return (
+              <line
+                key={d.vu}
+                x1={50}
+                y1={57}
+                x2={50 + (Math.sin(d.rad) * hyp)}
+                y2={0}
+                stroke={d.stroke}
+                strokeWidth={d.strokeWidth}
+                pathLength={100}
+                strokeDasharray={`${0}, ${54.5}, ${19}, ${26.5}`}
+              />
+            );
+          })}
+        </g>
+
+  {/* Needle Group */}
+        <g className='panel-needle' clipPath='url(#module-screen-clip)'>
+    {/* Needle Shadow Group*/}
+          <g id='vu-svg-d3-needleShadow'>
+            <rect
+              x={50}
+              y={13.2}
+              width={.4}
+              height={48.18}
+              style={vuNeedle}
+              fill='url(#needle-shadow)'
               stroke='none'
-              transform={`translate(${width * (rotation / 10000)}, ${height * ((rotation / 5000) + .02)}) rotate(${rotation}, ${width / 2}, ${height * .95})`}
+              // transform={`translate(${rotation * .01}, ${(rotation * .012) + 1.2}) rotate(${rotation}, ${50}, ${57})`}
             />
-{/* Needle Components Group */}
-            <g id='needle-g' style={needle} transform={`rotate(${rotation}, ${width * .5}, ${height * .95})`}>
-{/* Needle */}
-              <rect id='g-point'
-                x={width * .5}
-                y={height * .2}
-                width='.2%'
-                height={height * .75}
-                fill='#000000'
-                stroke='none'
-              />
-{/* Base Magnet */}
-              <rect id='g-magnet'
-                x={width * .465}
-                y={height * .905}
-                width={width * .07}
-                height={height * .03}
-                rx='.2%'
-                fill='#333333'
-                stroke='#000000'
-                strokeWidth='.1%'
-              />
-              <rect id='coil-shadow' fill='url(#panel-needle-coil-shadow)' x={width * .465} y={height * .905} width={width * .07} height={height * .03} rx='.2%' stroke='none'/>
-{/* Copper Coils */}
-              <rect id='g-coil'
-                x={width * .47}
-                y={height * .9}
-                width={width * .06}
-                height={height * .04}
-                rx='.5%'
-                fill='url(#panel-needle-coil)'
-                stroke='#000000'
-                strokeWidth='.2%'
-              />
-              <rect id='coil-shadow' fill='url(#panel-needle-coil-shadow)' x={width * .47} y={height * .9} width={width * .06} height={height * .04} rx='.5%' stroke='none'/>
-            </g>
           </g>
-{/* Panel Shadow */}
-          <g id='panel-shadow'>
-            <rect fill='url(#panel-shadow-diagonal)' x={width * .05} y={width * .05} width={width - (width * .1)} height={height  - (width * .1)} rx={width / 100} ry={width / 100} stroke='none'/>
+    {/* Needle Rotation Group */}
+    {/*   <g className='needle-group' style={vuNeedle} transform={`rotate(${rotation}, ${50}, ${57})`}>*/}
+          <g id='vu-svg-d3-needle' style={vuNeedle}>
+      {/* Needle */}
+            <rect
+              x={50}
+              y={12}
+              width={.2}
+              height={45}
+              fill='#000000'
+              stroke='none'
+            />
+      {/* Needle Base Magnet */}
+            <rect
+              x={46.5}
+              y={54.3}
+              width={7}
+              height={1.8}
+              rx={.2}
+              fill='#333333'
+              stroke='#000000'
+              strokeWidth='.1%'
+            />
+      {/* Needle Base Magnet Shadow */}
+            <rect fill='url(#needle-coil-shadow)' x={46.5} y={54.3} width={7} height={1.8} rx={.2} stroke='none'/>
+      {/* Copper Coils */}
+            <rect
+              x={47}
+              y={54}
+              width={6}
+              height={2.4}
+              rx={.5}
+              fill='url(#needle-coil)'
+              stroke='#000000'
+              strokeWidth='.2%'
+            />
+      {/* Copper Coils Shadow */}
+            <rect fill='url(#needle-coil-shadow)' x={47} y={54} width={6} height={2.44} rx={.5} stroke='none'/>
           </g>
         </g>
+
+  {/* Panel Shadows Group */}
+        <g className='panel-shadows'>
+          <rect fill='url(#panel-shadow-diagonal)' x={5} y={5} width={90} height={50} rx={1} ry={1} stroke='none'/>
+        </g>
+
+      </g>
     );
   }
 
@@ -526,7 +589,7 @@ export default class Wave extends Component {
   render() {
     return (
       <div className='module'>
-        <svg viewBox='0 0 100 60'>
+        <svg ref='node' viewBox='0 0 100 60'>
           {this.drawSvg()}
         </svg>
       </div>
