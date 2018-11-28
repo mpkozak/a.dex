@@ -1,5 +1,5 @@
 {
-  "name": "adex",
+  "name": "audio",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -26,4 +26,5 @@
     "not op_mini all"
   ],
   "proxy": "http://localhost:3001",
+  "homepage" : "file:///Users/ga/Desktop/audio/client/build/"
 }
