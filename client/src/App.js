@@ -49,18 +49,22 @@ export default class App extends Component {
     if (mic) {
       return (
         <div>
-          <div className='instrument'>
-            <Theremin ctx={audioCtx} />
+          <div className='instruments'>
+            <div className='instrument'>
+              <Theremin ctx={audioCtx} />
+            </div>
           </div>
           <div className='modules'>
             <Wave ctx={audioCtx} src={mic} />
             <Vu ctx={audioCtx} src={mic} />
+            {/* <Spec ctx={audioCtx} src={mic} /> */}
+            {/* <Note ctx={audioCtx} src={mic} /> */}
+            {/* <Freq ctx={audioCtx} src={mic} /> */}
           </div>
         </div>
       );
     } else return <div>Loading...</div>;
   }
-
 
   render() {
     return (
@@ -71,31 +75,3 @@ export default class App extends Component {
     );
   }
 }
-
-
-
-          // <div className='instruments'>
-          //   <div className='instrument'>
-          //     <Theremin ctx={audioCtx} />
-          //   </div>
-          // </div>
-
-          // <div className='modules'>
-          //   <div className='module'>
-          //     <Wave ctx={audioCtx} src={mic} />
-          //   </div>
-          //   <div className='module'>
-          //     <Vu ctx={audioCtx} src={mic} />
-          //   </div>
-          //   <div className='module'>
-          //     <Spec ctx={audioCtx} src={mic} />
-          //   </div>
-          //   <div className='module'>
-          //     <Freq ctx={audioCtx} src={mic} />
-          //   </div>
-          //   <div className='module'>
-          //     <Note ctx={audioCtx} src={mic} />
-          //   </div>
-          // </div>
-
-

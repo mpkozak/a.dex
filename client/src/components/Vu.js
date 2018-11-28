@@ -14,21 +14,18 @@ export default class Wave extends Component {
     };
   }
 
-
   componentDidMount() {
-    const path = d3.select(this.refs.node).append('path').attr('d', `M ${12.5} ${18.75} Q ${50} ${7.5}, ${87.5} ${18.75}`).classed('path', true).remove();
-    const pathNode = path.node();
-    const pathLength = pathNode.getTotalLength();
-    this.setState(prevState => ({ pathNode, pathLength }));
+    // const path = d3.select(this.refs.node).append('path').attr('d', `M ${12.5} ${18.75} Q ${50} ${7.5}, ${87.5} ${18.75}`).classed('path', true).remove();
+    // const pathNode = path.node();
+    // const pathLength = pathNode.getTotalLength();
+    // this.setState(prevState => ({ pathNode, pathLength }));
     this.analyserInit(this.props.ctx, this.props.src);
   }
-
 
   componentDidUpdate() {
     // console.log('updated')
     this.moveNeedle(this.state.rmsVU, this.state.peak);
   }
-
 
   analyserInit(ctx, src) {
     const scaleBase = 10;
@@ -56,35 +53,16 @@ export default class Wave extends Component {
       const rmsDBFS = 20 * Math.log10(rms);
       const rmsVU = rmsDBFS + 20;
 
-      this.moveNeedle(rmsVU, peak)
-      // this.setState(prevState => ({ rmsVU, peak }));
+      // this.moveNeedle(rmsVU, peak)
+      this.setState(prevState => ({ rmsVU, peak }));
     };
     animate();
 
+    // setInterval(() => animate(), ms);
 
-
-    // const animate = () => {
-    //   analyser.getFloatTimeDomainData(wave);
-    //   const sum2 = wave.reduce((a, b) => a + Math.pow(b, 2), 0);
-    //   const rms = Math.sqrt(sum2 / fftBins);
-
-    //   if (rms > .5) {
-    //     peak = true;
-    //     setTimeout(() => peak = false, 1000);
-    //   };
-
-    //   const rmsDBFS = 20 * Math.log10(rms);
-    //   const rmsVU = rmsDBFS + 20;
-    //   // const rmsDBu = rmsDBFS + 24;
-    //   // const dbuV = 0.77459667;
-    //   // const volts = dbuV * Math.pow(10, rmsDBu / 20);
-    //   // console.log('rms ', rms, 'dbfs ', rmsDBFS, 'volts ', volts, 'vu ', rmsVU, 'dbu ', rmsDBu)
-
-    //   // this.moveNeedle(rmsVU, peak);
-    //   this.setState(prevState => ({ rmsVU, peak }));
-    // };
-    // setInterval(() => animate(), 100);
-
+      // const rmsDBu = rmsDBFS + 24;
+      // const dbuV = 0.77459667;
+      // const volts = dbuV * Math.pow(10, rmsDBu / 20);
   }
 
 
@@ -167,15 +145,15 @@ export default class Wave extends Component {
 
 
 
-  drawSvg(path, pathLength) {
+  drawSvg() {
 
 // works after re-render
     // const path = document.querySelector('#vu-arc-scale') ? document.querySelector('#vu-arc-scale') : null;
     // const pathLength = path ? path.getTotalLength() : null;
 
 // doesn't work but should
-    // const path = document.querySelector('#vu-arc-scale')
-    // const pathLength = path.getTotalLength();
+    const path = document.querySelector('#vu-arc-scale')
+    const pathLength = path.getTotalLength();
 
 // calculated path length
     // const pathLength = 76.11;
@@ -213,14 +191,13 @@ export default class Wave extends Component {
 
 
     const vuNeedle = {
-      // transitionDuration: '100ms',
-      // transitionTimingFunction: 'ease-in'
+      transitionDuration: '100ms',
+      transitionTimingFunction: 'ease-in'
     };
 
     const vuFont = {
       fontFamily: 'Helvetica, sans-serif'
     };
-
 
     const textLargeHeavy = {
       fontSize: 7 + 'px',
@@ -248,8 +225,6 @@ export default class Wave extends Component {
       fontSize: 3.5 + 'px',
       fontWeight: '600'
     };
-
-
 
     return (
       <g>

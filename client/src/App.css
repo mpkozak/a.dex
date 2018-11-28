@@ -26,22 +26,20 @@
 }
 
 
-
-
-
-
 .instruments {
-/*  width: 100%;
+  width: 100%;
   display: flex;
   flex-flow: row wrap;
   align-items: center;
-  justify-content: center;*/
+  justify-content: center;
 }
 
 .instrument {
   width: 100vmin;
   height: 60vmin;
   margin: 1vmin;
+  /*box-shadow: .5vmin .5vmin 1vmin #000000;*/
+  border-radius: 1vmin;
 }
 
 
@@ -68,21 +66,6 @@
   /*width: 100%;*/
   /*height: 100%;*/
 }
-
-/*.Vu {*/
-  /*width: 100%;*/
-  /*height: 100%;*/
-  /*box-shadow: .5vmin .5vmin 1vmin #000000;*/
-  /*border-radius: 1vmin;*/
-/*}/*/
-
-/*.Wave {*/
-  /*width: 100%;*/
-  /*height: 100%;*/
-  /*box-shadow: .5vmin .5vmin 1vmin #000000;*/
-  /*border-radius: 1vmin;*/
-/*  background-color: rgba(0,0,0,.3);*/
-/*}*/
 
 
 

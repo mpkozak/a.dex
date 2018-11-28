@@ -4,11 +4,9 @@ import * as template from './_templates.js';
 
 
 export default class Wave extends Component {
-
   componentDidMount() {
     this.analyserInit(this.props.ctx, this.props.src);
   }
-
 
   analyserInit(ctx, src) {
     const scaleBase = 11;
@@ -22,12 +20,11 @@ export default class Wave extends Component {
     const animate = () => {
       requestAnimationFrame(animate);
       analyser.getFloatTimeDomainData(wave);
-      this.drawWave(wave, fftBins);
+      this.drawWave(wave);
     };
     animate();
     // setInterval(() => animate(), ms)
   }
-
 
   drawWave(data) {
     const width = 100
@@ -58,20 +55,13 @@ export default class Wave extends Component {
       .style('opacity', curveOpacity)
   }
 
-
   drawSvg() {
-    // const gridLines = [];
-    // let num = 2.75;
-    // for (let i = 1; i <= 20; i++) {
-    //   num += 4.5;
-    //   gridLines.push(num);
-    // };
     const colorBg = '#052205'
-
     const gridLines = [7.25, 11.75, 16.25, 20.75, 25.25, 29.75, 34.25, 38.75, 43.25, 47.75, 52.25, 56.75, 61.25, 65.75, 70.25, 74.75, 79.25, 83.75, 88.25, 92.75];
 
     return (
       <g>
+
   {/* Module Frame */}
         {template.moduleFrame()}
 
@@ -135,6 +125,7 @@ export default class Wave extends Component {
           <rect fill='url(#panel-shadow-diagonal)' x={5} y={5} width={90} height={50} rx={1} ry={1} stroke='none'/>
           <rect fill='url(#panel-glare)' x={5} y={5} width={90} height={50} rx={1} ry={1} stroke='none'/>
         </g>
+
       </g>
     );
   }
