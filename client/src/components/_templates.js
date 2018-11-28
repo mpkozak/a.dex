@@ -4,6 +4,7 @@ import React from 'react';
 export const moduleDefs = () => {
   return(
     <svg width={0} height={0} opacity={0} fill='none' stroke='none'>
+      <g id='ghost'/>
       <defs>
   {/* Master Clip Path */}
         <clipPath id='module-master-clip'>

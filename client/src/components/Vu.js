@@ -7,16 +7,26 @@ export default class Wave extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      rms: 0,
-      rmsScale: 0,
-      rmsVU: 0,
+      rmsVU: -60,
       peak: false,
+      pathNode: false,
+      pathLength: false
     };
   }
 
 
   componentDidMount() {
+    const path = d3.select(this.refs.node).append('path').attr('d', `M ${12.5} ${18.75} Q ${50} ${7.5}, ${87.5} ${18.75}`).classed('path', true).remove();
+    const pathNode = path.node();
+    const pathLength = pathNode.getTotalLength();
+    this.setState(prevState => ({ pathNode, pathLength }));
     this.analyserInit(this.props.ctx, this.props.src);
+  }
+
+
+  componentDidUpdate() {
+    // console.log('updated')
+    this.moveNeedle(this.state.rmsVU, this.state.peak);
   }
 
 
@@ -30,18 +40,38 @@ export default class Wave extends Component {
     // const ms = (fftBins / ctx.sampleRate) * 1000;
     // console.log(ms)
 
+    let peak = false;
+
+    const animate = () => {
+      requestAnimationFrame(animate);
+      analyser.getFloatTimeDomainData(wave);
+      const sum2 = wave.reduce((a, b) => a + Math.pow(b, 2), 0);
+      const rms = Math.sqrt(sum2 / fftBins);
+
+      if (rms > .5) {
+        peak = true;
+        setTimeout(() => peak = false, 1000);
+      };
+
+      const rmsDBFS = 20 * Math.log10(rms);
+      const rmsVU = rmsDBFS + 20;
+
+      this.moveNeedle(rmsVU, peak)
+      // this.setState(prevState => ({ rmsVU, peak }));
+    };
+    animate();
+
+
+
     // const animate = () => {
     //   analyser.getFloatTimeDomainData(wave);
     //   const sum2 = wave.reduce((a, b) => a + Math.pow(b, 2), 0);
     //   const rms = Math.sqrt(sum2 / fftBins);
-    //   const rmsScale = (Math.log(rms) + 5) * 10;
-    //   // if (rms > .5) this.handlePeak();
 
-    //   let peak;
     //   if (rms > .5) {
     //     peak = true;
-    //     setTimeout(() => peak = false, 1000)
-    //   }
+    //     setTimeout(() => peak = false, 1000);
+    //   };
 
     //   const rmsDBFS = 20 * Math.log10(rms);
     //   const rmsVU = rmsDBFS + 20;
@@ -49,127 +79,111 @@ export default class Wave extends Component {
     //   // const dbuV = 0.77459667;
     //   // const volts = dbuV * Math.pow(10, rmsDBu / 20);
     //   // console.log('rms ', rms, 'dbfs ', rmsDBFS, 'volts ', volts, 'vu ', rmsVU, 'dbu ', rmsDBu)
-    //   this.moveNeedle(rmsScale, peak)
 
-    //   // this.setState(prevState => ({ rms, rmsVU, rmsScale }));
+    //   // this.moveNeedle(rmsVU, peak);
+    //   this.setState(prevState => ({ rmsVU, peak }));
     // };
-    // setInterval(() => animate(), ms);
-
-    const animate = () => {
-      requestAnimationFrame(animate);
-      analyser.getFloatTimeDomainData(wave);
-      const sum2 = wave.reduce((a, b) => a + Math.pow(b, 2), 0);
-      const rms = Math.sqrt(sum2 / fftBins);
-      const rmsScale = (Math.log(rms) + 5) * 10;
-      // if (rms > .5) this.handlePeak();
-
-      let peak;
-      if (rms > .5) {
-        peak = true;
-        setTimeout(() => peak = false, 1000)
-      }
-
-
-      const rmsDBFS = 20 * Math.log10(rms);
-      const rmsVU = rmsDBFS + 20;
-      // const rmsDBu = rmsDBFS + 24;
-      // const dbuV = 0.77459667;
-      // const volts = dbuV * Math.pow(10, rmsDBu / 20);
-      // console.log('rms ', rms, 'dbfs ', rmsDBFS, 'volts ', volts, 'vu ', rmsVU, 'dbu ', rmsDBu)
-
-
-
-      this.moveNeedle(rmsScale, peak)
-      // this.setState(prevState => ({ rms, rmsVU, rmsScale }));
-    };
-    animate();
-  }
-
-
-  // handlePeak() {
-  //   this.setState(prevState => ({ peak: true }));
-  //   setTimeout(() => {
-  //     this.setState(prevState => ({ peak: false }));
-  //   }, 1000);
-  //   console.log(this.state.peak, this.prevState)
-  // }
-
-
-  moveNeedle(rmsScale, peak) {
-    const rmsScale = (Math.log(rms) + 5) * 10;
-    const rotation = rmsScale >= -50 ? rmsScale : -50;
-
-    const needleShadow = d3.select('#vu-svg-d3-needleShadow').data([rotation]);
-    needleShadow
-      .attr('transform', d => `translate(${d * .01}, ${(d * .012) + 1.2})rotate(${d}, ${50}, ${57})`);
-
-    const needle = d3.select('#vu-svg-d3-needle').data([rotation]);
-    needle
-      .attr('transform', d => `rotate(${d}, ${50}, ${57})`);
-
-
-
-
-
-    if (peak) {
-      const led = d3.select('#vu-svg-d3-led').data([peak])
-      led
-        .attr('fill', '#FF452F')
-      led.transition().duration(1000)
-        .attr('fill', '#AB2D1E')
-      const ledHalo = d3.select('#vu-svg-d3-ledHalo').data([peak])
-      ledHalo
-        // .attr('fill', 'url(#led-glow)')
-        .attr('opacity', 1)
-
-      ledHalo.transition().duration(1000)
-        // .attr('fill', 'none')
-        .attr('opacity', 0)
-    }
-
-
-
-
-
-
-
-
-
-    // const led = d3.select('#vu-svg-d3-led')
-    // led
-    //   .attr('fill', peak ? '#FF452F' : '#AB2D1E')
-    // const ledHalo = d3.select('#vu-svg-d3-ledHalo')
-    // ledHalo
-    //   .attr('fill', peak ? 'url(#led-glow)' : 'none')
-
-
+    // setInterval(() => animate(), 100);
 
   }
 
 
 
-
-
-
-
-
-
-
-
-  drawSvg() {
-
-    const radius = Math.sqrt(Math.pow(57, 2) + Math.pow(50, 2));
-    const path = document.querySelector('#vu-arc-scale') ? document.querySelector('#vu-arc-scale') : null;
-    // const path = document.querySelector('#vu-arc-scale')
-    const pathLength = path ? path.getTotalLength() : null;
-
-
-
-// KEEP BELOW AS IS
+  moveNeedle(rmsVU, peak) {
+    // const { rmsVU } = this.state;
     // const { peak } = this.state;
 
-    // const rms = this.state.rmsScale !== -Infinity ? this.state.rmsScale : 0;
+    const rms = rmsVU === -Infinity ? -60 : rmsVU;
 
+    const vu = [-60, -20, -10, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 20];
+    const deg = [-48, -40, -26, -15, -10.5, -5, -0.5, 5, 10, 15, 20, 25, 30, 35, 48];
+
+    const needleScale = d3.scaleLinear().domain(vu).range(deg);
+    const ledScale = d3.scaleQuantize().domain([false, true]).range(['#AB2D1E', '#FF452F']);
+    const ledHaloScale = d3.scaleQuantize().domain([false, true]).range([0, 1]);
+
+    const needleShadow = d3.select('#vu-svg-d3-needleShadow').data([rms]);
+    needleShadow
+      .attr('transform', d => `translate(${needleScale(d) * .01}, ${(needleScale(d) * .012) + 1.2})rotate(${needleScale(d)}, ${50}, ${57})`);
+              // needleShadow.attr('transform', `translate(${0}, ${1.2})rotate(${0}, ${50}, ${57})`);
+              // needleShadow.transition().attr('transform', d => `translate(${needleScale(d) * .01}, ${(needleScale(d) * .012) + 1.2})rotate(${needleScale(d)}, ${50}, ${57})`);
+
+    const needle = d3.select('#vu-svg-d3-needle').data([rms]);
+    needle
+      .attr('transform', d => `rotate(${needleScale(d)}, ${50}, ${57})`);
+              // needle.attr('transform', d => `rotate(${0}, ${50}, ${57})`);
+              // needle.transition().attr('transform', d => `rotate(${needleScale(d)}, ${50}, ${57})`);
+
+    const led = d3.select('#vu-svg-d3-led').data([peak])
+    led
+      .attr('fill', d => ledScale(d))
+    // led.transition().duration(10).attr('fill', d => ledScale(d))
+
+    const ledHalo = d3.select('#vu-svg-d3-ledHalo').data([peak])
+    ledHalo
+      .attr('opacity', d => ledHaloScale(d))
+    // ledHalo.transition().duration(10).attr('opacity', d => ledHaloScale(d))
+
+
+
+
+
+// USELESS JUNK
+
+    // console.log(d3.select('#vu-svg-d3-needleShadow').attr('transform'))
+
+    // const needleShadow = d3.select('#vu-svg-d3-needleShadow').selectAll('rect').data([rms]);
+    // needleShadow.enter().append('rect')
+    //   .attr('x', 50)
+    //   .attr('y', 13.2)
+    //   .attr('width', .4)
+    //   .attr('height', 48.18)
+    //   .attr('fill', 'url(#needle-shadow)')
+    //   .attr('stroke', 'none')
+    //   .attr('transform', 'translate(-.48, .624)rotate(-48, 50, 57)')
+    // needleShadow.transition()
+    //   // .tween('transform', d => tweenRotate(`translate(${needleScale(d) * .01}, ${(needleScale(d) * .012) + 1.2})rotate(${needleScale(d)}, ${50}, ${57})`))
+    //   .tween('transform', d3.interpolateString(d3.select('#vu-svg-d3-needleShadow').select('rect').attr('transform'), `translate(${needleScale(rms) * .01}, ${(needleScale(rms) * .012) + 1.2})rotate(${needleScale(rms)}, ${50}, ${57})`))
+
+      // .tween('transform', d => d3.interpolatString('translate(-.48, .624)rotate(-48, 50, 57)', 'translate(.48, 1.776)rotate(48, 50, 57)'));
+
+// function tweenRotate( newValue ) {
+//     return function() {
+//       // get current value as starting point for tween animation
+//       var currentValue = d3.select('#vu-svg-d3-needleShadow').select('rect').attr('transform');
+//       console.log('rotate ', currentValue, newValue)
+//       // create interpolator and do not show nasty floating numbers
+//       var i = d3.interpolateString( currentValue, newValue );
+
+//       return function(t) {
+//         this.transform = i(t);
+//       };
+//     }
+//   }
+
+
+  }
+
+
+
+
+  drawSvg(path, pathLength) {
+
+// works after re-render
+    // const path = document.querySelector('#vu-arc-scale') ? document.querySelector('#vu-arc-scale') : null;
+    // const pathLength = path ? path.getTotalLength() : null;
+
+// doesn't work but should
+    // const path = document.querySelector('#vu-arc-scale')
+    // const pathLength = path.getTotalLength();
+
+// calculated path length
+    // const pathLength = 76.11;
+
+
+    const radius = Math.sqrt(Math.pow(57, 2) + Math.pow(50, 2));
+
+// KEEP BELOW AS IS
     const colorBg = '#D5BD79'
     const colorRed = '#C12822';
 
@@ -189,6 +203,13 @@ export default class Wave extends Component {
       {vu: 3, deg: 35, strokeWidth: '1%', stroke: colorRed, label: true}
     ];
     ticks.forEach(d => d.rad = d.deg * (Math.PI / 180));
+    // const vu = ticks.map(d => d.vu)
+    // const deg = ticks.map(d => d.deg)
+
+
+
+// KEEP ABOVE AS IS
+
 
 
     const vuNeedle = {
@@ -196,14 +217,11 @@ export default class Wave extends Component {
       // transitionTimingFunction: 'ease-in'
     };
 
-
-// KEEP ABOVE AS IS
-
-
-
-    const svgStyle = {
+    const vuFont = {
       fontFamily: 'Helvetica, sans-serif'
     };
+
+
     const textLargeHeavy = {
       fontSize: 7 + 'px',
       fontWeight: '400'
@@ -231,12 +249,10 @@ export default class Wave extends Component {
       fontWeight: '600'
     };
 
+
+
     return (
-      <g style={svgStyle}>
-
-
-{/* GOOD BELOW GOOD BELOW GOOD BELOW */}
-
+      <g>
         <defs>
     {/* Needle Cutout Gradient */}
           <radialGradient id='panel-needle-cutout' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
@@ -348,7 +364,7 @@ export default class Wave extends Component {
         </g>
 
   {/* Panel Text Group */}
-        <g className='panel-text' opacity={.8}>
+        <g className='panel-text' opacity={.8} style={vuFont}>
     {/* 'VU' */}
           <text
             x={50}
@@ -393,7 +409,7 @@ export default class Wave extends Component {
     {/* '[Scale Values]' */}
           {ticks.map(d => {
             const pct = (d.deg + 46) / 92;
-            const point = path ? path.getPointAtLength(pct * pathLength) : null;
+            const point = path ? path.getPointAtLength(pct * pathLength) : null
             const txt = Math.abs(d.vu)
             if (d.label) {
               return (
@@ -523,13 +539,12 @@ export default class Wave extends Component {
   {/* Needle Group */}
         <g className='panel-needle' clipPath='url(#module-screen-clip)'>
     {/* Needle Shadow Group*/}
-          <g id='vu-svg-d3-needleShadow'>
+          <g id='vu-svg-d3-needleShadow' style={vuNeedle}>
             <rect
               x={50}
               y={13.2}
               width={.4}
               height={48.18}
-              style={vuNeedle}
               fill='url(#needle-shadow)'
               stroke='none'
               // transform={`translate(${rotation * .01}, ${(rotation * .012) + 1.2}) rotate(${rotation}, ${50}, ${57})`}
@@ -590,7 +605,7 @@ export default class Wave extends Component {
     return (
       <div className='module'>
         <svg ref='node' viewBox='0 0 100 60'>
-          {this.drawSvg()}
+          {this.drawSvg(this.state.pathNode, this.state.pathLength)}
         </svg>
       </div>
     );
