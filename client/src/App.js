@@ -52,7 +52,6 @@ export default class App extends Component {
           <Theremin ctx={audioCtx} />
           <Wave ctx={audioCtx} src={mic} />
           <Vu ctx={audioCtx} src={mic} />
-          <Spec ctx={audioCtx} src={mic} />
         </div>
       );
     } else return <div>Loading...</div>;

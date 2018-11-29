@@ -31,7 +31,6 @@ export default class Theremin extends Component {
     this.handleScrollParam = this.handleScrollParam.bind(this);
   }
 
-
   componentDidMount() {
     const colorGain = JSON.parse(localStorage.getItem('colorGain'));
     const colorFreq = JSON.parse(localStorage.getItem('colorFreq'));
@@ -43,7 +42,6 @@ export default class Theremin extends Component {
     this.trackerInit();
   }
 
-
   componentDidUpdate() {
     this.trackerDraw();
     this.audioRefreshGain();
@@ -53,7 +51,6 @@ export default class Theremin extends Component {
     // console.log(this.state.audio.ctx.baseLatency)
     // console.log(this.state.audio.ctx.currentTime - this.state.audio.ctx.getOutputTimestamp().contextTime);
   }
-
 
   audioInit(ctx) {
     const { params } = this.state;
@@ -66,27 +63,10 @@ export default class Theremin extends Component {
     const masterGain = new GainNode(ctx, {gain: 0});
     const masterOut = ctx.destination;
 
-    // const makeDist = (amt) => {
-    //   const sRate = ctx.sampleRate;
-    //   const arr = new Float32Array(sRate);
-    //   const deg = Math.PI / 180;
-    //   for (let i = 0; i < sRate; i++) {
-    //     const x = i * 2 / sRate - 1;
-    //     arr[i] = (3 + amt) * x * 20 * deg / (Math.PI + amt * Math.abs(x));
-    //   };
-    //   return arr;
-    // }
-
-    // const dist = new WaveShaperNode(ctx, {curve: help.makeDistortion(0, ctx.sampleRate), oversample: '4x'});
-
     osc1.connect(fmGain);
     fmGain.connect(osc2.frequency);
     osc2.connect(lpf);
     lpf.connect(masterGain);
-
-    // lpf.connect(dist);
-    // dist.connect(masterGain);
-
     masterGain.connect(masterOut);
 
     osc1.start();

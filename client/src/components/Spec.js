@@ -5,12 +5,12 @@ import help from './_helpers.js';
 
 export default class Spec extends Component {
   componentDidMount() {
-    console.log('spec mounted')
+    // console.log('spec mounted')
     this.analyserInit(this.props.ctx, this.props.src);
   }
 
   componentDidUpdate() {
-    console.log('spec updated')
+    // console.log('spec updated')
   }
 
   analyserInit(ctx, src) {

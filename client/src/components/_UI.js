@@ -1,34 +1,16 @@
 import React from 'react';
 
 export const knob = (rotation) => {
-  // const sizeUnit = Math.min(window.innerWidth, window.innerHeight) / 100;
-  // const size = sizeUnit * props.size;
-  // const diameter = size;
   const diameter = 100;
   const radius = diameter / 2;
   const rectW = diameter / 25;
   const rectH = rectW * 5;
 
-  // const containerStyle = {
-  //   position: 'relative',
-  //   width: size + 'px',
-  //   height: size + 'px',
-  //   margin: '.5vmin'
-  // };
-  const svgStyle = {
-    // position: 'absolute',
-    // left: 0,
-    // top: 0,
-    // width: '100%',
-    // height: '100%',
+  const knobShadow = {
     filter: `drop-shadow(${diameter / 200}vmin ${diameter / 200}vmin ${diameter / 200}vmin #000000)`
   };
 
-   // width={diameter} height={diameter}
-
   return (
-    // <div className='knob-svg' style={containerStyle}>
-      // <svg viewbox='0 0 100 100' className='knob' style={svgStyle} onMouseDown={props.click} onWheel={props.scroll}>
       <g>
         <defs>
           <radialGradient id='knob-light-gradient'
@@ -94,13 +76,11 @@ export const knob = (rotation) => {
             cy={radius}
             r={radius}
             fill='none'
-            style={svgStyle}
+            style={knobShadow}
           />
         </g>
 
       </g>
-      // </svg>
-    // </div>
   );
 };
 
