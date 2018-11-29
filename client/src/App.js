@@ -4,9 +4,9 @@ import * as template from './components/_templates.js';
 import Theremin from './components/instruments/Theremin.js';
 import Vu from './components/meters/Vu.js';
 import Wave from './components/meters/Wave.js';
-// import Freq from './components/Freq.js';
-// import Note from './components/Note.js';
-// import Spec from './components/Spec.js';
+import Freq from './components/Freq.js';
+import Note from './components/Note.js';
+import Spec from './components/Spec.js';
 
 
 export default class App extends Component {
@@ -48,42 +48,11 @@ export default class App extends Component {
     const { mic } = this.state;
     if (mic) {
       return (
-        <div>
-          <div className='instruments'>
-            <div className='instrument'>
-              <Theremin ctx={audioCtx} />
-            </div>
-          </div>
-          <div className='modules'>
-            <Wave ctx={audioCtx} src={mic} />
-            <Vu ctx={audioCtx} src={mic} />
-            {/* <Spec ctx={audioCtx} src={mic} /> */}
-            {/* <Note ctx={audioCtx} src={mic} /> */}
-            {/* <Freq ctx={audioCtx} src={mic} /> */}
-
-
-
-          <div className='inst'>
-            <h6>To configure:</h6>
-            <ul>
-              <li>Select two (real world) objects of different colors (expo markers work well).</li>
-              <li>For each object: Hold the object up within the camera frame. Click on one of the color boxes in ‘Set Colors’ and then click on the object within the video frame. You should see a tracking box of the selected color appear around the object in the video frame.</li>
-              <li>If the tracking box doesn’t appear (or only appears intermittently), use the ‘Sense’ knob to adjust the color sensitivity.</li>
-            </ul>
-            <h6>To play:</h6>
-            <ul>
-              <li>Volume is controlled by moving the corresponding color object up and down.</li>
-              <li>Pitch is controlled by moving the corresponding color object left and right.</li>
-            </ul>
-          </div>
-
-
-
-
-          </div>
-
-
-
+        <div className='modules'>
+          <Theremin ctx={audioCtx} />
+          <Wave ctx={audioCtx} src={mic} />
+          <Vu ctx={audioCtx} src={mic} />
+          <Spec ctx={audioCtx} src={mic} />
         </div>
       );
     } else return <div>Loading...</div>;
@@ -99,3 +68,27 @@ export default class App extends Component {
   }
 }
 
+
+
+{/*
+
+            <Wave ctx={audioCtx} src={mic} />
+            <Vu ctx={audioCtx} src={mic} />
+            <Spec ctx={audioCtx} src={mic} />
+            <Note ctx={audioCtx} src={mic} />
+            <Freq ctx={audioCtx} src={mic} />
+            <div className='inst'>
+              <h6>To configure:</h6>
+              <ul>
+                <li>Select two (real world) objects of different colors (expo markers work well).</li>
+                <li>For each object: Hold the object up within the camera frame. Click on one of the color boxes in ‘Set Colors’ and then click on the object within the video frame. You should see a tracking box of the selected color appear around the object in the video frame.</li>
+                <li>If the tracking box doesn’t appear (or only appears intermittently), use the ‘Sense’ knob to adjust the color sensitivity.</li>
+              </ul>
+              <h6>To play:</h6>
+              <ul>
+                <li>Volume is controlled by moving the corresponding color object up and down.</li>
+                <li>Pitch is controlled by moving the corresponding color object left and right.</li>
+              </ul>
+            </div>
+
+*/}

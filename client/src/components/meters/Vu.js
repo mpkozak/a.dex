@@ -4,50 +4,35 @@ import * as template from '../_templates.js';
 
 
 export default class Wave extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      rmsVU: -60,
-      peak: false,
-      pathNode: false,
-      pathLength: false
-    };
-  }
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     rmsVU: -60,
+  //     peak: false
+  //   };
+  // }
 
   componentDidMount() {
-    // const path = d3.select(this.refs.node).append('path').attr('d', `M ${12.5} ${18.75} Q ${50} ${7.5}, ${87.5} ${18.75}`).classed('path', true).remove();
-    // const pathNode = path.node();
-    // const pathLength = pathNode.getTotalLength();
-    // this.setState(prevState => ({ pathNode, pathLength }));
     this.analyserInit(this.props.ctx, this.props.src);
   }
 
   componentDidUpdate() {
     // console.log('vu updated')
-    // this.moveNeedle(this.state.rmsVU, this.state.peak);
   }
 
   analyserInit(ctx, src) {
     const scaleBase = 10;
     const analyser = new AnalyserNode(ctx, {fftSize: Math.pow(2, scaleBase), minDecibels: -100, maxDecibels: 0, smoothingTimeConstant: 1});
-    // const analyser = ctx.createAnalyser();
-    // analyser.fftSize = Math.pow(2, scaleBase);
-    // analyser.minDecibels = -100;
-    // analyser.maxDecibels = 0;
-    // analyser.smoothingTimeConstant = 0;
     src.connect(analyser);
 
     const fftBins = analyser.frequencyBinCount;
     const wave = new Float32Array(fftBins);
-    // const ms = (fftBins / ctx.sampleRate) * 1000;
-    // console.log(ms)
-
+    const ms = (fftBins / ctx.sampleRate) * 1000;
     let peak = false;
 
     const animate = () => {
       requestAnimationFrame(animate);
       analyser.getFloatTimeDomainData(wave);
-      // console.log(d3.extent(wave))
       const sum2 = wave.reduce((a, b) => a + Math.pow(b, 2), 0);
       const rms = Math.sqrt(sum2 / fftBins);
       const rmsDBFS = 20 * Math.log10(rms);
@@ -62,7 +47,6 @@ export default class Wave extends Component {
       // this.setState(prevState => ({ rmsVU, peak }));
     };
     animate();
-
     // setInterval(() => animate(), ms);
 
       // const rmsDBu = rmsDBFS + 24;
@@ -71,9 +55,6 @@ export default class Wave extends Component {
   }
 
   moveNeedle(rmsVU, peak) {
-    // const { rmsVU } = this.state;
-    // const { peak } = this.state;
-
     const rms = rmsVU === -Infinity ? -60 : rmsVU;
 
     const vu = [-60, -20, -10, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 20];
@@ -104,44 +85,6 @@ export default class Wave extends Component {
     ledHalo
       .attr('opacity', d => ledHaloScale(d))
     // ledHalo.transition().duration(10).attr('opacity', d => ledHaloScale(d))
-
-
-
-
-
-// USELESS JUNK
-
-    // console.log(d3.select('#vu-svg-d3-needleShadow').attr('transform'))
-
-    // const needleShadow = d3.select('#vu-svg-d3-needleShadow').selectAll('rect').data([rms]);
-    // needleShadow.enter().append('rect')
-    //   .attr('x', 50)
-    //   .attr('y', 13.2)
-    //   .attr('width', .4)
-    //   .attr('height', 48.18)
-    //   .attr('fill', 'url(#needle-shadow)')
-    //   .attr('stroke', 'none')
-    //   .attr('transform', 'translate(-.48, .624)rotate(-48, 50, 57)')
-    // needleShadow.transition()
-    //   // .tween('transform', d => tweenRotate(`translate(${needleScale(d) * .01}, ${(needleScale(d) * .012) + 1.2})rotate(${needleScale(d)}, ${50}, ${57})`))
-    //   .tween('transform', d3.interpolateString(d3.select('#vu-svg-d3-needleShadow').select('rect').attr('transform'), `translate(${needleScale(rms) * .01}, ${(needleScale(rms) * .012) + 1.2})rotate(${needleScale(rms)}, ${50}, ${57})`))
-
-      // .tween('transform', d => d3.interpolatString('translate(-.48, .624)rotate(-48, 50, 57)', 'translate(.48, 1.776)rotate(48, 50, 57)'));
-
-// function tweenRotate( newValue ) {
-//     return function() {
-//       // get current value as starting point for tween animation
-//       var currentValue = d3.select('#vu-svg-d3-needleShadow').select('rect').attr('transform');
-//       console.log('rotate ', currentValue, newValue)
-//       // create interpolator and do not show nasty floating numbers
-//       var i = d3.interpolateString( currentValue, newValue );
-
-//       return function(t) {
-//         this.transform = i(t);
-//       };
-//     }
-//   }
-
 
   }
 
@@ -183,8 +126,8 @@ export default class Wave extends Component {
 
 
     const vuNeedle = {
-      transitionDuration: '50ms',
-      transitionTimingFunction: 'ease-in'
+      // transitionDuration: '50ms',
+      // transitionTimingFunction: 'ease-in'
     };
 
     const vuFont = {
@@ -571,8 +514,8 @@ export default class Wave extends Component {
   render() {
     return (
       <div className='module'>
-        <svg ref='node' viewBox='0 0 100 60'>
-          {this.drawSvg(this.state.pathNode, this.state.pathLength)}
+        <svg viewBox='0 0 100 60'>
+          {this.drawSvg()}
         </svg>
       </div>
     );

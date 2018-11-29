@@ -5,7 +5,7 @@
   font-family: Copperplate;
   border-radius: 1vmin;
 
-  border: 1px solid red;
+  /*border: 1px solid red;*/
 }
 
 
@@ -18,7 +18,7 @@
   align-items: space-around;
   justify-content: center;
 
-  border: 1px solid white;
+  /*border: 1px solid white;*/
 }
 
 .bottom>.control-box {
@@ -30,7 +30,7 @@
   align-items: center;
   justify-content: space-around;
 
-  border: 1px solid orange;
+  /*border: 1px solid orange;*/
 }
 
 .control-box>.component {
@@ -41,7 +41,7 @@
   align-items: center;
   justify-content: space-around;
 
-  border: 1px solid blue;
+  /*border: 1px solid blue;*/
 }
 
 .control-box>.component>.knob {
@@ -64,7 +64,7 @@
   align-items: center;
   justify-content: space-around;
 
-  border: 1px solid yellow;
+  /*border: 1px solid yellow;*/
 }
 
 .top>.video-box {
@@ -73,7 +73,7 @@
   width: calc(56% * var(--scale-size));
   height: calc(100% * var(--scale-size));
 
-  border: 1px solid red;
+  /*border: 1px solid red;*/
 }
 
 .video-box>.video {

@@ -1,48 +1,41 @@
 .App {
-  /*position: absolute;*/
-  z-index: 3;
-  /*width: 100vw;*/
-  /*height: 100vh;*/
+  width: 100vw;
+  height: 100vh;
+  --module-width: 40vmin;
+  --module-double-width: 80vmin;
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
   justify-content: center;
+  z-index: 3;
+
+  /*border: 1px solid white;*/
 }
 
 .modules {
-  width: 100%;
+  width: 82%;
+  /*height: 90%;*/
   display: flex;
   flex-flow: row wrap;
-  align-items: center;
-  justify-content: center;
+  align-items: flex-start;
+  justify-content: flex-start;
+
+  /*border: 1px solid white;*/
 }
 
 .module {
-  /*width: 50vmin;*/
-  /*height: 30vmin;*/
-  width: 30vmin;
-  height: calc(30vmin * (3 / 5));
-  margin: 1vmin;
-  box-shadow: .5vmin .5vmin 1vmin #000000;
+  width: var(--module-width);
+  height: calc(var(--module-width) * (3 / 5));
+  /*margin: .5vmin;*/
+  /*box-shadow: .5vmin .5vmin 1vmin #000000;*/
   border-radius: 1vmin;
 }
 
 
-.instruments {
-  width: 100%;
-  display: flex;
-  flex-flow: row wrap;
-  align-items: center;
-  justify-content: center;
-}
-
-.instrument {
-  /*width: 100vmin;*/
-  /*height: 60vmin;*/
-  width: 60vmin;
-  height: calc(60vmin * (3 / 5));
-
-  margin: 1vmin;
+.module-double {
+  width: var(--module-double-width);
+  height: calc(var(--module-double-width) * (3 / 5));
+  /*margin: 1vmin;*/
   /*box-shadow: .5vmin .5vmin 1vmin #000000;*/
   border-radius: 1vmin;
 }
@@ -91,10 +84,4 @@
   justify-content: center;
   background-color: rgba(0,0,0,.3);
 }
-
-.Spec {
-  /*width: 100%;*/
-  /*height: 100%;*/
-}
-
 

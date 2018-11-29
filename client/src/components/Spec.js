@@ -4,13 +4,16 @@ import help from './_helpers.js';
 
 
 export default class Spec extends Component {
-
   componentDidMount() {
-    this.getData(this.props.ctx, this.props.src);
+    console.log('spec mounted')
+    this.analyserInit(this.props.ctx, this.props.src);
   }
 
+  componentDidUpdate() {
+    console.log('spec updated')
+  }
 
-  getData(ctx, src) {
+  analyserInit(ctx, src) {
     const scaleBase = 10;
     const slices = 60;
     const analyser = new AnalyserNode(ctx, {fftSize: Math.pow(2, scaleBase), minDecibels: -100, maxDecibels: 0, smoothingTimeConstant: 0});
@@ -18,6 +21,7 @@ export default class Spec extends Component {
 
     const fftBins = analyser.frequencyBinCount;
     const data = new Array(slices).fill(new Float32Array(fftBins).fill(-Infinity));
+    const ms = (fftBins / ctx.sampleRate) * 1000;
 
     const animate = () => {
       requestAnimationFrame(animate);
@@ -27,8 +31,8 @@ export default class Spec extends Component {
       this.drawSpec(data);
     };
     animate();
+    // setInterval(() => animate(), ms);
   }
-
 
   drawSpec(data) {
     const canvas = this.refs.canvas.getContext('2d');
@@ -53,13 +57,12 @@ export default class Spec extends Component {
     });
   }
 
-
+// className='Spec'
   render() {
     return (
-      <canvas
-        className='Spec'
-        ref='canvas'
-      />
+      <div className='module'>
+        <canvas ref='canvas'/>
+      </div>
     );
   }
 }

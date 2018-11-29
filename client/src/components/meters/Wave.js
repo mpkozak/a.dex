@@ -9,17 +9,12 @@ export default class Wave extends Component {
   }
 
   componentDidUpdate() {
-    console.log('wave updated')
+    // console.log('wave updated')
   }
 
   analyserInit(ctx, src) {
     const scaleBase = 11;
     const analyser = new AnalyserNode(ctx, {fftSize: Math.pow(2, scaleBase), minDecibels: -100, maxDecibels: -30, smoothingTimeConstant: 0});
-    // const analyser = ctx.createAnalyser();
-    // analyser.fftSize = Math.pow(2, scaleBase);
-    // analyser.minDecibels = -100;
-    // analyser.maxDecibels = 0;
-    // analyser.smoothingTimeConstant = 0;
     src.connect(analyser);
 
     const fftBins = analyser.frequencyBinCount;

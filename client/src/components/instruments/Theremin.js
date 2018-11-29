@@ -310,32 +310,34 @@ export default class Theremin extends Component {
     const colorF = `rgb(${colorFreq.r}, ${colorFreq.g}, ${colorFreq.b})`;
 
     return (
-      <div className='Theremin'>
+      <div className='module-double'>
+        <div className='Theremin'>
 
-        <div className='top'>
-          <div className='video-box'>
-            <canvas className='canvas' ref='canvas'/>
-            <video className='video' ref='video' preload='true' autoPlay loop muted/>
+          <div className='top'>
+            <div className='video-box'>
+              <canvas className='canvas' ref='canvas'/>
+              <video className='video' ref='video' preload='true' autoPlay loop muted/>
+            </div>
+            <div className='color-box'>
+              <div className='element header label'>
+                <h4>Set Colors</h4>
+              </div>
+              <div className='element'>
+                <div className='swatch colorGain' onClick={this.handleClickColor} style={{backgroundColor: colorV}} />
+                <h5 className='label'>Volume</h5>
+              </div>
+              <div className='element'>
+                <div className='swatch colorFreq' onClick={this.handleClickColor} style={{backgroundColor: colorF}} />
+                <h5 className='label'>Frequency</h5>
+              </div>
+            </div>
           </div>
-          <div className='color-box'>
-            <div className='element header label'>
-              <h4>Set Colors</h4>
-            </div>
-            <div className='element'>
-              <div className='swatch colorGain' onClick={this.handleClickColor} style={{backgroundColor: colorV}} />
-              <h5 className='label'>Volume</h5>
-            </div>
-            <div className='element'>
-              <div className='swatch colorFreq' onClick={this.handleClickColor} style={{backgroundColor: colorF}} />
-              <h5 className='label'>Frequency</h5>
-            </div>
+
+          <div className='bottom'>
+            {this.makeControlBox()}
           </div>
-        </div>
 
-        <div className='bottom'>
-          {this.makeControlBox()}
         </div>
-
       </div>
     );
   }
