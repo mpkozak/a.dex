@@ -283,21 +283,20 @@ export default class Theremin extends Component {
 
   makeControlBox() {
     const { params } = this.state;
-    const knobSize = 10;
 
     const components = Object.keys(params).map((d, i) => {
       return (
         <div className='component' key={i}>
-          <div className='knob'>
-            <UI.knob click={(e) => this.handleClickParam(e, d)} scroll={(e) => this.handleScrollParam(e, d)} level={(params[d].v / params[d].max) * 100} size={knobSize} />
-          </div>
+          <svg className='knob' viewBox='0 0 100 100' onMouseDown={(e) => this.handleClickParam(e, d)} onWheel={(e) => this.handleScrollParam(e, d)}>
+            {UI.knob((params[d].v / params[d].max) * 100)}
+          </svg>
           <h6 className='label'>{d}</h6>
         </div>
       );
     });
 
     return (
-      <div className='control-box box'>
+      <div className='control-box'>
         {components}
       </div>
     );
@@ -314,25 +313,21 @@ export default class Theremin extends Component {
       <div className='Theremin'>
 
         <div className='top'>
-          <div className='video-box box'>
+          <div className='video-box'>
             <canvas className='canvas' ref='canvas'/>
             <video className='video' ref='video' preload='true' autoPlay loop muted/>
           </div>
-          <div className='color-box box'>
+          <div className='color-box'>
             <div className='element header label'>
               <h4>Set Colors</h4>
             </div>
             <div className='element'>
               <div className='swatch colorGain' onClick={this.handleClickColor} style={{backgroundColor: colorV}} />
-              <div className='label'>
-                <h6>Volume</h6>
-              </div>
+              <h5 className='label'>Volume</h5>
             </div>
             <div className='element'>
               <div className='swatch colorFreq' onClick={this.handleClickColor} style={{backgroundColor: colorF}} />
-              <div className='label'>
-                <h6>Frequency</h6>
-              </div>
+              <h5 className='label'>Frequency</h5>
             </div>
           </div>
         </div>
@@ -345,3 +340,7 @@ export default class Theremin extends Component {
     );
   }
 }
+
+
+
+            // <UI.knob click={(e) => this.handleClickParam(e, d)} scroll={(e) => this.handleScrollParam(e, d)} level={(params[d].v / params[d].max) * 100} size={knobSize} />

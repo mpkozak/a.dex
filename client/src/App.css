@@ -18,8 +18,10 @@
 }
 
 .module {
-  width: 50vmin;
-  height: 30vmin;
+  /*width: 50vmin;*/
+  /*height: 30vmin;*/
+  width: 30vmin;
+  height: calc(30vmin * (3 / 5));
   margin: 1vmin;
   box-shadow: .5vmin .5vmin 1vmin #000000;
   border-radius: 1vmin;
@@ -35,8 +37,11 @@
 }
 
 .instrument {
-  width: 100vmin;
-  height: 60vmin;
+  /*width: 100vmin;*/
+  /*height: 60vmin;*/
+  width: 60vmin;
+  height: calc(60vmin * (3 / 5));
+
   margin: 1vmin;
   /*box-shadow: .5vmin .5vmin 1vmin #000000;*/
   border-radius: 1vmin;
