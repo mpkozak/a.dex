@@ -16,7 +16,7 @@ export default class Main extends Component {
       params: {
         fmWidth: {v: 0, max: 1200, min: -1200},
         fmDepth: {v: 0, max: 3000, min: 0},
-        volume: {v: 1, max: 1, min: 0},
+        volume: {v: 0, max: 1, min: 0},
       },
       // mic: false,
       // analyserSrc: 'masterGain',
@@ -28,14 +28,14 @@ export default class Main extends Component {
     this.audioInit();
     setTimeout(() => {
 
-    // help.setAudioParam(this.state.audio.masterGain.gain, .01, this.state.audio.ctx, this.state.audio.latency);
+    help.setAudioParam(this.state.audio.masterGain.gain, .1, this.state.audio.ctx, this.state.audio.latency);
 
-  }, 2000)
+    }, 1000)
   }
 
   componentDidUpdate() {
     // console.log('update')
-    this.audioRefresh();
+    // this.audioRefresh();
 
   }
 
@@ -78,7 +78,7 @@ export default class Main extends Component {
       analyserSrc: 'masterGain',
       mic: false,
       baseHz: baseHz,
-      latency: .05
+      latency: .01
     };
     this.setState(prevState => ({ audio }));
   }
@@ -128,6 +128,7 @@ export default class Main extends Component {
       this.setState(prevState => ({
         params: {...prevState.params, [key]: {...prevState.params[key], v: current}}
       }));
+      this.audioRefresh();
     };
   }
 
@@ -135,6 +136,7 @@ export default class Main extends Component {
 
 
   audioRefresh() {
+    console.log('audio refresh')
     const { audio } = this.state;
     const ctx = audio.ctx;
     const latency = audio.latency;
