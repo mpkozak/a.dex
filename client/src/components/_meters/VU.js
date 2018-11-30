@@ -37,8 +37,6 @@ export default class Wave extends Component {
   }
 
   moveNeedle(rmsVU, peak) {
-    // const svg = this.refs.vuSvg
-    // console.log(svg.getBBox())
     const rms = rmsVU === -Infinity ? -60 : rmsVU;
     const vu = [-60, -20, -10, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 20];
     const deg = [-48, -40, -26, -15, -10.5, -5, -0.5, 5, 10, 15, 20, 25, 30, 35, 48];
@@ -481,7 +479,7 @@ export default class Wave extends Component {
   render() {
     return (
       <div className='inner'>
-        <svg ref='vuSvg' viewBox='0 0 100 60'>
+        <svg viewBox='0 0 100 60'>
           {this.drawSvg()}
         </svg>
       </div>

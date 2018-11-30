@@ -76,7 +76,7 @@
   display: flex;
   flex-flow: row nowrap;
 
-  opacity: .5;
+  /*opacity: .5;*/
   /*background-color: gray;*/
 }
 
@@ -116,6 +116,14 @@
   /*background-color: #2C3539;*/
 }
 
+
+
+
+
+
+
+
+
 .meters>.outer {
   height: calc(100% / 3);
 }
@@ -123,11 +131,6 @@
 .meters .inner {
   width: 92%;
   height: 92%;
-}
-
-.effects>.outer {
-  width: 50%;
-  flex-flow: row nowrap;
 }
 
 
@@ -144,34 +147,10 @@
   background-color: aqua;
 }
 
-.effects .inner {
-  background-color: green;
-}
 
 
 
 
 /*MOVE AT A LATER DATE*/
-
-
-
-
-
-.oscillators .knob-box {
-  width: 95%;
-  display: flex;
-  flex-flow: row nowrap;
-  align-items: flex-start;
-  justify-content: space-around;
-
-  background-color: #ff0;
-}
-
-.oscillator>.knob-box>.item {
-  width: 95%;
-
-  background-color: #00f;
-}
-
 
 

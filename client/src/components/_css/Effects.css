@@ -1,0 +1,61 @@
+.effects>.outer {
+  width: 50%;
+  flex-flow: row nowrap;
+}
+
+.effect .inner {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: space-between;
+
+  background-color: rgba(0,0,255,.5);
+}
+
+.effect .label {
+  height: 12.5%;
+  padding: 1vmin;
+
+  /*background-color: #00f;*/
+}
+
+.effect .knob-box {
+  width: 95%;
+  height: 100%;
+  padding: 0 0 2% 0;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-around;
+
+  /*background-color: #f00;*/
+}
+
+.effect .element {
+  width: 35%;
+  /*height: 80%;*/
+  /*padding: 1% 4%;*/
+
+  /*background-color: #0f0;*/
+}
+
+.effect .knob {
+  /*width: 50%;*/
+  border-radius: 50%;
+  box-shadow: .5vmin .5vmin 1vmin #000000;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

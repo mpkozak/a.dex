@@ -3,6 +3,7 @@ import './_css/Main.css';
 import help from './_help.js';
 import { svgDefs } from './_svg.js';
 import Oscillators from './Oscillators.js';
+import Effects from './Effects.js';
 import Theremin from './_instruments/Theremin.js';
 import Wave from './_meters/Wave.js';
 import VU from './_meters/VU.js';
@@ -13,23 +14,29 @@ export default class Main extends Component {
     this.state = {
       audio: false,
       params: {
-        fmWidth: {v: 0, max: 1000, min: -1000},
+        fmWidth: {v: 0, max: 1200, min: -1200},
         fmDepth: {v: 0, max: 3000, min: 0},
-        volume: {v: .5, max: 1, min: 0},
+        volume: {v: 1, max: 1, min: 0},
       },
-      mic: false,
-      analyserSrc: 'masterGain',
+      // mic: false,
+      // analyserSrc: 'masterGain',
     };
+    this.updateParam = this.updateParam.bind(this);
   }
 
   componentDidMount() {
     this.audioInit();
-    // this.micInit();
+    setTimeout(() => {
+
+    // help.setAudioParam(this.state.audio.masterGain.gain, .01, this.state.audio.ctx, this.state.audio.latency);
+
+  }, 2000)
   }
 
   componentDidUpdate() {
-    console.log('update')
+    // console.log('update')
     this.audioRefresh();
+
   }
 
   audioInit() {
@@ -41,13 +48,16 @@ export default class Main extends Component {
     const osc1 = new OscillatorNode(ctx, {type: 'sine', frequency: baseHz});
     const osc2 = new OscillatorNode(ctx, {type: 'sine', frequency: baseHz, detune: params.fmWidth.v});
     const fmGain = new GainNode(ctx, {gain: params.fmDepth.v});
+    const normalize = new GainNode(ctx, {gain: .5})
     const masterGain = new GainNode(ctx, {gain: params.volume.v});
     const masterOut = ctx.destination;
     const analyser = new AnalyserNode(ctx, {fftSize: Math.pow(2, scaleBase), minDecibels: -100, maxDecibels: -30, smoothingTimeConstant: 0});
 
     osc1.connect(fmGain);
     fmGain.connect(osc2.frequency);
-    osc2.connect(masterGain);
+    osc2.connect(normalize);
+    normalize.connect(masterGain);
+    // osc2.connect(masterGain);
     masterGain.connect(masterOut);
     masterGain.connect(analyser);
 
@@ -58,7 +68,6 @@ export default class Main extends Component {
 
     const audio = {
       ctx: ctx,
-      baseHz: baseHz,
       osc1: osc1,
       osc2: osc2,
       // lpf: lpf,
@@ -66,55 +75,49 @@ export default class Main extends Component {
       masterGain: masterGain,
       masterOut: masterOut,
       analyser: analyser,
+      analyserSrc: 'masterGain',
+      mic: false,
+      baseHz: baseHz,
       latency: .05
     };
     this.setState(prevState => ({ audio }));
   }
 
   micInit() {
+    const { mic } = this.state.audio;
     const { ctx } = this.state.audio;
     const { analyser } = this.state.audio;
     const { masterGain } = this.state.audio;
-    const { analyserSrc } = this.state;
-    const { mic } = this.state;
+    const { analyserSrc } = this.state.audio;
 
-    if (!this.state.mic) {
+    if (!mic) {
       navigator.mediaDevices.getUserMedia({audio: true})
         .then(stream => {
           const mic = ctx.createMediaStreamSource(stream);
           masterGain.disconnect(analyser);
           mic.connect(analyser)
-          this.setState(prevState => ({ mic, analyserSrc: 'mic' }));
+          this.setState(prevState => ({
+            audio: {...prevState.audio, mic: mic, analyserSrc: 'mic'}
+          }));
+          console.log(this.state.audio)
         });
     } else if (analyserSrc === 'masterGain') {
       masterGain.disconnect(analyser);
       mic.connect(analyser)
-      this.setState(prevState => ({analyserSrc: 'mic'}));
+        this.setState(prevState => ({
+          audio: {...prevState.audio, analyserSrc: 'mic'}
+        }));
     } else if (analyserSrc === 'mic') {
       mic.disconnect(analyser);
       masterGain.connect(analyser);
-      this.setState(prevState => ({analyserSrc: 'masterGain'}));
+        this.setState(prevState => ({
+          audio: {...prevState.audio, analyserSrc: 'masterGain'}
+        }));
     };
   }
 
-  handleClickParam(e, key) {
-    e.preventDefault();
-    var handleDrag = (e) => {
-      this.updateParam((e.movementX - e.movementY) / 500, key);
-    };
-    window.addEventListener('mousemove', handleDrag);
-    var clearEvent = () => {
-      window.removeEventListener('mousemove', handleDrag);
-      window.removeEventListener('mouseup', clearEvent);
-    };
-     window.addEventListener('mouseup', clearEvent);
-  }
 
 
-  handleScrollParam(e, key) {
-    e.preventDefault();
-    this.updateParam(e.deltaY / 2000, key);
-  }
 
 
   updateParam(amt, key) {
@@ -127,6 +130,9 @@ export default class Main extends Component {
       }));
     };
   }
+
+
+
 
   audioRefresh() {
     const { audio } = this.state;
@@ -144,16 +150,9 @@ export default class Main extends Component {
 
 
   render() {
+    const { params } = this.state;
     const { audio } = this.state;
     const { ctx } = this.state.audio;
-    const { masterGain } = this.state.audio;
-    const { osc1 } = this.state.audio;
-    const { osc2 } = this.state.audio;
-    const { params } = this.state;
-    const degFmDepth = params.fmDepth.v / (params.fmDepth.max - params.fmDepth.min) * 100;
-    const degFmWidth = (Math.abs(params.fmWidth.min) + params.fmWidth.v) / (params.fmWidth.max - params.fmWidth.min) * 100;
-    console.log(degFmDepth, degFmWidth)
-    // console.log(this.state.osc1, this.state.osc2)
 
 
 
@@ -164,6 +163,7 @@ export default class Main extends Component {
         <div className='controller'>
           <div className='outer'>
             {/*{ctx ? <Theremin ctx={ctx} /> : null}*/}
+            {ctx ? <Theremin ctx={ctx} /> : null}
 
           </div>
         </div>
@@ -171,7 +171,7 @@ export default class Main extends Component {
         <div className='settings'>
           <div className='outer'>
             <div className='inner'>
-              Latency: {this.state.audio ? Math.floor(ctx.baseLatency * 1000) : ''} ms
+              Latency: {audio ? Math.floor(ctx.baseLatency * 1000) : ''} ms
               <button onClick={() => this.micInit()}>mic</button>
             </div>
           </div>
@@ -189,16 +189,9 @@ export default class Main extends Component {
           </div>
         </div>
 
-        <Oscillators audio={audio} active1={osc1 ? osc1.type : false} active2={osc2 ? osc2.type : false}/>
+        <Oscillators audio={audio} />
 
-        <div className='effects'>
-          <div className='outer'>
-            <div className='inner'>fx1</div>
-          </div>
-          <div className='outer'>
-            <div className='inner'>fx2</div>
-          </div>
-        </div>
+        <Effects params={params} update={this.updateParam} />
 
         <div className='master'>
           <div className='outer'>
@@ -245,20 +238,7 @@ import { bigKnob } from './_svg.js';
 
 
 
-        //     <div className='knob-box'>
-        //       <div className='item'>
-        //         <svg className='knob' viewBox='0 0 100 100' onMouseDown={(e) => this.handleClickParam(e, 'fmDepth')} onWheel={(e) => this.handleScrollParam(e, 'fmDepth')}>
-        //           {bigKnob(degFmDepth)}
-        //         </svg>
-        //         <h6>depth</h6>
-        //       </div>
-        //       <div className='item'>
-        //       <svg className='knob' viewBox='0 0 100 100' onMouseDown={(e) => this.handleClickParam(e, 'fmWidth')} onWheel={(e) => this.handleScrollParam(e, 'fmWidth')}>
-        //         {bigKnob(degFmWidth)}
-        //       </svg>
-        //       <h6>width</h6>
-        //       </div>
-        //     </div>
+
         // </div>
 
         //

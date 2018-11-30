@@ -15,7 +15,8 @@
 
 .oscillator .label {
   height: 25%;
-  padding: 2% 4%;
+  padding: 1vmin;
+  /*padding: 2% 4%;*/
 
   /*background-color: #00f;*/
 }
