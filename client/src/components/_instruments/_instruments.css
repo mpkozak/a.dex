@@ -1,0 +1,242 @@
+.Theremin {
+  --grid-width: 15;
+  --grid-height: 10;
+  position: relative;
+  font-family: Copperplate;
+
+  /*background-color: brown;*/
+  /*border: 1px solid red;*/
+}
+
+
+.video-box {
+  --video-width: 10;
+  --video-height: calc(var(--video-width) * .75);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: calc(100% * (var(--video-width) / var(--grid-width)));
+  height: calc(100% * (var(--video-height) / var(--grid-height)));
+
+  /*background-color: rgba(0,0,0,.5);*/
+  /*border: 1px solid red;*/
+}
+
+.video-box>.inner {
+  position: relative;
+  width: 90%;
+  height: 90%;
+  border-radius: 12%;
+  overflow: hidden;
+
+  /*border: 5px solid black;*/
+}
+
+
+.video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  z-index: 4;
+  transform: rotateY(180deg);
+}
+
+.canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  z-index: 5;
+}
+
+
+
+
+
+
+
+
+.knob {
+  width: 50%;
+  border-radius: 50%;
+                  box-shadow: .5vmin .5vmin 1vmin #000000;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.Theremin>.bottom {
+  width: 100%;
+  height: 30%;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: space-around;
+  justify-content: center;
+
+  /*border: 1px solid white;*/
+}
+
+.bottom>.control-box {
+  /*width: 98%;*/
+  width: 70%;
+  height: 95%;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-around;
+
+  /*border: 1px solid orange;*/
+}
+
+.control-box>.component {
+  width: 15%;
+  height: 80%;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: space-around;
+
+  /*border: 1px solid blue;*/
+}
+
+.control-box>.component>.knob {
+  width: 50%;
+  border-radius: 50%;
+                  box-shadow: .5vmin .5vmin 1vmin #000000;
+}
+
+.control-box>.component>.label {
+  padding: 5% 10%;
+}
+
+
+
+.Theremin>.top {
+  width: 100%;
+  height: 70%;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-around;
+
+  /*border: 1px solid yellow;*/
+}
+
+/*.top>.video-box {*/
+  /*--scale-size: .85;*/
+  /*position: relative;*/
+  /*width: calc(56% * var(--scale-size));*/
+  /*height: calc(100% * var(--scale-size));*/
+
+  /*border: 1px solid red;*/
+/*}*/
+/*
+.video-box>.video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 4;
+  transform: rotateY(180deg);
+}
+
+.video-box>.canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+}
+
+
+
+
+
+*/
+
+
+.top>.color-box {
+  width: 45%;
+  height: 60%;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-start;
+  justify-content: center;
+
+  /*border: 1px solid green;*/
+}
+
+
+
+.color-box .element {
+  margin: 2%;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: flex-start;
+
+  /*border: 1px solid blue;*/
+}
+
+.color-box .header {
+  align-self: center;
+}
+
+.color-box .swatch {
+  width: 5vmin;
+  height: 5vmin;
+  margin: .5vmin;
+  border: 1px solid black;
+}
+
+.color-box .pulse {
+  animation: pulsar 1s linear infinite;
+}
+
+@keyframes pulsar {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+
+
+
+
+
+.Theremin .label {
+  /*font-size: 50%;*/
+  /*display: inline-block;*/
+  /*padding: .5vmin 1vmin;*/
+  /*padding: 5% 5%;*/
+  border: 1px solid black;
+  background-color: rgba(0,0,0,.5);
+  box-shadow: .1vmin .1vmin .2vmin #000000;
+  text-shadow:
+    -.1vmin -.1vmin 0.01vmin #000000,
+    .1vmin -.1vmin 0.01vmin #000000,
+    .1vmin .1vmin 0.01vmin #000000,
+    -.1vmin .1vmin 0.01vmin #000000;
+}
+
+.Theremin .box {
+  /*background-color: rgba(0,0,0,.2);*/
+  /*box-shadow: .1vmin .1vmin .2vmin #000000;*/
+  /*border: 1px solid black;*/
+}

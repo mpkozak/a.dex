@@ -1,0 +1,226 @@
+.Main {
+  --grid-width: 20;
+  --grid-height: 15;
+  --size-unit: calc(95vw / var(--grid-width));
+  --size-unit-max: calc(90vh / var(--grid-height));
+  --size-unit-min: 30px;
+  position: relative;
+  width: calc(var(--grid-width) * var(--size-unit));
+  height: calc(var(--grid-height) * var(--size-unit));
+  max-width: calc(var(--grid-width) * var(--size-unit-max));
+  max-height: calc(var(--grid-height) * var(--size-unit-max));
+  min-width: calc(var(--grid-width) * var(--size-unit-min));
+  min-height: calc(var(--grid-height) * var(--size-unit-min));
+
+  background: url('../_img/titanium-texture-gradient.jpg') no-repeat center center fixed;
+  background-size: cover;
+
+  border-radius: 1vmin;
+  box-shadow: 0 0 .5vmin .1vmin #000000;
+}
+
+.controller {
+  position: absolute;
+  left: calc(0 * (100% / var(--grid-width)));
+  top: calc(0 * (100% / var(--grid-height)));
+  width: calc(15 * (100% / var(--grid-width)));
+  height: calc(10 * (100% / var(--grid-height)));
+  display: flex;
+  flex-flow: column nowrap;
+
+  /*opacity: .5;*/
+  /*background-color: brown;*/
+}
+
+.settings {
+  position: absolute;
+  left: calc(15 * (100% / var(--grid-width)));
+  top: calc(0 * (100% / var(--grid-height)));
+  width: calc(5 * (100% / var(--grid-width)));
+  height: calc(1 * (100% / var(--grid-height)));
+
+  opacity: .5;
+  /*background-color: orange;*/
+}
+
+.meters {
+  position: absolute;
+  left: calc(15 * (100% / var(--grid-width)));
+  top: calc(1 * (100% / var(--grid-height)));
+  width: calc(5 * (100% / var(--grid-width)));
+  height: calc(9 * (100% / var(--grid-height)));
+  display: flex;
+  flex-flow: column nowrap;
+
+  /*opacity: .5;*/
+  /*background-color: blue;*/
+}
+
+.oscillators {
+  position: absolute;
+  left: calc(0 * (100% / var(--grid-width)));
+  top: calc(10 * (100% / var(--grid-height)));
+  width: calc(4 * (100% / var(--grid-width)));
+  height: calc(5 * (100% / var(--grid-height)));
+
+  /*opacity: .5;*/
+  /*background-color: green;*/
+}
+
+.effects {
+  position: absolute;
+  left: calc(4 * (100% / var(--grid-width)));
+  top: calc(10 * (100% / var(--grid-height)));
+  width: calc(13 * (100% / var(--grid-width)));
+  height: calc(5 * (100% / var(--grid-height)));
+  display: flex;
+  flex-flow: row nowrap;
+
+  /*opacity: .5;*/
+  /*background-color: gray;*/
+}
+
+.master {
+  position: absolute;
+  left: calc(17 * (100% / var(--grid-width)));
+  top: calc(10 * (100% / var(--grid-height)));
+  width: calc(3 * (100% / var(--grid-width)));
+  height: calc(5 * (100% / var(--grid-height)));
+
+  /*opacity: .5;*/
+  /*background-color: aqua;*/
+}
+
+
+
+
+
+
+.outer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.inner {
+  width: calc(100% - 2vmin);
+  height: calc(100% - 2vmin);
+  box-shadow: 0 0 .5vmin .1vmin #000000;
+  border-radius: .57vmin;
+  background-color: rgba(0,0,0,.5);
+
+  /*box-shadow: .25vmin .25vmin .5vmin #000000;*/
+  /*background-color: #2C3539;*/
+}
+
+.meters>.outer {
+  height: calc(100% / 3);
+}
+
+.meters .inner {
+  width: 92%;
+  height: 92%;
+}
+
+.effects>.outer {
+  width: 50%;
+  flex-flow: row nowrap;
+}
+
+
+
+
+
+
+
+
+/*MOVE AT A LATER DATE*/
+
+
+.oscillators>.osc1 {
+  height: 35%;
+
+  background-color: #fff;
+}
+
+.oscillators>.osc2 {
+  height: 65%;
+
+  background-color: #0ff;
+}
+
+.oscillator {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.oscillator>.button-box {
+  width: 90%;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: flex-start;
+  justify-content: space-around;
+
+  background-color: #f0f;
+}
+
+.oscillator>.knob-box {
+
+}
+
+
+
+
+button {
+  background-color: black;
+}
+
+
+
+
+.knob {
+  /*width: 40%;*/
+  height: 30%;
+}
+
+
+
+
+.osc1 .button-box {
+  height: 50%;
+}
+
+
+
+.osc2 .button-box {
+  height: 20%;
+  background-color: #f0f;
+}
+
+
+
+
+
+
+
+
+.oscillator>.button-box>button {
+  width: 20%;
+  height: 80%;
+
+  /*padding: 4%;*/
+}
+
+
+
+
+
+
+
+
+

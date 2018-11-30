@@ -1,7 +1,6 @@
 import React from 'react';
 
-
-export const moduleDefs = () => {
+export const svgDefs = () => {
   return(
     <svg className='invisible' width={0} height={0} opacity={0} fill='none' stroke='none'>
       <defs>
@@ -71,8 +70,6 @@ export const moduleDefs = () => {
           <stop offset='66%' stopColor='#000000' stopOpacity={.3}/>
           <stop offset='70%' stopColor='#000000' stopOpacity={.5}/>
         </radialGradient>
-
-
   {/* VU Arc Curve Path */}
         <path id='vu-arc-scale' d={`M ${12.5} ${18.75} Q ${50} ${7.5}, ${87.5} ${18.75}`} pathLength={100}/>
       </defs>
@@ -136,14 +133,6 @@ export const moduleFrame = () => {
   );
 };
 
-
-export const moduleFonts = {
-
-
-
-
-
-}
 
 // export const modulePanelShadow  = () => {
 //   return (
