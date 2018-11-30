@@ -28,7 +28,7 @@
   display: flex;
   flex-flow: column nowrap;
 
-  /*opacity: .5;*/
+  opacity: .5;
   /*background-color: brown;*/
 }
 
@@ -76,7 +76,7 @@
   display: flex;
   flex-flow: row nowrap;
 
-  /*opacity: .5;*/
+  opacity: .5;
   /*background-color: gray;*/
 }
 
@@ -87,7 +87,7 @@
   width: calc(3 * (100% / var(--grid-width)));
   height: calc(5 * (100% / var(--grid-height)));
 
-  /*opacity: .5;*/
+  opacity: .5;
   /*background-color: aqua;*/
 }
 
@@ -136,91 +136,42 @@
 
 
 
+.settings .inner {
+  background-color: orange;
+}
+
+.master .inner {
+  background-color: aqua;
+}
+
+.effects .inner {
+  background-color: green;
+}
+
+
+
 
 /*MOVE AT A LATER DATE*/
 
 
-.oscillators>.osc1 {
-  height: 35%;
 
-  background-color: #fff;
-}
 
-.oscillators>.osc2 {
-  height: 65%;
 
-  background-color: #0ff;
-}
-
-.oscillator {
-  display: flex;
-  flex-flow: column nowrap;
-  align-items: center;
-  justify-content: center;
-}
-
-.oscillator>.button-box {
-  width: 90%;
+.oscillators .knob-box {
+  width: 95%;
   display: flex;
   flex-flow: row nowrap;
   align-items: flex-start;
   justify-content: space-around;
 
-  background-color: #f0f;
+  background-color: #ff0;
 }
 
-.oscillator>.knob-box {
+.oscillator>.knob-box>.item {
+  width: 95%;
 
+  background-color: #00f;
 }
-
-
-
-
-button {
-  background-color: black;
-}
-
-
-
-
-.knob {
-  /*width: 40%;*/
-  height: 30%;
-}
-
-
-
-
-.osc1 .button-box {
-  height: 50%;
-}
-
-
-
-.osc2 .button-box {
-  height: 20%;
-  background-color: #f0f;
-}
-
-
-
-
-
-
-
-
-.oscillator>.button-box>button {
-  width: 20%;
-  height: 80%;
-
-  /*padding: 4%;*/
-}
-
-
-
-
-
-
 
 
 

@@ -4,18 +4,14 @@ import { moduleFrame, modulePanelShadows } from '../_svg.js';
 
 export default class Wave extends Component {
   componentDidMount() {
-    this.analyserInit(this.props.ctx, this.props.src);
+    this.analyserInit(this.props.audio.analyser);
   }
 
   componentDidUpdate() {
     // console.log('vu updated')
   }
 
-  analyserInit(ctx, src) {
-    const scaleBase = 10;
-    const analyser = new AnalyserNode(ctx, {fftSize: Math.pow(2, scaleBase), minDecibels: -100, maxDecibels: 0, smoothingTimeConstant: 1});
-    src.connect(analyser);
-
+  analyserInit(analyser) {
     const fftBins = analyser.frequencyBinCount;
     const wave = new Float32Array(fftBins);
     // const ms = (fftBins / ctx.sampleRate) * 1000;

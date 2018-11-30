@@ -1,0 +1,47 @@
+.oscillators .outer {
+  height: 50%;
+
+  /*background-color: #fff;*/
+}
+
+.oscillator .inner {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: space-between;
+
+  background-color: rgba(165,42,42,.5);
+}
+
+.oscillator .label {
+  height: 25%;
+  padding: 2% 4%;
+
+  /*background-color: #00f;*/
+}
+
+.oscillator .button-box {
+  width: 95%;
+  height: 100%;
+  padding: 0 0 2% 0;
+  display: flex;
+  flex-flow: row wrap;
+  align-items: flex-start;
+  justify-content: space-around;
+
+  /*background-color: #f0f;*/
+}
+
+.oscillator button {
+  width: 45%;
+  height: 45%;
+  padding: 1% 4%;
+  border: none;
+  border-radius: 1vmin;
+
+  background-color: rgba(0,0,0,.5);
+}
+
+.oscillator .active {
+  background-color: rgba(255,165,0,.5);
+}

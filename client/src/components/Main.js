@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import './_css/Main.css';
 import help from './_help.js';
-import { svgDefs, bigKnob } from './_svg.js';
+import { svgDefs } from './_svg.js';
+import Oscillators from './Oscillators.js';
 import Theremin from './_instruments/Theremin.js';
 import Wave from './_meters/Wave.js';
 import VU from './_meters/VU.js';
@@ -17,8 +18,8 @@ export default class Main extends Component {
         volume: {v: .5, max: 1, min: 0},
       },
       mic: false,
+      analyserSrc: 'masterGain',
     };
-    this.handleOscillatorType = this.handleOscillatorType.bind(this);
   }
 
   componentDidMount() {
@@ -32,32 +33,28 @@ export default class Main extends Component {
   }
 
   audioInit() {
+    const scaleBase = 10;
+    const baseHz = 220;
     const { params } = this.state;
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     const ctx = new AudioContext();
-    const baseHz = 220;
     const osc1 = new OscillatorNode(ctx, {type: 'sine', frequency: baseHz});
     const osc2 = new OscillatorNode(ctx, {type: 'sine', frequency: baseHz, detune: params.fmWidth.v});
     const fmGain = new GainNode(ctx, {gain: params.fmDepth.v});
     const masterGain = new GainNode(ctx, {gain: params.volume.v});
     const masterOut = ctx.destination;
+    const analyser = new AnalyserNode(ctx, {fftSize: Math.pow(2, scaleBase), minDecibels: -100, maxDecibels: -30, smoothingTimeConstant: 0});
 
     osc1.connect(fmGain);
     fmGain.connect(osc2.frequency);
     osc2.connect(masterGain);
     masterGain.connect(masterOut);
+    masterGain.connect(analyser);
 
     osc1.start()
     osc2.start()
 
     // const lpf = new BiquadFilterNode(ctx, {type: 'lowpass', Q: 1, frequency: params.tone.v});
-
-    // osc1.connect(fmGain);
-    // fmGain.connect(osc2.frequency);
-    // osc2.connect(lpf);
-    // lpf.connect(masterGain);
-    // masterGain.connect(masterOut);
-
 
     const audio = {
       ctx: ctx,
@@ -66,42 +63,39 @@ export default class Main extends Component {
       osc2: osc2,
       // lpf: lpf,
       fmGain: fmGain,
-      fm: true,
       masterGain: masterGain,
       masterOut: masterOut,
+      analyser: analyser,
       latency: .05
     };
     this.setState(prevState => ({ audio }));
-
-    // this.setState(prevState => ({
-      // ctx, masterGain, masterOut, osc1, osc2, fmDepth
-      // osc2: {...prevState.osc2, node: osc2}
-      // }));
   }
 
   micInit() {
+    const { ctx } = this.state.audio;
+    const { analyser } = this.state.audio;
+    const { masterGain } = this.state.audio;
+    const { analyserSrc } = this.state;
+    const { mic } = this.state;
+
     if (!this.state.mic) {
       navigator.mediaDevices.getUserMedia({audio: true})
         .then(stream => {
-          const mic = this.state.audio.ctx.createMediaStreamSource(stream);
-          this.setState(prevState => ({ mic }));
+          const mic = ctx.createMediaStreamSource(stream);
+          masterGain.disconnect(analyser);
+          mic.connect(analyser)
+          this.setState(prevState => ({ mic, analyserSrc: 'mic' }));
         });
-    }
+    } else if (analyserSrc === 'masterGain') {
+      masterGain.disconnect(analyser);
+      mic.connect(analyser)
+      this.setState(prevState => ({analyserSrc: 'mic'}));
+    } else if (analyserSrc === 'mic') {
+      mic.disconnect(analyser);
+      masterGain.connect(analyser);
+      this.setState(prevState => ({analyserSrc: 'masterGain'}));
+    };
   }
-
-  handleOscillatorType(osc, type) {
-    const { audio } = this.state;
-    const ctx = audio.ctx;
-    console.log(osc)
-    help.setAudioParam(audio.masterGain.gain, 0, ctx, .01)
-      .then(res => {
-        // console.log(res);
-        osc.type = type;
-        help.setAudioParam(audio.masterGain.gain, .5, ctx, .01)
-        // .then(res => console.log(res))
-      })
-  }
-
 
   handleClickParam(e, key) {
     e.preventDefault();
@@ -134,7 +128,6 @@ export default class Main extends Component {
     };
   }
 
-
   audioRefresh() {
     const { audio } = this.state;
     const ctx = audio.ctx;
@@ -151,6 +144,7 @@ export default class Main extends Component {
 
 
   render() {
+    const { audio } = this.state;
     const { ctx } = this.state.audio;
     const { masterGain } = this.state.audio;
     const { osc1 } = this.state.audio;
@@ -169,8 +163,7 @@ export default class Main extends Component {
 
         <div className='controller'>
           <div className='outer'>
-            {/*{this.state.ctx ? <Theremin ctx={this.state.ctx} /> : null}*/}
-            {ctx ? <Theremin ctx={ctx} /> : null}
+            {/*{ctx ? <Theremin ctx={ctx} /> : null}*/}
 
           </div>
         </div>
@@ -186,48 +179,17 @@ export default class Main extends Component {
 
         <div className='meters'>
           <div className='outer'>
-            {this.state.audio ? <VU ctx={ctx} src={masterGain}/> : null}
+            {audio ? <VU audio={audio}/> : null}
           </div>
           <div className='outer'>
-            {this.state.audio ? <Wave ctx={ctx} src={masterGain}/> : null}
+            {audio ? <Wave audio={audio}/> : null}
           </div>
           <div className='outer'>
             <div className='inner'>meter</div>
           </div>
         </div>
 
-        <div className='oscillators'>
-          <div className='osc1 outer'>
-            <div className='oscillator inner'>
-              <h4>Oscillator 1</h4>
-              <div className='button-box'>
-                <button onClick={() => this.handleOscillatorType(osc1, 'sine')}>sin</button>
-                <button onClick={() => this.handleOscillatorType(osc1, 'triangle')}>tri</button>
-                <button onClick={() => this.handleOscillatorType(osc1, 'sawtooth')}>saw</button>
-                <button onClick={() => this.handleOscillatorType(osc1, 'square')}>sqr</button>
-              </div>
-            </div>
-          </div>
-          <div className='osc2 outer'>
-            <div className='oscillator inner'>
-              <h4>Oscillator 2</h4>
-              <div className='button-box'>
-                <button onClick={() => this.handleOscillatorType(osc2, 'sine')}>sin</button>
-                <button onClick={() => this.handleOscillatorType(osc2, 'triangle')}>tri</button>
-                <button onClick={() => this.handleOscillatorType(osc2, 'sawtooth')}>saw</button>
-                <button onClick={() => this.handleOscillatorType(osc2, 'square')}>sqr</button>
-              </div>
-              <div className='knob-box'>
-                <svg className='knob' viewBox='0 0 100 100' onMouseDown={(e) => this.handleClickParam(e, 'fmDepth')} onWheel={(e) => this.handleScrollParam(e, 'fmDepth')}>
-                  {bigKnob(degFmDepth)}
-                </svg>
-                <svg className='knob' viewBox='0 0 100 100' onMouseDown={(e) => this.handleClickParam(e, 'fmWidth')} onWheel={(e) => this.handleScrollParam(e, 'fmWidth')}>
-                  {bigKnob(degFmWidth)}
-                </svg>
-              </div>
-            </div>
-          </div>
-        </div>
+        <Oscillators audio={audio} active1={osc1 ? osc1.type : false} active2={osc2 ? osc2.type : false}/>
 
         <div className='effects'>
           <div className='outer'>
@@ -250,7 +212,60 @@ export default class Main extends Component {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 {/*
+
+
+
+
+
+
+import { bigKnob } from './_svg.js';
+
+
+
+
+
+        // <div className='fm outer'>
+
+
+
+        //     <div className='knob-box'>
+        //       <div className='item'>
+        //         <svg className='knob' viewBox='0 0 100 100' onMouseDown={(e) => this.handleClickParam(e, 'fmDepth')} onWheel={(e) => this.handleScrollParam(e, 'fmDepth')}>
+        //           {bigKnob(degFmDepth)}
+        //         </svg>
+        //         <h6>depth</h6>
+        //       </div>
+        //       <div className='item'>
+        //       <svg className='knob' viewBox='0 0 100 100' onMouseDown={(e) => this.handleClickParam(e, 'fmWidth')} onWheel={(e) => this.handleScrollParam(e, 'fmWidth')}>
+        //         {bigKnob(degFmWidth)}
+        //       </svg>
+        //       <h6>width</h6>
+        //       </div>
+        //     </div>
+        // </div>
+
+        //
+
+
+
+
 
         {template.moduleDefs()}
         {this.showModules()}

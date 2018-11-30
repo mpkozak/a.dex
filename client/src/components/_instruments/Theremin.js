@@ -15,7 +15,7 @@ export default class Theremin extends Component {
       colorFreq: {r: null, g: null, b: null},
       audio: {},
       params: {
-        sense: {v: 30, max: 100},
+        sense: {v: 30, max: 100, min: 0},
         range: {v: 4, max: 6},
         tone: {v: 2200, max: 4400},
         volume: {v: .5, max: 1},
@@ -263,7 +263,6 @@ export default class Theremin extends Component {
           <div className='color-box'>
           </div>
           <div className='control-box'>
-            {this.makeControlBox()}
           </div>
 
 
@@ -275,6 +274,7 @@ export default class Theremin extends Component {
 
 
 
+            // {this.makeControlBox()}
           // <div className='top'>
 
           //   <div className='color-box'>
