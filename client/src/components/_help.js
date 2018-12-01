@@ -22,6 +22,25 @@ help.getColorDist = (orig, match) => {
   );
 };
 
+help.handleClickParam = (e, key, callback) => {
+  e.preventDefault();
+  var handleDrag = (e) => {
+    callback((e.movementX - e.movementY) / 500, key);
+  };
+  window.addEventListener('mousemove', handleDrag);
+  var clearEvent = () => {
+    window.removeEventListener('mousemove', handleDrag);
+    window.removeEventListener('mouseup', clearEvent);
+  };
+   window.addEventListener('mouseup', clearEvent);
+}
+
+help.handleScrollParam = (e, key, callback) => {
+  e.preventDefault();
+  callback(e.deltaY / 2000, key);
+}
+
+
 
 // help.makeDomain = (extent, arr) => {
 //   const iter = arr.length;

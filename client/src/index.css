@@ -1,10 +1,26 @@
+@import url('https://fonts.googleapis.com/css?family=Asap|Audiowide|Chakra+Petch|Changa|Hammersmith+One|Josefin+Sans|Montserrat+Alternates|Orbitron|Oxygen|Poiret+One|Questrial|Righteous|Rubik|Ruda');
+
 * {
   margin: 0;
   padding: 0;
   /*font-size: 12vmin;*/
   text-align: center;
-  font-family: helvetica, sans-serif;
+  /*font-family: helvetica, sans-serif;*/
   color: #FFFFFF;
+/*font-family: 'Rubik', sans-serif;*/
+/*font-family: 'Oxygen', sans-serif;*/
+/*font-family: 'Asap', sans-serif;*/
+/*font-family: 'Questrial', sans-serif;*/
+/*font-family: 'Chakra Petch', sans-serif;*/
+/*font-family: 'Josefin Sans', sans-serif;*/
+font-family: 'Righteous', cursive;
+/*font-family: 'Poiret One', cursive;*/
+/*font-family: 'Hammersmith One', sans-serif;*/
+/*font-family: 'Ruda', sans-serif;*/
+/*font-family: 'Changa', sans-serif;*/
+/*font-family: 'Audiowide', cursive;*/
+/*font-family: 'Montserrat Alternates', sans-serif;*/
+/*font-family: 'Orbitron', sans-serif;*/
 
   /*border: 1px solid black;*/
 }

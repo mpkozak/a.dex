@@ -1,17 +1,16 @@
 .Theremin {
   --grid-width: 15;
   --grid-height: 10;
+  --video-width: 10;
+  --video-height: calc(var(--video-width) * .75);
   position: relative;
   font-family: Copperplate;
 
-  background-color: brown;
+  /*background-color: brown;*/
   /*border: 1px solid red;*/
 }
 
-
-.video-box {
-  --video-width: 10;
-  --video-height: calc(var(--video-width) * .75);
+.Theremin .video-box {
   position: absolute;
   left: 0;
   top: 0;
@@ -19,10 +18,34 @@
   height: calc(100% * (var(--video-height) / var(--grid-height)));
 
   /*background-color: rgba(0,0,0,.5);*/
-  /*border: 1px solid red;*/
+  border: 1px solid red;
 }
 
-.video-box>.inner {
+.Theremin .color-box {
+  position: absolute;
+  left: 0;
+  top: calc(100% * (var(--video-height) / var(--grid-height)));
+  width: calc(100% * (var(--video-width) / var(--grid-width)));
+  height: calc(100% * (var(--grid-height) - var(--video-height)) / var(--grid-height));
+
+  /*background-color: rgba(0,0,0,.5);*/
+  border: 1px solid red;
+
+  /*border: 1px solid green;*/
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.Theremin .video-box .inner {
   position: relative;
   width: 90%;
   height: 90%;
@@ -32,8 +55,16 @@
   /*border: 5px solid black;*/
 }
 
+.Theremin .video-box .border {
+  position: absolute;
+  top: 20px;
+  left: 0;
+  width: 100%;
+  height: auto;
+}
 
-.video {
+
+.Theremin .video {
   position: absolute;
   top: 0;
   left: 0;
@@ -43,13 +74,92 @@
   transform: rotateY(180deg);
 }
 
-.canvas {
+.Theremin .canvas {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: auto;
   z-index: 5;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.Theremin .control-box {
+  position: absolute;
+  left: calc(100% * (10 / var(--grid-width)));
+  top: calc(100% * (5 / var(--grid-height)));
+  width: calc(100% * (4 / var(--grid-width)));
+  height: calc(100% * (4 / var(--grid-height)));
+
+  /*background-color: rgba(0,0,0,.5);*/
+  border: 1px solid red;
+
+
+  /*border: 1px solid orange;*/
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.color-box .element {
+  /*margin: 2%;*/
+  /*display: flex;*/
+  /*flex-flow: row nowrap;*/
+  /*align-items: center;*/
+  /*justify-content: flex-start;*/
+
+  /*border: 1px solid blue;*/
+}
+
+.color-box .header {
+  align-self: center;
+}
+
+.color-box .swatch {
+  width: 5vmin;
+  height: 5vmin;
+  margin: .5vmin;
+  border: 1px solid black;
+}
+
+.color-box .pulse {
+  animation: pulsar 1s linear infinite;
+}
+
+@keyframes pulsar {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
 }
 
 
@@ -77,20 +187,8 @@
   /*border: 1px solid white;*/
 }
 
-.bottom>.control-box {
-  /*width: 98%;*/
-  width: 70%;
-  height: 95%;
-  display: flex;
-  flex-flow: row nowrap;
-  align-items: center;
-  justify-content: space-around;
-
-  /*border: 1px solid orange;*/
-}
-
 .control-box>.component {
-  width: 15%;
+  width: 100%;
   height: 80%;
   display: flex;
   flex-flow: column nowrap;
@@ -156,57 +254,6 @@
 
 
 */
-
-
-.top>.color-box {
-  width: 45%;
-  height: 60%;
-  display: flex;
-  flex-flow: column nowrap;
-  align-items: flex-start;
-  justify-content: center;
-
-  /*border: 1px solid green;*/
-}
-
-
-
-.color-box .element {
-  margin: 2%;
-  display: flex;
-  flex-flow: row nowrap;
-  align-items: center;
-  justify-content: flex-start;
-
-  /*border: 1px solid blue;*/
-}
-
-.color-box .header {
-  align-self: center;
-}
-
-.color-box .swatch {
-  width: 5vmin;
-  height: 5vmin;
-  margin: .5vmin;
-  border: 1px solid black;
-}
-
-.color-box .pulse {
-  animation: pulsar 1s linear infinite;
-}
-
-@keyframes pulsar {
-  0% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0;
-  }
-}
-
-
-
 
 
 

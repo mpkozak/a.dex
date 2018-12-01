@@ -8,25 +8,20 @@ export default class Theremin extends Component {
     constructor(props) {
     super(props)
     this.state = {
-      config: false,
       // colorGain: {r: 0, g: 0, b: 0},
       // colorFreq: {r: 0, g: 0, b: 0},
       colorGain: {r: null, g: null, b: null},
       colorFreq: {r: null, g: null, b: null},
-      audio: {},
       params: {
         sense: {v: 30, max: 100, min: 0},
-        range: {v: 4, max: 6},
-        tone: {v: 2200, max: 4400},
-        volume: {v: .5, max: 1},
+        range: {v: 4, max: 6, min: 2},
       },
       data: [],
       dataGain: false,
       dataFreq: false,
     };
     this.handleClickColor = this.handleClickColor.bind(this);
-    this.handleClickParam = this.handleClickParam.bind(this);
-    this.handleScrollParam = this.handleScrollParam.bind(this);
+    this.updateParam = this.updateParam.bind(this);
   }
 
   componentDidMount() {
@@ -41,12 +36,8 @@ export default class Theremin extends Component {
 
   componentDidUpdate() {
     this.trackerDraw();
-    // this.audioRefreshGain();
-    // this.audioRefreshFreq();
-    // this.audioRefreshFm();
-    // this.audioRefreshTone();
-    // console.log(this.state.audio.ctx.baseLatency)
-    // console.log(this.state.audio.ctx.currentTime - this.state.audio.ctx.getOutputTimestamp().contextTime);
+    this.audioRefreshGain();
+    this.audioRefreshFreq();
   }
 
 
@@ -77,7 +68,7 @@ export default class Theremin extends Component {
     navigator.mediaDevices.getUserMedia({video: true})
       .then(stream => {
         this.refs.video.srcObject = stream;
-        // tracking.track('.video', colors);
+        tracking.track('.video', colors);
       });
   }
 
@@ -111,31 +102,11 @@ export default class Theremin extends Component {
   }
 
 
-  handleClickParam(e, key) {
-    e.preventDefault();
-    var handleDrag = (e) => {
-      this.updateParam((e.movementX - e.movementY) / 500, key);
-    };
-    window.addEventListener('mousemove', handleDrag);
-    var clearEvent = () => {
-      window.removeEventListener('mousemove', handleDrag);
-      window.removeEventListener('mouseup', clearEvent);
-    };
-     window.addEventListener('mouseup', clearEvent);
-  }
-
-
-  handleScrollParam(e, key) {
-    e.preventDefault();
-    this.updateParam(e.deltaY / 2000, key);
-  }
-
-
   updateParam(amt, key) {
     const prev = this.state.params[key];
     const delta = amt * prev.max;
     const current = prev.v + delta;
-    if (current >= 0 && current <= prev.max) {
+    if (current >= prev.min && current <= prev.max) {
       this.setState(prevState => ({
         params: {...prevState.params, [key]: {...prevState.params[key], v: current}}
       }));
@@ -166,62 +137,47 @@ export default class Theremin extends Component {
   }
 
 
-  // audioRefreshGain() {
-  //   const { dataGain } = this.state;
-  //   // const { dataFreq } = this.state;
-  //   const { audio } = this.state;
-  //   const ctx = audio.ctx;
-  //   const masterGain = audio.masterGain;
-  //   const latency = audio.latency;
-  //   const height = this.refs.video.clientHeight;
+  audioRefreshGain() {
+    // console.log('gain refreshed')
+    const { dataGain } = this.state;
+    // const { dataFreq } = this.state;
+    const { audio } = this.props;
+    const { params } = this.props;
+    const ctx = audio.ctx;
+    const masterGain = audio.masterGain;
+    const latency = audio.latency;
+    const height = this.refs.video.clientHeight;
 
-  //   if (dataGain) {
-  //     const y = dataGain.y + (dataGain.height / 2);
-  //     const level = (height - y) / height * this.state.params.volume.v;
-  //     help.setAudioParam(masterGain.gain, level, ctx, latency);
-  //   } else {
-  //     help.setAudioParam(masterGain.gain, 0, ctx, latency * 2);
-  //   };
-  // }
-
-
-  // audioRefreshFreq() {
-  //   const { dataFreq } = this.state;
-  //   const { audio } = this.state;
-  //   const ctx = audio.ctx;
-  //   const osc1 = audio.osc1;
-  //   const osc2 = audio.osc2;
-  //   const latency = audio.latency;
-  //   const width = this.refs.video.clientWidth;
-
-  //   if (dataFreq) {
-  //     const x = dataFreq.x + (dataFreq.width / 2)
-  //     const freq1 = audio.baseHz * Math.pow(2, (width - x)/(width / this.state.params.range.v));
-  //     const freq2 = (audio.baseHz + this.state.params.fmWidth.v) * Math.pow(2, (width - x)/(width / this.state.params.range.v));
-  //     help.setAudioParam(osc1.frequency, freq1, ctx, latency);
-  //     help.setAudioParam(osc2.frequency, freq2, ctx, latency);
-  //   };
-  // }
+    if (dataGain) {
+      const y = dataGain.y + (dataGain.height / 2);
+      const level = (height - y) / height * params.volume.v;
+      help.setAudioParam(masterGain.gain, level, ctx, latency);
+    } else {
+      help.setAudioParam(masterGain.gain, 0, ctx, latency * 2);
+    };
+    // console.log(masterGain.gain.value, 'gain from theremin', params.volume.v, 'props volume')
+  }
 
 
-  // audioRefreshFm() {
-  //   const { audio } = this.state;
-  //   const ctx = audio.ctx;
-  //   const fmGain = audio.fmGain;
-  //   const latency = audio.latency;
+  audioRefreshFreq() {
+    // console.log('freq refreshed')
+    const { dataFreq } = this.state;
+    const { audio } = this.props;
+    const { params } = this.props;
+    const ctx = audio.ctx;
+    const osc1 = audio.osc1;
+    const osc2 = audio.osc2;
+    const latency = audio.latency;
+    const width = this.refs.video.clientWidth;
 
-  //   help.setAudioParam(fmGain.gain, this.state.params.fmDepth.v, ctx, latency);
-  // }
-
-
-  // audioRefreshTone() {
-  //   const { audio } = this.state;
-  //   const ctx = audio.ctx;
-  //   const lpf = audio.lpf;
-  //   const latency = audio.latency;
-
-  //   help.setAudioParam(lpf.frequency, this.state.params.tone.v, ctx, latency);
-  // }
+    if (dataFreq) {
+      const x = dataFreq.x + (dataFreq.width / 2);
+      const freq1 = audio.baseHz * Math.pow(2, (width - x)/(width / this.state.params.range.v));
+      const freq2 = (audio.baseHz + params.fmWidth.v) * Math.pow(2, (width - x)/(width / this.state.params.range.v));
+      help.setAudioParam(osc1.frequency, freq1, ctx, latency);
+      help.setAudioParam(osc2.frequency, freq2, ctx, latency);
+    };
+  }
 
 
   makeControlBox() {
@@ -230,7 +186,7 @@ export default class Theremin extends Component {
     const components = Object.keys(params).map((d, i) => {
       return (
         <div className='component' key={i}>
-          <svg className='knob' viewBox='0 0 100 100' onMouseDown={(e) => this.handleClickParam(e, d)} onWheel={(e) => this.handleScrollParam(e, d)}>
+          <svg className='knob' viewBox='0 0 100 100' onMouseDown={(e) => help.handleClickParam(e, d, this.updateParam)} onWheel={(e) => help.handleScrollParam(e, d, this.updateParam)}>
             {bigKnob((params[d].v / params[d].max) * 100)}
           </svg>
           <h6 className='label'>{d}</h6>
@@ -254,15 +210,31 @@ export default class Theremin extends Component {
 
     return (
         <div className='Theremin inner'>
+
           <div className='video-box outer'>
             <div className='inner'>
               <canvas className='canvas' ref='canvas'/>
               <video className='video' ref='video' preload='true' autoPlay loop muted/>
             </div>
           </div>
+
           <div className='color-box'>
+            <div className='element header label'>
+              <h4>Set Colors</h4>
+            </div>
+            <div className='element'>
+              <div className='swatch colorGain' onClick={this.handleClickColor} style={{backgroundColor: colorV}} />
+              <h5 className='label'>Volume</h5>
+            </div>
+            <div className='element'>
+              <div className='swatch colorFreq' onClick={this.handleClickColor} style={{backgroundColor: colorF}} />
+              <h5 className='label'>Frequency</h5>
+            </div>
           </div>
+
+
           <div className='control-box'>
+            {this.makeControlBox()}
           </div>
 
 
@@ -277,19 +249,6 @@ export default class Theremin extends Component {
             // {this.makeControlBox()}
           // <div className='top'>
 
-          //   <div className='color-box'>
-          //     <div className='element header label'>
-          //       <h4>Set Colors</h4>
-          //     </div>
-          //     <div className='element'>
-          //       <div className='swatch colorGain' onClick={this.handleClickColor} style={{backgroundColor: colorV}} />
-          //       <h5 className='label'>Volume</h5>
-          //     </div>
-          //     <div className='element'>
-          //       <div className='swatch colorFreq' onClick={this.handleClickColor} style={{backgroundColor: colorF}} />
-          //       <h5 className='label'>Frequency</h5>
-          //     </div>
-          //   </div>
           // </div>
 
           // <div className='bottom'>

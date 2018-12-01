@@ -28,7 +28,7 @@
   display: flex;
   flex-flow: column nowrap;
 
-  opacity: .5;
+  /*opacity: .5;*/
   /*background-color: brown;*/
 }
 
@@ -110,7 +110,7 @@
   height: calc(100% - 2vmin);
   box-shadow: 0 0 .5vmin .1vmin #000000;
   border-radius: .57vmin;
-  background-color: rgba(0,0,0,.5);
+  /*background-color: rgba(0,0,0,.5);*/
 
   /*box-shadow: .25vmin .25vmin .5vmin #000000;*/
   /*background-color: #2C3539;*/

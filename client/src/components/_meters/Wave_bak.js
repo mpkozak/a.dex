@@ -1,14 +1,31 @@
-import React from 'react';
+import React, { Component } from 'react';
 import * as d3 from 'd3';
 import { moduleFrame, modulePanelShadows } from '../_svg.js';
 
-export default function Wave(props) {
-  const analyser = props.audio.analyser
-  const fftBins = analyser.frequencyBinCount;
-  const wave = new Float32Array(fftBins);
-  // const ms = (fftBins / ctx.sampleRate) * 1000;
+export default class Wave extends Component {
+  componentDidMount() {
+    this.analyserInit(this.props.audio.analyser);
+  }
 
-  const drawWave = (data) => {
+  componentDidUpdate() {
+    // console.log('wave updated')
+  }
+
+  analyserInit(analyser) {
+    const fftBins = analyser.frequencyBinCount;
+    const wave = new Float32Array(fftBins);
+    // const ms = (fftBins / ctx.sampleRate) * 1000;
+
+    const animate = () => {
+      requestAnimationFrame(animate);
+      analyser.getFloatTimeDomainData(wave);
+      this.drawWave(wave);
+    };
+    animate();
+    // setInterval(() => animate(), ms)
+  }
+
+  drawWave(data) {
     const width = 100
     const height = 60;
     const margin = 5;
@@ -25,11 +42,10 @@ export default function Wave(props) {
       dataCurve.push([xScale(i), yScale(d)]);
     });
 
-    // const curvePath = d3.select('#invisible').append('path').attr('d', curveScale(dataCurve)).remove();
-    // const curveNode = curvePath.node();
-    // const curvePathLength = curveNode.getTotalLength();
-    // const curveOpacity = (width - Math.sqrt(curvePathLength)) / (width - 10);
-    const curveOpacity = 1;
+    const curvePath = d3.select('#wave-svg-d3').append('path').attr('d', curveScale(dataCurve)).remove();
+    const curveNode = curvePath.node()
+    const curvePathLength = curveNode.getTotalLength();
+    const curveOpacity = (width - Math.sqrt(curvePathLength)) / (width - 10);
 
     const wave = d3.select('#wave-svg-d3').selectAll('path').data([dataCurve]);
     wave.enter().append('path')
@@ -41,7 +57,7 @@ export default function Wave(props) {
       .style('opacity', curveOpacity)
   }
 
-  const drawSvg = () => {
+  drawSvg() {
     const colorBg = '#052205'
     const gridLines = [7.25, 11.75, 16.25, 20.75, 25.25, 29.75, 34.25, 38.75, 43.25, 47.75, 52.25, 56.75, 61.25, 65.75, 70.25, 74.75, 79.25, 83.75, 88.25, 92.75];
 
@@ -111,20 +127,13 @@ export default function Wave(props) {
     );
   }
 
-  const animate = () => {
-    requestAnimationFrame(animate);
-    analyser.getFloatTimeDomainData(wave);
-    drawWave(wave);
-  };
-  animate();
-  // setInterval(() => animate(), ms)
-
-  return (
-    <div className='inner'>
-      <svg viewBox='0 0 100 60'>
-        {drawSvg()}
-      </svg>
-    </div>
-  );
-
+  render() {
+    return (
+      <div className='inner'>
+        <svg viewBox='0 0 100 60'>
+          {this.drawSvg()}
+        </svg>
+      </div>
+    );
+  }
 }

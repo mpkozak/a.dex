@@ -18,8 +18,6 @@ export default class Main extends Component {
         fmDepth: {v: 0, max: 3000, min: 0},
         volume: {v: 0, max: 1, min: 0},
       },
-      // mic: false,
-      // analyserSrc: 'masterGain',
     };
     this.updateParam = this.updateParam.bind(this);
   }
@@ -27,16 +25,15 @@ export default class Main extends Component {
   componentDidMount() {
     this.audioInit();
     setTimeout(() => {
-
-    help.setAudioParam(this.state.audio.masterGain.gain, .1, this.state.audio.ctx, this.state.audio.latency);
-
-    }, 1000)
+      this.setState(prevState => ({
+        params: {...prevState.params, volume: {...prevState.params.volume, v: .5}}
+      }));
+      this.audioRefresh('volume');
+    }, 1000);
   }
 
   componentDidUpdate() {
-    // console.log('update')
-    // this.audioRefresh();
-
+    // console.log('main updated')
   }
 
   audioInit() {
@@ -61,6 +58,16 @@ export default class Main extends Component {
     masterGain.connect(masterOut);
     masterGain.connect(analyser);
 
+
+    // osc1.connect(normalize);
+    // osc2.connect(normalize);
+    // fmGain.connect(normalize);
+    // normalize.connect(masterGain);
+    // // osc2.connect(masterGain);
+    // masterGain.connect(masterOut);
+    // masterGain.connect(analyser);
+
+
     osc1.start()
     osc2.start()
 
@@ -78,12 +85,12 @@ export default class Main extends Component {
       analyserSrc: 'masterGain',
       mic: false,
       baseHz: baseHz,
-      latency: .01
+      latency: .05
     };
     this.setState(prevState => ({ audio }));
   }
 
-  micInit() {
+  micToggle() {
     const { mic } = this.state.audio;
     const { ctx } = this.state.audio;
     const { analyser } = this.state.audio;
@@ -99,7 +106,6 @@ export default class Main extends Component {
           this.setState(prevState => ({
             audio: {...prevState.audio, mic: mic, analyserSrc: 'mic'}
           }));
-          console.log(this.state.audio)
         });
     } else if (analyserSrc === 'masterGain') {
       masterGain.disconnect(analyser);
@@ -128,14 +134,15 @@ export default class Main extends Component {
       this.setState(prevState => ({
         params: {...prevState.params, [key]: {...prevState.params[key], v: current}}
       }));
-      this.audioRefresh();
+      console.log(key)
+      this.audioRefresh(key);
     };
   }
 
 
 
 
-  audioRefresh() {
+  audioRefresh(key) {
     console.log('audio refresh')
     const { audio } = this.state;
     const ctx = audio.ctx;
@@ -143,9 +150,20 @@ export default class Main extends Component {
 
     const osc2 = audio.osc2;
     const fmGain = audio.fmGain;
+    const masterGain = audio.masterGain;
 
-    help.setAudioParam(osc2.detune, this.state.params.fmWidth.v, ctx, latency);
-    help.setAudioParam(fmGain.gain, this.state.params.fmDepth.v, ctx, latency);
+    switch (key) {
+      case 'fmDepth' :
+        help.setAudioParam(fmGain.gain, this.state.params.fmDepth.v, ctx, latency);
+        break;
+      case 'fmWidth' :
+        help.setAudioParam(osc2.detune, this.state.params.fmWidth.v, ctx, latency);
+        break;
+      case 'volume' :
+        help.setAudioParam(masterGain.gain, this.state.params.volume.v, ctx, latency);
+        break;
+      default : return null;
+    }
   }
 
 
@@ -165,7 +183,8 @@ export default class Main extends Component {
         <div className='controller'>
           <div className='outer'>
             {/*{ctx ? <Theremin ctx={ctx} /> : null}*/}
-            {ctx ? <Theremin ctx={ctx} /> : null}
+            {audio ? <Theremin audio={audio} params={params} /> : null}
+
 
           </div>
         </div>
@@ -174,7 +193,7 @@ export default class Main extends Component {
           <div className='outer'>
             <div className='inner'>
               Latency: {audio ? Math.floor(ctx.baseLatency * 1000) : ''} ms
-              <button onClick={() => this.micInit()}>mic</button>
+              <button onClick={() => this.micToggle()}>mic</button>
             </div>
           </div>
         </div>

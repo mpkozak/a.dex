@@ -1,16 +1,42 @@
-import React from 'react';
+import React, { Component } from 'react';
 import * as d3 from 'd3';
 import { moduleFrame, modulePanelShadows } from '../_svg.js';
 
-export default function Wave(props) {
-  const analyser = props.audio.analyser
-  const fftBins = analyser.frequencyBinCount;
-  const wave = new Float32Array(fftBins);
-  // const ms = (fftBins / ctx.sampleRate) * 1000;
-  let peak = false;
+export default class Wave extends Component {
+  componentDidMount() {
+    this.analyserInit(this.props.audio.analyser);
+  }
 
+  componentDidUpdate() {
+    // console.log('vu updated')
+  }
 
-  const moveNeedle = (rmsVU, peak) => {
+  analyserInit(analyser) {
+    const fftBins = analyser.frequencyBinCount;
+    const wave = new Float32Array(fftBins);
+    // const ms = (fftBins / ctx.sampleRate) * 1000;
+    let peak = false;
+
+    const animate = () => {
+      requestAnimationFrame(animate);
+      analyser.getFloatTimeDomainData(wave);
+      const sum2 = wave.reduce((a, b) => a + Math.pow(b, 2), 0);
+      const rms = Math.sqrt(sum2 / fftBins);
+      const rmsDBFS = 20 * Math.log10(rms);
+      const rmsVU = rmsDBFS + 20;
+
+      if (rmsVU > 15) {
+        peak = true;
+        setTimeout(() => peak = false, 1000);
+      };
+
+      this.moveNeedle(rmsVU, peak);
+    };
+    animate();
+    // setInterval(() => animate(), 100);
+  }
+
+  moveNeedle(rmsVU, peak) {
     const rms = rmsVU === -Infinity ? -60 : rmsVU;
     const vu = [-60, -20, -10, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 20];
     const deg = [-48, -40, -26, -15, -10.5, -5, -0.5, 5, 10, 15, 20, 25, 30, 35, 48];
@@ -27,31 +53,31 @@ export default function Wave(props) {
     };
 
     const needle = d3.select('#vu-svg-d3-needle').data([rms]);
-    needle
+    needle.enter()
       .attr('transform', transNeedle);
-    // needle.transition().duration(10)
-      // .attr('transform', transNeedle);
+    needle.transition().duration(10)
+      .attr('transform', transNeedle);
 
     const needleShadow = d3.select('#vu-svg-d3-needleShadow').data([rms]);
-    needleShadow
+    needleShadow.enter()
       .attr('transform', transNeedleShadow);
-    // needleShadow.transition().duration(10)
-      // .attr('transform', transNeedleShadow);
+    needleShadow.transition().duration(10)
+      .attr('transform', transNeedleShadow);
 
     const led = d3.select('#vu-svg-d3-led').data([peak]);
-    led
+    led.enter()
       .attr('fill', d => ledScale(d));
-    // led.transition().duration(10)
-      // .attr('fill', d => ledScale(d));
+    led.transition().duration(10)
+      .attr('fill', d => ledScale(d));
 
     const ledHalo = d3.select('#vu-svg-d3-ledHalo').data([peak]);
-    ledHalo
+    ledHalo.enter()
       .attr('opacity', d => ledHaloScale(d));
-    // ledHalo.transition().duration(10)
-      // .attr('opacity', d => ledHaloScale(d));
+    ledHalo.transition().duration(10)
+      .attr('opacity', d => ledHaloScale(d));
   }
 
-  const drawSvg = () => {
+  drawSvg() {
     const path = document.querySelector('#vu-arc-scale');
     const pathLength = path.getTotalLength();
     const colorBg = '#D5BD79'
@@ -449,29 +475,14 @@ export default function Wave(props) {
     );
   }
 
-  const animate = () => {
-    requestAnimationFrame(animate);
-    analyser.getFloatTimeDomainData(wave);
-    const sum2 = wave.reduce((a, b) => a + Math.pow(b, 2), 0);
-    const rms = Math.sqrt(sum2 / fftBins);
-    const rmsDBFS = 20 * Math.log10(rms);
-    const rmsVU = rmsDBFS + 20;
 
-    if (rmsVU > 15) {
-      peak = true;
-      setTimeout(() => peak = false, 1000);
-    };
-
-    moveNeedle(rmsVU, peak);
-  };
-  animate();
-  // setInterval(() => animate(), 100);
-
-  return (
-    <div className='inner'>
-      <svg viewBox='0 0 100 60'>
-        {drawSvg()}
-      </svg>
-    </div>
-  );
+  render() {
+    return (
+      <div className='inner'>
+        <svg viewBox='0 0 100 60'>
+          {this.drawSvg()}
+        </svg>
+      </div>
+    );
+  }
 }
