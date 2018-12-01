@@ -1,15 +1,25 @@
 const help = {};
 
 help.setAudioParam = async (param, val, ctx, delay) => {
-  const finish = (t) => new Promise(res => setTimeout(res, t));
-  // param.cancelScheduledValues(ctx.currentTime);
-  // param.setValueAtTime(param.value, ctx.currentTime);
-  // param.linearRampToValueAtTime(val, ctx.currentTime + delay);
+  // const finish = (t) => new Promise(res => setTimeout(res, t));
+  // // param.cancelScheduledValues(ctx.currentTime);
+  // // param.setValueAtTime(param.value, ctx.currentTime);
+  // // param.linearRampToValueAtTime(val, ctx.currentTime + delay);
 
+  // const now = ctx.currentTime;
+  // // param.cancelScheduledValues(now);
+  // param.setTargetAtTime(param.value, now, delay);
+  // param.setTargetAtTime(val, now + delay, delay);
+  // await finish(delay * 1000);
+  // return ctx.currentTime
+
+
+
+  const finish = (t) => new Promise(res => setTimeout(res, t));
   const now = ctx.currentTime;
-  // param.cancelScheduledValues(now);
-  param.setTargetAtTime(param.value, now, delay);
-  param.setTargetAtTime(val, now + delay, delay);
+  param.cancelScheduledValues(now);
+  param.setValueAtTime(param.value, now);
+  param.linearRampToValueAtTime(val, now + delay);
   await finish(delay * 1000);
   return ctx.currentTime
 };

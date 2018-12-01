@@ -1,6 +1,5 @@
 .effects>.outer {
   width: 50%;
-  flex-flow: row nowrap;
 }
 
 .effect .inner {
@@ -9,38 +8,36 @@
   align-items: center;
   justify-content: space-between;
 
-  background-color: rgba(0,0,255,.5);
-}
-
-.effect .label {
-  height: 12.5%;
-  padding: 1vmin;
-
-  /*background-color: #00f;*/
+  /*background-color: rgba(0,0,255,.5);*/
+  /*border: 1px solid white;*/
 }
 
 .effect .knob-box {
   width: 95%;
   height: 100%;
-  padding: 0 0 2% 0;
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
   justify-content: space-around;
 
   /*background-color: #f00;*/
+  /*border: 1px solid white;*/
 }
 
 .effect .element {
   width: 35%;
-  /*height: 80%;*/
-  /*padding: 1% 4%;*/
+  height: 90%;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: space-around;
 
   /*background-color: #0f0;*/
+  /*border: 1px solid white;*/
 }
 
 .effect .knob {
-  /*width: 50%;*/
+  width: 75%;
   border-radius: 50%;
   box-shadow: .5vmin .5vmin 1vmin #000000;
 }

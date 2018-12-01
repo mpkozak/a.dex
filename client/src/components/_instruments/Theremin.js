@@ -219,9 +219,7 @@ export default class Theremin extends Component {
           </div>
 
           <div className='color-box'>
-            <div className='element header label'>
-              <h4>Set Colors</h4>
-            </div>
+            <h4 className='label'>Set Colors</h4>
             <div className='element'>
               <div className='swatch colorGain' onClick={this.handleClickColor} style={{backgroundColor: colorV}} />
               <h5 className='label'>Volume</h5>

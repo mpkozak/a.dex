@@ -192,8 +192,8 @@ export default class Main extends Component {
         <div className='settings'>
           <div className='outer'>
             <div className='inner'>
-              Latency: {audio ? Math.floor(ctx.baseLatency * 1000) : ''} ms
-              <button onClick={() => this.micToggle()}>mic</button>
+              <h6>Latency: {audio ? Math.floor(ctx.baseLatency * 1000) : ''} ms</h6>
+              <button onClick={() => this.micToggle()}>a</button>
             </div>
           </div>
         </div>
@@ -206,7 +206,9 @@ export default class Main extends Component {
             {audio ? <Wave audio={audio}/> : null}
           </div>
           <div className='outer'>
-            <div className='inner'>meter</div>
+            <div className='inner'>
+              <h4>meter</h4>
+            </div>
           </div>
         </div>
 
@@ -216,7 +218,9 @@ export default class Main extends Component {
 
         <div className='master'>
           <div className='outer'>
-            <div className='inner'>master</div>
+            <div className='inner'>
+              <h4>master</h4>
+            </div>
           </div>
         </div>
       </div>

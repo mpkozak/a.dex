@@ -24,7 +24,7 @@
   left: calc(0 * (100% / var(--grid-width)));
   top: calc(0 * (100% / var(--grid-height)));
   width: calc(15 * (100% / var(--grid-width)));
-  height: calc(10 * (100% / var(--grid-height)));
+  height: calc(11 * (100% / var(--grid-height)));
   display: flex;
   flex-flow: column nowrap;
 
@@ -59,9 +59,9 @@
 .oscillators {
   position: absolute;
   left: calc(0 * (100% / var(--grid-width)));
-  top: calc(10 * (100% / var(--grid-height)));
+  top: calc(11 * (100% / var(--grid-height)));
   width: calc(4 * (100% / var(--grid-width)));
-  height: calc(5 * (100% / var(--grid-height)));
+  height: calc(4 * (100% / var(--grid-height)));
 
   /*opacity: .5;*/
   /*background-color: green;*/
@@ -70,9 +70,9 @@
 .effects {
   position: absolute;
   left: calc(4 * (100% / var(--grid-width)));
-  top: calc(10 * (100% / var(--grid-height)));
-  width: calc(13 * (100% / var(--grid-width)));
-  height: calc(5 * (100% / var(--grid-height)));
+  top: calc(11 * (100% / var(--grid-height)));
+  width: calc(11 * (100% / var(--grid-width)));
+  height: calc(4 * (100% / var(--grid-height)));
   display: flex;
   flex-flow: row nowrap;
 
@@ -108,12 +108,20 @@
 .inner {
   width: calc(100% - 2vmin);
   height: calc(100% - 2vmin);
-  box-shadow: 0 0 .5vmin .1vmin #000000;
   border-radius: .57vmin;
-  /*background-color: rgba(0,0,0,.5);*/
+  border: 1px solid white;
 
+  /*box-shadow: 0 0 .5vmin .1vmin #000000;*/
   /*box-shadow: .25vmin .25vmin .5vmin #000000;*/
   /*background-color: #2C3539;*/
+}
+
+.label {
+  padding: .25vmin 1vmin;
+
+  /*border-radius: 1vmin;*/
+  /*background-color: rgba(0,0,0,.8);*/
+  /*background-color: green;*/
 }
 
 
@@ -121,6 +129,8 @@
 
 
 
+
+/*MOVE AT A LATER DATE*/
 
 
 
@@ -131,6 +141,9 @@
 .meters .inner {
   width: 92%;
   height: 92%;
+  border: none;
+  box-shadow: 0 0 .5vmin .1vmin #000000;
+  border-radius: .57vmin;
 }
 
 
@@ -148,9 +161,5 @@
 }
 
 
-
-
-
-/*MOVE AT A LATER DATE*/
 
 

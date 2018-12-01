@@ -19,13 +19,13 @@ export default function Effects(props) {
               <svg className='knob' viewBox='0 0 100 100' onMouseDown={(e) => help.handleClickParam(e, 'fmDepth', props.update)} onWheel={(e) => help.handleScrollParam(e, 'fmDepth', props.update)}>
                 {bigKnob(degFmDepth)}
               </svg>
-              <h5>depth</h5>
+              <h5 className='label'>DEPTH</h5>
             </div>
             <div className='element'>
               <svg className='knob' viewBox='0 0 100 100' onMouseDown={(e) => help.handleClickParam(e, 'fmWidth', props.update)} onWheel={(e) => help.handleScrollParam(e, 'fmWidth', props.update)}>
                 {bigKnob(degFmWidth)}
               </svg>
-              <h5>width</h5>
+              <h5 className='label'>WIDTH</h5>
             </div>
           </div>
         </div>

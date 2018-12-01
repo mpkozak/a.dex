@@ -1,6 +1,6 @@
 .Theremin {
   --grid-width: 15;
-  --grid-height: 10;
+  --grid-height: 11;
   --video-width: 10;
   --video-height: calc(var(--video-width) * .75);
   position: relative;
@@ -8,6 +8,7 @@
 
   /*background-color: brown;*/
   /*border: 1px solid red;*/
+  overflow-y: hidden;
 }
 
 .Theremin .video-box {
@@ -18,22 +19,31 @@
   height: calc(100% * (var(--video-height) / var(--grid-height)));
 
   /*background-color: rgba(0,0,0,.5);*/
-  border: 1px solid red;
+  /*border: 1px solid red;*/
 }
 
 .Theremin .color-box {
   position: absolute;
   left: 0;
   top: calc(100% * (var(--video-height) / var(--grid-height)));
-  width: calc(100% * (var(--video-width) / var(--grid-width)));
+  width: calc(100% * ((var(--video-width) / 2) / var(--grid-width)));
   height: calc(100% * (var(--grid-height) - var(--video-height)) / var(--grid-height));
 
   /*background-color: rgba(0,0,0,.5);*/
-  border: 1px solid red;
-
-  /*border: 1px solid green;*/
+  border: 1px solid green;
 }
 
+
+.Theremin .control-box {
+  position: absolute;
+  left: calc(100% * ((var(--video-width) / 2) / var(--grid-width)));
+  top: calc(100% * (var(--video-height) / var(--grid-height)));
+  width: calc(100% * ((var(--video-width) / 2) / var(--grid-width)));
+  height: calc(100% * (var(--grid-height) - var(--video-height)) / var(--grid-height));
+
+  /*background-color: rgba(0,0,0,.5);*/
+  border: 1px solid orange;
+}
 
 
 
@@ -51,18 +61,15 @@
   height: 90%;
   border-radius: 12%;
   overflow: hidden;
-
-  /*border: 5px solid black;*/
 }
 
 .Theremin .video-box .border {
-  position: absolute;
+/*  position: absolute;
   top: 20px;
   left: 0;
   width: 100%;
-  height: auto;
+  height: auto;*/
 }
-
 
 .Theremin .video {
   position: absolute;
@@ -103,20 +110,6 @@
 
 
 
-.Theremin .control-box {
-  position: absolute;
-  left: calc(100% * (10 / var(--grid-width)));
-  top: calc(100% * (5 / var(--grid-height)));
-  width: calc(100% * (4 / var(--grid-width)));
-  height: calc(100% * (4 / var(--grid-height)));
-
-  /*background-color: rgba(0,0,0,.5);*/
-  border: 1px solid red;
-
-
-  /*border: 1px solid orange;*/
-}
-
 
 
 
@@ -138,9 +131,6 @@
   /*border: 1px solid blue;*/
 }
 
-.color-box .header {
-  align-self: center;
-}
 
 .color-box .swatch {
   width: 5vmin;
@@ -172,21 +162,6 @@
 
 
 
-
-
-
-
-.Theremin>.bottom {
-  width: 100%;
-  height: 30%;
-  display: flex;
-  flex-flow: column nowrap;
-  align-items: space-around;
-  justify-content: center;
-
-  /*border: 1px solid white;*/
-}
-
 .control-box>.component {
   width: 100%;
   height: 80%;
@@ -204,76 +179,4 @@
                   box-shadow: .5vmin .5vmin 1vmin #000000;
 }
 
-.control-box>.component>.label {
-  padding: 5% 10%;
-}
 
-
-
-.Theremin>.top {
-  width: 100%;
-  height: 70%;
-  display: flex;
-  flex-flow: row nowrap;
-  align-items: center;
-  justify-content: space-around;
-
-  /*border: 1px solid yellow;*/
-}
-
-/*.top>.video-box {*/
-  /*--scale-size: .85;*/
-  /*position: relative;*/
-  /*width: calc(56% * var(--scale-size));*/
-  /*height: calc(100% * var(--scale-size));*/
-
-  /*border: 1px solid red;*/
-/*}*/
-/*
-.video-box>.video {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 4;
-  transform: rotateY(180deg);
-}
-
-.video-box>.canvas {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 5;
-}
-
-
-
-
-
-*/
-
-
-
-.Theremin .label {
-  /*font-size: 50%;*/
-  /*display: inline-block;*/
-  /*padding: .5vmin 1vmin;*/
-  /*padding: 5% 5%;*/
-  border: 1px solid black;
-  background-color: rgba(0,0,0,.5);
-  box-shadow: .1vmin .1vmin .2vmin #000000;
-  text-shadow:
-    -.1vmin -.1vmin 0.01vmin #000000,
-    .1vmin -.1vmin 0.01vmin #000000,
-    .1vmin .1vmin 0.01vmin #000000,
-    -.1vmin .1vmin 0.01vmin #000000;
-}
-
-.Theremin .box {
-  /*background-color: rgba(0,0,0,.2);*/
-  /*box-shadow: .1vmin .1vmin .2vmin #000000;*/
-  /*border: 1px solid black;*/
-}
