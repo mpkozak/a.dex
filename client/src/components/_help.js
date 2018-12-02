@@ -1,27 +1,13 @@
 const help = {};
 
 help.setAudioParam = async (param, val, ctx, delay) => {
-  // const finish = (t) => new Promise(res => setTimeout(res, t));
-  // // param.cancelScheduledValues(ctx.currentTime);
-  // // param.setValueAtTime(param.value, ctx.currentTime);
-  // // param.linearRampToValueAtTime(val, ctx.currentTime + delay);
-
-  // const now = ctx.currentTime;
-  // // param.cancelScheduledValues(now);
-  // param.setTargetAtTime(param.value, now, delay);
-  // param.setTargetAtTime(val, now + delay, delay);
-  // await finish(delay * 1000);
-  // return ctx.currentTime
-
-
-
   const finish = (t) => new Promise(res => setTimeout(res, t));
   const now = ctx.currentTime;
   param.cancelScheduledValues(now);
   param.setValueAtTime(param.value, now);
   param.linearRampToValueAtTime(val, now + delay);
   await finish(delay * 1000);
-  return ctx.currentTime
+  return ctx.currentTime;
 };
 
 help.getColorDist = (orig, match) => {
@@ -43,24 +29,28 @@ help.handleClickParam = (e, key, callback) => {
     window.removeEventListener('mouseup', clearEvent);
   };
    window.addEventListener('mouseup', clearEvent);
-}
+};
 
 help.handleScrollParam = (e, key, callback) => {
   e.preventDefault();
   callback(e.deltaY / 2000, key);
-}
+};
+
+help.getParamPct = (param) => {
+  return ((param.v - param.min) / (param.max - param.min)) * 100;
+};
+
+help.makeDomain = (extent, arr) => {
+  const iter = arr.length;
+  const unit = (extent[1] - extent[0]) / (iter - 1);
+  const domain = [];
+  for (let i = 0; i < iter; i++) {
+    domain.push(extent[0] + i * unit);
+  };
+  return domain;
+};
 
 
-
-// help.makeDomain = (extent, arr) => {
-//   const iter = arr.length;
-//   const unit = (extent[1] - extent[0]) / (iter - 1);
-//   const domain = [];
-//   for (let i = 0; i < iter; i++) {
-//     domain.push(extent[0] + i * unit);
-//   };
-//   return domain;
-// };
 
 // help.getNote = (Hz) => {
 //   const noteStr = ['A', 'A#/B♭', 'B', 'C', 'C#/D♭', 'D', 'D#/E♭', 'E', 'F', 'F#/G♭', 'G', 'G#/A♭'];

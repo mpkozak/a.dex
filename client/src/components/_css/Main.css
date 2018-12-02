@@ -62,9 +62,6 @@
   height: calc(9 * (100% / var(--grid-height)));
   display: flex;
   flex-flow: column nowrap;
-
-  /*opacity: .5;*/
-  /*background-color: blue;*/
 }
 
 .oscillators {
@@ -73,9 +70,6 @@
   top: calc(11 * (100% / var(--grid-height)));
   width: calc(4 * (100% / var(--grid-width)));
   height: calc(4 * (100% / var(--grid-height)));
-
-  /*opacity: .5;*/
-  /*background-color: green;*/
 }
 
 .effects {
@@ -86,9 +80,6 @@
   height: calc(4 * (100% / var(--grid-height)));
   display: flex;
   flex-flow: row nowrap;
-
-  /*opacity: .5;*/
-  /*background-color: gray;*/
 }
 
 .master {
@@ -97,9 +88,8 @@
   top: calc(11 * (100% / var(--grid-height)));
   width: calc(2 * (100% / var(--grid-width)));
   height: calc(4 * (100% / var(--grid-height)));
-
-  /*opacity: .5;*/
-  /*background-color: aqua;*/
+  display: flex;
+  flex-flow: column nowrap;
 }
 
 
@@ -123,8 +113,6 @@
   border: 1px solid white;
 
   /*box-shadow: 0 0 .5vmin .1vmin #000000;*/
-  /*box-shadow: .25vmin .25vmin .5vmin #000000;*/
-  /*background-color: #2C3539;*/
 }
 
 .label {
@@ -144,20 +132,10 @@
 
 /*MOVE AT A LATER DATE*/
 
-.meters>.outer {
-  height: calc(100% / 3);
+.master .inner {
+  /*width: 95%;*/
+  /*height: 95%;*/
 
-  /*background-color: green;*/
-  /*border: 1px solid white;*/
-}
-
-.meters .inner {
-  width: 95%;
-  height: 95%;
-
-  border-radius: .57vmin;
-  border: none;
-  box-shadow: 0 0 .5vmin .1vmin #000000;
 }
 
 
@@ -184,6 +162,9 @@
 
 
 .settings .inner {
-  background-color: orange;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: center;
 }
 

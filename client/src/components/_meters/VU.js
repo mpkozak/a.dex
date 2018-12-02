@@ -3,7 +3,7 @@ import * as d3 from 'd3';
 import { moduleFrame, modulePanelShadows } from '../_svg.js';
 
 export default function Wave(props) {
-  const analyser = props.audio.analyser
+  const analyser = props.audio.analyser;
   const fftBins = analyser.frequencyBinCount;
   const wave = new Float32Array(fftBins);
   // const ms = (fftBins / ctx.sampleRate) * 1000;
@@ -80,17 +80,20 @@ export default function Wave(props) {
 
     const vuFonts = {
       main: {
-        fontFamily: 'Helvetica, sans-serif'
+        fontFamily: 'Helvetica, sans-serif',
       },
       largeHeavy: {
+        fontFamily: 'Helvetica, sans-serif',
         fontSize: 7 + 'px',
         fontWeight: '400'
       },
       large: {
+        fontFamily: 'Helvetica, sans-serif',
         fontSize: 7 + 'px',
         fontWeight: '200'
       },
       medium: {
+        fontFamily: 'Helvetica, sans-serif',
         fontSize: 3.5 + 'px',
         fontWeight: '200'
       },
@@ -100,10 +103,12 @@ export default function Wave(props) {
         fontWeight: '600'
       },
       smallHeavy: {
+        fontFamily: 'Helvetica, sans-serif',
         fontSize: 2.5 + 'px',
         fontWeight: '400'
       },
       smallItalic: {
+        fontFamily: 'Helvetica, sans-serif',
         fontSize: 2.5 + 'px',
         fontStyle: 'italic',
         fontWeight: '200'

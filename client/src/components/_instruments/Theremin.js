@@ -206,7 +206,7 @@ export default class Theremin extends Component {
       return (
         <div className='element' key={i}>
           <svg className='knob' viewBox='0 0 100 100' onMouseDown={(e) => help.handleClickParam(e, d, this.updateParam)} onWheel={(e) => help.handleScrollParam(e, d, this.updateParam)}>
-            {bigKnob( (params[d].v - Math.abs(params[d].min)) / (params[d].max - params[d].min) * 100, 'brown')}
+            {bigKnob(help.getParamPct(params[d]), 'brown')}
           </svg>
           <h5 className='label'>{params[d].text}</h5>
         </div>

@@ -5,8 +5,8 @@ import { bigKnob } from './_svg.js';
 
 export default function Effects(props) {
   const { params } = props;
-  const degFmDepth = params.fmDepth.v / (params.fmDepth.max - params.fmDepth.min) * 100;
-  const degFmWidth = (Math.abs(params.fmWidth.min) + params.fmWidth.v) / (params.fmWidth.max - params.fmWidth.min) * 100;
+  const degFmDepth = help.getParamPct(params.fmDepth);
+  const degFmWidth = help.getParamPct(params.fmWidth);
 
   return (
     <div className='effects'>

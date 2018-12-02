@@ -1,0 +1,20 @@
+.meters>.outer {
+  height: calc(100% / 3);
+}
+
+.meters .inner {
+  width: 95%;
+  height: 95%;
+
+  border-radius: .57vmin;
+  border: none;
+  box-shadow: 0 0 .5vmin .1vmin #000000;
+}
+
+#spec-canvas {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+}

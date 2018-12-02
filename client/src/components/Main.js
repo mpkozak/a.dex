@@ -4,9 +4,9 @@ import help from './_help.js';
 import { svgDefs } from './_svg.js';
 import Oscillators from './Oscillators.js';
 import Effects from './Effects.js';
+import Meters from './Meters.js';
+import Master from './Master.js';
 import Theremin from './_instruments/Theremin.js';
-import Wave from './_meters/Wave.js';
-import VU from './_meters/VU.js';
 
 export default class Main extends Component {
   constructor() {
@@ -212,21 +212,7 @@ export default class Main extends Component {
           </div>
         </div>
 
-        <div className='meters'>
-          <div className='outer'>
-            {audio ? <VU audio={audio}/> : null}
-          </div>
-          <div className='outer'>
-            {audio ? <Wave audio={audio}/> : null}
-          </div>
-
-          <div className='outer'>
-            <div className='inner'>
-              <h4>meter</h4>
-            </div>
-          </div>
-
-        </div>
+        <Meters audio={audio} />
 
         <Oscillators audio={audio} />
 
@@ -234,18 +220,13 @@ export default class Main extends Component {
 
         <div className='master'>
           <div className='outer'>
-            <div className='inner'>
-              <h4>master</h4>
-            </div>
+            <Master params={params} update={this.updateParam} />
           </div>
         </div>
       </div>
     );
   }
 }
-
-
-
 
 
 
