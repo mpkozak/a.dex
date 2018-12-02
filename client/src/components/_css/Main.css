@@ -39,7 +39,7 @@
   width: calc(5 * (100% / var(--grid-width)));
   height: calc(1 * (100% / var(--grid-height)));
 
-  opacity: .5;
+  /*opacity: .5;*/
   /*background-color: orange;*/
 }
 
@@ -110,13 +110,15 @@
   width: calc(100% - 2vmin);
   height: calc(100% - 2vmin);
   border-radius: 1vmin;
-  border: 1px solid white;
+  border: 1px solid rgba(255,255,255,.5);
 
   /*box-shadow: 0 0 .5vmin .1vmin #000000;*/
 }
 
 .label {
   padding: .25vmin 1vmin;
+  /*width: 80%;*/
+  text-align: right;
 
   /*border-radius: 1vmin;*/
   /*background-color: rgba(0,0,0,.8);*/
@@ -132,16 +134,28 @@
 
 /*MOVE AT A LATER DATE*/
 
-.master .inner {
-  /*width: 95%;*/
-  /*height: 95%;*/
+.placard .inner {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: flex-start;
+  border: none;
+}
 
+.placard .name {
 }
 
 
+.placard .by h6 {
+  text-align: left;
+  margin: 0 -2vmin;
+  /*background-color: green;*/
+}
 
-
-
+.placard .kozak {
+  font-family: futura, sans-serif;
+  font-weight: 200;
+}
 
 
 .settings button {

@@ -116,6 +116,54 @@ export const svgDefs = () => {
   );
 };
 
+export const screenFrame = () => {
+
+
+  return (
+    <g className='screen-frame'>
+            <mask id='screen-cutout'>
+              <rect width={40} height={30} fill='white'/>
+              <rect x={2} y={2} rx={1} width={36} height={26} fill='black'/>
+            </mask>
+
+            <g mask='url(#screen-cutout)'>
+              <rect
+                x={0}
+                y={0}
+                rx={1}
+                width={40}
+                height={30}
+                fill='#3A3125'
+                stroke='#000000'
+                strokeWidth='.4%'
+              />
+              <rect fill='url(#frame-outer-shadow-horizontal)' x={0} y={0} rx={1} width={40} height={30}/>
+              <rect fill='url(#frame-outer-shadow-vertical)' x={0} y={0} rx={1} width={40} height={30}/>
+              <rect fill='url(#frame-outer-shadow-diagonal)' x={0} y={0} rx={1} width={40} height={30}/>
+
+              <rect
+                x={1}
+                y={1}
+                rx={1}
+                width={38}
+                height={28}
+                fill='#3A3125'
+                stroke='#000000'
+                strokeWidth='.4%'
+                strokeOpacity={.8}
+              />
+              <rect fill='url(#frame-inner-shadow-corners)' x={1} y={1} rx={1} width={38} height={28}/>
+              <rect fill='url(#frame-inner-shadow-horizontal)' x={1} y={1} rx={1} width={38} height={28}/>
+              <rect fill='url(#frame-inner-shadow-vertical)' x={1} y={1} rx={1} width={38} height={28}/>
+              <rect fill='url(#frame-inner-shadow-diagonal)' x={1} y={1} rx={1} width={38} height={28}/>
+
+            </g>
+
+    </g>
+  );
+}
+
+
 
 export const moduleFrame = () => {
   const colorFrame = '#3A3125';

@@ -470,7 +470,6 @@ export default function Wave(props) {
     moveNeedle(rmsVU, peak);
   };
   animate();
-  // setInterval(() => animate(), 100);
 
   return (
     <div className='inner'>

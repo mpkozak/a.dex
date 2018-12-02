@@ -1,18 +1,12 @@
 import React from 'react';
-// import * as d3 from 'd3';
-// import { moduleFrame, modulePanelShadows } from './_svg.js';
+import help from './_help.js';
 
 export default function Master(props) {
-
-  console.log('props in master', props.params.volume)
-
-
-  {/* Panel Background Group */}
-
-
+  const { volume } = props.params;
 
   const drawSvg = () => {
-
+    const volPct = help.getParamPct(volume);
+    const volY = volPct * .6 + 10;
     const colorRed = '#C12822';
 
     const ticks = [
@@ -33,10 +27,48 @@ export default function Master(props) {
       fontFamily: 'Helvetica, sans-serif',
       fontSize: 3.5 + 'px',
       fontWeight: '600'
-    }
+    };
 
     return (
       <g>
+        <defs>
+    {/* Slider Gradients */}
+          <linearGradient id='slider-ridges-top' x1='0%' y1='0%' x2='0%' y2='15%' gradientUnits='objectBoundingBox' spreadMethod='repeat'>
+            <stop offset='0%' stopColor='#000000' stopOpacity='.5'/>
+            <stop offset='50%' stopColor='#000000' stopOpacity='0'/>
+            <stop offset='60%' stopColor='#000000' stopOpacity='.2'/>
+            <stop offset='100%' stopColor='#000000' stopOpacity='.5'/>
+          </linearGradient>
+          <linearGradient id='slider-ridges-bottom' x1='0%' y1='15%' x2='0%' y2='0%' gradientUnits='objectBoundingBox' spreadMethod='repeat'>
+            <stop offset='0%' stopColor='#000000' stopOpacity='.5'/>
+            <stop offset='50%' stopColor='#000000' stopOpacity='0'/>
+            <stop offset='60%' stopColor='#000000' stopOpacity='.2'/>
+            <stop offset='100%' stopColor='#000000' stopOpacity='.5'/>
+          </linearGradient>
+          <linearGradient id='slider-shadow-horizontal' x1='0%' y1='0%' x2='0%' y2='100%' gradientUnits='objectBoundingBox'>
+            <stop offset='0%' stopColor='#000000' stopOpacity='0'/>
+            <stop offset='6%' stopColor='#000000' stopOpacity='.4'/>
+            <stop offset='15%' stopColor='#000000' stopOpacity='.7'/>
+            <stop offset='50%' stopColor='#000000' stopOpacity='.8'/>
+            <stop offset='60%' stopColor='#000000' stopOpacity='.6'/>
+            <stop offset='90%' stopColor='#000000' stopOpacity='.3'/>
+            <stop offset='100%' stopColor='#000000' stopOpacity='1'/>
+          </linearGradient>
+          <linearGradient id='slider-shadow-vertical' x1='0%' y1='0%' x2='100%' y2='0%' gradientUnits='objectBoundingBox'>
+            <stop offset='0%' stopColor='#000000' stopOpacity='1'/>
+            <stop offset='4%' stopColor='#000000' stopOpacity='.4'/>
+            <stop offset='10%' stopColor='#000000' stopOpacity='.1'/>
+            <stop offset='50%' stopColor='#000000' stopOpacity='0'/>
+            <stop offset='90%' stopColor='#000000' stopOpacity='.1'/>
+            <stop offset='96%' stopColor='#000000' stopOpacity='.4'/>
+            <stop offset='100%' stopColor='#000000' stopOpacity='1'/>
+          </linearGradient>
+    {/* Slider Clip Path */}
+          <clipPath id='slider-border'>
+            <rect x={0} y={0} rx={1} width={10} height={20}/>
+          </clipPath>
+        </defs>
+
   {/* Panel Background Group */}
         <g className='panel-bg' opacity={.8}>
     {/* Fader Slit */}
@@ -82,17 +114,58 @@ export default function Master(props) {
         </g>
 
   {/* Slider Group */}
-        <g className='slider-group'>
-          <rect x='15' y='16' width='10' height='20' fill='white' opacity='.5'/>
+        <g className='slider-group'
+          onMouseDown={(e) => help.handleClickParamLinear(e, 'volume', props.update)}
+          viewBox='0 0 10 20'
+          transform={`translate(${15}, ${70 - volY})`}
+          clipPath='url(#slider-border)'
+        >
+    {/* Slider Base */}
+          <rect
+            x={0}
+            y={0}
+            rx={1}
+            width={10}
+            height={20}
+            fill='#FFFFFF'
+          />
+    {/* Slider Ridges */}
+          <rect fill='url(#slider-ridges-top)' x={0} y={0} width={10} height={10}/>
+          <rect fill='url(#slider-ridges-bottom)' x={0} y={10} width={10} height={10}/>
+    {/* Slider Shadow Horizontal */}
+          <rect fill='url(#slider-shadow-horizontal)' x={0} y={0} width={10} height={20}/>
+    {/* Slider Center Mark */}
+          <rect
+            x={0}
+            y={9.5}
+            width={10}
+            height={1}
+            fill='#FFFFFF'
+            stroke='#000000'
+            strokeWidth='.4%'
+            opacity={.6}
+          />
+    {/* Slider Shadow Vertical */}
+          <rect fill='url(#slider-shadow-vertical)' x={0} y={0} width={10} height={20}/>
+    {/* Slider Outline */}
+          <rect
+            x={0}
+            y={0}
+            rx={1}
+            width={10}
+            height={20}
+            fill='none'
+            stroke='#000000'
+            strokeWidth='.2%'
+          />
         </g>
 
       </g>
-          );
+    );
   }
 
-
   return (
-    <div className='inner'>
+    <div className='inner' onWheel={(e) => help.handleScrollParamLinear(e, 'volume', props.update)}>
       <h5>MASTER</h5>
       <svg viewBox='0 0 40 80'>
         {drawSvg()}

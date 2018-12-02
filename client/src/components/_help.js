@@ -18,10 +18,27 @@ help.getColorDist = (orig, match) => {
   );
 };
 
+help.getParamPct = (param) => {
+  return ((param.v - param.min) / (param.max - param.min)) * 100;
+};
+
 help.handleClickParam = (e, key, callback) => {
   e.preventDefault();
   var handleDrag = (e) => {
     callback((e.movementX - e.movementY) / 500, key);
+  };
+  window.addEventListener('mousemove', handleDrag);
+  var clearEvent = () => {
+    window.removeEventListener('mousemove', handleDrag);
+    window.removeEventListener('mouseup', clearEvent);
+  };
+   window.addEventListener('mouseup', clearEvent);
+};
+
+help.handleClickParamLinear = (e, key, callback) => {
+  e.preventDefault();
+  var handleDrag = (e) => {
+    callback((e.movementX - e.movementY) / 100, key);
   };
   window.addEventListener('mousemove', handleDrag);
   var clearEvent = () => {
@@ -36,8 +53,9 @@ help.handleScrollParam = (e, key, callback) => {
   callback(e.deltaY / 2000, key);
 };
 
-help.getParamPct = (param) => {
-  return ((param.v - param.min) / (param.max - param.min)) * 100;
+help.handleScrollParamLinear = (e, key, callback) => {
+  e.preventDefault();
+  callback(e.deltaY / 1000, key);
 };
 
 help.makeDomain = (extent, arr) => {
@@ -49,7 +67,6 @@ help.makeDomain = (extent, arr) => {
   };
   return domain;
 };
-
 
 
 // help.getNote = (Hz) => {

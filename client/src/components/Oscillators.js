@@ -36,10 +36,10 @@ export default function Oscillators(props) {
   return (
     <div className='oscillators'>
       <div className='oscillator outer'>
-        {makeOscBox('Oscillator 1', osc1)}
+        {makeOscBox('Osc 1', osc1)}
       </div>
       <div className='oscillator outer'>
-        {makeOscBox('Oscillator 2', osc2)}
+        {makeOscBox('Osc 2', osc2)}
       </div>
     </div>
   );

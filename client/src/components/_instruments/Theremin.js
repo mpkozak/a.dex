@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3';
 import './Theremin.css';
-import { bigKnob } from '../_svg.js';
+import { screenFrame, bigKnob } from '../_svg.js';
 import tracking from 'tracking';
 import help from '../_help.js';
 
@@ -35,8 +35,9 @@ export default class Theremin extends Component {
 
   componentDidUpdate() {
     this.trackerDraw();
-    this.audioRefreshGain();
-    this.audioRefreshFreq();
+    this.audioRefresh();
+    // this.audioRefreshGain();
+    // this.audioRefreshFreq();
   }
 
   videoInit() {
@@ -119,8 +120,6 @@ export default class Theremin extends Component {
     circles.exit().remove();
   }
 
-
-
   handleClickColor(e) {
     const frame = this.refs.canvas;
     const classList = e.target.classList;
@@ -148,7 +147,6 @@ export default class Theremin extends Component {
     frame.addEventListener('click', getCoords);
   }
 
-
   updateParam(amt, key) {
     const prev = this.state.params[key];
     const delta = amt * prev.max;
@@ -160,44 +158,64 @@ export default class Theremin extends Component {
     };
   }
 
-
-  audioRefreshGain() {
+  audioRefresh() {
     const { dataGain } = this.state;
+    const { dataFreq } = this.state;
     const { audio } = this.props;
     const ctx = audio.ctx;
     const instGain = audio.instGain;
+    const osc1 = audio.osc1;
+    const osc2 = audio.osc2;
     const latency = audio.latency;
+    const width = this.refs.video.clientWidth;
     const height = this.refs.video.clientHeight;
 
-    if (dataGain) {
+    if (dataGain && dataFreq) {
+      const x = dataFreq.x + (dataFreq.width / 2);
       const y = dataGain.y + (dataGain.height / 2);
+      const freq = audio.baseHz * Math.pow(2, (width - x)/(width / this.state.params.range.v));
       const level = (height - y) / height;
       help.setAudioParam(instGain.gain, level, ctx, latency);
+      help.setAudioParam(osc1.frequency, freq, ctx, latency);
+      help.setAudioParam(osc2.frequency, freq, ctx, latency);
     } else {
       help.setAudioParam(instGain.gain, 0, ctx, latency * 2);
     };
   }
 
+  // audioRefreshGain() {
+  //   const { dataGain } = this.state;
+  //   const { audio } = this.props;
+  //   const ctx = audio.ctx;
+  //   const instGain = audio.instGain;
+  //   const latency = audio.latency;
+  //   const height = this.refs.video.clientHeight;
 
-  audioRefreshFreq() {
-    const { dataFreq } = this.state;
-    const { audio } = this.props;
-    const { params } = this.props;
-    const ctx = audio.ctx;
-    const osc1 = audio.osc1;
-    const osc2 = audio.osc2;
-    const latency = audio.latency;
-    const width = this.refs.video.clientWidth;
+  //   if (dataGain) {
+  //     const y = dataGain.y + (dataGain.height / 2);
+  //     const level = (height - y) / height;
+  //     help.setAudioParam(instGain.gain, level, ctx, latency);
+  //   } else {
+  //     help.setAudioParam(instGain.gain, 0, ctx, latency * 2);
+  //   };
+  // }
 
-    if (dataFreq) {
-      const x = dataFreq.x + (dataFreq.width / 2);
-      const freq1 = audio.baseHz * Math.pow(2, (width - x)/(width / this.state.params.range.v));
-      const freq2 = (audio.baseHz + params.fmWidth.v) * Math.pow(2, (width - x)/(width / this.state.params.range.v));
-      help.setAudioParam(osc1.frequency, freq1, ctx, latency);
-      help.setAudioParam(osc2.frequency, freq2, ctx, latency);
-    };
-  }
+  // audioRefreshFreq() {
+  //   const { dataFreq } = this.state;
+  //   const { audio } = this.props;
+  //   const ctx = audio.ctx;
+  //   const osc1 = audio.osc1;
+  //   const osc2 = audio.osc2;
+  //   const latency = audio.latency;
+  //   const width = this.refs.video.clientWidth;
 
+  //   if (dataFreq) {
+  //     const x = dataFreq.x + (dataFreq.width / 2);
+  //     const freq = audio.baseHz * Math.pow(2, (width - x)/(width / this.state.params.range.v));
+  //     help.setAudioParam(osc1.frequency, freq, ctx, latency);
+  //     help.setAudioParam(osc2.frequency, freq, ctx, latency);
+  //   };
+  // }
 
   makeControlBox() {
     const { params } = this.state;
@@ -206,7 +224,7 @@ export default class Theremin extends Component {
       return (
         <div className='element' key={i}>
           <svg className='knob' viewBox='0 0 100 100' onMouseDown={(e) => help.handleClickParam(e, d, this.updateParam)} onWheel={(e) => help.handleScrollParam(e, d, this.updateParam)}>
-            {bigKnob(help.getParamPct(params[d]), 'brown')}
+            {bigKnob(help.getParamPct(params[d]), '#313638')}
           </svg>
           <h5 className='label'>{params[d].text}</h5>
         </div>
@@ -231,6 +249,9 @@ export default class Theremin extends Component {
       <div className='Theremin inner'>
 
         <div className='video-box outer'>
+          <svg className='border' ref='border' viewBox='0 0 40 30'>
+            {screenFrame()}
+          </svg>
           <div className='inner'>
             <video className='video' ref='video' preload='true' autoPlay loop muted/>
             <svg className='tracker' ref='tracker' viewBox='0 0 40 30'/>
@@ -238,10 +259,9 @@ export default class Theremin extends Component {
           </div>
         </div>
 
-        <div className='color-box outer'>
-          <div className='inner'>
-            <h4 className='label'>Set Colors</h4>
+        <div className='color-box inner'>
             <div className='settings-box'>
+            <h4 className='label'>Set Colors</h4>
               <div className='element'>
                 <div className='swatch colorGain' onClick={this.handleClickColor} style={{backgroundColor: colorV}} />
                 <h5 className='label'>Gain</h5>
@@ -252,15 +272,10 @@ export default class Theremin extends Component {
               </div>
             </div>
           </div>
-        </div>
 
-
-        <div className='control-box outer'>
-          <div className='inner'>
+        <div className='control-box inner'>
             {this.makeControlBox()}
-          </div>
         </div>
-
 
       </div>
     );

@@ -16,7 +16,7 @@ export default class Main extends Component {
       params: {
         fmWidth: {v: 0, max: 1200, min: -1200},
         fmDepth: {v: 0, max: 3000, min: 0},
-        volume: {v: 0, max: 1, min: 0},
+        volume: {v: .73, max: 1, min: 0},
       },
       micEnabled: false,
     };
@@ -25,12 +25,12 @@ export default class Main extends Component {
 
   componentDidMount() {
     this.audioInit();
-    setTimeout(() => {
-      this.setState(prevState => ({
-        params: {...prevState.params, volume: {...prevState.params.volume, v: .5}}
-      }));
-      this.audioRefresh('volume');
-    }, 1000);
+    // setTimeout(() => {
+    //   this.setState(prevState => ({
+    //     params: {...prevState.params, volume: {...prevState.params.volume, v: .5}}
+    //   }));
+    //   this.audioRefresh('volume');
+    // }, 1000);
   }
 
   componentDidUpdate() {
@@ -58,10 +58,8 @@ export default class Main extends Component {
     masterGain.connect(masterOut);
     masterGain.connect(analyser);
 
-
-
-    osc1.start()
-    osc2.start()
+    osc1.start();
+    osc2.start();
 
     // const lpf = new BiquadFilterNode(ctx, {type: 'lowpass', Q: 1, frequency: params.tone.v});
 
@@ -69,7 +67,6 @@ export default class Main extends Component {
       ctx: ctx,
       osc1: osc1,
       osc2: osc2,
-      // lpf: lpf,
       fmGain: fmGain,
       instGain: instGain,
       masterGain: masterGain,
@@ -83,18 +80,18 @@ export default class Main extends Component {
     this.setState(prevState => ({ audio }));
   }
 
-  micEnable() {
-    const { ctx } = this.state.audio;
+  // micEnable() {
+  //   const { ctx } = this.state.audio;
 
-    navigator.mediaDevices.getUserMedia({audio: true})
-      .then(stream => {
-        const mic = ctx.createMediaStreamSource(stream);
-        this.setState(prevState => ({
-          micEnabled: true,
-          audio: {...prevState.audio, mic: mic},
-        }));
-      });
-  }
+  //   navigator.mediaDevices.getUserMedia({audio: true})
+  //     .then(stream => {
+  //       const mic = ctx.createMediaStreamSource(stream);
+  //       this.setState(prevState => ({
+  //         micEnabled: true,
+  //         audio: {...prevState.audio, mic: mic},
+  //       }));
+  //     });
+  // }
 
   micToggle() {
     const { ctx } = this.state.audio;
@@ -104,7 +101,7 @@ export default class Main extends Component {
     const { analyserSrc } = this.state.audio;
 
     if (!mic) {
-      this.micEnable();
+      // this.micEnable();
       navigator.mediaDevices.getUserMedia({audio: true})
         .then(stream => {
           const mic = ctx.createMediaStreamSource(stream);
@@ -129,10 +126,6 @@ export default class Main extends Component {
     };
   }
 
-
-
-
-
   updateParam(amt, key) {
     const prev = this.state.params[key];
     const delta = amt * prev.max;
@@ -141,16 +134,11 @@ export default class Main extends Component {
       this.setState(prevState => ({
         params: {...prevState.params, [key]: {...prevState.params[key], v: current}}
       }));
-      console.log(key)
       this.audioRefresh(key);
     };
   }
 
-
-
-
   audioRefresh(key) {
-    console.log('audio refresh')
     const { audio } = this.state;
     const ctx = audio.ctx;
     const latency = audio.latency;
@@ -181,15 +169,13 @@ export default class Main extends Component {
     const { audio } = this.state;
     const { ctx } = this.state.audio;
 
-
-
     return (
       <div className='Main'>
         {svgDefs()}
 
         <div className='controller'>
           <div className='outer'>
-            {/*{ctx ? <Theremin ctx={ctx} /> : null}*/}
+            {/*{ctx ? <Theremin audio={audio} params={params} /> : null}*/}
             {audio ? <Theremin audio={audio} params={params} /> : null}
           </div>
         </div>
@@ -197,8 +183,12 @@ export default class Main extends Component {
         <div className='placard'>
           <div className='outer'>
             <div className='inner'>
-              <h4>a-dex</h4>
-              <p>by</p><h6>Kozak</h6>
+              <div className='name'>
+                <h4><span className='alpha'>α</span>dex</h4>
+              </div>
+              <div className='by'>
+                <h6>by</h6> <h5 className='kozak'> kozak</h5>
+              </div>
             </div>
           </div>
         </div>

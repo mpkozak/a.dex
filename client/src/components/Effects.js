@@ -12,18 +12,18 @@ export default function Effects(props) {
     <div className='effects'>
 
       <div className='effect outer'>
-        <div className='inner'>
-          <h4 className='label'>FM Synthesis</h4>
+        <div className='fm inner'>
+          <h4 className='label'>FM Synth</h4>
           <div className='knob-box'>
             <div className='element'>
               <svg className='knob' viewBox='0 0 100 100' onMouseDown={(e) => help.handleClickParam(e, 'fmDepth', props.update)} onWheel={(e) => help.handleScrollParam(e, 'fmDepth', props.update)}>
-                {bigKnob(degFmDepth)}
+                {bigKnob(degFmDepth, '#313638')}
               </svg>
               <h5 className='label'>DEPTH</h5>
             </div>
             <div className='element'>
               <svg className='knob' viewBox='0 0 100 100' onMouseDown={(e) => help.handleClickParam(e, 'fmWidth', props.update)} onWheel={(e) => help.handleScrollParam(e, 'fmWidth', props.update)}>
-                {bigKnob(degFmWidth)}
+                {bigKnob(degFmWidth, '#313638')}
               </svg>
               <h5 className='label'>WIDTH</h5>
             </div>
@@ -32,8 +32,28 @@ export default function Effects(props) {
       </div>
 
       <div className='effect outer'>
-        <div className='inner'>
-          <h4 className='label'>FX 2</h4>
+        <div className='eq inner'>
+          <h4 className='label'>EQ</h4>
+          <div className='knob-box'>
+            <div className='element'>
+              <svg className='knob' viewBox='0 0 100 100' onMouseDown={(e) => help.handleClickParam(e, 'fmDepth', props.update)} onWheel={(e) => help.handleScrollParam(e, 'fmDepth', props.update)}>
+                {bigKnob(degFmDepth)}
+              </svg>
+              <h5 className='label'>LOW</h5>
+            </div>
+            <div className='element'>
+              <svg className='knob' viewBox='0 0 100 100' onMouseDown={(e) => help.handleClickParam(e, 'fmWidth', props.update)} onWheel={(e) => help.handleScrollParam(e, 'fmWidth', props.update)}>
+                {bigKnob(degFmWidth)}
+              </svg>
+              <h5 className='label'>MID</h5>
+            </div>
+            <div className='element'>
+              <svg className='knob' viewBox='0 0 100 100' onMouseDown={(e) => help.handleClickParam(e, 'fmWidth', props.update)} onWheel={(e) => help.handleScrollParam(e, 'fmWidth', props.update)}>
+                {bigKnob(degFmWidth)}
+              </svg>
+              <h5 className='label'>HIGH</h5>
+            </div>
+          </div>
         </div>
       </div>
 

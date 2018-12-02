@@ -4,6 +4,7 @@
   --video-width: 12;
   --video-height: calc(var(--video-width) * .75);
   position: relative;
+  border: none;
 
   /*background-color: brown;*/
   /*border: 1px solid red;*/
@@ -16,6 +17,7 @@
   flex-flow: column nowrap;
   align-items: center;
   justify-content: space-between;
+
 
   /*background-color: rgba(165,42,42,.5);*/
   /*border: 1px solid white;*/
@@ -34,10 +36,10 @@
 
 .Theremin .color-box {
   position: absolute;
-  left: 0;
-  top: calc(100% * (var(--video-height) / var(--grid-height)));
-  width: calc(100% * (5 / var(--grid-width)));
-  height: calc(100% * (var(--grid-height) - var(--video-height)) / var(--grid-height));
+  left: -1px;
+  top: calc(100% * ((.4 + var(--video-height)) / var(--grid-height)));
+  width: calc(100% * (6 / var(--grid-width)));
+  height: calc(100% * (var(--grid-height) - (.4 + var(--video-height))) / var(--grid-height));
 
   /*background-color: rgba(0,0,0,.5);*/
   /*border: 1px solid green;*/
@@ -45,10 +47,10 @@
 
 .Theremin .control-box {
   position: absolute;
-  left: calc(100% * ((var(--video-width) / 2) / var(--grid-width)));
-  top: calc(100% * (var(--video-height) / var(--grid-height)));
+  left: calc(100% * (7 / var(--grid-width)));
+  top: calc(100% * ((.4 + var(--video-height)) / var(--grid-height)));
   width: calc(100% * (5 / var(--grid-width)));
-  height: calc(100% * (var(--grid-height) - var(--video-height)) / var(--grid-height));
+  height: calc(100% * (var(--grid-height) - (.4 + var(--video-height))) / var(--grid-height));
 
   /*background-color: rgba(0,0,0,.5);*/
   /*border: 1px solid orange;*/
@@ -58,8 +60,8 @@
   position: relative;
   width: 90%;
   height: 90%;
-  border-radius: 12%;
-  overflow: hidden;
+  /*border-radius: 12%;*/
+  /*overflow: hidden;*/
 }
 
 .Theremin .video {
@@ -87,7 +89,18 @@
   left: 0;
   width: 100%;
   height: 100%;
+  z-index: 7;
+}
+
+.Theremin .border {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   z-index: 6;
+  border-radius: 1.9vmin;
+  box-shadow: 0 0 .5vmin .1vmin #000000;
 }
 
 
@@ -110,19 +123,20 @@
 
 .Theremin .color-box .element {
   display: flex;
-  flex-flow: row nowrap;
+  flex-flow: column nowrap;
   align-items: center;
+  justify-content: space-around;
   width: 50%;
-  height: 100%;
+  height: 80%;
 }
 
           .Theremin .control-box .element {
             display: flex;
             flex-flow: column nowrap;
             align-items: center;
-            justify-content: center;
+            justify-content: space-around;
             width: 35%;
-            height: 100%;
+            height: 80%;
 
             /*border: 1px solid white;*/
           }
@@ -149,8 +163,8 @@
 }
 
 .Theremin .knob {
-  width: 4vmin;
-  height: 4vmin;
-  border-radius: 2vmin;
+  width: 5vmin;
+  height: 5vmin;
+  border-radius: 2.5vmin;
   box-shadow: .5vmin .5vmin 1vmin #000000;
 }
