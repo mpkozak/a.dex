@@ -84,6 +84,31 @@ export const svgDefs = () => {
           <stop offset='66%' stopColor='#000000' stopOpacity={.3}/>
           <stop offset='70%' stopColor='#000000' stopOpacity={.5}/>
         </radialGradient>
+  {/* Knob Gradients */}
+        <radialGradient id='knob-surface-contour' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
+          <stop offset='0%' stopColor='#000000' stopOpacity='0'/>
+          <stop offset='10%' stopColor='#000000' stopOpacity='.025'/>
+          <stop offset='35%' stopColor='#000000' stopOpacity='.3'/>
+          <stop offset='45%' stopColor='#000000' stopOpacity='.5'/>
+          <stop offset='50%' stopColor='#000000' stopOpacity='.7'/>
+        </radialGradient>
+        <radialGradient id='knob-surface-shadow' cx='50%' cy='50%' r='100%' fx='0%' fy='0%' fr='10%' gradientUnits='objectBoundingBox'>
+          <stop offset='0%' stopColor='#FFFFFF' stopOpacity='1'/>
+          <stop offset='5%' stopColor='#FFFFFF' stopOpacity='.5'/>
+          <stop offset='15%' stopColor='#FFFFFF' stopOpacity='.3'/>
+          <stop offset='25%' stopColor='#FFFFFF' stopOpacity='.2'/>
+          <stop offset='40%' stopColor='#FFFFFF' stopOpacity='.1'/>
+          <stop offset='65%' stopColor='#FFFFFF' stopOpacity='0'/>
+          <stop offset='70%' stopColor='#000000' stopOpacity='0'/>
+          <stop offset='80%' stopColor='#000000' stopOpacity='1'/>
+        </radialGradient>
+        <linearGradient id='knob-notch-gradient' x1='0%' y1='0%' x2='0%' y2='100%' gradientUnits='objectBoundingBox'>
+          <stop offset='0%' stopColor='#000000' stopOpacity='.5'/>
+          <stop offset='10%' stopColor='#000000' stopOpacity='.6'/>
+          <stop offset='50%' stopColor='#000000' stopOpacity='.7'/>
+          <stop offset='90%' stopColor='#000000' stopOpacity='.6'/>
+          <stop offset='100%' stopColor='#000000' stopOpacity='.5'/>
+        </linearGradient>
   {/* VU Arc Curve Path */}
         <path id='vu-arc-scale' d={`M ${12.5} ${18.75} Q ${50} ${7.5}, ${87.5} ${18.75}`} pathLength={100}/>
       </defs>
@@ -157,63 +182,33 @@ export const modulePanelShadows = () => {
 };
 
 
-
-export const bigKnob = (rotation) => {
-  const colorKnob = '#3A3125';
+export const bigKnob = (rotation, color) => {
+  const colorKnob = color ? color : '#3A3125';
   return (
-      <g>
-        <defs>
-          <radialGradient id='knob-surface-contour' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
-            <stop offset='0%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='10%' stopColor='#000000' stopOpacity='.025'/>
-            <stop offset='35%' stopColor='#000000' stopOpacity='.3'/>
-            <stop offset='45%' stopColor='#000000' stopOpacity='.5'/>
-            <stop offset='50%' stopColor='#000000' stopOpacity='.7'/>
-          </radialGradient>
-          <radialGradient id='knob-surface-shadow' cx='50%' cy='50%' r='100%' fx='0%' fy='0%' fr='10%' gradientUnits='objectBoundingBox'>
-            <stop offset='0%' stopColor='#FFFFFF' stopOpacity='1'/>
-            <stop offset='5%' stopColor='#FFFFFF' stopOpacity='.5'/>
-            <stop offset='15%' stopColor='#FFFFFF' stopOpacity='.3'/>
-            <stop offset='25%' stopColor='#FFFFFF' stopOpacity='.2'/>
-            <stop offset='40%' stopColor='#FFFFFF' stopOpacity='.1'/>
-            <stop offset='65%' stopColor='#FFFFFF' stopOpacity='0'/>
-            <stop offset='70%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='80%' stopColor='#000000' stopOpacity='1'/>
-          </radialGradient>
-          <linearGradient id='knob-notch-gradient' x1='0%' y1='0%' x2='0%' y2='100%' gradientUnits='objectBoundingBox'>
-            <stop offset='0%' stopColor='#000000' stopOpacity='.5'/>
-            <stop offset='10%' stopColor='#000000' stopOpacity='.6'/>
-            <stop offset='50%' stopColor='#000000' stopOpacity='.7'/>
-            <stop offset='90%' stopColor='#000000' stopOpacity='.6'/>
-            <stop offset='100%' stopColor='#000000' stopOpacity='.5'/>
-          </linearGradient>
-        </defs>
-
-        <g className='big-knob'>
-          <circle className='knob-base'
-            cx={50}
-            cy={50}
-            r={50}
-            fill={colorKnob}
-            stroke='#000000'
-            strokeWidth='1%'
-          />
-          <g className='knob-shadows'>
-            <circle fill='url(#knob-surface-contour)' cx={50} cy={50} r={50} stroke='none'/>
-            <circle fill='url(#knob-surface-shadow)' cx={50} cy={50} r={49} stroke='none'/>
-          </g>
-          <rect className='knob-notch'
-            x={48}
-            y={6}
-            width={4}
-            height={20}
-            fill='url(#knob-notch-gradient)'
-            stroke='#000000'
-            strokeWidth='1%'
-            transform={`rotate(${rotation * 3.2 - 160}, ${50}, ${50})`}
-          />
-        </g>
+    <g className='big-knob'>
+      <circle className='knob-base'
+        cx={50}
+        cy={50}
+        r={50}
+        fill={colorKnob}
+        stroke='#000000'
+        strokeWidth='1%'
+      />
+      <g className='knob-shadows'>
+        <circle fill='url(#knob-surface-contour)' cx={50} cy={50} r={50} stroke='none'/>
+        <circle fill='url(#knob-surface-shadow)' cx={50} cy={50} r={49} stroke='none'/>
       </g>
+      <rect className='knob-notch'
+        x={48}
+        y={6}
+        width={4}
+        height={20}
+        fill='url(#knob-notch-gradient)'
+        stroke='#000000'
+        strokeWidth='1%'
+        transform={`rotate(${rotation * 3.2 - 160}, ${50}, ${50})`}
+      />
+    </g>
   );
 };
 

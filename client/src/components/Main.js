@@ -18,6 +18,7 @@ export default class Main extends Component {
         fmDepth: {v: 0, max: 3000, min: 0},
         volume: {v: 0, max: 1, min: 0},
       },
+      micEnabled: false,
     };
     this.updateParam = this.updateParam.bind(this);
   }
@@ -45,27 +46,18 @@ export default class Main extends Component {
     const osc1 = new OscillatorNode(ctx, {type: 'sine', frequency: baseHz});
     const osc2 = new OscillatorNode(ctx, {type: 'sine', frequency: baseHz, detune: params.fmWidth.v});
     const fmGain = new GainNode(ctx, {gain: params.fmDepth.v});
-    const normalize = new GainNode(ctx, {gain: .5})
+    const instGain = new GainNode(ctx, {gain: 0})
     const masterGain = new GainNode(ctx, {gain: params.volume.v});
     const masterOut = ctx.destination;
     const analyser = new AnalyserNode(ctx, {fftSize: Math.pow(2, scaleBase), minDecibels: -100, maxDecibels: -30, smoothingTimeConstant: 0});
 
     osc1.connect(fmGain);
     fmGain.connect(osc2.frequency);
-    osc2.connect(normalize);
-    normalize.connect(masterGain);
-    // osc2.connect(masterGain);
+    osc2.connect(instGain);
+    instGain.connect(masterGain);
     masterGain.connect(masterOut);
     masterGain.connect(analyser);
 
-
-    // osc1.connect(normalize);
-    // osc2.connect(normalize);
-    // fmGain.connect(normalize);
-    // normalize.connect(masterGain);
-    // // osc2.connect(masterGain);
-    // masterGain.connect(masterOut);
-    // masterGain.connect(analyser);
 
 
     osc1.start()
@@ -79,6 +71,7 @@ export default class Main extends Component {
       osc2: osc2,
       // lpf: lpf,
       fmGain: fmGain,
+      instGain: instGain,
       masterGain: masterGain,
       masterOut: masterOut,
       analyser: analyser,
@@ -90,14 +83,28 @@ export default class Main extends Component {
     this.setState(prevState => ({ audio }));
   }
 
-  micToggle() {
-    const { mic } = this.state.audio;
+  micEnable() {
     const { ctx } = this.state.audio;
+
+    navigator.mediaDevices.getUserMedia({audio: true})
+      .then(stream => {
+        const mic = ctx.createMediaStreamSource(stream);
+        this.setState(prevState => ({
+          micEnabled: true,
+          audio: {...prevState.audio, mic: mic},
+        }));
+      });
+  }
+
+  micToggle() {
+    const { ctx } = this.state.audio;
+    const { mic } = this.state.audio;
     const { analyser } = this.state.audio;
     const { masterGain } = this.state.audio;
     const { analyserSrc } = this.state.audio;
 
     if (!mic) {
+      this.micEnable();
       navigator.mediaDevices.getUserMedia({audio: true})
         .then(stream => {
           const mic = ctx.createMediaStreamSource(stream);
@@ -184,8 +191,15 @@ export default class Main extends Component {
           <div className='outer'>
             {/*{ctx ? <Theremin ctx={ctx} /> : null}*/}
             {audio ? <Theremin audio={audio} params={params} /> : null}
+          </div>
+        </div>
 
-
+        <div className='placard'>
+          <div className='outer'>
+            <div className='inner'>
+              <h4>a-dex</h4>
+              <p>by</p><h6>Kozak</h6>
+            </div>
           </div>
         </div>
 
@@ -193,7 +207,7 @@ export default class Main extends Component {
           <div className='outer'>
             <div className='inner'>
               <h6>Latency: {audio ? Math.floor(ctx.baseLatency * 1000) : ''} ms</h6>
-              <button onClick={() => this.micToggle()}>a</button>
+              <button onClick={() => this.micToggle()}>toggle</button>
             </div>
           </div>
         </div>
@@ -205,11 +219,13 @@ export default class Main extends Component {
           <div className='outer'>
             {audio ? <Wave audio={audio}/> : null}
           </div>
+
           <div className='outer'>
             <div className='inner'>
               <h4>meter</h4>
             </div>
           </div>
+
         </div>
 
         <Oscillators audio={audio} />
@@ -239,16 +255,7 @@ export default class Main extends Component {
 
 
 
-
-
-
-
-
-
-
 {/*
-
-
 
 
 

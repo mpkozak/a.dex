@@ -1,5 +1,5 @@
 .Main {
-  --grid-width: 20;
+  --grid-width: 17;
   --grid-height: 15;
   --size-unit: calc(95vw / var(--grid-width));
   --size-unit-max: calc(90vh / var(--grid-height));
@@ -23,7 +23,7 @@
   position: absolute;
   left: calc(0 * (100% / var(--grid-width)));
   top: calc(0 * (100% / var(--grid-height)));
-  width: calc(15 * (100% / var(--grid-width)));
+  width: calc(12 * (100% / var(--grid-width)));
   height: calc(11 * (100% / var(--grid-height)));
   display: flex;
   flex-flow: column nowrap;
@@ -32,10 +32,21 @@
   /*background-color: brown;*/
 }
 
+.placard {
+  position: absolute;
+  left: calc(12 * (100% / var(--grid-width)));
+  top: calc(0 * (100% / var(--grid-height)));
+  width: calc(5 * (100% / var(--grid-width)));
+  height: calc(1 * (100% / var(--grid-height)));
+
+  opacity: .5;
+  /*background-color: orange;*/
+}
+
 .settings {
   position: absolute;
-  left: calc(15 * (100% / var(--grid-width)));
-  top: calc(0 * (100% / var(--grid-height)));
+  left: calc(12 * (100% / var(--grid-width)));
+  top: calc(1 * (100% / var(--grid-height)));
   width: calc(5 * (100% / var(--grid-width)));
   height: calc(1 * (100% / var(--grid-height)));
 
@@ -45,8 +56,8 @@
 
 .meters {
   position: absolute;
-  left: calc(15 * (100% / var(--grid-width)));
-  top: calc(1 * (100% / var(--grid-height)));
+  left: calc(12 * (100% / var(--grid-width)));
+  top: calc(2 * (100% / var(--grid-height)));
   width: calc(5 * (100% / var(--grid-width)));
   height: calc(9 * (100% / var(--grid-height)));
   display: flex;
@@ -82,12 +93,12 @@
 
 .master {
   position: absolute;
-  left: calc(17 * (100% / var(--grid-width)));
-  top: calc(10 * (100% / var(--grid-height)));
-  width: calc(3 * (100% / var(--grid-width)));
-  height: calc(5 * (100% / var(--grid-height)));
+  left: calc(15 * (100% / var(--grid-width)));
+  top: calc(11 * (100% / var(--grid-height)));
+  width: calc(2 * (100% / var(--grid-width)));
+  height: calc(4 * (100% / var(--grid-height)));
 
-  opacity: .5;
+  /*opacity: .5;*/
   /*background-color: aqua;*/
 }
 
@@ -108,7 +119,7 @@
 .inner {
   width: calc(100% - 2vmin);
   height: calc(100% - 2vmin);
-  border-radius: .57vmin;
+  border-radius: 1vmin;
   border: 1px solid white;
 
   /*box-shadow: 0 0 .5vmin .1vmin #000000;*/
@@ -130,24 +141,44 @@
 
 
 
+
 /*MOVE AT A LATER DATE*/
-
-
 
 .meters>.outer {
   height: calc(100% / 3);
+
+  /*background-color: green;*/
+  /*border: 1px solid white;*/
 }
 
 .meters .inner {
-  width: 92%;
-  height: 92%;
+  width: 95%;
+  height: 95%;
+
+  border-radius: .57vmin;
   border: none;
   box-shadow: 0 0 .5vmin .1vmin #000000;
-  border-radius: .57vmin;
 }
 
 
 
+
+
+
+
+.settings button {
+  width: 20%;
+  /*height: 70%;*/
+
+  font-family: helvetica;
+  font-size: 20%;
+  font-weight: 800;
+  color: black;
+
+  border-radius: 1vmin;
+  border: 1px solid black;
+  background-color: #fff;
+}
 
 
 
@@ -155,11 +186,4 @@
 .settings .inner {
   background-color: orange;
 }
-
-.master .inner {
-  background-color: aqua;
-}
-
-
-
 

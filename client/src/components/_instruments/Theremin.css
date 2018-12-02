@@ -1,0 +1,156 @@
+.Theremin {
+  --grid-width: 12;
+  --grid-height: 11;
+  --video-width: 12;
+  --video-height: calc(var(--video-width) * .75);
+  position: relative;
+
+  /*background-color: brown;*/
+  /*border: 1px solid red;*/
+  /*overflow-y: hidden;*/
+  /*overflow-x: hidden;*/
+}
+
+.Theremin .inner {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: space-between;
+
+  /*background-color: rgba(165,42,42,.5);*/
+  /*border: 1px solid white;*/
+}
+
+.Theremin .video-box {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: calc(100% * (var(--video-width) / var(--grid-width)));
+  height: calc(100% * (var(--video-height) / var(--grid-height)));
+
+  /*background-color: rgba(0,0,0,.5);*/
+  /*border: 1px solid red;*/
+}
+
+.Theremin .color-box {
+  position: absolute;
+  left: 0;
+  top: calc(100% * (var(--video-height) / var(--grid-height)));
+  width: calc(100% * (5 / var(--grid-width)));
+  height: calc(100% * (var(--grid-height) - var(--video-height)) / var(--grid-height));
+
+  /*background-color: rgba(0,0,0,.5);*/
+  /*border: 1px solid green;*/
+}
+
+.Theremin .control-box {
+  position: absolute;
+  left: calc(100% * ((var(--video-width) / 2) / var(--grid-width)));
+  top: calc(100% * (var(--video-height) / var(--grid-height)));
+  width: calc(100% * (5 / var(--grid-width)));
+  height: calc(100% * (var(--grid-height) - var(--video-height)) / var(--grid-height));
+
+  /*background-color: rgba(0,0,0,.5);*/
+  /*border: 1px solid orange;*/
+}
+
+.Theremin .video-box .inner {
+  position: relative;
+  width: 90%;
+  height: 90%;
+  border-radius: 12%;
+  overflow: hidden;
+}
+
+.Theremin .video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 4;
+  transform: rotateY(180deg);
+}
+
+.Theremin .tracker {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+}
+
+.Theremin .canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 6;
+}
+
+
+
+
+
+
+
+.Theremin .settings-box {
+  width: 95%;
+  height: 100%;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-around;
+
+  /*background-color: #f0f;*/
+  /*border: 1px solid white;*/
+}
+
+.Theremin .color-box .element {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  width: 50%;
+  height: 100%;
+}
+
+          .Theremin .control-box .element {
+            display: flex;
+            flex-flow: column nowrap;
+            align-items: center;
+            justify-content: center;
+            width: 35%;
+            height: 100%;
+
+            /*border: 1px solid white;*/
+          }
+
+.Theremin .swatch {
+  width: 4vmin;
+  height: 4vmin;
+  border-radius: 2vmin;
+  border: 1px solid rgba(255,255,255,.5);
+  box-shadow: .5vmin .5vmin 1vmin #000000;
+}
+
+.Theremin .color-box .pulse {
+  animation: pulsar 1s linear infinite;
+}
+
+@keyframes pulsar {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.Theremin .knob {
+  width: 4vmin;
+  height: 4vmin;
+  border-radius: 2vmin;
+  box-shadow: .5vmin .5vmin 1vmin #000000;
+}

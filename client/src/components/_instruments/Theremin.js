@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import './_instruments.css';
+import * as d3 from 'd3';
+import './Theremin.css';
 import { bigKnob } from '../_svg.js';
 import tracking from 'tracking';
 import help from '../_help.js';
@@ -8,15 +9,13 @@ export default class Theremin extends Component {
     constructor(props) {
     super(props)
     this.state = {
-      // colorGain: {r: 0, g: 0, b: 0},
-      // colorFreq: {r: 0, g: 0, b: 0},
+      video: false,
       colorGain: {r: null, g: null, b: null},
       colorFreq: {r: null, g: null, b: null},
       params: {
-        sense: {v: 30, max: 100, min: 0},
-        range: {v: 4, max: 6, min: 2},
+        sense: {v: 50, max: 100, min: 0, text: 'Sensitivity'},
+        range: {v: 4, max: 6, min: 2, text: 'Range'},
       },
-      data: [],
       dataGain: false,
       dataFreq: false,
     };
@@ -28,9 +27,9 @@ export default class Theremin extends Component {
     const colorGain = JSON.parse(localStorage.getItem('colorGain'));
     const colorFreq = JSON.parse(localStorage.getItem('colorFreq'));
     if (colorGain && colorFreq) {
-      const config = true;
-      this.setState(prevState => ({ config, colorGain, colorFreq }));
+      this.setState(prevState => ({ colorGain, colorFreq }));
     };
+    this.videoInit();
     this.trackerInit();
   }
 
@@ -40,7 +39,19 @@ export default class Theremin extends Component {
     this.audioRefreshFreq();
   }
 
-
+  videoInit() {
+    navigator.mediaDevices.getUserMedia({video: true})
+      .then(stream => {
+        const { video } = this.refs;
+        const { canvas } = this.refs;
+        video.srcObject = stream;
+        this.setState(prevState => ({ video: true }));
+        const width = video.clientWidth;
+        const height = video.clientHeight;
+        canvas.width = width;
+        canvas.height = height;
+      });
+  }
 
   trackerInit() {
     const tracking = window.tracking;
@@ -53,24 +64,61 @@ export default class Theremin extends Component {
     });
     const colors = new tracking.ColorTracker(['Gain', 'Freq']);
 
-    colors.minDimension = 3;
-    colors.minGroupSize = 500;
+    colors.minDimension = 4;
+    colors.minGroupSize = 1000;
 
     colors.on('track', e => {
       const data = e.data;
-      const gain = data.filter(d => d.color === 'Gain');
-      const dataGain = gain.length > 0 ? gain[0] : false;
-      const freq = data.filter(d => d.color === 'Freq');
-      const dataFreq = freq.length > 0 ? freq[0] : false;
-      this.setState(prevState => ({ data, dataGain, dataFreq }));
+      this.filterData(data)
     });
 
-    navigator.mediaDevices.getUserMedia({video: true})
-      .then(stream => {
-        this.refs.video.srcObject = stream;
-        tracking.track('.video', colors);
-      });
+    tracking.track('.video', colors);
   }
+
+  filterData(raw) {
+    const dataGain = raw.filter(d => d.color === 'Gain').sort((a, b) => b.height - a.height)[0];
+    const dataFreq = raw.filter(d => d.color === 'Freq').sort((a, b) => b.width - a.width)[0];
+    this.setState(prevState => ({ dataGain, dataFreq }));
+  }
+
+  trackerDraw() {
+    const node = this.refs.tracker;
+    const vWidth = this.refs.video.clientWidth;
+    const vHeight = this.refs.video.clientHeight;
+    const width = 40;
+    const height = 30;
+
+    const xScale = d3.scaleLinear().domain([0, vWidth]).range([0, width]);
+    const yScale = d3.scaleLinear().domain([0, vHeight]).range([0, height]);
+    const colorGain = `rgb(${this.state.colorGain.r}, ${this.state.colorGain.g}, ${this.state.colorGain.b})`;
+    const colorFreq = `rgb(${this.state.colorFreq.r}, ${this.state.colorFreq.g}, ${this.state.colorFreq.b})`;
+
+    const parseData = (d) => {
+      return ({
+        cx: width - xScale(d.x + (d.width / 2)),
+        cy: yScale(d.y + (d.height / 2)),
+        r: d.color === 'Freq' ? xScale(d.width / 2) : yScale(d.height / 2),
+        fill: d.color === 'Freq' ? colorFreq : colorGain
+      });
+    };
+
+    const data = [];
+    if (this.state.dataGain) data.push(parseData(this.state.dataGain));
+    if (this.state.dataFreq) data.push(parseData(this.state.dataFreq));
+
+    const circles = d3.select(node).selectAll('circle').data(data);
+    circles.enter().append('circle');
+    circles
+      .attr('cx', d => d.cx)
+      .attr('cy', d => d.cy)
+      .attr('r', d => d.r)
+      .style('fill', d => d.fill)
+      .style('opacity', .5)
+      .style('stroke', '#FFFFFF')
+      .style('stroke-width', '.5%');
+    circles.exit().remove();
+  }
+
 
 
   handleClickColor(e) {
@@ -85,13 +133,12 @@ export default class Theremin extends Component {
 
       const width = this.refs.canvas.width;
       const height = this.refs.canvas.height;
-
       const canvasCtx = this.refs.canvas.getContext('2d');
-      canvasCtx.globalAlpha = 1;
 
       canvasCtx.drawImage(this.refs.video, 0, 0, width, height);
       const colorRaw = canvasCtx.getImageData(width - e.offsetX, e.offsetY, 1, 1).data;
       const color = {r: colorRaw[0], g: colorRaw[1], b: colorRaw[2]};
+      canvasCtx.clearRect(0, 0, width, height);
 
       localStorage.setItem(target, JSON.stringify(color));
       this.setState(prevState => ({
@@ -114,53 +161,25 @@ export default class Theremin extends Component {
   }
 
 
-  trackerDraw() {
-    const { colorGain } = this.state;
-    const { colorFreq } = this.state;
-    const width = this.refs.video.clientWidth;
-    const height = this.refs.video.clientHeight;
-    this.refs.canvas.width = width;
-    this.refs.canvas.height = height;
-
-    const canvasCtx = this.refs.canvas.getContext('2d');
-    canvasCtx.globalAlpha = .7;
-    canvasCtx.strokeStyle = '#FFFFFF';
-    canvasCtx.lineWidth = 1;
-
-    this.state.data.forEach(d => {
-      canvasCtx.fillStyle = d.color === 'Gain'
-        ? `rgb(${colorGain.r}, ${colorGain.g}, ${colorGain.b})`
-        : `rgb(${colorFreq.r}, ${colorFreq.g}, ${colorFreq.b})`;
-      canvasCtx.fillRect(width - (d.x + d.width), d.y, d.width, d.height);
-      canvasCtx.strokeRect(width - (d.x + d.width), d.y, d.width, d.height);
-    });
-  }
-
-
   audioRefreshGain() {
-    // console.log('gain refreshed')
     const { dataGain } = this.state;
-    // const { dataFreq } = this.state;
     const { audio } = this.props;
-    const { params } = this.props;
     const ctx = audio.ctx;
-    const masterGain = audio.masterGain;
+    const instGain = audio.instGain;
     const latency = audio.latency;
     const height = this.refs.video.clientHeight;
 
     if (dataGain) {
       const y = dataGain.y + (dataGain.height / 2);
-      const level = (height - y) / height * params.volume.v;
-      help.setAudioParam(masterGain.gain, level, ctx, latency);
+      const level = (height - y) / height;
+      help.setAudioParam(instGain.gain, level, ctx, latency);
     } else {
-      help.setAudioParam(masterGain.gain, 0, ctx, latency * 2);
+      help.setAudioParam(instGain.gain, 0, ctx, latency * 2);
     };
-    // console.log(masterGain.gain.value, 'gain from theremin', params.volume.v, 'props volume')
   }
 
 
   audioRefreshFreq() {
-    // console.log('freq refreshed')
     const { dataFreq } = this.state;
     const { audio } = this.props;
     const { params } = this.props;
@@ -185,17 +204,17 @@ export default class Theremin extends Component {
 
     const components = Object.keys(params).map((d, i) => {
       return (
-        <div className='component' key={i}>
+        <div className='element' key={i}>
           <svg className='knob' viewBox='0 0 100 100' onMouseDown={(e) => help.handleClickParam(e, d, this.updateParam)} onWheel={(e) => help.handleScrollParam(e, d, this.updateParam)}>
-            {bigKnob((params[d].v / params[d].max) * 100)}
+            {bigKnob( (params[d].v - Math.abs(params[d].min)) / (params[d].max - params[d].min) * 100, 'brown')}
           </svg>
-          <h6 className='label'>{d}</h6>
+          <h5 className='label'>{params[d].text}</h5>
         </div>
       );
     });
 
     return (
-      <div className='control-box'>
+      <div className='settings-box'>
         {components}
       </div>
     );
@@ -209,93 +228,41 @@ export default class Theremin extends Component {
     const colorF = `rgb(${colorFreq.r}, ${colorFreq.g}, ${colorFreq.b})`;
 
     return (
-        <div className='Theremin inner'>
+      <div className='Theremin inner'>
 
-          <div className='video-box outer'>
-            <div className='inner'>
-              <canvas className='canvas' ref='canvas'/>
-              <video className='video' ref='video' preload='true' autoPlay loop muted/>
-            </div>
+        <div className='video-box outer'>
+          <div className='inner'>
+            <video className='video' ref='video' preload='true' autoPlay loop muted/>
+            <svg className='tracker' ref='tracker' viewBox='0 0 40 30'/>
+            <canvas className='canvas' ref='canvas'/>
           </div>
+        </div>
 
-          <div className='color-box'>
+        <div className='color-box outer'>
+          <div className='inner'>
             <h4 className='label'>Set Colors</h4>
-            <div className='element'>
-              <div className='swatch colorGain' onClick={this.handleClickColor} style={{backgroundColor: colorV}} />
-              <h5 className='label'>Volume</h5>
-            </div>
-            <div className='element'>
-              <div className='swatch colorFreq' onClick={this.handleClickColor} style={{backgroundColor: colorF}} />
-              <h5 className='label'>Frequency</h5>
+            <div className='settings-box'>
+              <div className='element'>
+                <div className='swatch colorGain' onClick={this.handleClickColor} style={{backgroundColor: colorV}} />
+                <h5 className='label'>Gain</h5>
+              </div>
+              <div className='element'>
+                <div className='swatch colorFreq' onClick={this.handleClickColor} style={{backgroundColor: colorF}} />
+                <h5 className='label'>Pitch</h5>
+              </div>
             </div>
           </div>
+        </div>
 
 
-          <div className='control-box'>
+        <div className='control-box outer'>
+          <div className='inner'>
             {this.makeControlBox()}
           </div>
-
-
         </div>
+
+
+      </div>
     );
   }
 }
-
-
-
-
-            // {this.makeControlBox()}
-          // <div className='top'>
-
-          // </div>
-
-          // <div className='bottom'>
-          //   {this.makeControlBox()}
-          // </div>
-
-
-          // <svg className='knob' viewBox='0 0 100 100'>
-          //   {bigKnob(20)}
-          // </svg>
-          // I am theremin
-
-
-
-          // <svg className='knob' viewBox='0 0 100 100' onMouseDown={(e) => this.handleClickParam(e, d)} onWheel={(e) => this.handleScrollParam(e, d)}>
-          //   {UI.knob((params[d].v / params[d].max) * 100)}
-          // </svg>
-
-
-
-
-          // <div className='top'>
-          //   <div className='video-box'>
-          //     <canvas className='canvas' ref='canvas'/>
-          //     <video className='video' ref='video' preload='true' autoPlay loop muted/>
-          //   </div>
-          //   <div className='color-box'>
-          //     <div className='element header label'>
-          //       <h4>Set Colors</h4>
-          //     </div>
-          //     <div className='element'>
-          //       <div className='swatch colorGain' onClick={this.handleClickColor} style={{backgroundColor: colorV}} />
-          //       <h5 className='label'>Volume</h5>
-          //     </div>
-          //     <div className='element'>
-          //       <div className='swatch colorFreq' onClick={this.handleClickColor} style={{backgroundColor: colorF}} />
-          //       <h5 className='label'>Frequency</h5>
-          //     </div>
-          //   </div>
-          // </div>
-
-          // <div className='bottom'>
-          //   {this.makeControlBox()}
-          // </div>
-
-
-
-
-
-
-
-

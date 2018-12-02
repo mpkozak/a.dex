@@ -5,13 +5,14 @@ import help from './_help.js';
 export default function Oscillators(props) {
 
   const handleOscillatorType = (e, osc, type) => {
+    e.preventDefault();
     e.target.parentNode.childNodes.forEach(d => d.className = 'inactive');
     e.target.className = 'active';
     const { audio } = props;
-    help.setAudioParam(audio.masterGain.gain, 0, audio.ctx, .01)
+    help.setAudioParam(audio.instGain.gain, 0, audio.ctx, .01)
       .then(res => {
         osc.type = type;
-        help.setAudioParam(audio.masterGain.gain, .5, audio.ctx, .01);
+        // help.setAudioParam(audio.instGain.gain, 0, audio.ctx, .01);
       });
   };
 

@@ -33,7 +33,7 @@ export default function Effects(props) {
 
       <div className='effect outer'>
         <div className='inner'>
-
+          <h4 className='label'>FX 2</h4>
         </div>
       </div>
 
