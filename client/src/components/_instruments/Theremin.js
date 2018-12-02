@@ -226,7 +226,7 @@ export default class Theremin extends Component {
           <svg className='knob' viewBox='0 0 100 100' onMouseDown={(e) => help.handleClickParam(e, d, this.updateParam)} onWheel={(e) => help.handleScrollParam(e, d, this.updateParam)}>
             {bigKnob(help.getParamPct(params[d]), '#313638')}
           </svg>
-          <h5 className='label'>{params[d].text}</h5>
+          <h5 className='label-small'>{params[d].text}</h5>
         </div>
       );
     });
@@ -250,7 +250,7 @@ export default class Theremin extends Component {
 
         <div className='video-box outer'>
           <svg className='border' ref='border' viewBox='0 0 40 30'>
-            {screenFrame()}
+            {screenFrame(this.state.video)}
           </svg>
           <div className='inner'>
             <video className='video' ref='video' preload='true' autoPlay loop muted/>
@@ -264,11 +264,11 @@ export default class Theremin extends Component {
             <h4 className='label'>Set Colors</h4>
               <div className='element'>
                 <div className='swatch colorGain' onClick={this.handleClickColor} style={{backgroundColor: colorV}} />
-                <h5 className='label'>Gain</h5>
+                <h5 className='label-small'>GAIN</h5>
               </div>
               <div className='element'>
                 <div className='swatch colorFreq' onClick={this.handleClickColor} style={{backgroundColor: colorF}} />
-                <h5 className='label'>Pitch</h5>
+                <h5 className='label-small'>PITCH</h5>
               </div>
             </div>
           </div>

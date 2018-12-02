@@ -7,9 +7,6 @@
   flex-flow: column nowrap;
   align-items: center;
   justify-content: space-between;
-
-  /*background-color: rgba(0,0,255,.5);*/
-  /*border: 1px solid white;*/
 }
 
 .effect .knob-box {
@@ -19,9 +16,6 @@
   flex-flow: row nowrap;
   align-items: center;
   justify-content: space-around;
-
-  /*background-color: #f00;*/
-  /*border: 1px solid white;*/
 }
 
 .effect .fm .element {
@@ -31,9 +25,6 @@
   flex-flow: column nowrap;
   align-items: center;
   justify-content: space-around;
-
-  /*background-color: #0f0;*/
-  /*border: 1px solid white;*/
 }
 
 .effect .knob {
@@ -49,8 +40,5 @@
   flex-flow: column nowrap;
   align-items: center;
   justify-content: space-around;
-
-  /*background-color: #0f0;*/
-  /*border: 1px solid white;*/
 }
 

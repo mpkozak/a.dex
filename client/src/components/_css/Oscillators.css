@@ -7,9 +7,6 @@
   flex-flow: column nowrap;
   align-items: center;
   justify-content: space-between;
-
-  /*background-color: rgba(165,42,42,.5);*/
-  /*border: 1px solid white;*/
 }
 
 .oscillator .button-box {
@@ -19,20 +16,15 @@
   flex-flow: row nowrap;
   align-items: center;
   justify-content: space-around;
-
-  /*background-color: #f0f;*/
-  /*border: 1px solid white;*/
 }
 
 .oscillator button {
   width: 20%;
   height: 70%;
-
   font-family: helvetica;
   font-size: 20%;
   font-weight: 800;
   color: black;
-
   border-radius: 1vmin;
   border: 1px solid black;
   background-color: #fff;
