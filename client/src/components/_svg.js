@@ -1,127 +1,11 @@
 import React from 'react';
 
-
 export const svgDefs = () => {
   return (
     <svg className='invisible' width={0} height={0} opacity={0} fill='none' stroke='none'>
       <defs>
-  {/* Master Clip Path */}
-        <clipPath id='module-master-clip'>
-          <rect x={0} y={0} width={100} height={60} rx={2} ry={2}/>
-        </clipPath>
-  {/* Screen Clip Path */}
-        <clipPath id='module-screen-clip'>
-          <rect x={5} y={5} width={90} height={50} rx={1} ry={1} stroke='none'/>
-        </clipPath>
-  {/* Outer Frame Gradients */}
-        <linearGradient id='frame-outer-shadow-horizontal' x1='0%' y1='0%' x2='0%' y2='100%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#000000' stopOpacity={.5}/>
-          <stop offset='4%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='96%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='100%' stopColor='#000000' stopOpacity={.5}/>
-        </linearGradient>
-        <linearGradient id='frame-outer-shadow-vertical' x1='0%' y1='0%' x2='100%' y2='0%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#000000' stopOpacity={.5}/>
-          <stop offset='2%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='98%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='100%' stopColor='#000000' stopOpacity={.5}/>
-        </linearGradient>
-        <linearGradient id='frame-outer-shadow-diagonal' x1='0%' y1='0%' x2='100%' y2='100%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#FFFFFF' stopOpacity={.1}/>
-          <stop offset='50%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='100%' stopColor='#000000' stopOpacity={.4}/>
-        </linearGradient>
-  {/* Inner Frame Gradients */}
-        <radialGradient id='frame-inner-shadow-corners' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='50%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='63%' stopColor='#000000' stopOpacity={.1}/>
-          <stop offset='70%' stopColor='#000000' stopOpacity={.5}/>
-        </radialGradient>
-        <linearGradient id='frame-inner-shadow-horizontal' x1='0%' y1='0%' x2='0%' y2='100%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#000000' stopOpacity={.5}/>
-          <stop offset='4%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='96%' stopColor='#000000' stopOpacity={.4}/>
-          <stop offset='100%' stopColor='#000000' stopOpacity={0}/>
-        </linearGradient>
-        <linearGradient id='frame-inner-shadow-vertical' x1='0%' y1='0%' x2='100%' y2='0%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#000000' stopOpacity={.5}/>
-          <stop offset='2%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='98%' stopColor='#000000' stopOpacity={.4}/>
-          <stop offset='100%' stopColor='#000000' stopOpacity={0}/>
-        </linearGradient>
-        <linearGradient id='frame-inner-shadow-diagonal' x1='0%' y1='0%' x2='100%' y2='100%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#000000' stopOpacity={.4}/>
-          <stop offset='45%' stopColor='#000000' stopOpacity={.3}/>
-          <stop offset='50%' stopColor='#000000' stopOpacity={.7}/>
-          <stop offset='55%' stopColor='#000000' stopOpacity={.2}/>
-          <stop offset='94%' stopColor='#FFFFFF' stopOpacity={.1}/>
-          <stop offset='100%' stopColor='#000000' stopOpacity={.2}/>
-        </linearGradient>
-  {/* Panel Gradients */}
-        <linearGradient id='panel-shadow-vertical' x1='0%' y1='0%' x2='100%' y2='0%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#000000' stopOpacity={.8}/>
-          <stop offset='2%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='98%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='100%' stopColor='#000000' stopOpacity={.8}/>
-        </linearGradient>
-        <linearGradient id='panel-shadow-horizontal' x1='0%' y1='0%' x2='0%' y2='100%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#000000' stopOpacity={.8}/>
-          <stop offset='3%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='97%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='100%' stopColor='#000000' stopOpacity={.8}/>
-        </linearGradient>
-        <linearGradient id='panel-shadow-diagonal' x1='0%' y1='0%' x2='100%' y2='100%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#000000' stopOpacity={.35}/>
-          <stop offset='35%' stopColor='#000000' stopOpacity={.2}/>
-          <stop offset='50%' stopColor='#000000' stopOpacity={.15}/>
-          <stop offset='100%' stopColor='#000000' stopOpacity={.05}/>
-        </linearGradient>
-        <radialGradient id='panel-glare' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='25%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='50%' stopColor='#000000' stopOpacity={.1}/>
-          <stop offset='66%' stopColor='#000000' stopOpacity={.3}/>
-          <stop offset='70%' stopColor='#000000' stopOpacity={.5}/>
-        </radialGradient>
-  {/* Knob Gradients */}
-        <radialGradient id='knob-surface-contour' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#000000' stopOpacity='0'/>
-          <stop offset='10%' stopColor='#000000' stopOpacity='.025'/>
-          <stop offset='35%' stopColor='#000000' stopOpacity='.3'/>
-          <stop offset='45%' stopColor='#000000' stopOpacity='.5'/>
-          <stop offset='50%' stopColor='#000000' stopOpacity='.7'/>
-        </radialGradient>
-        <radialGradient id='knob-surface-shadow' cx='50%' cy='50%' r='100%' fx='0%' fy='0%' fr='10%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#FFFFFF' stopOpacity='1'/>
-          <stop offset='5%' stopColor='#FFFFFF' stopOpacity='.5'/>
-          <stop offset='15%' stopColor='#FFFFFF' stopOpacity='.3'/>
-          <stop offset='25%' stopColor='#FFFFFF' stopOpacity='.2'/>
-          <stop offset='40%' stopColor='#FFFFFF' stopOpacity='.1'/>
-          <stop offset='65%' stopColor='#FFFFFF' stopOpacity='0'/>
-          <stop offset='70%' stopColor='#000000' stopOpacity='0'/>
-          <stop offset='80%' stopColor='#000000' stopOpacity='1'/>
-        </radialGradient>
-        <linearGradient id='knob-notch-gradient' x1='0%' y1='0%' x2='0%' y2='100%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#000000' stopOpacity='.5'/>
-          <stop offset='10%' stopColor='#000000' stopOpacity='.6'/>
-          <stop offset='50%' stopColor='#000000' stopOpacity='.7'/>
-          <stop offset='90%' stopColor='#000000' stopOpacity='.6'/>
-          <stop offset='100%' stopColor='#000000' stopOpacity='.5'/>
-        </linearGradient>
-  {/* VU Arc Curve Path */}
-        <path id='vu-arc-scale' d={`M ${12.5} ${18.75} Q ${50} ${7.5}, ${87.5} ${18.75}`} pathLength={100}/>
-      </defs>
-    </svg>
-  );
-};
-
-export const screenFrame = (off) => {
-  const colorFrame = '#AAAAAA';
-  return (
-    <g className='screen-frame'>
-      <defs>
-  {/* Outer Screen Shadow Gradients */}
+{/* screenFrame */}
+  {/* screenFrame - Outer Screen Shadow Gradients */}
         <linearGradient id='screen-outer-shadow-horizontal' x1='0%' y1='0%' x2='0%' y2='100%' gradientUnits='objectBoundingBox'>
           <stop offset='0%' stopColor='#000000' stopOpacity={.7}/>
           <stop offset='5%' stopColor='#000000' stopOpacity={.2}/>
@@ -143,7 +27,7 @@ export const screenFrame = (off) => {
           <stop offset='80%' stopColor='#000000' stopOpacity={0}/>
           <stop offset='100%' stopColor='#000000' stopOpacity={.4}/>
         </linearGradient>
-  {/* Inner Screen Shadow Gradients */}
+  {/* screenFrame - Inner Screen Shadow Gradients */}
         <linearGradient id='screen-inner-shadow-corners1' x1='0%' y1='0%' x2='100%' y2='100%' gradientUnits='objectBoundingBox'>
           <stop offset='0%' stopColor='#000000' stopOpacity={0}/>
           <stop offset='40%' stopColor='#000000' stopOpacity={.3}/>
@@ -172,7 +56,7 @@ export const screenFrame = (off) => {
           <stop offset='90%' stopColor='#000000' stopOpacity={.2}/>
           <stop offset='100%' stopColor='#000000' stopOpacity={.6}/>
         </linearGradient>
-  {/* Screen Glare Gradients */}
+  {/* screenFrame - Screen Glare Gradients */}
         <radialGradient id='screen-glare-contours' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
           <stop offset='0%' stopColor='#000000' stopOpacity={0}/>
           <stop offset='25%' stopColor='#000000' stopOpacity={.05}/>
@@ -193,11 +77,231 @@ export const screenFrame = (off) => {
           <stop offset='92%' stopColor='#000000' stopOpacity={.3}/>
           <stop offset='100%' stopColor='#000000' stopOpacity={.6}/>
         </linearGradient>
-  {/* Screen Frame Outer Clip */}
+
+{/* moduleFrame */}
+  {/* moduleFrame -- Master Clip Path */}
+        <clipPath id='module-master-clip'>
+          <rect x={0} y={0} width={100} height={60} rx={2} ry={2}/>
+        </clipPath>
+  {/* moduleFrame -- Screen Clip Path */}
+        <clipPath id='module-screen-clip'>
+          <rect x={5} y={5} width={90} height={50} rx={1} ry={1} stroke='none'/>
+        </clipPath>
+  {/* moduleFrame -- Outer Frame Gradients */}
+        <linearGradient id='module-frame-outer-shadow-horizontal' x1='0%' y1='0%' x2='0%' y2='100%' gradientUnits='objectBoundingBox'>
+          <stop offset='0%' stopColor='#000000' stopOpacity={.5}/>
+          <stop offset='4%' stopColor='#000000' stopOpacity={0}/>
+          <stop offset='96%' stopColor='#000000' stopOpacity={0}/>
+          <stop offset='100%' stopColor='#000000' stopOpacity={.5}/>
+        </linearGradient>
+        <linearGradient id='module-frame-outer-shadow-vertical' x1='0%' y1='0%' x2='100%' y2='0%' gradientUnits='objectBoundingBox'>
+          <stop offset='0%' stopColor='#000000' stopOpacity={.5}/>
+          <stop offset='2%' stopColor='#000000' stopOpacity={0}/>
+          <stop offset='98%' stopColor='#000000' stopOpacity={0}/>
+          <stop offset='100%' stopColor='#000000' stopOpacity={.5}/>
+        </linearGradient>
+        <linearGradient id='module-frame-outer-shadow-diagonal' x1='0%' y1='0%' x2='100%' y2='100%' gradientUnits='objectBoundingBox'>
+          <stop offset='0%' stopColor='#FFFFFF' stopOpacity={.1}/>
+          <stop offset='50%' stopColor='#000000' stopOpacity={0}/>
+          <stop offset='100%' stopColor='#000000' stopOpacity={.4}/>
+        </linearGradient>
+  {/* moduleFrame -- Inner Frame Gradients */}
+        <radialGradient id='module-frame-inner-shadow-corners' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
+          <stop offset='0%' stopColor='#000000' stopOpacity={0}/>
+          <stop offset='50%' stopColor='#000000' stopOpacity={0}/>
+          <stop offset='63%' stopColor='#000000' stopOpacity={.1}/>
+          <stop offset='70%' stopColor='#000000' stopOpacity={.5}/>
+        </radialGradient>
+        <linearGradient id='module-frame-inner-shadow-horizontal' x1='0%' y1='0%' x2='0%' y2='100%' gradientUnits='objectBoundingBox'>
+          <stop offset='0%' stopColor='#000000' stopOpacity={.5}/>
+          <stop offset='4%' stopColor='#000000' stopOpacity={0}/>
+          <stop offset='96%' stopColor='#000000' stopOpacity={.4}/>
+          <stop offset='100%' stopColor='#000000' stopOpacity={0}/>
+        </linearGradient>
+        <linearGradient id='module-frame-inner-shadow-vertical' x1='0%' y1='0%' x2='100%' y2='0%' gradientUnits='objectBoundingBox'>
+          <stop offset='0%' stopColor='#000000' stopOpacity={.5}/>
+          <stop offset='2%' stopColor='#000000' stopOpacity={0}/>
+          <stop offset='98%' stopColor='#000000' stopOpacity={.4}/>
+          <stop offset='100%' stopColor='#000000' stopOpacity={0}/>
+        </linearGradient>
+        <linearGradient id='module-frame-inner-shadow-diagonal' x1='0%' y1='0%' x2='100%' y2='100%' gradientUnits='objectBoundingBox'>
+          <stop offset='0%' stopColor='#000000' stopOpacity={.4}/>
+          <stop offset='45%' stopColor='#000000' stopOpacity={.3}/>
+          <stop offset='50%' stopColor='#000000' stopOpacity={.7}/>
+          <stop offset='55%' stopColor='#000000' stopOpacity={.2}/>
+          <stop offset='94%' stopColor='#FFFFFF' stopOpacity={.1}/>
+          <stop offset='100%' stopColor='#000000' stopOpacity={.2}/>
+        </linearGradient>
+
+{/* modulePanelShadows */}
+  {/* modulePanelShadows -- Panel Shadow Gradients */}
+        <linearGradient id='module-panel-shadow-vertical' x1='0%' y1='0%' x2='100%' y2='0%' gradientUnits='objectBoundingBox'>
+          <stop offset='0%' stopColor='#000000' stopOpacity={.8}/>
+          <stop offset='2%' stopColor='#000000' stopOpacity={0}/>
+          <stop offset='98%' stopColor='#000000' stopOpacity={0}/>
+          <stop offset='100%' stopColor='#000000' stopOpacity={.8}/>
+        </linearGradient>
+        <linearGradient id='module-panel-shadow-horizontal' x1='0%' y1='0%' x2='0%' y2='100%' gradientUnits='objectBoundingBox'>
+          <stop offset='0%' stopColor='#000000' stopOpacity={.8}/>
+          <stop offset='3%' stopColor='#000000' stopOpacity={0}/>
+          <stop offset='97%' stopColor='#000000' stopOpacity={0}/>
+          <stop offset='100%' stopColor='#000000' stopOpacity={.8}/>
+        </linearGradient>
+        <linearGradient id='module-panel-shadow-diagonal' x1='0%' y1='0%' x2='100%' y2='100%' gradientUnits='objectBoundingBox'>
+          <stop offset='0%' stopColor='#000000' stopOpacity={.35}/>
+          <stop offset='35%' stopColor='#000000' stopOpacity={.2}/>
+          <stop offset='50%' stopColor='#000000' stopOpacity={.15}/>
+          <stop offset='100%' stopColor='#000000' stopOpacity={.05}/>
+        </linearGradient>
+        <radialGradient id='module-panel-glare' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
+          <stop offset='0%' stopColor='#000000' stopOpacity={0}/>
+          <stop offset='25%' stopColor='#000000' stopOpacity={0}/>
+          <stop offset='50%' stopColor='#000000' stopOpacity={.1}/>
+          <stop offset='66%' stopColor='#000000' stopOpacity={.3}/>
+          <stop offset='70%' stopColor='#000000' stopOpacity={.5}/>
+        </radialGradient>
+
+{/* bigKnob */}
+  {/* bigKnob -- Knob Shadow Gradients */}
+        <radialGradient id='knob-surface-contour' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
+          <stop offset='0%' stopColor='#000000' stopOpacity={0}/>
+          <stop offset='10%' stopColor='#000000' stopOpacity={.025}/>
+          <stop offset='35%' stopColor='#000000' stopOpacity={.3}/>
+          <stop offset='45%' stopColor='#000000' stopOpacity={.5}/>
+          <stop offset='50%' stopColor='#000000' stopOpacity={.7}/>
+        </radialGradient>
+        <radialGradient id='knob-surface-shadow' cx='50%' cy='50%' r='100%' fx='0%' fy='0%' fr='10%' gradientUnits='objectBoundingBox'>
+          <stop offset='0%' stopColor='#FFFFFF' stopOpacity={1}/>
+          <stop offset='5%' stopColor='#FFFFFF' stopOpacity={.5}/>
+          <stop offset='15%' stopColor='#FFFFFF' stopOpacity={.3}/>
+          <stop offset='25%' stopColor='#FFFFFF' stopOpacity={.2}/>
+          <stop offset='40%' stopColor='#FFFFFF' stopOpacity={.1}/>
+          <stop offset='65%' stopColor='#FFFFFF' stopOpacity={0}/>
+          <stop offset='70%' stopColor='#000000' stopOpacity={0}/>
+          <stop offset='80%' stopColor='#000000' stopOpacity={1}/>
+        </radialGradient>
+        <linearGradient id='knob-notch-gradient' x1='0%' y1='0%' x2='0%' y2='100%' gradientUnits='objectBoundingBox'>
+          <stop offset='0%' stopColor='#000000' stopOpacity={.5}/>
+          <stop offset='10%' stopColor='#000000' stopOpacity={.6}/>
+          <stop offset='50%' stopColor='#000000' stopOpacity={.7}/>
+          <stop offset='90%' stopColor='#000000' stopOpacity={.6}/>
+          <stop offset='100%' stopColor='#000000' stopOpacity={.5}/>
+        </linearGradient>
+
+{/* oscButton */}
+  {/* oscButton -- Button Contour Gradients */}
+        <linearGradient id='button-shadow-horizontal' x1='0%' y1='0%' x2='0%' y2='100%' gradientUnits='objectBoundingBox'>
+          <stop offset='0%' stopColor='#000000' stopOpacity={1}/>
+          <stop offset='8%' stopColor='#000000' stopOpacity={0}/>
+          <stop offset='92%' stopColor='#000000' stopOpacity={0}/>
+          <stop offset='100%' stopColor='#000000' stopOpacity={1}/>
+        </linearGradient>
+        <linearGradient id='button-shadow-vertical' x1='0%' y1='0%' x2='100%' y2='0%' gradientUnits='objectBoundingBox'>
+          <stop offset='0%' stopColor='#000000' stopOpacity={1}/>
+          <stop offset='8%' stopColor='#000000' stopOpacity={0}/>
+          <stop offset='92%' stopColor='#000000' stopOpacity={0}/>
+          <stop offset='100%' stopColor='#000000' stopOpacity={1}/>
+        </linearGradient>
+        <radialGradient id='button-shadow-center' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
+          <stop offset='0%' stopColor='#000000' stopOpacity={.4}/>
+          <stop offset='40%' stopColor='#000000' stopOpacity={.2}/>
+          <stop offset='50%' stopColor='#000000' stopOpacity={0}/>
+          <stop offset='60%' stopColor='#000000' stopOpacity={.2}/>
+        </radialGradient>
+  {/* oscButton -- Button Active Gradients */}
+        <radialGradient id='button-active-base' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
+          <stop offset='0%' stopColor='#C12822' stopOpacity={1}/>
+          <stop offset='20%' stopColor='#C12822' stopOpacity={.8}/>
+          <stop offset='50%' stopColor='#C12822' stopOpacity={.7}/>
+          <stop offset='70%' stopColor='#C12822' stopOpacity={.5}/>
+        </radialGradient>
+        <radialGradient id='button-active-glow' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
+          <stop offset='0%' stopColor='#FF0000' stopOpacity={.5}/>
+          <stop offset='30%' stopColor='#FF0000' stopOpacity={.3}/>
+          <stop offset='50%' stopColor='#000000' stopOpacity={.1}/>
+          <stop offset='70%' stopColor='#000000' stopOpacity={.2}/>
+        </radialGradient>
+
+{/* slider */}
+  {/* slider -- Slider Ridge Gradients */}
+        <linearGradient id='slider-ridges-top' x1='0%' y1='0%' x2='0%' y2='15%' gradientUnits='objectBoundingBox' spreadMethod='repeat'>
+          <stop offset='0%' stopColor='#000000' stopOpacity={.5}/>
+          <stop offset='50%' stopColor='#000000' stopOpacity={0}/>
+          <stop offset='60%' stopColor='#000000' stopOpacity={.2}/>
+          <stop offset='100%' stopColor='#000000' stopOpacity={.5}/>
+        </linearGradient>
+        <linearGradient id='slider-ridges-bottom' x1='0%' y1='15%' x2='0%' y2='0%' gradientUnits='objectBoundingBox' spreadMethod='repeat'>
+          <stop offset='0%' stopColor='#000000' stopOpacity={.5}/>
+          <stop offset='50%' stopColor='#000000' stopOpacity={0}/>
+          <stop offset='60%' stopColor='#000000' stopOpacity={.2}/>
+          <stop offset='100%' stopColor='#000000' stopOpacity={.5}/>
+        </linearGradient>
+  {/* slider -- Slider Shadow Gradients */}
+        <linearGradient id='slider-shadow-horizontal' x1='0%' y1='0%' x2='0%' y2='100%' gradientUnits='objectBoundingBox'>
+          <stop offset='0%' stopColor='#000000' stopOpacity={0}/>
+          <stop offset='6%' stopColor='#000000' stopOpacity={.4}/>
+          <stop offset='15%' stopColor='#000000' stopOpacity={.7}/>
+          <stop offset='50%' stopColor='#000000' stopOpacity={.8}/>
+          <stop offset='60%' stopColor='#000000' stopOpacity={.6}/>
+          <stop offset='90%' stopColor='#000000' stopOpacity={.3}/>
+          <stop offset='100%' stopColor='#000000' stopOpacity={1}/>
+        </linearGradient>
+        <linearGradient id='slider-shadow-vertical' x1='0%' y1='0%' x2='100%' y2='0%' gradientUnits='objectBoundingBox'>
+          <stop offset='0%' stopColor='#000000' stopOpacity={1}/>
+          <stop offset='4%' stopColor='#000000' stopOpacity={.4}/>
+          <stop offset='10%' stopColor='#000000' stopOpacity={.1}/>
+          <stop offset='50%' stopColor='#000000' stopOpacity={0}/>
+          <stop offset='90%' stopColor='#000000' stopOpacity={.1}/>
+          <stop offset='96%' stopColor='#000000' stopOpacity={.4}/>
+          <stop offset='100%' stopColor='#000000' stopOpacity={1}/>
+        </linearGradient>
+
+{/* colorSwatch */}
+  {/* colorSwatch -- Contour Shadow Gradients */}
+        <radialGradient id='color-swatch-shadow-dark' cx='50%' cy='50%' r='50%' gradientUnits='objectBoundingBox'>
+          <stop offset='0%' stopColor='#000000' stopOpacity={0}/>
+          <stop offset='50%' stopColor='#000000' stopOpacity={.1}/>
+          <stop offset='70%' stopColor='#000000' stopOpacity={.3}/>
+          <stop offset='90%' stopColor='#000000' stopOpacity={.7}/>
+          <stop offset='100%' stopColor='#000000' stopOpacity={1}/>
+        </radialGradient>
+        <radialGradient id='color-swatch-shadow-light' cx='50%' cy='50%' r='50%' fx='28%' fy='28%' fr='4%' gradientUnits='objectBoundingBox'>
+          <stop offset='0%' stopColor='#FFFFFF' stopOpacity={.8}/>
+          <stop offset='1%' stopColor='#FFFFFF' stopOpacity={.6}/>
+          <stop offset='3%' stopColor='#FFFFFF' stopOpacity={.4}/>
+          <stop offset='20%' stopColor='#FFFFFF' stopOpacity={.2}/>
+          <stop offset='50%' stopColor='#000000' stopOpacity={.1}/>
+        </radialGradient>
+  {/* colorSwatch -- Swatch Glow Gradient */}
+        <radialGradient id='color-swatch-glow' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
+          <stop offset='0%' stopColor='#FFFFFF' stopOpacity={.2}/>
+          <stop offset='26%' stopColor='#FFFFFF' stopOpacity={.17}/>
+          <stop offset='30%' stopColor='#FFFFFF' stopOpacity={.15}/>
+          <stop offset='32%' stopColor='#FFFFFF' stopOpacity={.1}/>
+          <stop offset='38%' stopColor='#FFFFFF' stopOpacity={.05}/>
+          <stop offset='50%' stopColor='#FFFFFF' stopOpacity={0}/>
+        </radialGradient>
+
+{/* MISC */}
+  {/* VU Arc Curve Path */}
+        <path id='vu-arc-scale' d={`M ${12.5} ${18.75} Q ${50} ${7.5}, ${87.5} ${18.75}`} pathLength={100}/>
+
+      </defs>
+    </svg>
+  );
+};
+
+
+export const screenFrame = (off) => {
+  const colorFrame = '#AAAAAA';
+  return (
+    <g className='screen-frame'>
+      <defs>
+  {/* screenFrame - Screen Frame Outer Clip */}
         <clipPath id='screen-outer-clip'>
           <rect width={40} height={30} rx={1}/>
         </clipPath>
-  {/* Screen Frame Inner Masks */}
+  {/* screenFrame - Screen Frame Inner Masks */}
         <mask id='screen-inner-mask'>
           <rect width={40} height={30} fill='white'/>
           <rect x={2} y={1.5} rx={1} width={36} height={27} fill='black'/>
@@ -355,9 +459,9 @@ export const moduleFrame = () => {
         />
   {/* Outer Frame Contour Shadows */}
         <g className='module-frame-outer-shadows'>
-          <rect fill='url(#frame-outer-shadow-horizontal)' x={0} y={0} width={100} height={60} rx={2} ry={2} stroke='none'/>
-          <rect fill='url(#frame-outer-shadow-vertical)' x={0} y={0} width={100} height={60} rx={2} ry={2} stroke='none'/>
-          <rect fill='url(#frame-outer-shadow-diagonal)' x={0} y={0} width={100} height={60} rx={2} ry={2} stroke='none'/>
+          <rect fill='url(#module-frame-outer-shadow-horizontal)' x={0} y={0} width={100} height={60} rx={2} ry={2} stroke='none'/>
+          <rect fill='url(#module-frame-outer-shadow-vertical)' x={0} y={0} width={100} height={60} rx={2} ry={2} stroke='none'/>
+          <rect fill='url(#module-frame-outer-shadow-diagonal)' x={0} y={0} width={100} height={60} rx={2} ry={2} stroke='none'/>
         </g>
       </g>
 {/* Inner Frame Group */}
@@ -377,10 +481,10 @@ export const moduleFrame = () => {
         />
   {/* Inner Frame Contour Shadows */}
         <g className='module-frame-inner-shadows'>
-          <rect fill='url(#frame-inner-shadow-corners)' x={2.5} y={2.5} width={95} height={55} rx={2} ry={2} stroke='none'/>
-          <rect fill='url(#frame-inner-shadow-horizontal)' x={2.5} y={2.5} width={95} height={55} rx={2} ry={2} stroke='none'/>
-          <rect fill='url(#frame-inner-shadow-vertical)' x={2.5} y={2.5} width={95} height={55} rx={2} ry={2} stroke='none'/>
-          <rect fill='url(#frame-inner-shadow-diagonal)' x={2.5} y={2.5} width={95} height={55} rx={2} ry={2} stroke='none'/>
+          <rect fill='url(#module-frame-inner-shadow-corners)' x={2.5} y={2.5} width={95} height={55} rx={2} ry={2} stroke='none'/>
+          <rect fill='url(#module-frame-inner-shadow-horizontal)' x={2.5} y={2.5} width={95} height={55} rx={2} ry={2} stroke='none'/>
+          <rect fill='url(#module-frame-inner-shadow-vertical)' x={2.5} y={2.5} width={95} height={55} rx={2} ry={2} stroke='none'/>
+          <rect fill='url(#module-frame-inner-shadow-diagonal)' x={2.5} y={2.5} width={95} height={55} rx={2} ry={2} stroke='none'/>
         </g>
       </g>
     </g>
@@ -391,10 +495,10 @@ export const moduleFrame = () => {
 export const modulePanelShadows = () => {
   return (
     <g className='module-panel-shadows'>
-      <rect fill='url(#panel-shadow-vertical)' x={5} y={5} width={90} height={50} rx={1} ry={1} stroke='none'/>
-      <rect fill='url(#panel-shadow-horizontal)' x={5} y={5} width={90} height={50} rx={1} ry={1} stroke='none'/>
-      <rect fill='url(#panel-shadow-diagonal)' x={5} y={5} width={90} height={50} rx={1} ry={1} stroke='none'/>
-      <rect fill='url(#panel-glare)' x={5} y={5} width={90} height={50} rx={1} ry={1} stroke='none'/>
+      <rect fill='url(#module-panel-shadow-vertical)' x={5} y={5} width={90} height={50} rx={1} ry={1} stroke='none'/>
+      <rect fill='url(#module-panel-shadow-horizontal)' x={5} y={5} width={90} height={50} rx={1} ry={1} stroke='none'/>
+      <rect fill='url(#module-panel-shadow-diagonal)' x={5} y={5} width={90} height={50} rx={1} ry={1} stroke='none'/>
+      <rect fill='url(#module-panel-glare)' x={5} y={5} width={90} height={50} rx={1} ry={1} stroke='none'/>
     </g>
   );
 };
@@ -441,42 +545,7 @@ export const oscButton = (wave, current) => {
     square: `M ${2} ${5}, ${2} ${2.5}, ${5} ${2.5}, ${5} ${7.5}, ${8} ${7.5}, ${8} ${5}`,
   };
   return (
-    <g className='osc-button-group'>
-      <defs>
-  {/* Button Contour Gradients */}
-        <linearGradient id='button-shadow-horizontal' x1='0%' y1='0%' x2='0%' y2='100%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#000000' stopOpacity={1}/>
-          <stop offset='8%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='92%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='100%' stopColor='#000000' stopOpacity={1}/>
-        </linearGradient>
-        <linearGradient id='button-shadow-vertical' x1='0%' y1='0%' x2='100%' y2='0%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#000000' stopOpacity={1}/>
-          <stop offset='8%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='92%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='100%' stopColor='#000000' stopOpacity={1}/>
-        </linearGradient>
-        <radialGradient id='button-shadow-center' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#000000' stopOpacity={.4}/>
-          <stop offset='40%' stopColor='#000000' stopOpacity={.2}/>
-          <stop offset='50%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='60%' stopColor='#000000' stopOpacity={.2}/>
-        </radialGradient>
-  {/* Button Active Gradients */}
-        <radialGradient id='button-active-base' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#C12822' stopOpacity={1}/>
-          <stop offset='20%' stopColor='#C12822' stopOpacity={.8}/>
-          <stop offset='50%' stopColor='#C12822' stopOpacity={.7}/>
-          <stop offset='70%' stopColor='#C12822' stopOpacity={.5}/>
-        </radialGradient>
-        <radialGradient id='button-active-glow' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#FF0000' stopOpacity={.5}/>
-          <stop offset='30%' stopColor='#FF0000' stopOpacity={.3}/>
-          <stop offset='50%' stopColor='#000000' stopOpacity={.1}/>
-          <stop offset='70%' stopColor='#000000' stopOpacity={.2}/>
-        </radialGradient>
-      </defs>
-
+    <g className='osc-button'>
 {/* Button */}
       <g className='osc-button-main'>
   {/* Button Base Layer */}
@@ -534,10 +603,92 @@ export const oscButton = (wave, current) => {
 };
 
 
+export const slider = () => {
+  return (
+    <g className='slider'>
+{/* Slider Base */}
+      <rect
+        x={0}
+        y={0}
+        rx={1}
+        width={10}
+        height={20}
+        fill='#FFFFFF'
+      />
+{/* Slider Ridges */}
+      <rect fill='url(#slider-ridges-top)' x={0} y={0} width={10} height={10}/>
+      <rect fill='url(#slider-ridges-bottom)' x={0} y={10} width={10} height={10}/>
+{/* Slider Shadow Horizontal */}
+      <rect fill='url(#slider-shadow-horizontal)' x={0} y={0} width={10} height={20}/>
+{/* Slider Center Mark */}
+      <rect
+        x={0}
+        y={9.5}
+        width={10}
+        height={1}
+        fill='#FFFFFF'
+        stroke='#000000'
+        strokeWidth='.4%'
+        opacity={.6}
+      />
+{/* Slider Shadow Vertical */}
+      <rect fill='url(#slider-shadow-vertical)' x={0} y={0} width={10} height={20}/>
+{/* Slider Outline */}
+      <rect
+        x={0}
+        y={0}
+        rx={1}
+        width={10}
+        height={20}
+        fill='none'
+        stroke='#000000'
+        strokeWidth='.2%'
+      />
+    </g>
+  );
+};
 
-{/*
 
-
-
-*/}
-
+export const colorSwatch = (color, calib, src) => {
+  const active = calib === src ? true : false;
+  const pulse = {animation: 'pulsar 1s linear infinite'};
+  const hide = {display: 'none'};
+  return (
+    <g className='color-swatch'>
+{/* Swatch Base Backpane */}
+      <circle className='color-swatch-base'
+        cx={5}
+        cy={5}
+        r={5}
+        fill='#000000'
+        stroke='#444444'
+        strokeWidth='8%'
+      />
+{/* Swatch Base Color */}
+      <circle className='color-swatch-base-color'
+        style={active ? pulse : null}
+        cx={5}
+        cy={5}
+        r={5}
+        fill={color}
+        stroke='#000000'
+        strokeWidth='8%'
+      />
+{/* Swatch Illumination Halo Layer */}
+      <circle className='color-swatch-halo'
+        style={active ? pulse : hide}
+        cx={5}
+        cy={5}
+        r={5}
+        fill='url(#color-swatch-glow)'
+        stroke='none'
+        opacity={active ? 1 : 0}
+      />
+{/* Swatch Countour Shadows */}
+      <g className='color-swatch-shadows'>
+        <circle fill='url(#color-swatch-shadow-dark)' cx={5} cy={5} r={5} stroke='none'/>
+        <circle fill='url(#color-swatch-shadow-light)' cx={5} cy={5} r={5} stroke='none'/>
+      </g>
+    </g>
+  );
+};

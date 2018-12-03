@@ -10,16 +10,16 @@ export default function Oscillators(props) {
       <div className='inner'>
         <h4 className='label'>{label}</h4>
         <div className='button-box'>
-          <svg className='osc-button' viewBox='0 0 10 10' onClick={() => props.update(osc, 'sine')}>
+          <svg className='button' viewBox='0 0 10 10' onClick={() => props.update(osc, 'sine')}>
             {oscButton('sine', current)}
           </svg>
-          <svg className='osc-button' viewBox='0 0 10 10' onClick={() => props.update(osc, 'triangle')}>
+          <svg className='button' viewBox='0 0 10 10' onClick={() => props.update(osc, 'triangle')}>
             {oscButton('triangle', current)}
           </svg>
-          <svg className='osc-button' viewBox='0 0 10 10' onClick={() => props.update(osc, 'sawtooth')}>
+          <svg className='button' viewBox='0 0 10 10' onClick={() => props.update(osc, 'sawtooth')}>
             {oscButton('sawtooth', current)}
           </svg>
-          <svg className='osc-button' viewBox='0 0 10 10' onClick={() => props.update(osc, 'square')}>
+          <svg className='button' viewBox='0 0 10 10' onClick={() => props.update(osc, 'square')}>
             {oscButton('square', current)}
           </svg>
         </div>

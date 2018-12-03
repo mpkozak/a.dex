@@ -101,7 +101,7 @@
   align-items: center;
   justify-content: space-around;
   width: 50%;
-  height: 80%;
+  height: 90%;
 }
 
 .Theremin .control-box .element {
@@ -113,30 +113,16 @@
   height: 80%;
 }
 
-.Theremin .swatch {
-  width: 4vmin;
-  height: 4vmin;
-  border-radius: 2vmin;
-  border: 1px solid rgba(255,255,255,.5);
-  box-shadow: .5vmin .5vmin 1vmin #000000;
-}
-
 .Theremin .label {
   width: auto;
   text-align: right;
 }
 
-.Theremin .color-box .pulse {
-  animation: pulsar 1s linear infinite;
-}
-
-@keyframes pulsar {
-  0% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0;
-  }
+.Theremin .swatch {
+  width: 5vmin;
+  height: 5vmin;
+  border-radius: 2.5vmin;
+  box-shadow: .25vmin .25vmin 1vmin #000000;
 }
 
 .Theremin .knob {
@@ -144,4 +130,13 @@
   height: 5vmin;
   border-radius: 2.5vmin;
   box-shadow: .5vmin .5vmin 1vmin #000000;
+}
+
+@keyframes pulsar {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: .1;
+  }
 }

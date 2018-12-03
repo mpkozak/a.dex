@@ -6,7 +6,7 @@ import Oscillators from './Oscillators.js';
 import Effects from './Effects.js';
 import Meters from './Meters.js';
 import Master from './Master.js';
-import Theremin from './_instruments/Theremin.js';
+import Theremin from './Theremin.js';
 
 export default class Main extends Component {
   constructor() {
@@ -18,20 +18,20 @@ export default class Main extends Component {
         osc2: 'sine',
         fmWidth: {v: 0, max: 1200, min: -1200},
         fmDepth: {v: 0, max: 3000, min: 0},
-        volume: {v: .73, max: 1, min: 0},
-      },
-      micEnabled: false,
+        eqLo: {v: 5, max: 10, min: 0},
+        eqMid: {v: 5, max: 10, min: 0},
+        eqHi: {v: 5, max: 10, min: 0},
+        volume: {v: .73, max: 1, min: 0}
+      }
     };
     this.updateParam = this.updateParam.bind(this);
     this.updateOsc = this.updateOsc.bind(this);
+    this.audioMute = this.audioMute.bind(this);
+    this.controllerRefresh = this.controllerRefresh.bind(this);
   }
 
   componentDidMount() {
     this.audioInit();
-  }
-
-  componentDidUpdate() {
-    // console.log('main updated')
   }
 
   audioInit() {
@@ -58,8 +58,6 @@ export default class Main extends Component {
     osc1.start();
     osc2.start();
 
-    // const lpf = new BiquadFilterNode(ctx, {type: 'lowpass', Q: 1, frequency: params.tone.v});
-
     const audio = {
       ctx: ctx,
       osc1: osc1,
@@ -77,18 +75,49 @@ export default class Main extends Component {
     this.setState(prevState => ({ audio }));
   }
 
-  // micEnable() {
-  //   const { ctx } = this.state.audio;
+  audioMute() {
+    const { audio } = this.state;
+    const ctx = audio.ctx;
+    const latency = audio.latency;
+    const instGain = audio.instGain;
+    help.setAudioParam(instGain.gain, 0, ctx, latency * 2);
+  }
 
-  //   navigator.mediaDevices.getUserMedia({audio: true})
-  //     .then(stream => {
-  //       const mic = ctx.createMediaStreamSource(stream);
-  //       this.setState(prevState => ({
-  //         micEnabled: true,
-  //         audio: {...prevState.audio, mic: mic},
-  //       }));
-  //     });
-  // }
+  audioRefresh(key) {
+    const { audio } = this.state;
+    const ctx = audio.ctx;
+    const latency = audio.latency;
+    const osc1 = audio.osc1;
+    const osc2 = audio.osc2;
+    const fmGain = audio.fmGain;
+    const instGain = audio.instGain;
+    const masterGain = audio.masterGain;
+
+    switch (key) {
+      case 'osc1' :
+        help.setAudioParam(instGain.gain, 0, ctx, latency)
+          .then(res => {
+            osc1.type = this.state.params.osc1;
+          });
+        break;
+      case 'osc2' :
+        help.setAudioParam(instGain.gain, 0, ctx, latency)
+          .then(res => {
+            osc2.type = this.state.params.osc2;
+          });
+        break;
+      case 'fmDepth' :
+        help.setAudioParam(fmGain.gain, this.state.params.fmDepth.v, ctx, latency);
+        break;
+      case 'fmWidth' :
+        help.setAudioParam(osc2.detune, this.state.params.fmWidth.v, ctx, latency);
+        break;
+      case 'volume' :
+        help.setAudioParam(masterGain.gain, this.state.params.volume.v, ctx, latency);
+        break;
+      default : return null;
+    };
+  }
 
   micToggle() {
     const { ctx } = this.state.audio;
@@ -98,7 +127,6 @@ export default class Main extends Component {
     const { analyserSrc } = this.state.audio;
 
     if (!mic) {
-      // this.micEnable();
       navigator.mediaDevices.getUserMedia({audio: true})
         .then(stream => {
           const mic = ctx.createMediaStreamSource(stream);
@@ -142,50 +170,19 @@ export default class Main extends Component {
     this.audioRefresh(osc);
   }
 
-  audioRefresh(key) {
+  controllerRefresh(level, freq) {
     const { audio } = this.state;
-    const ctx = audio.ctx;
-    const latency = audio.latency;
-
-    const osc1 = audio.osc1;
-    const osc2 = audio.osc2;
-    const fmGain = audio.fmGain;
-    const instGain = audio.instGain;
-    const masterGain = audio.masterGain;
-
-    switch (key) {
-      case 'osc1' :
-        help.setAudioParam(instGain.gain, 0, ctx, latency)
-          .then(res => {
-            osc1.type = this.state.params.osc1;
-          });
-        break;
-      case 'osc2' :
-        help.setAudioParam(instGain.gain, 0, ctx, latency)
-          .then(res => {
-            osc2.type = this.state.params.osc2;
-          });
-        break;
-      case 'fmDepth' :
-        help.setAudioParam(fmGain.gain, this.state.params.fmDepth.v, ctx, latency);
-        break;
-      case 'fmWidth' :
-        help.setAudioParam(osc2.detune, this.state.params.fmWidth.v, ctx, latency);
-        break;
-      case 'volume' :
-        help.setAudioParam(masterGain.gain, this.state.params.volume.v, ctx, latency);
-        break;
-      default : return null;
-    }
+    const { ctx } = this.state.audio;
+    const hz = freq ? freq * audio.baseHz : audio.baseHz;
+    help.setAudioParam(audio.instGain.gain, level, ctx, audio.latency);
+    help.setAudioParam(audio.osc1.frequency, hz, ctx, audio.latency);
+    help.setAudioParam(audio.osc2.frequency, hz, ctx, audio.latency);
   }
-
-
-
 
   render() {
     const { params } = this.state;
     const { audio } = this.state;
-    const { ctx } = this.state.audio;
+    // const { ctx } = this.state.audio;
 
     return (
       <div className='Main'>
@@ -193,8 +190,7 @@ export default class Main extends Component {
 
         <div className='controller'>
           <div className='outer'>
-            {/*{ctx ? <Theremin audio={audio} params={params} /> : null}*/}
-            {audio ? <Theremin audio={audio} params={params} /> : null}
+            <Theremin refresh={this.controllerRefresh} mute={this.audioMute} />
           </div>
         </div>
 
@@ -207,20 +203,30 @@ export default class Main extends Component {
               <div className='by'>
                 <h6>by</h6> <h5 className='kozak'> kozak</h5>
               </div>
+            {/*
+              <h6>Latency: {audio ? Math.floor(ctx.baseLatency * 1000) : ''} ms</h6>
+              <button onClick={() => this.micToggle()}>toggle</button>
+            */}
             </div>
           </div>
         </div>
 
         <div className='settings'>
           <div className='outer'>
-            <div className='inner'>
-              <h6>Latency: {audio ? Math.floor(ctx.baseLatency * 1000) : ''} ms</h6>
-              <button onClick={() => this.micToggle()}>toggle</button>
+            <div className="inner">
+              <h4 className='label'>Instructions:</h4>
+              <ul>
+                <li>Select two (real world) objects of different colors (expo markers work well).</li>
+                <li>For each object: Hold the object up within the camera frame. Click on one of the color boxes in 'Set Colors' and then click on the object within the video frame. You should see a tracking box of the selected color appear around the object in the video frame.</li>
+                <li>If the tracking box doesn’t appear (or only appears intermittently), use the 'Sensitivity' knob to adjust..</li>
+                <li>Volume is controlled by moving the corresponding color object up and down.</li>
+                <li>Pitch is controlled by moving the corresponding color object left and right.</li>
+              </ul>
             </div>
           </div>
         </div>
 
-        <Meters audio={audio} />
+        <Meters analyser={audio.analyser} />
 
         <Oscillators params={params} update={this.updateOsc} />
 
@@ -235,58 +241,3 @@ export default class Main extends Component {
     );
   }
 }
-
-
-
-
-
-
-
-
-
-{/*
-
-
-
-
-import { bigKnob } from './_svg.js';
-
-
-
-
-
-        // <div className='fm outer'>
-
-
-
-
-        // </div>
-
-        //
-
-
-
-
-
-        {template.moduleDefs()}
-        {this.showModules()}
-            <Wave ctx={audioCtx} src={mic} />
-            <Vu ctx={audioCtx} src={mic} />
-            <Spec ctx={audioCtx} src={mic} />
-            <Note ctx={audioCtx} src={mic} />
-            <Freq ctx={audioCtx} src={mic} />
-            <div className='inst'>
-              <h6>To configure:</h6>
-              <ul>
-                <li>Select two (real world) objects of different colors (expo markers work well).</li>
-                <li>For each object: Hold the object up within the camera frame. Click on one of the color boxes in ‘Set Colors’ and then click on the object within the video frame. You should see a tracking box of the selected color appear around the object in the video frame.</li>
-                <li>If the tracking box doesn’t appear (or only appears intermittently), use the ‘Sense’ knob to adjust the color sensitivity.</li>
-              </ul>
-              <h6>To play:</h6>
-              <ul>
-                <li>Volume is controlled by moving the corresponding color object up and down.</li>
-                <li>Pitch is controlled by moving the corresponding color object left and right.</li>
-              </ul>
-            </div>
-
-*/}

@@ -1,5 +1,6 @@
 const help = {};
 
+
 help.setAudioParam = async (param, val, ctx, delay) => {
   const finish = (t) => new Promise(res => setTimeout(res, t));
   const now = ctx.currentTime;
@@ -69,6 +70,7 @@ help.makeDomain = (extent, arr) => {
 };
 
 
+
 // help.getNote = (Hz) => {
 //   const noteStr = ['A', 'A#/B♭', 'B', 'C', 'C#/D♭', 'D', 'D#/E♭', 'E', 'F', 'F#/G♭', 'G', 'G#/A♭'];
 //   // const A0 = 27.5;
@@ -90,8 +92,4 @@ help.makeDomain = (extent, arr) => {
 //   return arr;
 // };
 
-
-
 export default help;
-
-// module.exports = help;

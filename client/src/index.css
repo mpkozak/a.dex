@@ -58,6 +58,14 @@ p {
   font-size: 5%;
 }
 
+li {
+  margin: 0 1vmin;
+  text-align: left;
+  font-size: 10%;
+  /*font-family: 'Orbitron', sans-serif;*/
+font-family: 'Montserrat Alternates', sans-serif;
+}
+
 .alpha {
   font-size: 150%;
   font-family: Arial, sans-serif;

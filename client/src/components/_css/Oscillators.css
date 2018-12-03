@@ -18,14 +18,14 @@
   justify-content: space-around;
 }
 
-.oscillator .osc-button {
+.oscillator .button {
   width: 20%;
   height: auto;
   border-radius: .4vmin;
   box-shadow: .2vmin .2vmin .5vmin #000000;
 }
 
-.osc-button:active {
+.oscillator .button:active {
   transform: scale(.95);
   box-shadow: .2vmin .2vmin .2vmin #000000;
 }

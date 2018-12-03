@@ -3,7 +3,7 @@ import * as d3 from 'd3';
 import { moduleFrame, modulePanelShadows } from '../_svg.js';
 
 export default function Wave(props) {
-  const analyser = props.audio.analyser;
+  const { analyser } = props;
   const fftBins = analyser.frequencyBinCount;
   const wave = new Float32Array(fftBins);
 
@@ -124,5 +124,4 @@ export default function Wave(props) {
       </svg>
     </div>
   );
-
 }

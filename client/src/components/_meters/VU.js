@@ -3,17 +3,15 @@ import * as d3 from 'd3';
 import { moduleFrame, modulePanelShadows } from '../_svg.js';
 
 export default function Wave(props) {
-  const analyser = props.audio.analyser;
+  const { analyser } = props;
   const fftBins = analyser.frequencyBinCount;
   const wave = new Float32Array(fftBins);
-  // const ms = (fftBins / ctx.sampleRate) * 1000;
   let peak = false;
-
 
   const moveNeedle = (rmsVU, peak) => {
     const rms = rmsVU === -Infinity ? -60 : rmsVU;
-    const vu = [-60, -20, -10, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 20];
-    const deg = [-48, -40, -26, -15, -10.5, -5, -0.5, 5, 10, 15, 20, 25, 30, 35, 48];
+    const vu = [-2000, -60, -20, -10, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 20];
+    const deg = [-49, -48, -40, -26, -15, -10.5, -5, -0.5, 5, 10, 15, 20, 25, 30, 35, 48];
 
     const needleScale = d3.scaleLinear().domain(vu).range(deg);
     const ledScale = d3.scaleQuantize().domain([false, true]).range(['#AB2D1E', '#FF452F']);
@@ -29,26 +27,26 @@ export default function Wave(props) {
     const needle = d3.select('#vu-svg-d3-needle').data([rms]);
     needle
       .attr('transform', transNeedle);
-    // needle.transition().duration(10)
-      // .attr('transform', transNeedle);
+    needle.transition().duration(100)
+      .attr('transform', transNeedle);
 
     const needleShadow = d3.select('#vu-svg-d3-needleShadow').data([rms]);
     needleShadow
       .attr('transform', transNeedleShadow);
-    // needleShadow.transition().duration(10)
-      // .attr('transform', transNeedleShadow);
+    needleShadow.transition().duration(100)
+      .attr('transform', transNeedleShadow);
 
     const led = d3.select('#vu-svg-d3-led').data([peak]);
     led
       .attr('fill', d => ledScale(d));
-    // led.transition().duration(10)
-      // .attr('fill', d => ledScale(d));
+    led.transition().duration(25)
+      .attr('fill', d => ledScale(d));
 
     const ledHalo = d3.select('#vu-svg-d3-ledHalo').data([peak]);
     ledHalo
       .attr('opacity', d => ledHaloScale(d));
-    // ledHalo.transition().duration(10)
-      // .attr('opacity', d => ledHaloScale(d));
+    ledHalo.transition().duration(25)
+      .attr('opacity', d => ledHaloScale(d));
   }
 
   const drawSvg = () => {

@@ -4,7 +4,7 @@ import * as d3 from 'd3';
 import { moduleFrame, modulePanelShadows } from '../_svg.js';
 
 export default function Spec(props) {
-  const analyser = props.audio.analyser;
+  const { analyser } = props;
   const fftBins = analyser.frequencyBinCount;
   const slices = 60;
   const dataSet = new Array(slices).fill(new Array(fftBins).fill('#000000'));

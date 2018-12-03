@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import tracking from 'tracking';
 import * as d3 from 'd3';
-import './Theremin.css';
-import help from '../_help.js';
-import { screenFrame, bigKnob } from '../_svg.js';
+import './_css/Theremin.css';
+import help from './_help.js';
+import { screenFrame, bigKnob, colorSwatch } from './_svg.js';
 
 export default class Theremin extends Component {
     constructor(props) {
     super(props)
     this.state = {
       video: false,
+      calib: false,
       colorGain: {r: null, g: null, b: null},
       colorFreq: {r: null, g: null, b: null},
       params: {
@@ -35,8 +36,10 @@ export default class Theremin extends Component {
 
   componentDidUpdate() {
     this.trackerDraw();
-    if (this.state.dataGain || this.state.dataFreq) {
+    if (this.state.dataGain && this.state.dataFreq) {
       this.audioRefresh();
+    } else {
+      this.props.mute();
     };
   }
 
@@ -119,14 +122,11 @@ export default class Theremin extends Component {
     circles.exit().remove();
   }
 
-  handleClickColor(e) {
+  handleClickColor(target) {
     const frame = this.refs.canvas;
-    const classList = e.target.classList;
-    const target = classList[1];
-    classList.add('pulse');
+    this.setState(prevState => ({ calib: target }))
 
     const getCoords = (e) => {
-      classList.remove('pulse');
       frame.removeEventListener('click', getCoords);
 
       const width = this.refs.canvas.width;
@@ -140,7 +140,8 @@ export default class Theremin extends Component {
 
       localStorage.setItem(target, JSON.stringify(color));
       this.setState(prevState => ({
-        [target]: color
+        [target]: color,
+        calib: false
       }));
     };
     frame.addEventListener('click', getCoords);
@@ -162,15 +163,12 @@ export default class Theremin extends Component {
     const { dataFreq } = this.state;
     const width = this.refs.video.clientWidth;
     const height = this.refs.video.clientHeight;
-    if (dataGain && dataFreq) {
-      const x = dataFreq.x + (dataFreq.width / 2);
-      const y = dataGain.y + (dataGain.height / 2);
-      const freq = Math.pow(2, (width - x)/(width / this.state.params.range.v));
-      const level = (height - y) / height;
-      this.props.refresh(level, freq);
-    } else {
-      this.props.mute();
-    };
+
+    const x = dataFreq.x + (dataFreq.width / 2);
+    const y = dataGain.y + (dataGain.height / 2);
+    const freq = Math.pow(2, (width - x)/(width / this.state.params.range.v));
+    const level = (height - y) / height;
+    this.props.refresh(level, freq);
   }
 
   makeControlBox() {
@@ -195,9 +193,10 @@ export default class Theremin extends Component {
   }
 
   render() {
+    const { calib } = this.state;
     const { colorGain } = this.state;
     const { colorFreq } = this.state;
-    const colorV = `rgb(${colorGain.r}, ${colorGain.g}, ${colorGain.b})`;
+    const colorG = `rgb(${colorGain.r}, ${colorGain.g}, ${colorGain.b})`;
     const colorF = `rgb(${colorFreq.r}, ${colorFreq.g}, ${colorFreq.b})`;
 
     return (
@@ -218,11 +217,15 @@ export default class Theremin extends Component {
           <div className='settings-box'>
           <h4 className='label'>Set Colors</h4>
             <div className='element'>
-              <div className='swatch colorGain' onClick={this.handleClickColor} style={{backgroundColor: colorV}} />
+              <svg className='swatch colorGain' viewBox='0 0 10 10' onClick={() => this.handleClickColor('colorGain')}>
+                {colorSwatch(colorG, calib, 'colorGain')}
+              </svg>
               <h5 className='label-small'>GAIN</h5>
             </div>
             <div className='element'>
-              <div className='swatch colorFreq' onClick={this.handleClickColor} style={{backgroundColor: colorF}} />
+              <svg className='swatch colorFreq' viewBox='0 0 10 10' onClick={() => this.handleClickColor('colorFreq')}>
+                {colorSwatch(colorF, calib, 'colorFreq')}
+              </svg>
               <h5 className='label-small'>PITCH</h5>
             </div>
           </div>
