@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './_css/Main.css';
 import help from './_help.js';
-import { svgDefs } from './_svg.js';
+import { svgDefs, oscButton } from './_svg.js';
 import Oscillators from './Oscillators.js';
 import Effects from './Effects.js';
 import Meters from './Meters.js';
@@ -24,6 +24,7 @@ export default class Main extends Component {
         volume: {v: .73, max: 1, min: 0}
       }
     };
+    this.toggleMic = this.toggleMic.bind(this);
     this.updateParam = this.updateParam.bind(this);
     this.updateOsc = this.updateOsc.bind(this);
     this.audioMute = this.audioMute.bind(this);
@@ -32,11 +33,9 @@ export default class Main extends Component {
 
   componentDidMount() {
     this.audioInit();
-    // window.addEventListener('touchstart', this.audioInit());
   }
 
   audioInit() {
-    // window.removeEventListener('touchstart', this);
     const scaleBase = 10;
     const baseHz = 220;
     const { params } = this.state;
@@ -49,15 +48,6 @@ export default class Main extends Component {
     const masterGain = new GainNode(ctx, {gain: params.volume.v});
     const masterOut = ctx.destination;
     const analyser = new AnalyserNode(ctx, {fftSize: Math.pow(2, scaleBase), minDecibels: -100, maxDecibels: -30, smoothingTimeConstant: 0});
-
-// Constructors for Safari webAudio support
-    // const osc1 = ctx.createOscillator({type: params.osc1, frequency: baseHz});
-    // const osc2 = ctx.createOscillator({type: params.osc2, frequency: baseHz, detune: params.fmWidth.v});
-    // const fmGain = ctx.createGain({gain: params.fmDepth.v});
-    // const instGain = ctx.createGain({gain: 0})
-    // const masterGain = ctx.createGain({gain: params.volume.v});
-    // const masterOut = ctx.destination;
-    // const analyser = ctx.createAnalyser({fftSize: Math.pow(2, scaleBase), minDecibels: -100, maxDecibels: -30, smoothingTimeConstant: 0});
 
     osc1.connect(fmGain);
     fmGain.connect(osc2.frequency);
@@ -129,7 +119,7 @@ export default class Main extends Component {
     };
   }
 
-  micToggle() {
+  toggleMic() {
     const { ctx } = this.state.audio;
     const { mic } = this.state.audio;
     const { analyser } = this.state.audio;
@@ -192,7 +182,7 @@ export default class Main extends Component {
   render() {
     const { params } = this.state;
     const { audio } = this.state;
-    // const { ctx } = this.state.audio;
+    const { ctx } = this.state.audio;
 
     return (
       <div className='Main'>
@@ -213,10 +203,15 @@ export default class Main extends Component {
               <div className='by'>
                 <h6>by</h6> <h5 className='kozak'> kozak</h5>
               </div>
-            {/*
-              <h6>Latency: {audio ? Math.floor(ctx.baseLatency * 1000) : ''} ms</h6>
-              <button onClick={() => this.micToggle()}>toggle</button>
-            */}
+              <div className='button-box'>
+                <div className='text'>
+                  <h6>MONITOR</h6>
+                  <h6>{audio ? Math.floor(ctx.baseLatency * 1000) : ''} ms</h6>
+                </div>
+                <svg className='button' viewBox='0 0 10 10' onClick={() => this.toggleMic()}>
+                  {oscButton('mic', this.state.audio.analyserSrc)}
+                </svg>
+              </div>
             </div>
           </div>
         </div>
