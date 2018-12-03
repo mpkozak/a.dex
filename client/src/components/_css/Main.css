@@ -140,6 +140,12 @@
 
 
 
+.settings .inner {
+  margin: -1vmin 0 0 0;
+  padding: 0 0 1vmin 0;
+  /*border: none;*/
+}
+
 .settings ul {
   margin: 0 0 0 1vmin;
   /*list-style-type: none;*/
@@ -154,19 +160,6 @@
 
 
 
-
-
-
-
-
-
-/*.settings .inner {*/
-  /*border: none;*/
-  /*display: flex;*/
-  /*flex-flow: column nowrap;*/
-  /*align-items: center;*/
-  /*justify-content: center;*/
-/*}*/
 
 /*.settings button {*/
   /*width: 20%;*/

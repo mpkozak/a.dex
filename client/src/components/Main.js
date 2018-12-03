@@ -212,7 +212,7 @@ export default class Main extends Component {
 
         <div className='settings'>
           <div className='outer'>
-            <div className="inner">
+            <div className='inner'>
               <h4 className='label'>Instructions:</h4>
               <ul>
                 <li>Select two (real world) objects of different colors (expo markers work well).</li>
