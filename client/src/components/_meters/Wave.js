@@ -6,7 +6,6 @@ export default function Wave(props) {
   const analyser = props.audio.analyser;
   const fftBins = analyser.frequencyBinCount;
   const wave = new Float32Array(fftBins);
-  // const ms = (fftBins / ctx.sampleRate) * 1000;
 
   const drawWave = (data) => {
     const width = 100
@@ -117,7 +116,6 @@ export default function Wave(props) {
     drawWave(wave);
   };
   animate();
-  // setInterval(() => animate(), ms)
 
   return (
     <div className='inner'>

@@ -18,18 +18,14 @@
   justify-content: space-around;
 }
 
-.oscillator button {
+.oscillator .osc-button {
   width: 20%;
-  height: 70%;
-  font-family: helvetica;
-  font-size: 20%;
-  font-weight: 800;
-  color: black;
-  border-radius: 1vmin;
-  border: 1px solid black;
-  background-color: #fff;
+  height: auto;
+  border-radius: .4vmin;
+  box-shadow: .2vmin .2vmin .5vmin #000000;
 }
 
-.oscillator .active {
-  background-color: rgba(255,165,0,.5);
+.osc-button:active {
+  transform: scale(.95);
+  box-shadow: .2vmin .2vmin .2vmin #000000;
 }

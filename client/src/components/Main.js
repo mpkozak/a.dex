@@ -14,6 +14,8 @@ export default class Main extends Component {
     this.state = {
       audio: false,
       params: {
+        osc1: 'sine',
+        osc2: 'sine',
         fmWidth: {v: 0, max: 1200, min: -1200},
         fmDepth: {v: 0, max: 3000, min: 0},
         volume: {v: .73, max: 1, min: 0},
@@ -21,16 +23,11 @@ export default class Main extends Component {
       micEnabled: false,
     };
     this.updateParam = this.updateParam.bind(this);
+    this.updateOsc = this.updateOsc.bind(this);
   }
 
   componentDidMount() {
     this.audioInit();
-    // setTimeout(() => {
-    //   this.setState(prevState => ({
-    //     params: {...prevState.params, volume: {...prevState.params.volume, v: .5}}
-    //   }));
-    //   this.audioRefresh('volume');
-    // }, 1000);
   }
 
   componentDidUpdate() {
@@ -43,8 +40,8 @@ export default class Main extends Component {
     const { params } = this.state;
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     const ctx = new AudioContext();
-    const osc1 = new OscillatorNode(ctx, {type: 'sine', frequency: baseHz});
-    const osc2 = new OscillatorNode(ctx, {type: 'sine', frequency: baseHz, detune: params.fmWidth.v});
+    const osc1 = new OscillatorNode(ctx, {type: params.osc1, frequency: baseHz});
+    const osc2 = new OscillatorNode(ctx, {type: params.osc2, frequency: baseHz, detune: params.fmWidth.v});
     const fmGain = new GainNode(ctx, {gain: params.fmDepth.v});
     const instGain = new GainNode(ctx, {gain: 0})
     const masterGain = new GainNode(ctx, {gain: params.volume.v});
@@ -138,16 +135,37 @@ export default class Main extends Component {
     };
   }
 
+  updateOsc(osc, type) {
+    this.setState(prevState => ({
+      params: {...prevState.params, [osc]: type}
+    }));
+    this.audioRefresh(osc);
+  }
+
   audioRefresh(key) {
     const { audio } = this.state;
     const ctx = audio.ctx;
     const latency = audio.latency;
 
+    const osc1 = audio.osc1;
     const osc2 = audio.osc2;
     const fmGain = audio.fmGain;
+    const instGain = audio.instGain;
     const masterGain = audio.masterGain;
 
     switch (key) {
+      case 'osc1' :
+        help.setAudioParam(instGain.gain, 0, ctx, latency)
+          .then(res => {
+            osc1.type = this.state.params.osc1;
+          });
+        break;
+      case 'osc2' :
+        help.setAudioParam(instGain.gain, 0, ctx, latency)
+          .then(res => {
+            osc2.type = this.state.params.osc2;
+          });
+        break;
       case 'fmDepth' :
         help.setAudioParam(fmGain.gain, this.state.params.fmDepth.v, ctx, latency);
         break;
@@ -204,7 +222,7 @@ export default class Main extends Component {
 
         <Meters audio={audio} />
 
-        <Oscillators audio={audio} />
+        <Oscillators params={params} update={this.updateOsc} />
 
         <Effects params={params} update={this.updateParam} />
 

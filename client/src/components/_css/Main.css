@@ -15,6 +15,8 @@
   background-size: cover;
   border-radius: 1vmin;
   box-shadow: 0 0 .5vmin .1vmin #000000;
+
+  background-color: #fff;
 }
 
 .controller {
@@ -25,9 +27,6 @@
   height: calc(11 * (100% / var(--grid-height)));
   display: flex;
   flex-flow: column nowrap;
-
-  /*opacity: .5;*/
-  /*background-color: brown;*/
 }
 
 .placard {
@@ -112,8 +111,8 @@
 }
 
 .label {
-  padding: .25vmin 1vmin;
   width: 90%;
+  padding: .25vmin 1vmin;
   text-align: left;
 
   /*border-radius: 1vmin;*/

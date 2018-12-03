@@ -1,6 +1,6 @@
 import React from 'react';
 import * as d3 from 'd3';
-import help from '../_help.js';
+// import help from '../_help.js';
 import { moduleFrame, modulePanelShadows } from '../_svg.js';
 
 export default function Spec(props) {

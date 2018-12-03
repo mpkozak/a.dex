@@ -25,17 +25,17 @@
 .Theremin .color-box {
   position: absolute;
   left: -1px;
-  top: calc(100% * ((.4 + var(--video-height)) / var(--grid-height)));
-  width: calc(100% * (6 / var(--grid-width)));
-  height: calc(100% * (var(--grid-height) - (.4 + var(--video-height))) / var(--grid-height));
+  top: calc(100% * ((.3 + var(--video-height)) / var(--grid-height)));
+  width: calc(100% * (7 / var(--grid-width)));
+  height: calc(100% * (var(--grid-height) - (.3 + var(--video-height))) / var(--grid-height));
 }
 
 .Theremin .control-box {
   position: absolute;
-  left: calc(100% * (7 / var(--grid-width)));
-  top: calc(100% * ((.4 + var(--video-height)) / var(--grid-height)));
-  width: calc(100% * (5 / var(--grid-width)));
-  height: calc(100% * (var(--grid-height) - (.4 + var(--video-height))) / var(--grid-height));
+  left: calc(100% * (7.3 / var(--grid-width)));
+  top: calc(100% * ((.3 + var(--video-height)) / var(--grid-height)));
+  width: calc(100% * (4.7 / var(--grid-width)) - 1px);
+  height: calc(100% * (var(--grid-height) - (.3 + var(--video-height))) / var(--grid-height));
 }
 
 .Theremin .video-box .inner {
@@ -84,12 +84,6 @@
   box-shadow: 0 0 1vmin .2vmin #000000;
 }
 
-
-
-
-
-
-
 .Theremin .settings-box {
   width: 95%;
   height: 100%;
@@ -97,10 +91,15 @@
   flex-flow: row nowrap;
   align-items: center;
   justify-content: space-around;
-
-  /*background-color: #f0f;*/
-  /*border: 1px solid white;*/
 }
+
+          .Theremin .color-box {
+            /*border: none;*/
+          }
+
+          .Theremin .control-box {
+            /*border: none;*/
+          }
 
 .Theremin .color-box .element {
   display: flex;
@@ -111,16 +110,14 @@
   height: 80%;
 }
 
-          .Theremin .control-box .element {
-            display: flex;
-            flex-flow: column nowrap;
-            align-items: center;
-            justify-content: space-around;
-            width: 35%;
-            height: 80%;
-
-            /*border: 1px solid white;*/
-          }
+.Theremin .control-box .element {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: space-around;
+  width: 35%;
+  height: 80%;
+}
 
 .Theremin .swatch {
   width: 4vmin;

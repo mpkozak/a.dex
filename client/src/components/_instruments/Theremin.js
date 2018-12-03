@@ -13,8 +13,8 @@ export default class Theremin extends Component {
       colorGain: {r: null, g: null, b: null},
       colorFreq: {r: null, g: null, b: null},
       params: {
-        sense: {v: 50, max: 100, min: 0, text: 'Sensitivity'},
-        range: {v: 4, max: 6, min: 2, text: 'Range'},
+        sense: {v: 50, max: 100, min: 0, text: 'SENSITIVITY'},
+        range: {v: 4, max: 6, min: 2, text: 'RANGE'},
       },
       dataGain: false,
       dataFreq: false,
@@ -116,7 +116,7 @@ export default class Theremin extends Component {
       .style('fill', d => d.fill)
       .style('opacity', .5)
       .style('stroke', '#FFFFFF')
-      .style('stroke-width', '.5%');
+      .style('stroke-width', '.3%');
     circles.exit().remove();
   }
 
@@ -281,3 +281,20 @@ export default class Theremin extends Component {
     );
   }
 }
+
+
+{/*
+
+
+        <div className='element'>
+          <div className='knob'></div>
+          <h5 className='label-small'>POWER</h5>
+        </div>
+
+
+*/}
+
+
+
+
+

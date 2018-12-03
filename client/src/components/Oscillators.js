@@ -1,45 +1,39 @@
 import React from 'react';
 import './_css/Oscillators.css';
-import help from './_help.js';
+import { oscButton } from './_svg.js';
 
 export default function Oscillators(props) {
+  const { params } = props;
 
-  const handleOscillatorType = (e, osc, type) => {
-    e.preventDefault();
-    e.target.parentNode.childNodes.forEach(d => d.className = 'inactive');
-    e.target.className = 'active';
-    const { audio } = props;
-    help.setAudioParam(audio.instGain.gain, 0, audio.ctx, .01)
-      .then(res => {
-        osc.type = type;
-        // help.setAudioParam(audio.instGain.gain, 0, audio.ctx, .01);
-      });
-  };
-
-  const makeOscBox = (label, node) => {
+  const makeOscBox = (current, osc, label) => {
     return (
       <div className='inner'>
         <h4 className='label'>{label}</h4>
         <div className='button-box'>
-          <button className='active' onClick={(e) => handleOscillatorType(e, node, 'sine')}>&#x223f;</button>
-          <button onClick={(e) => handleOscillatorType(e, node, 'triangle')}>&#x22c0;</button>
-          <button onClick={(e) => handleOscillatorType(e, node, 'sawtooth')}>&#x2a58;</button>
-          <button onClick={(e) => handleOscillatorType(e, node, 'square')}>&#x2a05;</button>
+          <svg className='osc-button' viewBox='0 0 10 10' onClick={() => props.update(osc, 'sine')}>
+            {oscButton('sine', current)}
+          </svg>
+          <svg className='osc-button' viewBox='0 0 10 10' onClick={() => props.update(osc, 'triangle')}>
+            {oscButton('triangle', current)}
+          </svg>
+          <svg className='osc-button' viewBox='0 0 10 10' onClick={() => props.update(osc, 'sawtooth')}>
+            {oscButton('sawtooth', current)}
+          </svg>
+          <svg className='osc-button' viewBox='0 0 10 10' onClick={() => props.update(osc, 'square')}>
+            {oscButton('square', current)}
+          </svg>
         </div>
       </div>
     );
-  };
-
-  const { osc1 } = props.audio;
-  const { osc2 } = props.audio;
+  }
 
   return (
     <div className='oscillators'>
       <div className='oscillator outer'>
-        {makeOscBox('Osc 1', osc1)}
+        {makeOscBox(params.osc1, 'osc1', 'Osc 1')}
       </div>
       <div className='oscillator outer'>
-        {makeOscBox('Osc 2', osc2)}
+        {makeOscBox(params.osc2, 'osc2', 'Osc 2')}
       </div>
     </div>
   );

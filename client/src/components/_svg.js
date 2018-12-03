@@ -201,18 +201,18 @@ export const screenFrame = (off) => {
         <mask id='screen-inner-mask'>
           <rect width={40} height={30} fill='white'/>
           <rect x={2} y={1.5} rx={1} width={36} height={27} fill='black'/>
-          <path d={`M ${0} ${2} Q ${20} ${0.8}, ${40} ${2}`} stroke='white' stroke-width='4%'/>
-          <path d={`M ${0} ${28} Q ${20} ${29.2}, ${40} ${28}`} stroke='white' stroke-width='4%'/>
-          <path d={`M ${2.5} ${0} Q ${1.5} ${15}, ${2.5} ${30}`} stroke='white' stroke-width='4%'/>
-          <path d={`M ${37.5} ${0} Q ${38.5} ${15}, ${37.5} ${30}`} stroke='white' stroke-width='4%'/>
+          <path d={`M ${0} ${2} Q ${20} ${0.8}, ${40} ${2}`} stroke='white' strokeWidth='4%'/>
+          <path d={`M ${0} ${28} Q ${20} ${29.2}, ${40} ${28}`} stroke='white' strokeWidth='4%'/>
+          <path d={`M ${2.5} ${0} Q ${1.5} ${15}, ${2.5} ${30}`} stroke='white' strokeWidth='4%'/>
+          <path d={`M ${37.5} ${0} Q ${38.5} ${15}, ${37.5} ${30}`} stroke='white' strokeWidth='4%'/>
         </mask>
         <mask id='screen-inner-mask-reverse'>
           <rect width={40} height={30} fill='black'/>
           <rect x={2} y={1.5} rx={1} width={36} height={27} fill='white'/>
-          <path d={`M ${0} ${2} Q ${20} ${0.8}, ${40} ${2}`} stroke='black' stroke-width='4%'/>
-          <path d={`M ${0} ${28} Q ${20} ${29.2}, ${40} ${28}`} stroke='black' stroke-width='4%'/>
-          <path d={`M ${2.5} ${0} Q ${1.5} ${15}, ${2.5} ${30}`} stroke='black' stroke-width='4%'/>
-          <path d={`M ${37.5} ${0} Q ${38.5} ${15}, ${37.5} ${30}`} stroke='black' stroke-width='4%'/>
+          <path d={`M ${0} ${2} Q ${20} ${0.8}, ${40} ${2}`} stroke='black' strokeWidth='4%'/>
+          <path d={`M ${0} ${28} Q ${20} ${29.2}, ${40} ${28}`} stroke='black' strokeWidth='4%'/>
+          <path d={`M ${2.5} ${0} Q ${1.5} ${15}, ${2.5} ${30}`} stroke='black' strokeWidth='4%'/>
+          <path d={`M ${37.5} ${0} Q ${38.5} ${15}, ${37.5} ${30}`} stroke='black' strokeWidth='4%'/>
         </mask>
       </defs>
 
@@ -271,7 +271,7 @@ export const screenFrame = (off) => {
         </g>
       </g>
 
-
+{/* Inner Screen Blank */}
       <g className='screen-blank' mask='url(#screen-inner-mask-reverse)'>
         <rect
           x={2}
@@ -291,7 +291,6 @@ export const screenFrame = (off) => {
           <rect fill='url(#screen-glare-contours)' x={2} y={1.5} rx={1} width={36} height={27}/>
       </g>
 
-
 {/* Inner Frame Border */}
       <g className='screen-frame-inner-border'>
         <path
@@ -299,7 +298,7 @@ export const screenFrame = (off) => {
           transform={`translate(${.7}, ${0})`}
           fill='none'
           stroke='#000000'
-          stroke-width='.5%'
+          strokeWidth='.5%'
           pathLength={100}
           strokeDasharray={`${0}, ${8.2}, ${83.6}, ${8.2}`}
         />
@@ -308,7 +307,7 @@ export const screenFrame = (off) => {
           transform={`translate(${-.7}, ${0})`}
           fill='none'
           stroke='#000000'
-          stroke-width='.5%'
+          strokeWidth='.5%'
           pathLength={100}
           strokeDasharray={`${0}, ${8.2}, ${83.6}, ${8.2}`}
         />
@@ -317,7 +316,7 @@ export const screenFrame = (off) => {
           transform={`translate(${0}, ${.7})`}
           fill='none'
           stroke='#000000'
-          stroke-width='.5%'
+          strokeWidth='.5%'
           pathLength={100}
           strokeDasharray={`${0}, ${7.7}, ${84.6}, ${7.7}`}
         />
@@ -326,7 +325,7 @@ export const screenFrame = (off) => {
           transform={`translate(${0}, ${-.7})`}
           fill='none'
           stroke='#000000'
-          stroke-width='.5%'
+          strokeWidth='.5%'
           pathLength={100}
           strokeDasharray={`${0}, ${7.7}, ${84.6}, ${7.7}`}
         />
@@ -432,7 +431,113 @@ export const bigKnob = (rotation, color) => {
 };
 
 
+export const oscButton = (wave, current) => {
+  const active = wave === current ? true : false;
+  const colorButton = '#AAAAAA';
+  const waves = {
+    sine: `M ${2} ${5} Q ${3.5} ${0}, ${5} ${5} Q ${6.5} ${10}, ${8} ${5}`,
+    triangle: `M ${2} ${5}, ${3.5} ${2.5}, ${6.5} ${7.5}, ${8} ${5}`,
+    sawtooth: `M ${2} ${5}, ${5} ${2.5}, ${5} ${7.5}, ${8} ${5}`,
+    square: `M ${2} ${5}, ${2} ${2.5}, ${5} ${2.5}, ${5} ${7.5}, ${8} ${7.5}, ${8} ${5}`,
+  };
+  return (
+    <g className='osc-button-group'>
+      <defs>
+  {/* Button Contour Gradients */}
+        <linearGradient id='button-shadow-horizontal' x1='0%' y1='0%' x2='0%' y2='100%' gradientUnits='objectBoundingBox'>
+          <stop offset='0%' stopColor='#000000' stopOpacity={1}/>
+          <stop offset='8%' stopColor='#000000' stopOpacity={0}/>
+          <stop offset='92%' stopColor='#000000' stopOpacity={0}/>
+          <stop offset='100%' stopColor='#000000' stopOpacity={1}/>
+        </linearGradient>
+        <linearGradient id='button-shadow-vertical' x1='0%' y1='0%' x2='100%' y2='0%' gradientUnits='objectBoundingBox'>
+          <stop offset='0%' stopColor='#000000' stopOpacity={1}/>
+          <stop offset='8%' stopColor='#000000' stopOpacity={0}/>
+          <stop offset='92%' stopColor='#000000' stopOpacity={0}/>
+          <stop offset='100%' stopColor='#000000' stopOpacity={1}/>
+        </linearGradient>
+        <radialGradient id='button-shadow-center' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
+          <stop offset='0%' stopColor='#000000' stopOpacity={.4}/>
+          <stop offset='40%' stopColor='#000000' stopOpacity={.2}/>
+          <stop offset='50%' stopColor='#000000' stopOpacity={0}/>
+          <stop offset='60%' stopColor='#000000' stopOpacity={.2}/>
+        </radialGradient>
+  {/* Button Active Gradients */}
+        <radialGradient id='button-active-base' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
+          <stop offset='0%' stopColor='#C12822' stopOpacity={1}/>
+          <stop offset='20%' stopColor='#C12822' stopOpacity={.8}/>
+          <stop offset='50%' stopColor='#C12822' stopOpacity={.7}/>
+          <stop offset='70%' stopColor='#C12822' stopOpacity={.5}/>
+        </radialGradient>
+        <radialGradient id='button-active-glow' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
+          <stop offset='0%' stopColor='#FF0000' stopOpacity={.5}/>
+          <stop offset='30%' stopColor='#FF0000' stopOpacity={.3}/>
+          <stop offset='50%' stopColor='#000000' stopOpacity={.1}/>
+          <stop offset='70%' stopColor='#000000' stopOpacity={.2}/>
+        </radialGradient>
+      </defs>
+
+{/* Button */}
+      <g className='osc-button-main'>
+  {/* Button Base Layer */}
+        <rect className='osc-button-base'
+          x={0}
+          y={0}
+          rx={1}
+          width={10}
+          height={10}
+          fill={colorButton}
+          stroke='#000000'
+          strokeWidth='1%'
+        />
+  {/* Button Base Active */}
+        <rect className='osc-button-base-active'
+          x={0}
+          y={0}
+          rx={1}
+          width={10}
+          height={10}
+          fill='url(#button-active-base)'
+          stroke='none'
+          opacity={active ? 1 : 0}
+        />
+  {/* Logograph */}
+        <path className='osc-button-wave'
+          d={waves[wave]}
+          fill='none'
+          stroke='#000000'
+          strokeWidth='5%'
+        />
+
+  {/* Button Shadows Group */}
+        <g className='osc-button-shadows'>
+          <rect fill='url(#button-shadow-horizontal)' x={0} y={0} rx={1} width={10} height={10} stroke='none'/>
+          <rect fill='url(#button-shadow-vertical)' x={0} y={0} rx={1} width={10} height={10} stroke='none'/>
+          <rect fill='url(#button-shadow-center)' x={0} y={0} rx={1} width={10} height={10} stroke='none'/>
+        </g>
+
+  {/* Button Active Layer */}
+        <g className='osc-button-active'>
+          <rect className='button-glow'
+            x={0}
+            y={0}
+            rx={1}
+            width={10}
+            height={10}
+            fill='url(#button-active-glow)'
+            opacity={active ? 1 : 0}
+          />
+        </g>
+      </g>
+    </g>
+  );
+};
 
 
 
+{/*
+
+
+
+*/}
 

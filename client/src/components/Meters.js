@@ -14,14 +14,15 @@ export default function Meters(props) {
   return (
     <div className='meters'>
       <div className='meter outer'>
+        {audio ? <Wave audio={audio}/> : null}
+      </div>
+      <div className='meter outer'>
         {audio ? <VU audio={audio}/> : null}
       </div>
       <div className='meter outer'>
-        {audio ? <Wave audio={audio}/> : null}
+
       </div>
 
-      <div className='meter outer'>
-      </div>
 
     </div>
   );
