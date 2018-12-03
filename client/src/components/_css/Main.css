@@ -147,14 +147,14 @@
 }
 
 .settings ul {
-  margin: 0 0 0 1vmin;
+  margin: 0 0 0 2vmin;
   /*list-style-type: none;*/
 }
 
 .settings li {
   margin: 0 1vmin;
   text-align: left;
-  font-size: 10%;
+  font-size: .8vmin;
   font-family: 'Montserrat Alternates', sans-serif;
 }
 

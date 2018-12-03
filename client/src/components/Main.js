@@ -32,9 +32,11 @@ export default class Main extends Component {
 
   componentDidMount() {
     this.audioInit();
+    // window.addEventListener('touchstart', this.audioInit());
   }
 
   audioInit() {
+    // window.removeEventListener('touchstart', this);
     const scaleBase = 10;
     const baseHz = 220;
     const { params } = this.state;
@@ -47,6 +49,15 @@ export default class Main extends Component {
     const masterGain = new GainNode(ctx, {gain: params.volume.v});
     const masterOut = ctx.destination;
     const analyser = new AnalyserNode(ctx, {fftSize: Math.pow(2, scaleBase), minDecibels: -100, maxDecibels: -30, smoothingTimeConstant: 0});
+
+// Constructors for Safari webAudio support
+    // const osc1 = ctx.createOscillator({type: params.osc1, frequency: baseHz});
+    // const osc2 = ctx.createOscillator({type: params.osc2, frequency: baseHz, detune: params.fmWidth.v});
+    // const fmGain = ctx.createGain({gain: params.fmDepth.v});
+    // const instGain = ctx.createGain({gain: 0})
+    // const masterGain = ctx.createGain({gain: params.volume.v});
+    // const masterOut = ctx.destination;
+    // const analyser = ctx.createAnalyser({fftSize: Math.pow(2, scaleBase), minDecibels: -100, maxDecibels: -30, smoothingTimeConstant: 0});
 
     osc1.connect(fmGain);
     fmGain.connect(osc2.frequency);
@@ -236,6 +247,7 @@ export default class Main extends Component {
             <Master params={params} update={this.updateParam} />
           </div>
         </div>
+
       </div>
     );
   }

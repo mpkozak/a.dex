@@ -1,9 +1,9 @@
 {
-  "short_name": "adex",
-  "name": "adex by kozak",
+  "short_name": "αdex",
+  "name": "αdex by kozak",
   "icons": [
     {
-      "src": ".ico",
+      "src": "favicon.ico",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     }
