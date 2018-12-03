@@ -41,7 +41,6 @@
   top: calc(1 * (100% / var(--grid-height)));
   width: calc(5 * (100% / var(--grid-width)));
   height: calc(4 * (100% / var(--grid-height)));
-  /*background-color: #fff;*/
 }
 
 .meters {
@@ -134,7 +133,7 @@
 }
 
 .placard .kozak {
-  font-family: futura, sans-serif;
+  font-family: Futura, sans-serif;
   font-weight: 200;
 }
 
@@ -153,8 +152,8 @@
 
 .settings li {
   margin: 0 1vmin;
-  text-align: left;
-  font-size: .8vmin;
+  text-align: left;\
+  font-size: 9.5%;
   font-family: 'Montserrat Alternates', sans-serif;
 }
 
