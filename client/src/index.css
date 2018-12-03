@@ -1,32 +1,16 @@
-@import url('https://fonts.googleapis.com/css?family=Asap|Audiowide|Chakra+Petch|Changa|Hammersmith+One|Josefin+Sans|Montserrat+Alternates|Orbitron|Oxygen|Poiret+One|Questrial|Righteous|Rubik|Ruda');
+@import url('https://fonts.googleapis.com/css?family=Audiowide|Montserrat+Alternates');
 
 * {
   margin: 0;
   padding: 0;
   font-size: 10vmin;
+  font-family: 'Audiowide', cursive;
   text-align: center;
-  color: #FFFFFF;
   color: rgba(255,255,255,.7);
-/*font-family: 'Rubik', sans-serif;*/
-/*font-family: 'Oxygen', sans-serif;*/
-/*font-family: 'Asap', sans-serif;*/
-/*font-family: 'Questrial', sans-serif;*/
-/*font-family: 'Chakra Petch', sans-serif;*/
-/*font-family: 'Josefin Sans', sans-serif;*/
-/*font-family: 'Righteous', cursive;*/
-/*font-family: 'Poiret One', cursive;*/
-/*font-family: 'Hammersmith One', sans-serif;*/
-/*font-family: 'Ruda', sans-serif;*/
-/*font-family: 'Changa', sans-serif;*/
-font-family: 'Audiowide', cursive;
-/*font-family: 'Montserrat Alternates', sans-serif;*/
-/*font-family: 'Orbitron', sans-serif;*/
-
-  /*border: 1px solid black;*/
 }
 
 body {
-  background: url('./components/_img/yolaIX.jpg') no-repeat center center fixed;
+  background: url('./components/_img/steel.jpg') no-repeat center center fixed;
   background-size: cover;
 }
 
@@ -58,20 +42,24 @@ p {
   font-size: 5%;
 }
 
-li {
-  margin: 0 1vmin;
-  text-align: left;
-  font-size: 10%;
-  /*font-family: 'Orbitron', sans-serif;*/
-font-family: 'Montserrat Alternates', sans-serif;
-}
-
-.alpha {
-  font-size: 150%;
-  font-family: Arial, sans-serif;
-  font-style: italic;
-  font-weight: 800;
-}
 
 
 
+/*Extra Fonts Currently Not In Use*/
+
+/*@import url('https://fonts.googleapis.com/css?family=Asap|Audiowide|Chakra+Petch|Changa|Hammersmith+One|Josefin+Sans|Montserrat+Alternates|Orbitron|Oxygen|Poiret+One|Questrial|Righteous|Rubik|Ruda');*/
+/**/
+/*font-family: 'Audiowide', cursive;*/
+/*font-family: 'Rubik', sans-serif;*/
+/*font-family: 'Oxygen', sans-serif;*/
+/*font-family: 'Asap', sans-serif;*/
+/*font-family: 'Questrial', sans-serif;*/
+/*font-family: 'Chakra Petch', sans-serif;*/
+/*font-family: 'Josefin Sans', sans-serif;*/
+/*font-family: 'Righteous', cursive;*/
+/*font-family: 'Poiret One', cursive;*/
+/*font-family: 'Hammersmith One', sans-serif;*/
+/*font-family: 'Ruda', sans-serif;*/
+/*font-family: 'Changa', sans-serif;*/
+/*font-family: 'Montserrat Alternates', sans-serif;*/
+/*font-family: 'Orbitron', sans-serif;*/

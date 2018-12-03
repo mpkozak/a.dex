@@ -1,8 +1,0 @@
-\c audio_db
-
-DROP TABLE IF EXISTS audio;
-
-CREATE TABLE audio (
-  id BIGSERIAL PRIMARY KEY NOT NULL,
-  audio INT NOT NULL
-);

@@ -104,7 +104,6 @@ export default class Theremin extends Component {
         fill: d.color === 'Freq' ? colorFreq : colorGain
       });
     };
-
     const data = [];
     if (this.state.dataGain) data.push(parseData(this.state.dataGain));
     if (this.state.dataFreq) data.push(parseData(this.state.dataFreq));

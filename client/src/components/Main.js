@@ -54,7 +54,6 @@ export default class Main extends Component {
     instGain.connect(masterGain);
     masterGain.connect(masterOut);
     masterGain.connect(analyser);
-
     osc1.start();
     osc2.start();
 
