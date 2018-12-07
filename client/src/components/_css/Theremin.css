@@ -1,3 +1,10 @@
+.theremin {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+}
+
 .theremin>.outer {
   --theremin-grid-width: 12;
   --theremin-grid-height: 11;

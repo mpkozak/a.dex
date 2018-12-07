@@ -556,11 +556,11 @@ export const glowButton = (icon, current) => {
     `,
   };
   return (
-    <g className='osc-button'>
+    <g className='glow-button'>
 {/* Button */}
-      <g className='osc-button-main'>
+      <g className='glow-button-main'>
   {/* Button Base Layer */}
-        <rect className='osc-button-base'
+        <rect className='glow-button-base'
           x={0}
           y={0}
           rx={1}
@@ -571,7 +571,7 @@ export const glowButton = (icon, current) => {
           strokeWidth='1%'
         />
   {/* Button Base Active */}
-        <rect className='osc-button-base-active'
+        <rect className='glow-button-base-active'
           x={0}
           y={0}
           rx={1}
@@ -582,7 +582,7 @@ export const glowButton = (icon, current) => {
           opacity={active ? 1 : 0}
         />
   {/* Logograph */}
-        <path className='osc-button-wave'
+        <path className='glow-button-wave'
           d={icons[icon]}
           fill='none'
           stroke='#000000'
@@ -590,14 +590,14 @@ export const glowButton = (icon, current) => {
         />
 
   {/* Button Shadows Group */}
-        <g className='osc-button-shadows'>
+        <g className='glow-button-shadows'>
           <rect fill='url(#button-shadow-horizontal)' x={0} y={0} rx={1} width={10} height={10} stroke='none'/>
           <rect fill='url(#button-shadow-vertical)' x={0} y={0} rx={1} width={10} height={10} stroke='none'/>
           <rect fill='url(#button-shadow-center)' x={0} y={0} rx={1} width={10} height={10} stroke='none'/>
         </g>
 
   {/* Button Active Layer */}
-        <g className='osc-button-active'>
+        <g className='glow-button-active'>
           <rect className='button-glow'
             x={0}
             y={0}
@@ -671,7 +671,7 @@ export const colorSwatch = (color, calib, src) => {
         cx={5}
         cy={5}
         r={5}
-        fill='#000000'
+        fill='#FFFFFF'
         stroke='#444444'
         strokeWidth='8%'
       />
@@ -684,6 +684,7 @@ export const colorSwatch = (color, calib, src) => {
         fill={color}
         stroke='#000000'
         strokeWidth='8%'
+        opacity={.9}
       />
 {/* Swatch Illumination Halo Layer */}
       <circle className='color-swatch-halo'
@@ -693,12 +694,12 @@ export const colorSwatch = (color, calib, src) => {
         r={5}
         fill='url(#color-swatch-glow)'
         stroke='none'
-        opacity={active ? 1 : 0}
+        opacity={active ? .8 : 0}
       />
 {/* Swatch Countour Shadows */}
       <g className='color-swatch-shadows'>
         <circle fill='url(#color-swatch-shadow-dark)' cx={5} cy={5} r={5} stroke='none'/>
-        <circle fill='url(#color-swatch-shadow-light)' cx={5} cy={5} r={5} stroke='none'/>
+        <circle fill='url(#color-swatch-shadow-light)' cx={5} cy={5} r={5} stroke='#000000' strokeWidth='8%'/>
       </g>
     </g>
   );
@@ -709,22 +710,22 @@ export const logo = (color, opacity) => {
     const logoFonts = {
       alpha: {
         fontFamily: 'Arial, sans-serif',
-        fontSize: '30',
+        fontSize: 30,
         fontWeight: 800,
         fontStyle: 'italic'
       },
       dex: {
         fontFamily: 'Audiowide, cursive',
-        fontSize: '20',
+        fontSize: 20,
         fontWeight: 800
       },
       by: {
         fontFamily: 'Audiowide, cursive',
-        fontSize: '5'
+        fontSize: 5
       },
       kozak: {
         fontFamily: 'Futura, sans-serif',
-        fontSize: '6',
+        fontSize: 6,
         fontWeight: 200
       }
     };
@@ -758,9 +759,10 @@ export const logo = (color, opacity) => {
           style={logoFonts.by}
           fill={color}
           stroke='none'
-          opacity={opacity}
+          // opacity={opacity}
           textAnchor='left'
           alignmentBaseline='middle'
+          opacity={0}
         >by</text>
         <text
           x={40}
@@ -768,9 +770,10 @@ export const logo = (color, opacity) => {
           style={logoFonts.kozak}
           fill={color}
           stroke='none'
-          opacity={opacity}
+          // opacity={opacity}
           textAnchor='left'
           alignmentBaseline='middle'
+          opacity={0}
         >kozak</text>
       </g>
     </svg>
@@ -827,6 +830,43 @@ export const sevenSegment = (value) => {
         textAnchor='end'
         alignmentBaseline='middle'
       >{value}</text>
+    </g>
+  );
+};
+
+
+export const helpButton = (state) => {
+  const helpFont = {
+    fontFamily: 'Helvetica, Helvetica Neue, Arial, sans-serif',
+    fontSize: 9,
+    fontWeight: 800
+  };
+  return (
+    <g className='help-button'>
+      <defs>
+{/* Question Mark Mask */}
+        <mask id='question-mark-mask'>
+          <rect width={10} height={10} fill='white'/>
+          <text
+            x={5}
+            y={5.9}
+            style={helpFont}
+            fill='black'
+            stroke='none'
+            textAnchor='middle'
+            alignmentBaseline='middle'
+          >?</text>
+        </mask>
+      </defs>
+{/* Circle Body */}
+      <circle mask='url(#question-mark-mask)'
+        cx={5}
+        cy={5}
+        r={5}
+        fill='white'
+        stroke='none'
+        opacity={.5}
+      />
     </g>
   );
 };

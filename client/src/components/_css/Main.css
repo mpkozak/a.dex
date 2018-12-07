@@ -23,10 +23,6 @@
       top: calc(0 * (100% / var(--grid-height)));
       width: calc(12 * (100% / var(--grid-width)));
       height: calc(11 * (100% / var(--grid-height)));
-      display: flex;
-      flex-flow: column nowrap;
-      align-items: center;
-      justify-content: center;
     }
 
 .placard {
@@ -37,15 +33,13 @@
   height: calc(1 * (100% / var(--grid-height)));
 }
 
-.instruct {
-  position: absolute;
-  left: calc(12 * (100% / var(--grid-width)));
-  top: calc(1 * (100% / var(--grid-height)));
-  width: calc(5 * (100% / var(--grid-width)));
-  height: calc(3 * (100% / var(--grid-height)));
-
-  /*border: 1px solid brown;*/
-}
+    .instructions {
+      position: absolute;
+      left: calc(12 * (100% / var(--grid-width)));
+      top: calc(1 * (100% / var(--grid-height)));
+      width: calc(5 * (100% / var(--grid-width)));
+      height: calc(14 * (100% / var(--grid-height)));
+    }
 
     .settings {
       position: absolute;
@@ -53,10 +47,6 @@
       top: calc(4 * (100% / var(--grid-height)));
       width: calc(5 * (100% / var(--grid-width)));
       height: calc(1 * (100% / var(--grid-height)));
-      display: flex;
-      flex-flow: row nowrap;
-      align-items: center;
-      justify-content: center;
     }
 
     .meters {
@@ -65,10 +55,6 @@
       top: calc(5 * (100% / var(--grid-height)));
       width: calc(5 * (100% / var(--grid-width)));
       height: calc(6 * (100% / var(--grid-height)));
-      display: flex;
-      flex-flow: column nowrap;
-      align-items: center;
-      justify-content: center;
     }
 
     .oscillators {
@@ -85,10 +71,6 @@
       top: calc(11 * (100% / var(--grid-height)));
       width: calc(11 * (100% / var(--grid-width)));
       height: calc(4 * (100% / var(--grid-height)));
-      display: flex;
-      flex-flow: row nowrap;
-      align-items: center;
-      justify-content: center;
     }
 
     .master {
@@ -134,14 +116,35 @@
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
   border: none;
+}
+
+.placard .help {
+  width: 10%;
 }
 
 .placard .logo {
   height: 100%;
   /*border: 1px solid green;*/
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 .placard .alpha {
   font-size: 150%;
@@ -158,26 +161,4 @@
 .placard .kozak {
   font-family: Futura, sans-serif;
   font-weight: 200;
-}
-
-
-
-
-
-.instruct .inner {
-  margin: -1vmin 0 0 0;
-  padding: 0 0 1vmin 0;
-  /*border: none;*/
-}
-
-.instruct ul {
-  margin: 0 0 0 2vmin;
-  /*list-style-type: none;*/
-}
-
-.instruct li {
-  margin: 0 1vmin;
-  text-align: left;
-  font-size: 9.5%;
-  font-family: 'Montserrat Alternates', sans-serif;
 }

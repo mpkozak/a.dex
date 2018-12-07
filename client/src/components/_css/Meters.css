@@ -1,3 +1,10 @@
+.meters {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+}
+
 .meters>.outer {
   height: calc(100% / 2);
 }

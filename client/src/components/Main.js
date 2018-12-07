@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import './_css/Main.css';
 import help from './_help.js';
-import { svgDefs, logo } from './_svg.js';
+import { svgDefs, logo, helpButton } from './_svg.js';
 import Theremin from './Theremin.js';
+import Instructions from './Instructions.js';
 import Settings from './Settings.js';
 import Meters from './Meters.js';
 import Oscillators from './Oscillators.js';
@@ -14,6 +15,7 @@ export default class Main extends Component {
     super()
     this.state = {
       audio: false,
+      help: false,
       params: {
         osc1: 'sine',
         osc2: 'sine',
@@ -25,6 +27,7 @@ export default class Main extends Component {
         volume: {v: .73, max: 1, min: 0}
       }
     };
+    this.toggleHelp = this.toggleHelp.bind(this);
     this.toggleMic = this.toggleMic.bind(this);
     this.updateParam = this.updateParam.bind(this);
     this.updateOsc = this.updateOsc.bind(this);
@@ -120,6 +123,12 @@ export default class Main extends Component {
     };
   }
 
+  toggleHelp() {
+    this.setState(prevState => ({
+      tutorial: !prevState.tutorial
+    }));
+  }
+
   toggleMic() {
     const { ctx } = this.state.audio;
     const { mic } = this.state.audio;
@@ -191,11 +200,13 @@ export default class Main extends Component {
 
         <Theremin refresh={this.controllerRefresh} mute={this.audioMute} />
 
-
         <div className='placard'>
           <div className='outer'>
             <div className='inner'>
               {logo('#FFFFFF', .7)}
+              <svg className='help' viewBox='0 0 10 10' onClick={() => this.toggleHelp()}>
+                {helpButton(this.state.tutorial)}
+              </svg>
 {/*
               <div className='name'>
                 <h4><span className='alpha'>α</span>dex</h4>
@@ -203,29 +214,12 @@ export default class Main extends Component {
               <div className='by'>
                 <h6>by</h6> <h5 className='kozak'> kozak</h5>
               </div>
-
 */}
             </div>
           </div>
         </div>
 
-        <div className='instruct'>
-          <div className='outer'>
-{/*
-            <div className='inner'>
-              <h4 className='label'>Instructions:</h4>
-              <ul>
-                <li>Select two (real world) objects of different colors (expo markers work well).</li>
-                <li>For each object: Hold the object up within the camera frame. Click on one of the color boxes in 'Set Colors' and then click on the object within the video frame. You should see a tracking box of the selected color appear around the object in the video frame.</li>
-                <li>If the tracking box doesn’t appear (or only appears intermittently), use the 'Sensitivity' knob to adjust.</li>
-                <li>Volume is controlled by moving the corresponding color object up and down.</li>
-                <li>Pitch is controlled by moving the corresponding color object left and right.</li>
-              </ul>
-            </div>
-*/}
-          </div>
-        </div>
-
+        <Instructions show={this.state.tutorial} toggle={this.toggleHelp} />
 
         <Settings ctx={ctx} src={audio.analyserSrc} toggle={this.toggleMic} />
 
@@ -241,15 +235,3 @@ export default class Main extends Component {
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
