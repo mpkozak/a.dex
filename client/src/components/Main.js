@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './_css/Main.css';
 import help from './_help.js';
-import { svgDefs, glowButton, logo } from './_svg.js';
+import { svgDefs, logo } from './_svg.js';
 import Theremin from './Theremin.js';
 import Settings from './Settings.js';
 import Meters from './Meters.js';
@@ -195,6 +195,7 @@ export default class Main extends Component {
         <div className='placard'>
           <div className='outer'>
             <div className='inner'>
+              {logo('#FFFFFF', .7)}
 {/*
               <div className='name'>
                 <h4><span className='alpha'>α</span>dex</h4>
@@ -210,9 +211,8 @@ export default class Main extends Component {
 
         <div className='instruct'>
           <div className='outer'>
-            <div className='inner'>
-              {logo('#FFFFFF', .7)}
 {/*
+            <div className='inner'>
               <h4 className='label'>Instructions:</h4>
               <ul>
                 <li>Select two (real world) objects of different colors (expo markers work well).</li>
@@ -221,8 +221,8 @@ export default class Main extends Component {
                 <li>Volume is controlled by moving the corresponding color object up and down.</li>
                 <li>Pitch is controlled by moving the corresponding color object left and right.</li>
               </ul>
-*/}
             </div>
+*/}
           </div>
         </div>
 

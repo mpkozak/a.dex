@@ -125,23 +125,22 @@
 
 
 
-/* TO BE MOVED + REFACTORED */
 
-.placard .latency {
-  font-family: 'DSEG7 Classic';
-}
+
+
+/* TO BE MOVED + REFACTORED */
 
 .placard .inner {
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: flex-end;
   border: none;
 }
 
 .placard .logo {
   height: 100%;
-  border: 1px solid green;
+  /*border: 1px solid green;*/
 }
 
 .placard .alpha {
@@ -149,9 +148,6 @@
   font-family: Arial, sans-serif;
   font-style: italic;
   font-weight: 800;
-}
-
-.placard .name {
 }
 
 .placard .by h6 {

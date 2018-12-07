@@ -778,3 +778,57 @@ export const logo = (color, opacity) => {
 };
 
 
+export const sevenSegment = (value) => {
+  const sevenFont = {
+    fontFamily: 'DSEG7 Classic',
+    fontSize: 7
+  };
+  return (
+    <g className='seven-segment'>
+{/* Backpane */}
+      <rect
+        x={0}
+        y={0}
+        width={20}
+        height={10}
+        rx={1}
+        fill='#181818'
+        stroke='#000000'
+        strokeWidth='3%'
+      />
+{/* Inner Border */}
+      <rect
+        x={.75}
+        y={.75}
+        width={18.5}
+        height={8.5}
+        rx={.5}
+        fill='#000000'
+        stroke='#111111'
+        strokeWidth='1%'
+      />
+{/* Text Backpane */}
+      <text
+        x={18.5}
+        y={5.2}
+        style={sevenFont}
+        fill='#250000'
+        stroke='none'
+        textAnchor='end'
+        alignmentBaseline='middle'
+      >888</text>
+{/* Text Active */}
+      <text
+        x={18.5}
+        y={5.2}
+        style={sevenFont}
+        fill='#E00000'
+        stroke='none'
+        textAnchor='end'
+        alignmentBaseline='middle'
+      >{value}</text>
+    </g>
+  );
+};
+
+
