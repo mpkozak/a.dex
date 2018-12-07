@@ -17,15 +17,17 @@
   box-shadow: 0 0 .5vmin .1vmin #000000;
 }
 
-.controller {
-  position: absolute;
-  left: calc(0 * (100% / var(--grid-width)));
-  top: calc(0 * (100% / var(--grid-height)));
-  width: calc(12 * (100% / var(--grid-width)));
-  height: calc(11 * (100% / var(--grid-height)));
-  display: flex;
-  flex-flow: column nowrap;
-}
+    .theremin {
+      position: absolute;
+      left: calc(0 * (100% / var(--grid-width)));
+      top: calc(0 * (100% / var(--grid-height)));
+      width: calc(12 * (100% / var(--grid-width)));
+      height: calc(11 * (100% / var(--grid-height)));
+      display: flex;
+      flex-flow: column nowrap;
+      align-items: center;
+      justify-content: center;
+    }
 
 .placard {
   position: absolute;
@@ -35,51 +37,67 @@
   height: calc(1 * (100% / var(--grid-height)));
 }
 
-.settings {
+.instruct {
   position: absolute;
   left: calc(12 * (100% / var(--grid-width)));
   top: calc(1 * (100% / var(--grid-height)));
   width: calc(5 * (100% / var(--grid-width)));
-  height: calc(4 * (100% / var(--grid-height)));
+  height: calc(3 * (100% / var(--grid-height)));
+
+  /*border: 1px solid brown;*/
 }
 
-.meters {
-  position: absolute;
-  left: calc(12 * (100% / var(--grid-width)));
-  top: calc(2 * (100% / var(--grid-height)));
-  width: calc(5 * (100% / var(--grid-width)));
-  height: calc(9 * (100% / var(--grid-height)));
-  display: flex;
-  flex-flow: column nowrap;
-}
+    .settings {
+      position: absolute;
+      left: calc(12 * (100% / var(--grid-width)));
+      top: calc(4 * (100% / var(--grid-height)));
+      width: calc(5 * (100% / var(--grid-width)));
+      height: calc(1 * (100% / var(--grid-height)));
+      display: flex;
+      flex-flow: row nowrap;
+      align-items: center;
+      justify-content: center;
+    }
 
-.oscillators {
-  position: absolute;
-  left: calc(0 * (100% / var(--grid-width)));
-  top: calc(11 * (100% / var(--grid-height)));
-  width: calc(4 * (100% / var(--grid-width)));
-  height: calc(4 * (100% / var(--grid-height)));
-}
+    .meters {
+      position: absolute;
+      left: calc(12 * (100% / var(--grid-width)));
+      top: calc(5 * (100% / var(--grid-height)));
+      width: calc(5 * (100% / var(--grid-width)));
+      height: calc(6 * (100% / var(--grid-height)));
+      display: flex;
+      flex-flow: column nowrap;
+      align-items: center;
+      justify-content: center;
+    }
 
-.effects {
-  position: absolute;
-  left: calc(4 * (100% / var(--grid-width)));
-  top: calc(11 * (100% / var(--grid-height)));
-  width: calc(11 * (100% / var(--grid-width)));
-  height: calc(4 * (100% / var(--grid-height)));
-  display: flex;
-  flex-flow: row nowrap;
-}
+    .oscillators {
+      position: absolute;
+      left: calc(0 * (100% / var(--grid-width)));
+      top: calc(11 * (100% / var(--grid-height)));
+      width: calc(4 * (100% / var(--grid-width)));
+      height: calc(4 * (100% / var(--grid-height)));
+    }
 
-.master {
-  position: absolute;
-  left: calc(15 * (100% / var(--grid-width)));
-  top: calc(11 * (100% / var(--grid-height)));
-  width: calc(2 * (100% / var(--grid-width)));
-  height: calc(4 * (100% / var(--grid-height)));
-  display: flex;
-  flex-flow: column nowrap;
-}
+    .effects {
+      position: absolute;
+      left: calc(4 * (100% / var(--grid-width)));
+      top: calc(11 * (100% / var(--grid-height)));
+      width: calc(11 * (100% / var(--grid-width)));
+      height: calc(4 * (100% / var(--grid-height)));
+      display: flex;
+      flex-flow: row nowrap;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .master {
+      position: absolute;
+      left: calc(15 * (100% / var(--grid-width)));
+      top: calc(11 * (100% / var(--grid-height)));
+      width: calc(2 * (100% / var(--grid-width)));
+      height: calc(4 * (100% / var(--grid-height)));
+    }
 
 .outer {
   width: 100%;
@@ -109,12 +127,21 @@
 
 /* TO BE MOVED + REFACTORED */
 
+.placard .latency {
+  font-family: 'DSEG7 Classic';
+}
+
 .placard .inner {
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
   justify-content: flex-start;
   border: none;
+}
+
+.placard .logo {
+  height: 100%;
+  border: 1px solid green;
 }
 
 .placard .alpha {
@@ -137,49 +164,22 @@
   font-weight: 200;
 }
 
-.placard .button-box {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-flow: row nowrap;
-  align-items: center;
-  justify-content: flex-end;
-}
-
-.placard .button {
-  width: 20%;
-  height: auto;
-  margin: 5%;
-  border-radius: .3vmin;
-  box-shadow: .2vmin .2vmin .5vmin #000000;
-}
-
-.placard .button:active {
-  transform: scale(.95);
-  box-shadow: .2vmin .2vmin .2vmin #000000;
-}
-
-.placard .text {
-  display: flex;
-  flex-flow: column nowrap;
-  align-items: flex-end;
-  justify-content: center;
-}
 
 
 
-.settings .inner {
+
+.instruct .inner {
   margin: -1vmin 0 0 0;
   padding: 0 0 1vmin 0;
   /*border: none;*/
 }
 
-.settings ul {
+.instruct ul {
   margin: 0 0 0 2vmin;
   /*list-style-type: none;*/
 }
 
-.settings li {
+.instruct li {
   margin: 0 1vmin;
   text-align: left;
   font-size: 9.5%;

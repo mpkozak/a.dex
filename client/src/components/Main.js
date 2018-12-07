@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import './_css/Main.css';
 import help from './_help.js';
-import { svgDefs, oscButton } from './_svg.js';
+import { svgDefs, glowButton, logo } from './_svg.js';
+import Theremin from './Theremin.js';
+import Settings from './Settings.js';
+import Meters from './Meters.js';
 import Oscillators from './Oscillators.js';
 import Effects from './Effects.js';
-import Meters from './Meters.js';
 import Master from './Master.js';
-import Theremin from './Theremin.js';
 
 export default class Main extends Component {
   constructor() {
@@ -46,15 +47,15 @@ export default class Main extends Component {
     const fmGain = new GainNode(ctx, {gain: params.fmDepth.v});
     const instGain = new GainNode(ctx, {gain: 0})
     const masterGain = new GainNode(ctx, {gain: params.volume.v});
-    const masterOut = ctx.destination;
     const analyser = new AnalyserNode(ctx, {fftSize: Math.pow(2, scaleBase), minDecibels: -100, maxDecibels: -30, smoothingTimeConstant: 0});
+    const masterOut = ctx.destination;
 
     osc1.connect(fmGain);
     fmGain.connect(osc2.frequency);
     osc2.connect(instGain);
     instGain.connect(masterGain);
-    masterGain.connect(masterOut);
     masterGain.connect(analyser);
+    masterGain.connect(masterOut);
     osc1.start();
     osc2.start();
 
@@ -188,48 +189,45 @@ export default class Main extends Component {
       <div className='Main'>
         {svgDefs()}
 
-        <div className='controller'>
-          <div className='outer'>
-            <Theremin refresh={this.controllerRefresh} mute={this.audioMute} />
-          </div>
-        </div>
+        <Theremin refresh={this.controllerRefresh} mute={this.audioMute} />
+
 
         <div className='placard'>
           <div className='outer'>
             <div className='inner'>
+{/*
               <div className='name'>
                 <h4><span className='alpha'>α</span>dex</h4>
               </div>
               <div className='by'>
                 <h6>by</h6> <h5 className='kozak'> kozak</h5>
               </div>
-              <div className='button-box'>
-                <div className='text'>
-                  <h6>MONITOR</h6>
-                  <h6>{audio ? Math.floor(ctx.baseLatency * 1000) : ''} ms</h6>
-                </div>
-                <svg className='button' viewBox='0 0 10 10' onClick={() => this.toggleMic()}>
-                  {oscButton('mic', this.state.audio.analyserSrc)}
-                </svg>
-              </div>
+
+*/}
             </div>
           </div>
         </div>
 
-        <div className='settings'>
+        <div className='instruct'>
           <div className='outer'>
             <div className='inner'>
+              {logo('#FFFFFF', .7)}
+{/*
               <h4 className='label'>Instructions:</h4>
               <ul>
                 <li>Select two (real world) objects of different colors (expo markers work well).</li>
                 <li>For each object: Hold the object up within the camera frame. Click on one of the color boxes in 'Set Colors' and then click on the object within the video frame. You should see a tracking box of the selected color appear around the object in the video frame.</li>
-                <li>If the tracking box doesn’t appear (or only appears intermittently), use the 'Sensitivity' knob to adjust..</li>
+                <li>If the tracking box doesn’t appear (or only appears intermittently), use the 'Sensitivity' knob to adjust.</li>
                 <li>Volume is controlled by moving the corresponding color object up and down.</li>
                 <li>Pitch is controlled by moving the corresponding color object left and right.</li>
               </ul>
+*/}
             </div>
           </div>
         </div>
+
+
+        <Settings ctx={ctx} src={audio.analyserSrc} toggle={this.toggleMic} />
 
         <Meters analyser={audio.analyser} />
 
@@ -237,13 +235,21 @@ export default class Main extends Component {
 
         <Effects params={params} update={this.updateParam} />
 
-        <div className='master'>
-          <div className='outer'>
-            <Master params={params} update={this.updateParam} />
-          </div>
-        </div>
+        <Master params={params} update={this.updateParam} />
 
       </div>
     );
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+

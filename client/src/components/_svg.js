@@ -436,7 +436,7 @@ export const screenFrame = (off) => {
       </g>
     </g>
   );
-}
+};
 
 
 export const moduleFrame = () => {
@@ -535,14 +535,25 @@ export const bigKnob = (rotation, color) => {
 };
 
 
-export const oscButton = (wave, current) => {
-  const active = wave === current ? true : false;
+export const glowButton = (icon, current) => {
+  const active = icon === current ? true : false;
   const colorButton = '#AAAAAA';
-  const waves = {
+  const icons = {
     sine: `M ${2} ${5} Q ${3.5} ${0}, ${5} ${5} Q ${6.5} ${10}, ${8} ${5}`,
-    triangle: `M ${2} ${5}, ${3.5} ${2.5}, ${6.5} ${7.5}, ${8} ${5}`,
-    sawtooth: `M ${2} ${5}, ${5} ${2.5}, ${5} ${7.5}, ${8} ${5}`,
-    square: `M ${2} ${5}, ${2} ${2.5}, ${5} ${2.5}, ${5} ${7.5}, ${8} ${7.5}, ${8} ${5}`,
+    triangle: `M ${2} ${5} L ${3.5} ${2.5} L ${6.5} ${7.5} L ${8} ${5}`,
+    sawtooth: `M ${2} ${5} L ${5} ${2.5} L ${5} ${7.5} L ${8} ${5}`,
+    square: `M ${2} ${5} L ${2} ${2.5} L ${5} ${2.5} L ${5} ${7.5} L ${8} ${7.5} L ${8} ${5}`,
+    mic: `
+      M ${3.5} ${8} L ${6.5} ${8}
+      M ${5} ${8} L ${5} ${7}
+      M ${3} ${5} L ${3} ${4.5}
+      M ${7} ${5} L ${7} ${4.5}
+      M ${3} ${5} C ${3} ${7.5}, ${7} ${7.5}, ${7} ${5}
+      M ${3.75} ${5} L ${3.75} ${3}
+      M ${6.25} ${5} L ${6.25} ${3}
+      M ${3.75} ${5} C ${3.75} ${6.5}, ${6.25} ${6.5}, ${6.25} ${5}
+      M ${3.75} ${3} C ${3.75} ${1.5}, ${6.25} ${1.5}, ${6.25} ${3}
+    `,
   };
   return (
     <g className='osc-button'>
@@ -572,7 +583,7 @@ export const oscButton = (wave, current) => {
         />
   {/* Logograph */}
         <path className='osc-button-wave'
-          d={waves[wave]}
+          d={icons[icon]}
           fill='none'
           stroke='#000000'
           strokeWidth='5%'
@@ -692,3 +703,78 @@ export const colorSwatch = (color, calib, src) => {
     </g>
   );
 };
+
+
+export const logo = (color, opacity) => {
+    const logoFonts = {
+      alpha: {
+        fontFamily: 'Arial, sans-serif',
+        fontSize: '30',
+        fontWeight: 800,
+        fontStyle: 'italic'
+      },
+      dex: {
+        fontFamily: 'Audiowide, cursive',
+        fontSize: '20',
+        fontWeight: 800
+      },
+      by: {
+        fontFamily: 'Audiowide, cursive',
+        fontSize: '5'
+      },
+      kozak: {
+        fontFamily: 'Futura, sans-serif',
+        fontSize: '6',
+        fontWeight: 200
+      }
+    };
+  return (
+    <svg className='logo' viewBox='0 0 60 21'>
+{/* Text */}
+      <g className='logo-text'>
+        <text
+          x={0}
+          y={19}
+          style={logoFonts.alpha}
+          fill={color}
+          stroke='none'
+          opacity={opacity}
+          textAnchor='left'
+          alignmentBaseline='baseline'
+        >α</text>
+        <text
+          x={18}
+          y={19}
+          style={logoFonts.dex}
+          fill={color}
+          stroke='none'
+          opacity={opacity}
+          textAnchor='left'
+          alignmentBaseline='baseline'
+        >dex</text>
+        <text
+          x={31.5}
+          y={5}
+          style={logoFonts.by}
+          fill={color}
+          stroke='none'
+          opacity={opacity}
+          textAnchor='left'
+          alignmentBaseline='middle'
+        >by</text>
+        <text
+          x={40}
+          y={5}
+          style={logoFonts.kozak}
+          fill={color}
+          stroke='none'
+          opacity={opacity}
+          textAnchor='left'
+          alignmentBaseline='middle'
+        >kozak</text>
+      </g>
+    </svg>
+  );
+};
+
+

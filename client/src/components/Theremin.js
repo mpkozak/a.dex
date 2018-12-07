@@ -170,10 +170,40 @@ export default class Theremin extends Component {
     this.props.refresh(level, freq);
   }
 
+  makeColorBox() {
+    const { calib } = this.state;
+    const { colorGain } = this.state;
+    const { colorFreq } = this.state;
+    const components = [
+      {color: `rgb(${colorGain.r}, ${colorGain.g}, ${colorGain.b})`, name: 'colorGain', text: 'GAIN'},
+      {color: `rgb(${colorFreq.r}, ${colorFreq.g}, ${colorFreq.b})`, name: 'colorFreq', text: 'PITCH'}
+    ];
+
+    const elements = components.map((d, i) => {
+      return (
+        <div className='element' key={d.name}>
+          <svg className={`swatch ${d.name}`} viewBox='0 0 10 10' onClick={() => this.handleClickColor(d.name)}>
+            {colorSwatch(d.color, calib, d.name)}
+          </svg>
+          <h5 className='label-small'>{d.text}</h5>
+        </div>
+      );
+    });
+
+    return (
+      <div className='color-box inner'>
+        <div className='settings-box'>
+          <h4 className='label'>Set Colors</h4>
+          {elements}
+        </div>
+      </div>
+    );
+  }
+
   makeControlBox() {
     const { params } = this.state;
 
-    const components = Object.keys(params).map((d, i) => {
+    const elements = Object.keys(params).map((d, i) => {
       return (
         <div className='element' key={i}>
           <svg className='knob' viewBox='0 0 100 100' onMouseDown={(e) => help.handleClickParam(e, d, this.updateParam)} onWheel={(e) => help.handleScrollParam(e, d, this.updateParam)}>
@@ -185,55 +215,35 @@ export default class Theremin extends Component {
     });
 
     return (
-      <div className='settings-box'>
-        {components}
+      <div className='control-box inner'>
+        <div className='settings-box'>
+          {elements}
+        </div>
       </div>
     );
   }
 
   render() {
-    const { calib } = this.state;
-    const { colorGain } = this.state;
-    const { colorFreq } = this.state;
-    const colorG = `rgb(${colorGain.r}, ${colorGain.g}, ${colorGain.b})`;
-    const colorF = `rgb(${colorFreq.r}, ${colorFreq.g}, ${colorFreq.b})`;
-
     return (
-      <div className='Theremin'>
+      <div className='theremin'>
+        <div className='outer'>
 
-        <div className='video-box outer'>
-          <svg className='border' ref='border' viewBox='0 0 40 30'>
-            {screenFrame(this.state.video)}
-          </svg>
-          <div className='inner'>
-            <video className='video' ref='video' preload='true' autoPlay loop muted/>
-            <svg className='tracker' ref='tracker' viewBox='0 0 40 30'/>
-            <canvas className='canvas' ref='canvas'/>
-          </div>
-        </div>
-
-        <div className='color-box inner'>
-          <div className='settings-box'>
-          <h4 className='label'>Set Colors</h4>
-            <div className='element'>
-              <svg className='swatch colorGain' viewBox='0 0 10 10' onClick={() => this.handleClickColor('colorGain')}>
-                {colorSwatch(colorG, calib, 'colorGain')}
-              </svg>
-              <h5 className='label-small'>GAIN</h5>
-            </div>
-            <div className='element'>
-              <svg className='swatch colorFreq' viewBox='0 0 10 10' onClick={() => this.handleClickColor('colorFreq')}>
-                {colorSwatch(colorF, calib, 'colorFreq')}
-              </svg>
-              <h5 className='label-small'>PITCH</h5>
+          <div className='video-box outer'>
+            <svg className='border' ref='border' viewBox='0 0 40 30'>
+              {screenFrame(this.state.video)}
+            </svg>
+            <div className='inner'>
+              <video className='video' ref='video' preload='true' autoPlay loop muted/>
+              <svg className='tracker' ref='tracker' viewBox='0 0 40 30'/>
+              <canvas className='canvas' ref='canvas'/>
             </div>
           </div>
-        </div>
 
-        <div className='control-box inner'>
+          {this.makeColorBox()}
+
           {this.makeControlBox()}
-        </div>
 
+        </div>
       </div>
     );
   }

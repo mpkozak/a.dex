@@ -1,0 +1,10 @@
+.master>.outer {
+  width: 100%;
+}
+
+.master .inner {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: space-between;
+}

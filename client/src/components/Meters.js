@@ -11,10 +11,6 @@ export default function Meters(props) {
   return (
     <div className='meters'>
       <div className='meter outer'>
-        {/* {analyser ? <Spec analyser={analyser}/> : null} */}
-        {/* {analyser ? <Freq analyser={analyser}/> : null} */}
-      </div>
-      <div className='meter outer'>
         {analyser ? <Wave analyser={analyser}/> : null}
       </div>
       <div className='meter outer'>
@@ -23,3 +19,9 @@ export default function Meters(props) {
     </div>
   );
 }
+
+
+      // <div className='meter outer'>
+      //   {analyser ? <Spec analyser={analyser}/> : null}
+      //   {analyser ? <Freq analyser={analyser}/> : null}
+      // </div>

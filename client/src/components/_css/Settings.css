@@ -1,0 +1,62 @@
+.settings>.outer {
+  width: 50%;
+}
+
+.settings .inner {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: flex-end;
+  border: none;
+}
+
+
+
+
+.settings .latency {
+  background-color: #f00;
+}
+
+.settings .monitor {
+  /*background-color: #fff;*/
+}
+
+.settings .button {
+  width: auto;
+  height: 100%;
+  margin: 5%;
+  border-radius: .3vmin;
+  box-shadow: .2vmin .2vmin .5vmin #000000;
+}
+
+.settings .button:active {
+  transform: scale(.95);
+  box-shadow: .2vmin .2vmin .2vmin #000000;
+}
+
+
+
+
+
+
+
+
+
+/*
+.settings .button-box {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+
+.settings .text {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-end;
+  justify-content: center;
+}
+*/

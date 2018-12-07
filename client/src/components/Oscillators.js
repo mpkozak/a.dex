@@ -1,6 +1,6 @@
 import React from 'react';
 import './_css/Oscillators.css';
-import { oscButton } from './_svg.js';
+import { glowButton } from './_svg.js';
 
 export default function Oscillators(props) {
   const { params } = props;
@@ -11,16 +11,16 @@ export default function Oscillators(props) {
         <h4 className='label'>{label}</h4>
         <div className='button-box'>
           <svg className='button' viewBox='0 0 10 10' onClick={() => props.update(osc, 'sine')}>
-            {oscButton('sine', current)}
+            {glowButton('sine', current)}
           </svg>
           <svg className='button' viewBox='0 0 10 10' onClick={() => props.update(osc, 'triangle')}>
-            {oscButton('triangle', current)}
+            {glowButton('triangle', current)}
           </svg>
           <svg className='button' viewBox='0 0 10 10' onClick={() => props.update(osc, 'sawtooth')}>
-            {oscButton('sawtooth', current)}
+            {glowButton('sawtooth', current)}
           </svg>
           <svg className='button' viewBox='0 0 10 10' onClick={() => props.update(osc, 'square')}>
-            {oscButton('square', current)}
+            {glowButton('square', current)}
           </svg>
         </div>
       </div>

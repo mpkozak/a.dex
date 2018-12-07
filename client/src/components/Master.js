@@ -1,4 +1,5 @@
 import React from 'react';
+import './_css/Master.css';
 import help from './_help.js';
 import { slider } from './_svg.js';
 
@@ -99,11 +100,17 @@ export default function Master(props) {
   }
 
   return (
-    <div className='inner' onWheel={(e) => help.handleScrollParamLinear(e, 'volume', props.update)}>
-      <h5 className='label-small'>MASTER</h5>
-      <svg viewBox='0 0 40 80'>
-        {drawSvg()}
-      </svg>
+    <div className='master'>
+      <div className='outer'>
+
+        <div className='inner' onWheel={(e) => help.handleScrollParamLinear(e, 'volume', props.update)}>
+          <h5 className='label-small'>MASTER</h5>
+          <svg viewBox='0 0 40 80'>
+            {drawSvg()}
+          </svg>
+        </div>
+
+      </div>
     </div>
   );
 }
