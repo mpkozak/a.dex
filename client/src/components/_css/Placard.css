@@ -1,0 +1,52 @@
+.placard>.outer {
+
+}
+
+.placard .inner {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-between;
+  border: none;
+}
+
+.placard .logo {
+  width: auto;
+  height: 100%;
+  /*border: 1px solid green;*/
+}
+
+.placard .help {
+  width: auto;
+  height: 80%;
+  /*border: 1px solid green;*/
+}
+
+.placard .kozak {
+  border: 1px solid green;
+  width: auto;
+  height: 100%;
+}
+
+
+
+
+
+
+
+/*.placard .alpha {
+  font-size: 150%;
+  font-family: Arial, sans-serif;
+  font-style: italic;
+  font-weight: 800;
+}
+
+.placard .by h6 {
+  text-align: left;
+  margin: 0 -2vmin;
+}
+
+.placard .kozak {
+  font-family: Futura, sans-serif;
+  font-weight: 200;
+}*/

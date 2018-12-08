@@ -17,13 +17,13 @@
   box-shadow: 0 0 .5vmin .1vmin #000000;
 }
 
-    .theremin {
-      position: absolute;
-      left: calc(0 * (100% / var(--grid-width)));
-      top: calc(0 * (100% / var(--grid-height)));
-      width: calc(12 * (100% / var(--grid-width)));
-      height: calc(11 * (100% / var(--grid-height)));
-    }
+.theremin {
+  position: absolute;
+  left: calc(0 * (100% / var(--grid-width)));
+  top: calc(0 * (100% / var(--grid-height)));
+  width: calc(12 * (100% / var(--grid-width)));
+  height: calc(11 * (100% / var(--grid-height)));
+}
 
 .placard {
   position: absolute;
@@ -33,53 +33,53 @@
   height: calc(1 * (100% / var(--grid-height)));
 }
 
-    .instructions {
-      position: absolute;
-      left: calc(12 * (100% / var(--grid-width)));
-      top: calc(1 * (100% / var(--grid-height)));
-      width: calc(5 * (100% / var(--grid-width)));
-      height: calc(14 * (100% / var(--grid-height)));
-    }
+.instructions {
+  position: absolute;
+  left: calc(12 * (100% / var(--grid-width)));
+  top: calc(1 * (100% / var(--grid-height)));
+  width: calc(5 * (100% / var(--grid-width)));
+  height: calc(14 * (100% / var(--grid-height)));
+}
 
-    .settings {
-      position: absolute;
-      left: calc(12 * (100% / var(--grid-width)));
-      top: calc(4 * (100% / var(--grid-height)));
-      width: calc(5 * (100% / var(--grid-width)));
-      height: calc(1 * (100% / var(--grid-height)));
-    }
+.settings {
+  position: absolute;
+  left: calc(12 * (100% / var(--grid-width)));
+  top: calc(4 * (100% / var(--grid-height)));
+  width: calc(5 * (100% / var(--grid-width)));
+  height: calc(1 * (100% / var(--grid-height)));
+}
 
-    .meters {
-      position: absolute;
-      left: calc(12 * (100% / var(--grid-width)));
-      top: calc(5 * (100% / var(--grid-height)));
-      width: calc(5 * (100% / var(--grid-width)));
-      height: calc(6 * (100% / var(--grid-height)));
-    }
+.meters {
+  position: absolute;
+  left: calc(12 * (100% / var(--grid-width)));
+  top: calc(5 * (100% / var(--grid-height)));
+  width: calc(5 * (100% / var(--grid-width)));
+  height: calc(6 * (100% / var(--grid-height)));
+}
 
-    .oscillators {
-      position: absolute;
-      left: calc(0 * (100% / var(--grid-width)));
-      top: calc(11 * (100% / var(--grid-height)));
-      width: calc(4 * (100% / var(--grid-width)));
-      height: calc(4 * (100% / var(--grid-height)));
-    }
+.oscillators {
+  position: absolute;
+  left: calc(0 * (100% / var(--grid-width)));
+  top: calc(11 * (100% / var(--grid-height)));
+  width: calc(4 * (100% / var(--grid-width)));
+  height: calc(4 * (100% / var(--grid-height)));
+}
 
-    .effects {
-      position: absolute;
-      left: calc(4 * (100% / var(--grid-width)));
-      top: calc(11 * (100% / var(--grid-height)));
-      width: calc(11 * (100% / var(--grid-width)));
-      height: calc(4 * (100% / var(--grid-height)));
-    }
+.effects {
+  position: absolute;
+  left: calc(4 * (100% / var(--grid-width)));
+  top: calc(11 * (100% / var(--grid-height)));
+  width: calc(11 * (100% / var(--grid-width)));
+  height: calc(4 * (100% / var(--grid-height)));
+}
 
-    .master {
-      position: absolute;
-      left: calc(15 * (100% / var(--grid-width)));
-      top: calc(11 * (100% / var(--grid-height)));
-      width: calc(2 * (100% / var(--grid-width)));
-      height: calc(4 * (100% / var(--grid-height)));
-    }
+.master {
+  position: absolute;
+  left: calc(15 * (100% / var(--grid-width)));
+  top: calc(11 * (100% / var(--grid-height)));
+  width: calc(2 * (100% / var(--grid-width)));
+  height: calc(4 * (100% / var(--grid-height)));
+}
 
 .outer {
   width: 100%;
@@ -101,64 +101,4 @@
   width: 90%;
   padding: .25vmin 1vmin;
   text-align: left;
-}
-
-
-
-
-
-
-
-
-/* TO BE MOVED + REFACTORED */
-
-.placard .inner {
-  display: flex;
-  flex-flow: row nowrap;
-  align-items: center;
-  justify-content: space-between;
-  border: none;
-}
-
-.placard .help {
-  width: 10%;
-}
-
-.placard .logo {
-  height: 100%;
-  /*border: 1px solid green;*/
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.placard .alpha {
-  font-size: 150%;
-  font-family: Arial, sans-serif;
-  font-style: italic;
-  font-weight: 800;
-}
-
-.placard .by h6 {
-  text-align: left;
-  margin: 0 -2vmin;
-}
-
-.placard .kozak {
-  font-family: Futura, sans-serif;
-  font-weight: 200;
 }

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import './_css/Main.css';
 import help from './_help.js';
-import { svgDefs, logo, helpButton } from './_svg.js';
 import Theremin from './Theremin.js';
+import Placard from './Placard.js';
 import Instructions from './Instructions.js';
 import Settings from './Settings.js';
 import Meters from './Meters.js';
@@ -11,16 +11,16 @@ import Effects from './Effects.js';
 import Master from './Master.js';
 
 export default class Main extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props);
     this.state = {
       audio: false,
-      help: false,
+      tutorial: false,
       params: {
-        osc1: 'sine',
+        osc1: 'sawtooth',
         osc2: 'sine',
         fmWidth: {v: 0, max: 1200, min: -1200},
-        fmDepth: {v: 0, max: 3000, min: 0},
+        fmDepth: {v: 1500, max: 3000, min: 0},
         eqLo: {v: 5, max: 10, min: 0},
         eqMid: {v: 5, max: 10, min: 0},
         eqHi: {v: 5, max: 10, min: 0},
@@ -37,6 +37,12 @@ export default class Main extends Component {
 
   componentDidMount() {
     this.audioInit();
+  }
+
+  toggleHelp() {
+    this.setState(prevState => ({
+      tutorial: !prevState.tutorial
+    }));
   }
 
   audioInit() {
@@ -123,12 +129,6 @@ export default class Main extends Component {
     };
   }
 
-  toggleHelp() {
-    this.setState(prevState => ({
-      tutorial: !prevState.tutorial
-    }));
-  }
-
   toggleMic() {
     const { ctx } = this.state.audio;
     const { mic } = this.state.audio;
@@ -196,28 +196,10 @@ export default class Main extends Component {
 
     return (
       <div className='Main'>
-        {svgDefs()}
 
         <Theremin refresh={this.controllerRefresh} mute={this.audioMute} />
 
-        <div className='placard'>
-          <div className='outer'>
-            <div className='inner'>
-              {logo('#FFFFFF', .7)}
-              <svg className='help' viewBox='0 0 10 10' onClick={() => this.toggleHelp()}>
-                {helpButton(this.state.tutorial)}
-              </svg>
-{/*
-              <div className='name'>
-                <h4><span className='alpha'>α</span>dex</h4>
-              </div>
-              <div className='by'>
-                <h6>by</h6> <h5 className='kozak'> kozak</h5>
-              </div>
-*/}
-            </div>
-          </div>
-        </div>
+        <Placard show={this.state.tutorial} toggle={this.toggleHelp} />
 
         <Instructions show={this.state.tutorial} toggle={this.toggleHelp} />
 
