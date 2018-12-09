@@ -196,7 +196,8 @@ export default class Main extends Component {
 
     return (
       <div className='Main'>
-
+{/*
+*/}
         <Theremin refresh={this.controllerRefresh} mute={this.audioMute} />
 
         <Placard show={this.state.tutorial} toggle={this.toggleHelp} />
@@ -212,7 +213,6 @@ export default class Main extends Component {
         <Effects params={params} update={this.updateParam} />
 
         <Master params={params} update={this.updateParam} />
-
       </div>
     );
   }

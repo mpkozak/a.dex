@@ -23,6 +23,8 @@
   top: calc(0 * (100% / var(--grid-height)));
   width: calc(12 * (100% / var(--grid-width)));
   height: calc(11 * (100% / var(--grid-height)));
+
+  /*background-color: rgba(255,255,0,.5);*/
 }
 
 .placard {
@@ -30,31 +32,37 @@
   left: calc(12 * (100% / var(--grid-width)));
   top: calc(0 * (100% / var(--grid-height)));
   width: calc(5 * (100% / var(--grid-width)));
-  height: calc(1 * (100% / var(--grid-height)));
+  height: calc(1.5 * (100% / var(--grid-height)));
+
+  /*background-color: rgba(0,255,255,.5);*/
 }
 
 .instructions {
   position: absolute;
   left: calc(12 * (100% / var(--grid-width)));
-  top: calc(1 * (100% / var(--grid-height)));
+  top: calc(1.5 * (100% / var(--grid-height)));
   width: calc(5 * (100% / var(--grid-width)));
-  height: calc(14 * (100% / var(--grid-height)));
+  height: calc(13.5 * (100% / var(--grid-height)));
 }
 
 .settings {
   position: absolute;
   left: calc(12 * (100% / var(--grid-width)));
-  top: calc(4 * (100% / var(--grid-height)));
+  top: calc(1.5 * (100% / var(--grid-height)));
   width: calc(5 * (100% / var(--grid-width)));
   height: calc(1 * (100% / var(--grid-height)));
+
+  /*background-color: rgba(255,0,255,.5);*/
 }
 
 .meters {
   position: absolute;
   left: calc(12 * (100% / var(--grid-width)));
-  top: calc(5 * (100% / var(--grid-height)));
+  top: calc(2.5 * (100% / var(--grid-height)));
   width: calc(5 * (100% / var(--grid-width)));
   height: calc(6 * (100% / var(--grid-height)));
+
+  /*background-color: rgba(255,0,0,.5);*/
 }
 
 .oscillators {
@@ -63,6 +71,8 @@
   top: calc(11 * (100% / var(--grid-height)));
   width: calc(4 * (100% / var(--grid-width)));
   height: calc(4 * (100% / var(--grid-height)));
+
+  /*background-color: rgba(0,255,0,.5);*/
 }
 
 .effects {
@@ -71,6 +81,8 @@
   top: calc(11 * (100% / var(--grid-height)));
   width: calc(11 * (100% / var(--grid-width)));
   height: calc(4 * (100% / var(--grid-height)));
+
+  /*background-color: rgba(0,0,255,.5);*/
 }
 
 .master {
@@ -79,6 +91,8 @@
   top: calc(11 * (100% / var(--grid-height)));
   width: calc(2 * (100% / var(--grid-width)));
   height: calc(4 * (100% / var(--grid-height)));
+
+  /*background-color: rgba(255,255,255,.5);*/
 }
 
 .outer {
