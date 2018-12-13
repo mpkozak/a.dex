@@ -141,7 +141,7 @@ export default class Main extends Component {
         .then(stream => {
           const mic = ctx.createMediaStreamSource(stream);
           masterGain.disconnect(analyser);
-          mic.connect(analyser)
+          mic.connect(analyser);
           this.setState(prevState => ({
             audio: {...prevState.audio, mic: mic, analyserSrc: 'mic'}
           }));
