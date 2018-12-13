@@ -198,8 +198,9 @@ export default class Main extends Component {
       <div className='Main'>
 {/*
 */}
+{/*
         <Theremin refresh={this.controllerRefresh} mute={this.audioMute} />
-
+*/}
         <Placard show={this.state.tutorial} toggle={this.toggleHelp} />
 
         <Instructions show={this.state.tutorial} toggle={this.toggleHelp} />
@@ -208,11 +209,13 @@ export default class Main extends Component {
 
         <Meters analyser={audio.analyser} />
 
+{/**/}
         <Oscillators params={params} update={this.updateOsc} />
 
         <Effects params={params} update={this.updateParam} />
 
         <Master params={params} update={this.updateParam} />
+
       </div>
     );
   }

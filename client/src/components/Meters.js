@@ -11,10 +11,10 @@ export default function Meters(props) {
   return (
     <div className='meters'>
       <div className='meter outer'>
-        {analyser ? <Wave analyser={analyser}/> : null}
+        <Wave analyser={analyser}/>
       </div>
       <div className='meter outer'>
-        {analyser ? <VU analyser={analyser}/> : null}
+        <VU analyser={analyser}/>
       </div>
     </div>
   );

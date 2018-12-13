@@ -5,12 +5,11 @@ import { slider } from './_svg.js';
 
 export default function Master(props) {
   const { volume } = props.params;
+  const volPct = help.getParamPct(volume);
+  const level = volPct * .6 + 10;
 
-  const drawSvg = () => {
-    const volPct = help.getParamPct(volume);
-    const volY = volPct * .6 + 10;
+  const drawSvg = (level) => {
     const colorRed = '#C12822';
-
     const ticks = [
       {y: 10, text: '+12', color: colorRed},
       {y: 18, text: '+6', color: colorRed},
@@ -24,7 +23,6 @@ export default function Master(props) {
       {y: 64, text: '60', color: '#FFFFFF'},
       {y: 70, text: '∞', color: '#FFFFFF'}
     ];
-
     const masterFont = {
       fontFamily: 'Helvetica, sans-serif',
       fontSize: 3.5 + 'px',
@@ -32,66 +30,50 @@ export default function Master(props) {
     };
 
     return (
-      <g>
-        <defs>
-    {/* Slider Clip Path */}
-          <clipPath id='slider-border'>
-            <rect x={0} y={0} rx={1} width={10} height={20}/>
-          </clipPath>
-        </defs>
+      <g className='master-svg'>
 
-  {/* Panel Background Group */}
-        <g className='panel-bg' opacity={.8}>
+  {/* Panel */}
+        <g className='master-panel' opacity='.8'>
     {/* Fader Slit */}
           <rect
-            x={19}
-            y={10}
-            width={2}
-            height={60}
+            x='19'
+            y='10'
+            width='2'
+            height='60'
             fill='#000000'
-            stroke='none'
           />
-    {/* Tick Marks */}
+    {/* Tick Marks + Text */}
           {ticks.map((d, i) => {
             return (
               <g key={i}>
                 <rect
-                  x={12}
+                  x='12'
                   y={d.y}
-                  width={2}
-                  height={.3}
+                  width='2'
+                  height='.3'
                   fill={d.color}
-                  stroke='none'
                 />
                 <rect
-                  x={26}
+                  x='26'
                   y={d.y}
-                  width={1.5}
-                  height={.3}
+                  width='1.5'
+                  height='.3'
                   fill={d.color}
-                  stroke='none'
                 />
-                <text
-                  x={29}
-                  y={d.y}
-                  style={masterFont}
-                  fill={d.color}
-                  textAnchor='start'
-                  alignmentBaseline='middle'
+                <text style={masterFont} textAnchor='start' alignmentBaseline='middle'
+                  x='29' y={d.y} fill={d.color}
                 >{d.text}</text>
               </g>
             );
           })}
         </g>
 
-  {/* Slider Movement Group */}
-        <g className='slider-group'
-          onMouseDown={(e) => help.handleClickParamLinear(e, 'volume', props.update)}
+  {/* Slider */}
+        <g className='master-slider'
           viewBox='0 0 10 20'
-          transform={`translate(${15}, ${70 - volY})`}
-          clipPath='url(#slider-border)'
+          transform={`translate(${15}, ${70 - level})`}
+          onMouseDown={(e) => help.handleClickParamLinear(e, 'volume', props.update)}
         >
-    {/* Slider */}
           {slider()}
         </g>
 
@@ -106,7 +88,7 @@ export default function Master(props) {
         <div className='inner' onWheel={(e) => help.handleScrollParamLinear(e, 'volume', props.update)}>
           <h5 className='label-small'>MASTER</h5>
           <svg viewBox='0 0 40 80'>
-            {drawSvg()}
+            {drawSvg(level)}
           </svg>
         </div>
 
