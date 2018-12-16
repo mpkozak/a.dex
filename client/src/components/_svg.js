@@ -28,34 +28,26 @@ export const svgDefs = () => {
             <feGaussianBlur stdDeviation='.25' />
           </filter>
     {/* Frame Gradients */}
-          <linearGradient id='meter-frame-horizontal' x1='0%' y1='0%' x2='100%' y2='0%' gradientUnits='objectBoundingBox'>
+          <linearGradient id='meter-frame-horizontal' x1='0%' y1='0%' x2='50%' y2='0%' gradientUnits='objectBoundingBox' spreadMethod='reflect'>
             <stop offset='0%' stopColor='#000000' stopOpacity='.7'/>
-            <stop offset='3%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='97%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='100%' stopColor='#000000' stopOpacity='.7'/>
+            <stop offset='6%' stopColor='#000000' stopOpacity='0'/>
           </linearGradient>
-          <linearGradient id='meter-frame-vertical' x1='0%' y1='0%' x2='0%' y2='100%' gradientUnits='objectBoundingBox'>
+          <linearGradient id='meter-frame-vertical' x1='0%' y1='0%' x2='0%' y2='50%' gradientUnits='objectBoundingBox' spreadMethod='reflect'>
             <stop offset='0%' stopColor='#000000' stopOpacity='.7'/>
-            <stop offset='5%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='95%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='100%' stopColor='#000000' stopOpacity='.7'/>
+            <stop offset='10%' stopColor='#000000' stopOpacity='0'/>
           </linearGradient>
           <radialGradient id='meter-frame-corners' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
             <stop offset='64%' stopColor='#000000' stopOpacity='0'/>
             <stop offset='70%' stopColor='#000000' stopOpacity='.5'/>
           </radialGradient>
     {/* Panel Gradients */}
-          <linearGradient id='meter-panel-vertical' x1='0%' y1='0%' x2='100%' y2='0%' gradientUnits='objectBoundingBox'>
+          <linearGradient id='meter-panel-vertical' x1='0%' y1='0%' x2='50%' y2='0%' gradientUnits='objectBoundingBox' spreadMethod='reflect'>
             <stop offset='0%' stopColor='#000000' stopOpacity='.9'/>
-            <stop offset='3%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='97%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='100%' stopColor='#000000' stopOpacity='.9'/>
+            <stop offset='6%' stopColor='#000000' stopOpacity='0'/>
           </linearGradient>
-          <linearGradient id='meter-panel-horizontal' x1='0%' y1='0%' x2='0%' y2='100%' gradientUnits='objectBoundingBox'>
+          <linearGradient id='meter-panel-horizontal' x1='0%' y1='0%' x2='0%' y2='50%' gradientUnits='objectBoundingBox' spreadMethod='reflect'>
             <stop offset='0%' stopColor='#000000' stopOpacity='.9'/>
-            <stop offset='5%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='95%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='100%' stopColor='#000000' stopOpacity='.9'/>
+            <stop offset='10%' stopColor='#000000' stopOpacity='0'/>
           </linearGradient>
           <radialGradient id='meter-panel-center' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
             <stop offset='0%' stopColor='#000000' stopOpacity='0'/>
@@ -77,9 +69,10 @@ export const svgDefs = () => {
           <path id='vu-scale-arc' d='M 12.5 18.75 Q 50 7.5, 87.5 18.75' pathLength='100' />
     {/* Filters */}
           <filter id='vu-panel-texture'>
-            <feTurbulence type='turbulence' baseFrequency='100' numOctaves='1' result='00noise' />
+            <feTurbulence type='turbulence' baseFrequency='4, 8' numOctaves='1' result='00noise' />
             <feColorMatrix in='00noise' type='saturate' values='0' result='01desat' />
-            <feComposite in='SourceGraphic' in2='01desat' operator='arithmetic' k1='1' k2='1' k3='1' k4='0' />
+            <feGaussianBlur in='01desat' stdDeviation='.05' out='02blur'/>
+            <feComposite in='SourceGraphic' in2='02blur' operator='arithmetic' k1='1' k2='1' k3='.5' k4='0' />
           </filter>
     {/* LED Gradients */}
           <radialGradient id='vu-led-shadow' cx='50%' cy='50%' r='100%' fx='45%' fy='45%' fr='2%' gradientUnits='objectBoundingBox'>
@@ -123,12 +116,10 @@ export const svgDefs = () => {
             <stop offset='45%' stopColor='#202326'/>
             <stop offset='50%' stopColor='#000000'/>
           </radialGradient>
-          <linearGradient id='vu-needle-shadow' x1='0%' y1='0%' x2='100%' y2='0%' gradientUnits='objectBoundingBox'>
+          <linearGradient id='vu-needle-shadow' x1='0%' y1='0%' x2='100%' y2='0%' gradientUnits='objectBoundingBox' spreadMethod='reflect'>
             <stop offset='0%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='25%' stopColor='#000000' stopOpacity='.1'/>
-            <stop offset='50%' stopColor='#000000' stopOpacity='.4'/>
-            <stop offset='75%' stopColor='#000000' stopOpacity='.1'/>
-            <stop offset='100%' stopColor='#000000' stopOpacity='0'/>
+            <stop offset='50%' stopColor='#000000' stopOpacity='.1'/>
+            <stop offset='100%' stopColor='#000000' stopOpacity='.4'/>
           </linearGradient>
     {/* Coil Gradients */}
           <linearGradient id='vu-coil-wire' x1='0%' y1='0%' x2='3%' y2='0%' gradientUnits='objectBoundingBox' spreadMethod='repeat'>
@@ -137,49 +128,70 @@ export const svgDefs = () => {
             <stop offset='50%' stopColor='#68411E' stopOpacity='1'/>
             <stop offset='100%' stopColor='#3A2411' stopOpacity='.5'/>
           </linearGradient>
-          <linearGradient id='vu-coil-shadow' x1='0%' y1='0%' x2='0%' y2='100%' gradientUnits='objectBoundingBox'>
+          <linearGradient id='vu-coil-shadow' x1='0%' y1='0%' x2='0%' y2='50%' gradientUnits='objectBoundingBox' spreadMethod='reflect'>
             <stop offset='0%' stopColor='#000000' stopOpacity='.6'/>
-            <stop offset='20%' stopColor='#000000' stopOpacity='.2'/>
-            <stop offset='50%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='80%' stopColor='#000000' stopOpacity='.2'/>
-            <stop offset='100%' stopColor='#000000' stopOpacity='.6'/>
+            <stop offset='40%' stopColor='#000000' stopOpacity='.2'/>
+            <stop offset='100%' stopColor='#000000' stopOpacity='0'/>
           </linearGradient>
 
   {/* Slider */}
     {/* Ridge Gradients */}
-          <linearGradient id='slider-ridges-top' x1='0%' y1='0%' x2='0%' y2='14.3%' gradientUnits='objectBoundingBox' spreadMethod='repeat'>
+          <linearGradient id='slider-ridges-top' x1='0%' y1='0%' x2='0%' y2='16.67%' gradientUnits='objectBoundingBox' spreadMethod='repeat'>
             <stop offset='0%' stopColor='#000000' stopOpacity='0'/>
             <stop offset='10%' stopColor='#000000' stopOpacity='.3'/>
             <stop offset='50%' stopColor='#000000' stopOpacity='.8'/>
             <stop offset='100%' stopColor='#000000' stopOpacity='0'/>
           </linearGradient>
-          <linearGradient id='slider-ridges-bottom' x1='0%' y1='0%' x2='0%' y2='14.3%' gradientUnits='objectBoundingBox' spreadMethod='repeat'>
+          <linearGradient id='slider-ridges-bottom' x1='0%' y1='0%' x2='0%' y2='16.67%' gradientUnits='objectBoundingBox' spreadMethod='repeat'>
             <stop offset='0%' stopColor='#000000' stopOpacity='0'/>
             <stop offset='50%' stopColor='#000000' stopOpacity='.8'/>
             <stop offset='90%' stopColor='#000000' stopOpacity='.3'/>
             <stop offset='100%' stopColor='#000000' stopOpacity='0'/>
           </linearGradient>
     {/* Contour Gradients */}
-          <linearGradient id='slider-contour-horizontal' x1='0%' y1='0%' x2='0%' y2='100%' gradientUnits='objectBoundingBox'>
+          <linearGradient id='slider-contour-horizontal' x1='0%' y1='0%' x2='0%' y2='50%' gradientUnits='objectBoundingBox' spreadMethod='reflect'>
             <stop offset='0%' stopColor='#000000' stopOpacity='1'/>
-            <stop offset='3%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='20%' stopColor='#000000' stopOpacity='.4'/>
-            <stop offset='30%' stopColor='#000000' stopOpacity='.5'/>
-            <stop offset='50%' stopColor='#000000' stopOpacity='.7'/>
-            <stop offset='70%' stopColor='#000000' stopOpacity='.5'/>
-            <stop offset='80%' stopColor='#000000' stopOpacity='.4'/>
-            <stop offset='97%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='100%' stopColor='#000000' stopOpacity='1'/>
+            <stop offset='3%' stopColor='#000000' stopOpacity='.2'/>
+            <stop offset='10%' stopColor='#000000' stopOpacity='.4'/>
+            <stop offset='50%' stopColor='#000000' stopOpacity='.6'/>
+            <stop offset='100%' stopColor='#000000' stopOpacity='.8'/>
           </linearGradient>
-          <linearGradient id='slider-contour-vertical' x1='0%' y1='0%' x2='100%' y2='0%' gradientUnits='objectBoundingBox'>
+          <linearGradient id='slider-contour-vertical' x1='0%' y1='0%' x2='50%' y2='0%' gradientUnits='objectBoundingBox' spreadMethod='reflect'>
             <stop offset='0%' stopColor='#000000' stopOpacity='1'/>
-            <stop offset='5%' stopColor='#000000' stopOpacity='.4'/>
-            <stop offset='10%' stopColor='#000000' stopOpacity='.1'/>
-            <stop offset='50%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='90%' stopColor='#000000' stopOpacity='.1'/>
-            <stop offset='95%' stopColor='#000000' stopOpacity='.4'/>
-            <stop offset='100%' stopColor='#000000' stopOpacity='1'/>
+            <stop offset='10%' stopColor='#000000' stopOpacity='.4'/>
+            <stop offset='20%' stopColor='#000000' stopOpacity='.1'/>
+            <stop offset='100%' stopColor='#000000' stopOpacity='0'/>
           </linearGradient>
+
+{/* glowButton */}
+  {/* Contour Gradients */}
+        <linearGradient id='glowbutton-contour-horizontal' x1='0%' y1='0%' x2='0%' y2='50%' gradientUnits='objectBoundingBox' spreadMethod='reflect'>
+          <stop offset='0%' stopColor='#000000' stopOpacity='1'/>
+          <stop offset='16%' stopColor='#000000' stopOpacity='0'/>
+        </linearGradient>
+        <linearGradient id='glowbutton-contour-vertical' x1='0%' y1='0%' x2='50%' y2='0%' gradientUnits='objectBoundingBox' spreadMethod='reflect'>
+          <stop offset='0%' stopColor='#000000' stopOpacity='1'/>
+          <stop offset='16%' stopColor='#000000' stopOpacity='0'/>
+        </linearGradient>
+        <radialGradient id='glowbutton-contour-center' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
+          <stop offset='0%' stopColor='#000000' stopOpacity='.4'/>
+          <stop offset='40%' stopColor='#000000' stopOpacity='.2'/>
+          <stop offset='50%' stopColor='#000000' stopOpacity='0'/>
+          <stop offset='60%' stopColor='#000000' stopOpacity='.2'/>
+        </radialGradient>
+  {/* Glow Gradients */}
+        <radialGradient id='glowbutton-active-base' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
+          <stop offset='0%' stopColor='#C12822' stopOpacity='1'/>
+          <stop offset='20%' stopColor='#C12822' stopOpacity='.8'/>
+          <stop offset='50%' stopColor='#C12822' stopOpacity='.7'/>
+          <stop offset='70%' stopColor='#C12822' stopOpacity='.5'/>
+        </radialGradient>
+        <radialGradient id='glowbutton-active-halo' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
+          <stop offset='0%' stopColor='#FF0000' stopOpacity='.5'/>
+          <stop offset='30%' stopColor='#FF0000' stopOpacity='.3'/>
+          <stop offset='50%' stopColor='#000000' stopOpacity='.1'/>
+          <stop offset='70%' stopColor='#000000' stopOpacity='.2'/>
+        </radialGradient>
 
       </defs>
     </svg>
@@ -233,14 +245,14 @@ export const slider = () => {
         x='0'
         y='.5'
         width='10'
-        height='9.5'
+        height='7.5'
       />
       <rect
         fill='url(#slider-ridges-bottom)'
         x='0'
-        y='10'
+        y='12'
         width='10'
-        height='9.5'
+        height='7.5'
       />
 {/* Contour Horizontal */}
       <rect
@@ -326,6 +338,137 @@ export const helpButton = (state) => {
     </g>
   );
 };
+
+
+export const sevenSegment = (value) => {
+  const sevenFont = {
+    fontFamily: 'DSEG7 Classic',
+    fontSize: 7
+  };
+  return (
+    <g className='seven-segment'>
+{/* Backpane */}
+      <rect
+        x='0'
+        y='0'
+        width='20'
+        height='10'
+        rx='1'
+        fill='#181818'
+        stroke='#000000'
+        strokeWidth='3%'
+      />
+{/* Inner Border */}
+      <rect
+        x='.75'
+        y='.75'
+        width='18.5'
+        height='8.5'
+        rx='.5'
+        fill='#000000'
+        stroke='#111111'
+        strokeWidth='1%'
+      />
+{/* Text Backpane */}
+      <text style={sevenFont} fill='#250000'
+        x='18.5' y='5.2' textAnchor='end' alignmentBaseline='middle'
+      >888</text>
+{/* Text Active */}
+      <text style={sevenFont} fill='#E00000'
+        x='18.5' y='5.2' textAnchor='end' alignmentBaseline='middle'
+      >{value}</text>
+    </g>
+  );
+};
+
+
+export const glowButton = (icon, current) => {
+  const active = icon === current ? true : false;
+  const colorButton = '#AAAAAA';
+  const icons = {
+    sine: `
+      M 2 5
+      Q 3.5 0, 5 5
+      Q 6.5 10, 8 5
+    `,
+    triangle: `
+      M 2 5
+      L 3.5 2.5
+      L 6.5 7.5
+      L 8 5
+    `,
+    sawtooth: `
+      M 2 5
+      L 5 2.5
+      L 5 7.5
+      L 8 5
+    `,
+    square: `
+      M 2 5
+      L 2 2.5
+      L 5 2.5
+      L 5 7.5
+      L 8 7.5
+      L 8 5
+    `,
+    mic: `
+      M 3.5 8 L 6.5 8
+      M 5 8 L 5 7
+      M 3 5 C 3 7.5, 7 7.5, 7 5
+      M 3.75 5 C 3.75 6.5, 6.25 6.5, 6.25 5
+      L 6.25 3 C 6.25 1.5, 3.75 1.5, 3.75 3 Z
+    `,
+  };
+  return (
+    <g className='glowbutton'>
+{/* Base Layer */}
+      <rect
+        x='0'
+        y='0'
+        rx='1'
+        width='10'
+        height='10'
+        fill={colorButton}
+        stroke='#000000'
+        strokeWidth='1%'
+      />
+{/* Button Base Active */}
+      <rect
+        fill='url(#glowbutton-active-base)'
+        opacity={active ? 1 : 0}
+        x='0'
+        y='0'
+        rx='1'
+        width='10'
+        height='10'
+      />
+{/* Logograph */}
+      <path
+        d={icons[icon]}
+        fill='none'
+        stroke='#000000'
+        strokeWidth='5%'
+      />
+{/* Contours */}
+      <rect fill='url(#glowbutton-contour-horizontal)' x='0' y='0' rx='1' width='10' height='10'/>
+      <rect fill='url(#glowbutton-contour-vertical)' x='0' y='0' rx='1' width='10' height='10'/>
+      <rect fill='url(#glowbutton-contour-center)' x='0' y='0' rx='1' width='10' height='10'/>
+{/* Glow Layer*/}
+      <rect
+        fill='url(#glowbutton-active-halo)'
+        opacity={active ? 1 : 0}
+        x='0'
+        y='0'
+        rx='1'
+        width='10'
+        height='10'
+      />
+    </g>
+  );
+};
+
+
+
 
 
 
@@ -1468,6 +1611,10 @@ export const screenFrame = (off) => {
 
 
 
+
+
+
+
 export const bigKnob = (rotation, color) => {
   const colorKnob = color ? color : '#3A3125';
   return (
@@ -1499,83 +1646,7 @@ export const bigKnob = (rotation, color) => {
 };
 
 
-export const glowButton = (icon, current) => {
-  const active = icon === current ? true : false;
-  const colorButton = '#AAAAAA';
-  const icons = {
-    sine: `M ${2} ${5} Q ${3.5} ${0}, ${5} ${5} Q ${6.5} ${10}, ${8} ${5}`,
-    triangle: `M ${2} ${5} L ${3.5} ${2.5} L ${6.5} ${7.5} L ${8} ${5}`,
-    sawtooth: `M ${2} ${5} L ${5} ${2.5} L ${5} ${7.5} L ${8} ${5}`,
-    square: `M ${2} ${5} L ${2} ${2.5} L ${5} ${2.5} L ${5} ${7.5} L ${8} ${7.5} L ${8} ${5}`,
-    mic: `
-      M ${3.5} ${8} L ${6.5} ${8}
-      M ${5} ${8} L ${5} ${7}
-      M ${3} ${5} L ${3} ${4.5}
-      M ${7} ${5} L ${7} ${4.5}
-      M ${3} ${5} C ${3} ${7.5}, ${7} ${7.5}, ${7} ${5}
-      M ${3.75} ${5} L ${3.75} ${3}
-      M ${6.25} ${5} L ${6.25} ${3}
-      M ${3.75} ${5} C ${3.75} ${6.5}, ${6.25} ${6.5}, ${6.25} ${5}
-      M ${3.75} ${3} C ${3.75} ${1.5}, ${6.25} ${1.5}, ${6.25} ${3}
-    `,
-  };
-  return (
-    <g className='glow-button'>
-{/* Button */}
-      <g className='glow-button-main'>
-  {/* Button Base Layer */}
-        <rect className='glow-button-base'
-          x={0}
-          y={0}
-          rx={1}
-          width={10}
-          height={10}
-          fill={colorButton}
-          stroke='#000000'
-          strokeWidth='1%'
-        />
-  {/* Button Base Active */}
-        <rect className='glow-button-base-active'
-          x={0}
-          y={0}
-          rx={1}
-          width={10}
-          height={10}
-          fill='url(#button-active-base)'
-          stroke='none'
-          opacity={active ? 1 : 0}
-        />
-  {/* Logograph */}
-        <path className='glow-button-wave'
-          d={icons[icon]}
-          fill='none'
-          stroke='#000000'
-          strokeWidth='5%'
-        />
 
-  {/* Button Shadows Group */}
-        <g className='glow-button-shadows'>
-          <rect fill='url(#button-shadow-horizontal)' x={0} y={0} rx={1} width={10} height={10} stroke='none'/>
-          <rect fill='url(#button-shadow-vertical)' x={0} y={0} rx={1} width={10} height={10} stroke='none'/>
-          <rect fill='url(#button-shadow-center)' x={0} y={0} rx={1} width={10} height={10} stroke='none'/>
-        </g>
-
-  {/* Button Active Layer */}
-        <g className='glow-button-active'>
-          <rect className='button-glow'
-            x={0}
-            y={0}
-            rx={1}
-            width={10}
-            height={10}
-            fill='url(#button-active-glow)'
-            opacity={active ? 1 : 0}
-          />
-        </g>
-      </g>
-    </g>
-  );
-};
 
 
 export const colorSwatch = (color, calib, src) => {
@@ -1624,67 +1695,31 @@ export const colorSwatch = (color, calib, src) => {
 };
 
 
-export const sevenSegment = (value) => {
-  const sevenFont = {
-    fontFamily: 'DSEG7 Classic',
-    fontSize: 7
-  };
+
+
+
+
+
+
+
+
+
+export const meterIllumination = () => {
   return (
-    <g className='seven-segment'>
-{/* Backpane */}
-      <rect
-        x={0}
-        y={0}
-        width={20}
-        height={10}
-        rx={1}
-        fill='#181818'
-        stroke='#000000'
-        strokeWidth='3%'
-      />
-{/* Inner Border */}
-      <rect
-        x={.75}
-        y={.75}
-        width={18.5}
-        height={8.5}
-        rx={.5}
-        fill='#000000'
-        stroke='#111111'
-        strokeWidth='1%'
-      />
-{/* Text Backpane */}
-      <text
-        x={18.5}
-        y={5.2}
-        style={sevenFont}
-        fill='#250000'
-        stroke='none'
-        textAnchor='end'
-        alignmentBaseline='middle'
-      >888</text>
-{/* Text Active */}
-      <text
-        x={18.5}
-        y={5.2}
-        style={sevenFont}
-        fill='#E00000'
-        stroke='none'
-        textAnchor='end'
-        alignmentBaseline='middle'
-      >{value}</text>
+    <g filter='url(#test)'>
+      <rect x='0' y='0' width='100' height='60' rx='2' ry='2' fill='#FFFFFF' stroke='#000000' strokeWidth='.4%' />
+      <g clipPath='url(#meter-outer-clip)'>
+        <rect fill='url(#meter-frame-horizontal' x='0' y='0' width='100' height='60' rx='2' ry='2' />
+        <rect fill='url(#meter-frame-vertical)' x='0' y='0' width='100' height='60' rx='2' ry='2' />
+      </g>
+      <g clipPath='url(#meter-middle-clip)' filter='url(#meter-gradient-blur)'>
+        <path fill='url(#meter-frame-vertical)' d='M 2.5 2.5 L 97.5 2.5 L 73.75 26.25 L 73.75 33.75 L 97.5 57.5 L 2.5 57.5 L 26.25 33.75 L 26.25 26.25 Z' />
+        <path fill='url(#meter-frame-horizontal)' d='M 2.5 2.5 L 30 30 L 70 30 L 97.5 2.5 L 97.5 57.5 L 70 30 L 30 30 L 2.5 57.5 Z' />
+        <rect fill='url(#meter-frame-corners)' x='2.5' y='2.5' width='95' height='55' rx='2' ry='2' />
+      </g>
     </g>
   );
-};
-
-
-
-
-
-
-
-
-
+}
 
 
 
@@ -1734,6 +1769,98 @@ export const svgDefsOld = () => {
 
 
 
+
+
+
+
+
+  {/*
+<filter id='test'>
+  <feColorMatrix in='SourceGraphic' type='luminanceToAlpha' result='00alpha'/>
+  <feGaussianBlur in='00alpha' stdDeviation='.2' result='10blur'/>
+
+    <feSpecularLighting in="10blur" surfaceScale="1" specularConstant=".15"
+                      specularExponent="100" lighting-color="#bbbbbb"
+                      result="specOut">
+    <fePointLight x="0" y="0" z="100"/>
+
+  </feSpecularLighting>
+  <feComposite in="specOut" in2="SourceAlpha" operator="in" result="specOut"/>
+  <feComposite in="SourceGraphic" in2="specOut" operator="arithmetic"
+               k1="1" k2="0" k3="1" k4="0" result="litPaint"/>
+</filter>
+
+
+
+
+
+
+                      <feSpotLight x='-20' y='-10' z='100' pointsAtX='100' pointsAtY='30' pointsAtZ='0' specularExponent='1' limitingConeAngle='100'/>
+
+
+
+
+x
+y
+z
+
+
+limitingConeAngle
+
+
+  <feSpecularLighting in='10blur' surfaceScale='5' specularConstant='.75'
+                      specularExponent='20' lighting-color='#FF0000'
+                      result='20lit'>
+    <fePointLight x='1000' y='1000' z='-20000'/>
+  </feSpecularLighting>
+  <feComposite in='20lit' in2='00alpha' operator='in' result='30comp'/>
+  <feComposite in='SourceGraphic' in2='30comp' operator='arithmetic'
+               k1="0" k2="1" k3="1" k4="0" result="litPaint"/>
+
+
+
+
+
+<filter id="MyFilter" filterUnits="userSpaceOnUse" x="0" y="0" width="200" height="120">
+  <desc>Produces a 3D lighting effect.</desc>
+  <feGaussianBlur in="SourceAlpha" stdDeviation="4" result="blur"/>
+  <feOffset in="blur" dx="4" dy="4" result="offsetBlur"/>
+  <feSpecularLighting in="blur" surfaceScale="5" specularConstant=".75"
+                      specularExponent="20" lighting-color="#bbbbbb"
+                      result="specOut">
+    <fePointLight x="-5000" y="-10000" z="20000"/>
+  </feSpecularLighting>
+  <feComposite in="specOut" in2="SourceAlpha" operator="in" result="specOut"/>
+  <feComposite in="SourceGraphic" in2="specOut" operator="arithmetic"
+               k1="0" k2="1" k3="1" k4="0" result="litPaint"/>
+  <feMerge>
+    <feMergeNode in="offsetBlur"/>
+    <feMergeNode in="litPaint"/>
+  </feMerge>
+</filter>
+
+
+
+
+  <feOffset in="blur" dx="4" dy="4" result="offsetBlur"/>
+
+  <feGaussianBlur in="SourceGraphic" stdDeviation=".2" result="blur"/>
+  <feGaussianBlur in="start" stdDeviation=".2" result="blur"/>
+
+  <feSpecularLighting in="blur" surfaceScale="5" specularConstant=".75"
+                      specularExponent="20" lighting-color="#bbbbbb"
+                      result="specOut">
+    <fePointLight x="-5000" y="-10000" z="20000"/>
+  </feSpecularLighting>
+  <feComposite in="specOut" in2="SourceAlpha" operator="in" result="specOut"/>
+  <feComposite in="SourceGraphic" in2="specOut" operator="arithmetic"
+               k1="0" k2="1" k3="1" k4="0" result="litPaint"/>
+  <feMerge>
+    <feMergeNode in="offsetBlur"/>
+    <feMergeNode in="litPaint"/>
+  </feMerge>
+
+  */}
 
 
 

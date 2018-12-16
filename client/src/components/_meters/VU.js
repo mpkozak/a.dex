@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3';
-import { meterFrame, meterPanelShadow } from '../_svg.js';
+import { meterFrame, meterPanelShadow, meterIllumination } from '../_svg.js';
 
 
 export default class VU extends Component {
@@ -308,3 +308,8 @@ drawSvg(rotation, peak) {
     );
   }
 }
+
+
+          // {this.drawSvg(rotation, peak)}
+
+        // {meterIllumination()}
