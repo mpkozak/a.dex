@@ -1,188 +1,255 @@
 import React, { Component } from 'react';
-import tracking from 'tracking';
+// import tracking from 'tracking';
 import * as d3 from 'd3';
 import './_css/Theremin.css';
 import help from './_help.js';
-import { screenFrame, bigKnob, colorSwatch } from './_svg.js';
+import Tracker from './_tracker.js';
+import { screenFrame, colorSwatch, bigKnob } from './_svg.js';
 
 export default class Theremin extends Component {
     constructor(props) {
     super(props)
     this.state = {
-      video: false,
-      calib: false,
-      colorGain: {r: null, g: null, b: null},
-      colorFreq: {r: null, g: null, b: null},
       params: {
-        sense: {v: 50, max: 100, min: 0, text: 'SENSITIVITY'},
+        sense: {v: 25, max: 100, min: 0, text: 'SENSITIVITY'},
         range: {v: 4, max: 6, min: 2, text: 'RANGE'},
       },
-      dataGain: false,
-      dataFreq: false,
+      video: null,
+      vW: 0,
+      vH: 0,
+      tracker: false,
+      canvas: false,
+      data: [],
+      muted: true,
+      colorGain: '#FF0000',
+      colorFreq: '#00FF00',
+      calib: false,
     };
-    this.handleClickColor = this.handleClickColor.bind(this);
+    this.trackerColorSet = this.trackerColorSet.bind(this);
+    this.trackerHandleData = this.trackerHandleData.bind(this);
     this.updateParam = this.updateParam.bind(this);
   }
 
-  componentDidMount() {
-    const colorGain = JSON.parse(localStorage.getItem('colorGain'));
-    const colorFreq = JSON.parse(localStorage.getItem('colorFreq'));
+  componentWillMount() {
+    const colorGain = localStorage.getItem('colorGain');
+    const colorFreq = localStorage.getItem('colorFreq');
     if (colorGain && colorFreq) {
       this.setState(prevState => ({ colorGain, colorFreq }));
     };
+  }
+
+  componentDidMount() {
     this.videoInit();
-    this.trackerInit();
   }
 
   componentDidUpdate() {
-    this.trackerDraw();
-    if (this.state.dataGain && this.state.dataFreq) {
+    const { data, muted } = this.state;
+    if (data.length === 2) {
       this.audioRefresh();
-    } else {
+      if (muted) this.setState(prevState => ({ muted: false }));
+    } else if (!muted) {
+      this.setState(prevState => ({ muted: true }));
       this.props.mute();
     };
+    this.trackerDraw();
   }
 
   videoInit() {
-    navigator.mediaDevices.getUserMedia({video: true})
+    navigator.mediaDevices.getUserMedia({ video: true })
       .then(stream => {
         const { video } = this.refs;
-        const { canvas } = this.refs;
         video.srcObject = stream;
-        this.setState(prevState => ({ video: true }));
-        const width = video.clientWidth;
-        const height = video.clientHeight;
-        canvas.width = width;
-        canvas.height = height;
+        const vW = video.clientWidth;
+        const vH = video.clientHeight;
+        this.setState(prevState => ({ video, vW, vH }));
+        this.trackerInit();
       });
   }
 
   trackerInit() {
-    const tracking = window.tracking;
-
-    tracking.ColorTracker.registerColor('Gain', (r, g, b) => {
-      return help.getColorDist(this.state.colorGain, {r: r, g: g, b: b}) <= this.state.params.sense.v;
-    });
-    tracking.ColorTracker.registerColor('Freq', (r, g, b) => {
-      return help.getColorDist(this.state.colorFreq, {r: r, g: g, b: b}) <= this.state.params.sense.v;
-    });
-    const colors = new tracking.ColorTracker(['Gain', 'Freq']);
-
-    colors.minDimension = 4;
-    colors.minGroupSize = 1000;
-
-    colors.on('track', e => {
-      this.filterData(e.data);
-    });
-
-    tracking.track('.video', colors);
+    const { video, colorGain, colorFreq, params } = this.state;
+    const tracker = new Tracker(this.trackerHandleData, video, colorGain, colorFreq, params.sense.v);
+    const canvas = tracker.init();
+    tracker.start();
+    this.setState(prevState => ({ tracker, canvas }));
   }
 
-  filterData(raw) {
-    const dataGain = raw.filter(d => d.color === 'Gain').sort((a, b) => b.height - a.height)[0];
-    const dataFreq = raw.filter(d => d.color === 'Freq').sort((a, b) => b.width - a.width)[0];
-    this.setState(prevState => ({ dataGain, dataFreq }));
+  trackerColorSet(target) {
+    this.setState(prevState => ({ calib: target }));
+    const { video, canvas } = this.state;
+    const { ctx, tW, tH, scalar } = canvas;
+    const { svgTracker } = this.refs;
+
+    const getCoords = (e) => {
+      svgTracker.removeEventListener('click', getCoords);
+
+      ctx.drawImage(video, 0, 0, tW, tH);
+      const rgb = ctx.getImageData(e.offsetX / scalar, e.offsetY / scalar, 1, 1).data;
+      const r = ('0' + rgb[0].toString(16)).slice(-2);
+      const g = ('0' + rgb[1].toString(16)).slice(-2);
+      const b = ('0' + rgb[2].toString(16)).slice(-2);
+      const color = `#${r}${g}${b}`;
+      // ctx.clearRect(0, 0, tW, tH);
+
+      localStorage.setItem(target, color);
+      this.setState(prevState => ({
+        [target]: color,
+        calib: false
+      }));
+      this.trackerColorRefresh();
+    };
+
+    svgTracker.addEventListener('click', getCoords);
+  }
+
+  trackerColorRefresh() {
+    const { tracker, colorGain, colorFreq } = this.state;
+    tracker.color1 = colorGain;
+    tracker.color2 = colorFreq;
+  }
+
+  trackerHandleData(data) {
+    this.setState(prevState => ({ data }));
   }
 
   trackerDraw() {
-    const node = this.refs.tracker;
-    const vWidth = this.refs.video.clientWidth;
-    const vHeight = this.refs.video.clientHeight;
-    const width = 40;
-    const height = 30;
-
-    const xScale = d3.scaleLinear().domain([0, vWidth]).range([0, width]);
-    const yScale = d3.scaleLinear().domain([0, vHeight]).range([0, height]);
-    const colorGain = `rgb(${this.state.colorGain.r}, ${this.state.colorGain.g}, ${this.state.colorGain.b})`;
-    const colorFreq = `rgb(${this.state.colorFreq.r}, ${this.state.colorFreq.g}, ${this.state.colorFreq.b})`;
-
-    const parseData = (d) => {
-      return ({
-        cx: width - xScale(d.x + (d.width / 2)),
-        cy: yScale(d.y + (d.height / 2)),
-        r: d.color === 'Freq' ? xScale(d.width / 2) : yScale(d.height / 2),
-        fill: d.color === 'Freq' ? colorFreq : colorGain
-      });
-    };
-    const data = [];
-    if (this.state.dataGain) data.push(parseData(this.state.dataGain));
-    if (this.state.dataFreq) data.push(parseData(this.state.dataFreq));
-
-    const circles = d3.select(node).selectAll('circle').data(data);
+    const { data } = this.state;
+    const { svgTracker } = this.refs;
+    const circles = d3.select(svgTracker).selectAll('circle').data(data);
     circles.enter().append('circle');
     circles
-      .attr('cx', d => d.cx)
-      .attr('cy', d => d.cy)
+      .attr('cx', d => d.x)
+      .attr('cy', d => d.y)
       .attr('r', d => d.r)
-      .style('fill', d => d.fill)
+      .style('fill', d => d.color)
       .style('opacity', .5)
       .style('stroke', '#FFFFFF')
       .style('stroke-width', '.3%');
     circles.exit().remove();
   }
 
-  handleClickColor(target) {
-    const frame = this.refs.canvas;
-    this.setState(prevState => ({ calib: target }))
-
-    const getCoords = (e) => {
-      frame.removeEventListener('click', getCoords);
-
-      const width = this.refs.canvas.width;
-      const height = this.refs.canvas.height;
-      const canvasCtx = this.refs.canvas.getContext('2d');
-
-      canvasCtx.drawImage(this.refs.video, 0, 0, width, height);
-      const colorRaw = canvasCtx.getImageData(width - e.offsetX, e.offsetY, 1, 1).data;
-      const color = {r: colorRaw[0], g: colorRaw[1], b: colorRaw[2]};
-      canvasCtx.clearRect(0, 0, width, height);
-
-      localStorage.setItem(target, JSON.stringify(color));
-      this.setState(prevState => ({
-        [target]: color,
-        calib: false
-      }));
-    };
-    frame.addEventListener('click', getCoords);
-  }
-
   updateParam(amt, key) {
-    const prev = this.state.params[key];
-    const delta = amt * prev.max;
-    const current = prev.v + delta;
-    if (current >= prev.min && current <= prev.max) {
+    const { params, tracker } = this.state;
+    const param = params[key];
+    const deltaV = amt * param.max;
+    const newV = param.v + deltaV;
+    if (newV >= param.min && newV <= param.max) {
+      if (key === 'sense') {
+        tracker.sense = newV;
+      };
       this.setState(prevState => ({
-        params: {...prevState.params, [key]: {...prevState.params[key], v: current}}
+        params: {...prevState.params, [key]: {...prevState.params[key], v: newV}}
       }));
     };
   }
+
+
 
   audioRefresh() {
-    const { dataGain } = this.state;
-    const { dataFreq } = this.state;
-    const width = this.refs.video.clientWidth;
-    const height = this.refs.video.clientHeight;
-
-    const x = dataFreq.x + (dataFreq.width / 2);
-    const y = dataGain.y + (dataGain.height / 2);
-    const freq = Math.pow(2, (width - x)/(width / this.state.params.range.v));
-    const level = (height - y) / height;
+    const { data, vW, vH, params } = this.state;
+    const level = (vH - data[0].y) / vH;
+    const freq = Math.pow(2, (vW - data[1].x) / (vW / params.range.v));
     this.props.refresh(level, freq);
   }
 
+
+
+
+  // trackerInit() {
+  //   const tracking = window.tracking;
+
+  //   tracking.ColorTracker.registerColor('Gain', (r, g, b) => {
+  //     return help.getColorDist(this.state.colorGain, {r: r, g: g, b: b}) <= this.state.params.sense.v;
+  //   });
+  //   tracking.ColorTracker.registerColor('Freq', (r, g, b) => {
+  //     return help.getColorDist(this.state.colorFreq, {r: r, g: g, b: b}) <= this.state.params.sense.v;
+  //   });
+  //   const colors = new tracking.ColorTracker(['Gain', 'Freq']);
+
+  //   colors.minDimension = 4;
+  //   colors.minGroupSize = 1000;
+
+  //   colors.on('track', e => {
+  //     this.filterData(e.data);
+  //   });
+
+  //   tracking.track('.video', colors);
+  // }
+
+
+  // filterData(raw) {
+  //   const dataGain = raw.filter(d => d.color === 'Gain').sort((a, b) => b.height - a.height)[0];
+  //   const dataFreq = raw.filter(d => d.color === 'Freq').sort((a, b) => b.width - a.width)[0];
+  //   this.setState(prevState => ({ dataGain, dataFreq }));
+  // }
+
+  // trackerDraw() {
+  //   const node = this.refs.tracker;
+  //   const vWidth = this.refs.video.clientWidth;
+  //   const vHeight = this.refs.video.clientHeight;
+  //   const width = 40;
+  //   const height = 30;
+
+  //   const xScale = d3.scaleLinear().domain([0, vWidth]).range([0, width]);
+  //   const yScale = d3.scaleLinear().domain([0, vHeight]).range([0, height]);
+  //   const colorGain = `rgb(${this.state.colorGain.r}, ${this.state.colorGain.g}, ${this.state.colorGain.b})`;
+  //   const colorFreq = `rgb(${this.state.colorFreq.r}, ${this.state.colorFreq.g}, ${this.state.colorFreq.b})`;
+
+  //   const parseData = (d) => {
+  //     return ({
+  //       cx: width - xScale(d.x + (d.width / 2)),
+  //       cy: yScale(d.y + (d.height / 2)),
+  //       r: d.color === 'Freq' ? xScale(d.width / 2) : yScale(d.height / 2),
+  //       fill: d.color === 'Freq' ? colorFreq : colorGain
+  //     });
+  //   };
+  //   const data = [];
+  //   if (this.state.dataGain) data.push(parseData(this.state.dataGain));
+  //   if (this.state.dataFreq) data.push(parseData(this.state.dataFreq));
+
+  //   const circles = d3.select(node).selectAll('circle').data(data);
+  //   circles.enter().append('circle');
+  //   circles
+  //     .attr('cx', d => d.cx)
+  //     .attr('cy', d => d.cy)
+  //     .attr('r', d => d.r)
+  //     .style('fill', d => d.fill)
+  //     .style('opacity', .5)
+  //     .style('stroke', '#FFFFFF')
+  //     .style('stroke-width', '.3%');
+  //   circles.exit().remove();
+  // }
+
+  // trackerDraw() {
+  //   const { data } = this.state;
+  //   const { canvas } = this.refs;
+  //   const ctx = this.refs.canvas.getContext('2d')
+  //   ctx.clearRect(0, 0, canvas.width, canvas.height)
+  //     ctx.strokeStyle = '#FFFFFF'
+  //     data.forEach(d => {
+  //       ctx.beginPath();
+  //       ctx.arc(d.x, d.y, d.r, 0, 2 * Math.PI);
+  //       ctx.fillStyle = d.color;
+  //       ctx.fill();
+  //       ctx.stroke();
+  //     });
+  // }
+
+
+
+
+
   makeColorBox() {
-    const { calib } = this.state;
-    const { colorGain } = this.state;
-    const { colorFreq } = this.state;
+    const { calib, colorGain, colorFreq } = this.state;
     const components = [
-      {color: `rgb(${colorGain.r}, ${colorGain.g}, ${colorGain.b})`, name: 'colorGain', text: 'GAIN'},
-      {color: `rgb(${colorFreq.r}, ${colorFreq.g}, ${colorFreq.b})`, name: 'colorFreq', text: 'PITCH'}
+      {color: colorGain, name: 'colorGain', text: 'GAIN'},
+      {color: colorFreq, name: 'colorFreq', text: 'PITCH'}
     ];
 
     const elements = components.map((d, i) => {
       return (
         <div className='element' key={d.name}>
-          <svg className={`swatch ${d.name}`} viewBox='0 0 10 10' onClick={() => this.handleClickColor(d.name)}>
+          <svg className={`swatch ${d.name}`} viewBox='0 0 10 10' onClick={() => this.trackerColorSet(d.name)}>
             {colorSwatch(d.color, calib, d.name)}
           </svg>
           <h5 className='label-small'>{d.text}</h5>
@@ -224,18 +291,16 @@ export default class Theremin extends Component {
   }
 
   render() {
+    const { vW, vH } = this.state;
     return (
       <div className='theremin'>
         <div className='outer'>
 
           <div className='video-box outer'>
-            <svg className='border' ref='border' viewBox='0 0 40 30'>
-              {screenFrame(this.state.video)}
-            </svg>
+
             <div className='inner'>
               <video className='video' ref='video' preload='true' autoPlay loop muted/>
-              <svg className='tracker' ref='tracker' viewBox='0 0 40 30'/>
-              <canvas className='canvas' ref='canvas'/>
+              <svg className='tracker' ref='svgTracker' width={vW} height={vH}/>
             </div>
           </div>
 
@@ -248,3 +313,10 @@ export default class Theremin extends Component {
     );
   }
 }
+
+            // <svg className='border' ref='border' viewBox='0 0 40 30'>
+            //   {screenFrame(this.state.video)}
+            // </svg>
+
+              // <canvas className='canvas' ref='canvas' width={vW} height={vH}/>
+              //

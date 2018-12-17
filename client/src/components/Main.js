@@ -199,17 +199,17 @@ export default class Main extends Component {
 {/*
 */}
 {/*
-        <Theremin refresh={this.controllerRefresh} mute={this.audioMute} />
 */}
+        <Theremin refresh={this.controllerRefresh} mute={this.audioMute} />
+
         <Placard show={this.state.tutorial} toggle={this.toggleHelp} />
 
         <Instructions show={this.state.tutorial} toggle={this.toggleHelp} />
 
         <Settings ctx={ctx} src={audio.analyserSrc} toggle={this.toggleMic} />
-
+{/*
         <Meters analyser={audio.analyser} />
-
-{/**/}
+*/}
         <Oscillators params={params} update={this.updateOsc} />
 
         <Effects params={params} update={this.updateParam} />

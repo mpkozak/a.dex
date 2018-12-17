@@ -61,7 +61,7 @@
   width: 100%;
   height: 100%;
   z-index: 4;
-  transform: rotateY(180deg);
+  transform: scaleX(-1);
 }
 
 .theremin .tracker {
@@ -71,15 +71,7 @@
   width: 100%;
   height: 100%;
   z-index: 5;
-}
-
-.theremin .canvas {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 7;
+  transform: scaleX(-1);
 }
 
 .theremin .border {

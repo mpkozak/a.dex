@@ -69,9 +69,13 @@ export default function Effects(props) {
       </div>
 
       <div className='effect outer'>
-        {makeEqBox()}
       </div>
 
     </div>
   );
 }
+
+
+        // {makeEqBox()}
+
+
