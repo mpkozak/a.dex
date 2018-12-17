@@ -69,10 +69,6 @@ export default class Main extends Component {
     const analyser = new AnalyserNode(ctx, {fftSize: Math.pow(2, scaleBase), minDecibels: -100, maxDecibels: -30, smoothingTimeConstant: 0});
     const masterOut = ctx.destination;
 
-    // ctx.onstatechange = () => {
-    //   console.log(ctx.state)
-    // }
-
     osc1.connect(fmGain);
     fmGain.connect(osc2.frequency);
     osc2.connect(instGain);
@@ -158,7 +154,6 @@ export default class Main extends Component {
 
   audioRefresh(key) {
     const { ctx, latency, osc1, osc2, fmGain, instGain, masterGain } = this.state.audio;
-
     switch (key) {
       case 'osc1' :
         help.setAudioParam(instGain.gain, 0, ctx, latency)
@@ -187,7 +182,6 @@ export default class Main extends Component {
 
   toggleMic() {
     const { ctx, mic, analyser, masterGain, analyserSrc } = this.state.audio;
-
     if (!mic) {
       navigator.mediaDevices.getUserMedia({audio: true})
         .then(stream => {
@@ -234,13 +228,17 @@ export default class Main extends Component {
 
   controllerRefresh(level, freq) {
     const { ctx, baseHz, latency, instGain, osc1, osc2 } = this.state.audio;
-    // const setLevel = level.toString().substr(0, 5);
-    // const setFreq = (freq * baseHz).toString().substr(0, 8);
     const setLevel = level;
     const setFreq = freq * baseHz;
     help.setAudioParam(instGain.gain, setLevel, ctx, latency);
     help.setAudioParam(osc1.frequency, setFreq, ctx, latency);
     help.setAudioParam(osc2.frequency, setFreq, ctx, latency);
+
+
+
+    // const setFreq = freq * 600;
+    // help.setAudioParam(osc1.detune, setFreq, ctx, latency);
+    // help.setAudioParam(osc2.detune, setFreq + this.state.params.fmWidth.v, ctx, latency);
   }
 
   render() {
@@ -261,8 +259,9 @@ export default class Main extends Component {
 
         <Settings ctx={audio.ctx} src={audio.analyserSrc} toggle={this.toggleMic} />
 {/*
-        <Meters analyser={audio.analyser} />
 */}
+        <Meters analyser={audio.analyser} />
+
         <Oscillators params={params} update={this.updateOsc} />
 
         <Effects params={params} update={this.updateParam} />

@@ -10,7 +10,7 @@ export default class Theremin extends Component {
     super(props)
     this.state = {
       params: {
-        sense: {v: 25, max: 100, min: 0, text: 'SENSITIVITY'},
+        sense: {v: 50, max: 255, min: 0, text: 'SENSITIVITY'},
         range: {v: 4, max: 6, min: 2, text: 'RANGE'},
       },
       video: null,
@@ -76,12 +76,10 @@ export default class Theremin extends Component {
   trackerColorSet(target) {
     this.setState(prevState => ({ calib: target }));
     const { video, canvas } = this.state;
-    const { svgTracker } = this.refs;
     const { ctx, tW, tH, scalar } = canvas;
-
+    const { svgTracker } = this.refs;
     const getCoords = (e) => {
       svgTracker.removeEventListener('click', getCoords);
-
       ctx.drawImage(video, 0, 0, tW, tH);
       const rgb = ctx.getImageData(e.offsetX / scalar, e.offsetY / scalar, 1, 1).data;
       const r = ('0' + rgb[0].toString(16)).slice(-2);
@@ -89,7 +87,6 @@ export default class Theremin extends Component {
       const b = ('0' + rgb[2].toString(16)).slice(-2);
       const color = `#${r}${g}${b}`;
       // ctx.clearRect(0, 0, tW, tH);
-
       localStorage.setItem(target, color);
       this.setState(prevState => ({
         [target]: color,
@@ -97,7 +94,6 @@ export default class Theremin extends Component {
       }));
       this.trackerColorRefresh();
     };
-
     svgTracker.addEventListener('click', getCoords);
   }
 
@@ -126,6 +122,34 @@ export default class Theremin extends Component {
       .style('stroke-width', '.3%');
     circles.exit().remove();
   }
+
+  // trackerDraw() {
+  //   const { data } = this.state;
+  //   const { svgTracker } = this.refs;
+  //   const rects = d3.select(svgTracker).selectAll('rect').data(data);
+  //   rects.enter().append('rect');
+  //   rects
+  //     .attr('x', d => d.rx)
+  //     .attr('y', d => d.ry)
+  //     .attr('width', d => d.rw)
+  //     .attr('height', d => d.rh)
+  //     .style('fill', d => d.color)
+  //     .style('opacity', .5)
+  //     .style('stroke', '#FFFFFF')
+  //     .style('stroke-width', '.3%');
+  //   rects.exit().remove();
+  //   const circles = d3.select(svgTracker).selectAll('circle').data(data);
+  //   circles.enter().append('circle');
+  //   circles
+  //     .attr('cx', d => d.x)
+  //     .attr('cy', d => d.y)
+  //     .attr('r', d => d.r)
+  //     .style('fill', d => d.color)
+  //     .style('opacity', .5)
+  //     .style('stroke', '#FFFFFF')
+  //     .style('stroke-width', '.3%');
+  //   circles.exit().remove();
+  // }
 
   updateParam(amt, key) {
     const { params, tracker } = this.state;
@@ -157,7 +181,6 @@ export default class Theremin extends Component {
       {color: colorGain, name: 'colorGain', text: 'GAIN'},
       {color: colorFreq, name: 'colorFreq', text: 'PITCH'}
     ];
-
     const elements = components.map((d, i) => {
       return (
         <div className='element' key={d.name}>
@@ -166,21 +189,16 @@ export default class Theremin extends Component {
         </div>
       );
     });
-
-
     return (
-      <div className='color-box inner'>
-        <div className='settings-box'>
-          <h4 className='label'>Set Colors</h4>
-          {elements}
-        </div>
+      <div className='settings-box'>
+        <h4 className='label'>Set Colors</h4>
+        {elements}
       </div>
     );
   }
 
   makeControlBox() {
     const { params } = this.state;
-
     const elements = Object.keys(params).map((d, i) => {
       return (
         <div className='element' key={i}>
@@ -189,15 +207,13 @@ export default class Theremin extends Component {
         </div>
       );
     });
-
     return (
-      <div className='control-box inner'>
-        <div className='settings-box'>
-          {elements}
-        </div>
+      <div className='settings-box'>
+        {elements}
       </div>
     );
   }
+
 
   render() {
     const { vW, vH } = this.state;
@@ -213,9 +229,12 @@ export default class Theremin extends Component {
             </div>
           </div>
 
-          {this.makeColorBox()}
-
-          {this.makeControlBox()}
+          <div className='color-box inner'>
+            {this.makeColorBox()}
+          </div>
+          <div className='control-box inner'>
+            {this.makeControlBox()}
+          </div>
 
         </div>
       </div>
@@ -231,6 +250,3 @@ export default class Theremin extends Component {
             // <svg className='border' ref='border' viewBox='0 0 40 30'>
             //   {screenFrame(this.state.video)}
             // </svg>
-
-              // <canvas className='canvas' ref='canvas' width={vW} height={vH}/>
-              //

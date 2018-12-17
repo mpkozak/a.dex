@@ -108,8 +108,9 @@ drawSvg(rotation, peak) {
   {/* Interior */}
         <g className='vu-interior' clipPath='url(#meter-inner-clip)'>
 
-    {/* Panel */}
-          <g className='vu-panel' filter='url(#vu-panel-texture)'>
+    {/* Panel
+          <g className='vu-panel' filter='url(#vu-panel-texture)'> */}
+          <g className='vu-panel'>
       {/* Background */}
             <rect
               x='5'
