@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-// import tracking from 'tracking';
 import * as d3 from 'd3';
 import './_css/Theremin.css';
 import help from './_help.js';
 import Tracker from './_tracker.js';
-import { screenFrame, colorSwatch, bigKnob } from './_svg.js';
+import { ColorSwatch, BigKnob, screenFrame } from './_svg.js';
 
 export default class Theremin extends Component {
     constructor(props) {
@@ -77,8 +76,8 @@ export default class Theremin extends Component {
   trackerColorSet(target) {
     this.setState(prevState => ({ calib: target }));
     const { video, canvas } = this.state;
-    const { ctx, tW, tH, scalar } = canvas;
     const { svgTracker } = this.refs;
+    const { ctx, tW, tH, scalar } = canvas;
 
     const getCoords = (e) => {
       svgTracker.removeEventListener('click', getCoords);
@@ -142,8 +141,6 @@ export default class Theremin extends Component {
       }));
     };
   }
-
-
 
   audioRefresh() {
     const { data, vW, vH, params } = this.state;
@@ -249,13 +246,12 @@ export default class Theremin extends Component {
     const elements = components.map((d, i) => {
       return (
         <div className='element' key={d.name}>
-          <svg className={`swatch ${d.name}`} viewBox='0 0 10 10' onClick={() => this.trackerColorSet(d.name)}>
-            {colorSwatch(d.color, calib, d.name)}
-          </svg>
+          <ColorSwatch color={d.color} active={calib === d.name} handleClick={() => this.trackerColorSet(d.name)} />
           <h5 className='label-small'>{d.text}</h5>
         </div>
       );
     });
+
 
     return (
       <div className='color-box inner'>
@@ -273,9 +269,7 @@ export default class Theremin extends Component {
     const elements = Object.keys(params).map((d, i) => {
       return (
         <div className='element' key={i}>
-          <svg className='knob' viewBox='0 0 100 100' onMouseDown={(e) => help.handleClickParam(e, d, this.updateParam)} onWheel={(e) => help.handleScrollParam(e, d, this.updateParam)}>
-            {bigKnob(help.getParamPct(params[d]), '#313638')}
-          </svg>
+        <BigKnob rotation={help.getParamPct(params[d])} color='#313638' handleClick={(e) => help.handleClickParam(e, d, this.updateParam)} handleScroll={(e) => help.handleScrollParam(e, d, this.updateParam)} />
           <h5 className='label-small'>{params[d].text}</h5>
         </div>
       );
@@ -313,6 +307,11 @@ export default class Theremin extends Component {
     );
   }
 }
+
+
+
+
+
 
             // <svg className='border' ref='border' viewBox='0 0 40 30'>
             //   {screenFrame(this.state.video)}

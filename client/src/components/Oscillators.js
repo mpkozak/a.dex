@@ -1,28 +1,29 @@
 import React from 'react';
 import './_css/Oscillators.css';
-import { glowButton } from './_svg.js';
+import { GlowButton } from './_svg.js';
 
 export default function Oscillators(props) {
   const { params } = props;
+  const waves = ['sine', 'triangle', 'sawtooth', 'square'];
+
+  const makeButtons = (osc, current) => {
+    const buttons = waves.map((d, i) => {
+      return (
+        <GlowButton key={osc + i} icon={d} active={d === current} handleClick={() => props.update(osc, d)} />
+      );
+    });
+    return (
+      <div className='button-box'>
+        {buttons}
+      </div>
+    );
+  }
 
   const makeOscBox = (current, osc, label) => {
     return (
       <div className='inner'>
         <h4 className='label'>{label}</h4>
-        <div className='button-box'>
-          <svg className='button' viewBox='0 0 10 10' onClick={() => props.update(osc, 'sine')}>
-            {glowButton('sine', current)}
-          </svg>
-          <svg className='button' viewBox='0 0 10 10' onClick={() => props.update(osc, 'triangle')}>
-            {glowButton('triangle', current)}
-          </svg>
-          <svg className='button' viewBox='0 0 10 10' onClick={() => props.update(osc, 'sawtooth')}>
-            {glowButton('sawtooth', current)}
-          </svg>
-          <svg className='button' viewBox='0 0 10 10' onClick={() => props.update(osc, 'square')}>
-            {glowButton('square', current)}
-          </svg>
-        </div>
+        {makeButtons(osc, current)}
       </div>
     );
   }

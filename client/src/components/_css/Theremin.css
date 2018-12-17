@@ -109,7 +109,7 @@
   align-items: center;
   justify-content: space-around;
   width: 35%;
-  height: 80%;
+  height: 90%;
 }
 
 .theremin .label {
@@ -117,18 +117,14 @@
   text-align: right;
 }
 
-.theremin .swatch {
+.theremin .color-swatch {
   width: 5vmin;
-  height: 5vmin;
-  border-radius: 2.5vmin;
-  box-shadow: .25vmin .25vmin 1vmin #000000;
+  filter: drop-shadow(.02rem .02rem .025rem #000000);
 }
 
-.theremin .knob {
+.theremin .big-knob {
   width: 5vmin;
-  height: 5vmin;
-  border-radius: 2.5vmin;
-  box-shadow: .5vmin .5vmin 1vmin #000000;
+  filter: drop-shadow(.02rem .02rem .025rem #000000);
 }
 
 @keyframes pulsar {

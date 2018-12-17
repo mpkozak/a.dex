@@ -18,14 +18,12 @@
   justify-content: space-around;
 }
 
-.oscillator .button {
+.oscillator .glow-button {
   width: 20%;
-  height: auto;
-  border-radius: .4vmin;
-  box-shadow: .2vmin .2vmin .5vmin #000000;
+  filter: drop-shadow(.02rem .02rem .025rem #000000);
 }
 
-.oscillator .button:active {
-  transform: scale(.95);
-  box-shadow: .2vmin .2vmin .2vmin #000000;
+.oscillator .glow-button:active {
+  transform: scale(.96);
+  filter: drop-shadow(.02rem .02rem .015rem #000000);
 }

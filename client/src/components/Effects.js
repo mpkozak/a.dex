@@ -1,7 +1,7 @@
 import React from 'react';
 import './_css/Effects.css';
 import help from './_help.js';
-import { bigKnob } from './_svg.js';
+import { BigKnob } from './_svg.js';
 
 export default function Effects(props) {
   const { params } = props;
@@ -15,9 +15,7 @@ export default function Effects(props) {
     const elements = components.map((d, i) => {
       return(
         <div className='element' key={d.name}>
-          <svg className='knob' viewBox='0 0 100 100' onMouseDown={(e) => help.handleClickParam(e, d.name, props.update)} onWheel={(e) => help.handleScrollParam(e, d.name, props.update)}>
-            {bigKnob(d.val, '#313638')}
-          </svg>
+          <BigKnob rotation={d.val} color='#313638' handleClick={(e) => help.handleClickParam(e, d.name, props.update)} handleScroll={(e) => help.handleScrollParam(e, d.name, props.update)} />
           <h5 className='label-small'>{d.text}</h5>
         </div>
       );
@@ -43,9 +41,7 @@ export default function Effects(props) {
     const elements = components.map((d, i) => {
       return(
         <div className='element' key={d.name}>
-          <svg className='knob' viewBox='0 0 100 100' onMouseDown={(e) => help.handleClickParam(e, d.name, props.update)} onWheel={(e) => help.handleScrollParam(e, d.name, props.update)}>
-            {bigKnob(d.val)}
-          </svg>
+          <BigKnob rotation={d.val} color='' handleClick={(e) => help.handleClickParam(e, d.name, props.update)} handleScroll={(e) => help.handleScrollParam(e, d.name, props.update)} />
           <h5 className='label-small'>{d.text}</h5>
         </div>
       );
@@ -63,19 +59,14 @@ export default function Effects(props) {
 
   return (
     <div className='effects'>
-
       <div className='effect outer'>
         {makeFmBox()}
       </div>
-
       <div className='effect outer'>
+{/*
+        {makeEqBox()}
+*/}
       </div>
-
     </div>
   );
 }
-
-
-        // {makeEqBox()}
-
-

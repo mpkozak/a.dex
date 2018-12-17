@@ -1,6 +1,6 @@
 import React from 'react';
 import './_css/Placard.css';
-import { logo, helpButton } from './_svg.js';
+import { logo, HelpButton } from './_svg.js';
 
 export default function Placard(props) {
   return (
@@ -8,9 +8,7 @@ export default function Placard(props) {
       <div className='outer'>
         <div className='inner'>
           {logo('#FFFFFF', .7)}
-          <svg className='help' viewBox='0 0 10 10' onClick={() => props.toggle()}>
-            {helpButton(props.show)}
-          </svg>
+          <HelpButton active={props.show} handleClick={() => props.toggle()} />
         </div>
       </div>
     </div>

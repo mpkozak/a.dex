@@ -1,167 +1,38 @@
 import React from 'react';
 
+///////////////////////////////////
+// MASTER SVG DEFINITIONS MODULE //
+///////////////////////////////////
 
-export const svgDefs = () => {
+export const SvgDefs = () => {
   return (
     <svg className='invisible' width='0' height='0'>
       <defs>
-  {/* Meter */}
-    {/* Clip Paths */}
-          <clipPath id='meter-outer-clip'>
-            <rect x='0' y='0' width='100' height='60' rx='2' ry='2' />
-          </clipPath>
-          <clipPath id='meter-middle-clip'>
-            <rect x='2.5' y='2.5' width='95' height='55' rx='2' ry='2' />
-          </clipPath>
-          <clipPath id='meter-inner-clip'>
-            <rect x='5' y='5' width='90' height='50' rx='1' ry='1' />
-          </clipPath>
-          <clipPath id='slider-clip'>
-            <rect x='0' y='0' rx='1' width='10' height='20' />
-          </clipPath>
-    {/* Filters */}
-          <filter id='meter-frame-texture'>
-            <feTurbulence type='fractalNoise' baseFrequency='5, 30' result='00noise' />
-            <feBlend in='SourceGraphic' in2='00noise' mode='multiply' />
-          </filter>
-          <filter id='meter-gradient-blur'>
-            <feGaussianBlur stdDeviation='.25' />
-          </filter>
-    {/* Frame Gradients */}
-          <linearGradient id='meter-frame-horizontal' x1='0%' y1='0%' x2='50%' y2='0%' gradientUnits='objectBoundingBox' spreadMethod='reflect'>
-            <stop offset='0%' stopColor='#000000' stopOpacity='.7'/>
-            <stop offset='6%' stopColor='#000000' stopOpacity='0'/>
-          </linearGradient>
-          <linearGradient id='meter-frame-vertical' x1='0%' y1='0%' x2='0%' y2='50%' gradientUnits='objectBoundingBox' spreadMethod='reflect'>
-            <stop offset='0%' stopColor='#000000' stopOpacity='.7'/>
-            <stop offset='10%' stopColor='#000000' stopOpacity='0'/>
-          </linearGradient>
-          <radialGradient id='meter-frame-corners' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
-            <stop offset='64%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='70%' stopColor='#000000' stopOpacity='.5'/>
-          </radialGradient>
-    {/* Panel Gradients */}
-          <linearGradient id='meter-panel-vertical' x1='0%' y1='0%' x2='50%' y2='0%' gradientUnits='objectBoundingBox' spreadMethod='reflect'>
-            <stop offset='0%' stopColor='#000000' stopOpacity='.9'/>
-            <stop offset='6%' stopColor='#000000' stopOpacity='0'/>
-          </linearGradient>
-          <linearGradient id='meter-panel-horizontal' x1='0%' y1='0%' x2='0%' y2='50%' gradientUnits='objectBoundingBox' spreadMethod='reflect'>
-            <stop offset='0%' stopColor='#000000' stopOpacity='.9'/>
-            <stop offset='10%' stopColor='#000000' stopOpacity='0'/>
-          </linearGradient>
-          <radialGradient id='meter-panel-center' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
-            <stop offset='0%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='25%' stopColor='#000000' stopOpacity='.1'/>
-            <stop offset='50%' stopColor='#000000' stopOpacity='.3'/>
-            <stop offset='70%' stopColor='#000000' stopOpacity='.6'/>
-          </radialGradient>
 
-  {/* Meter - VU */}
-    {/* Masks */}
-          <mask id='vu-scale-mask'>
-            <rect x='0' y='0' width='100' height='60' fill='#FFFFFF' />
-            <line x1='50' y1='57' x2='-13.7' y2='0' stroke='#000000' strokeWidth='4.9' />
-            <line x1='50' y1='57' x2='113.7' y2='0' stroke='#000000' strokeWidth='4.9' />
-            <use href='#vu-scale-arc' transform='translate(0, -1.5)' fill='none' stroke='#000000' strokeWidth='7.35' />
-            <use href='#vu-scale-arc' transform='translate(0, 9)' fill='#000000' stroke='none' />
-          </mask>
-    {/* Paths */}
-          <path id='vu-scale-arc' d='M 12.5 18.75 Q 50 7.5, 87.5 18.75' pathLength='100' />
-    {/* Filters */}
-          <filter id='vu-panel-texture'>
-            <feTurbulence type='turbulence' baseFrequency='4, 8' numOctaves='1' result='00noise' />
-            <feColorMatrix in='00noise' type='saturate' values='0' result='01desat' />
-            <feGaussianBlur in='01desat' stdDeviation='.05' out='02blur'/>
-            <feComposite in='SourceGraphic' in2='02blur' operator='arithmetic' k1='1' k2='1' k3='.5' k4='0' />
-          </filter>
-    {/* LED Gradients */}
-          <radialGradient id='vu-led-shadow' cx='50%' cy='50%' r='100%' fx='45%' fy='45%' fr='2%' gradientUnits='objectBoundingBox'>
-            <stop offset='0%' stopColor='#000000' stopOpacity='1'/>
-            <stop offset='30%' stopColor='#000000' stopOpacity='.9'/>
-            <stop offset='46%' stopColor='#000000' stopOpacity='.2'/>
-            <stop offset='50%' stopColor='#000000' stopOpacity='0'/>
-          </radialGradient>
-          <radialGradient id='vu-led-border' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
-            <stop offset='0%' stopColor='#000000' stopOpacity='1'/>
-            <stop offset='44%' stopColor='#000000' stopOpacity='1'/>
-            <stop offset='50%' stopColor='#000000' stopOpacity='0'/>
-          </radialGradient>
-          <radialGradient id='vu-led-contour' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
-            <stop offset='0%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='25%' stopColor='#000000' stopOpacity='.1'/>
-            <stop offset='40%' stopColor='#000000' stopOpacity='.3'/>
-            <stop offset='46%' stopColor='#000000' stopOpacity='.5'/>
-            <stop offset='50%' stopColor='#000000' stopOpacity='.9'/>
-          </radialGradient>
-          <radialGradient id='vu-led-glare' cx='50%' cy='50%' r='50%' fx='28%' fy='28%' fr='4%' gradientUnits='objectBoundingBox'>
-            <stop offset='0%' stopColor='#FFFFFF' stopOpacity='.8'/>
-            <stop offset='1%' stopColor='#FFFFFF' stopOpacity='.6'/>
-            <stop offset='3%' stopColor='#FFFFFF' stopOpacity='.4'/>
-            <stop offset='20%' stopColor='#FFFFFF' stopOpacity='.2'/>
-            <stop offset='50%' stopColor='#000000' stopOpacity='.1'/>
-          </radialGradient>
-          <radialGradient id='vu-led-halo' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
-            <stop offset='0%' stopColor='#AB2D1E' stopOpacity='0'/>
-            <stop offset='25%' stopColor='#FF352E' stopOpacity='.3'/>
-            <stop offset='30%' stopColor='#FF352E' stopOpacity='.2'/>
-            <stop offset='35%' stopColor='#FF352E' stopOpacity='.1'/>
-            <stop offset='50%' stopColor='#FF352E' stopOpacity='0'/>
-          </radialGradient>
-    {/* Needle Gradients */}
-          <radialGradient id='vu-needle-cutout' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
-            <stop offset='0%' stopColor='#000000'/>
-            <stop offset='10%' stopColor='#202326'/>
-            <stop offset='40%' stopColor='#0F0D0A'/>
-            <stop offset='42%' stopColor='#131517'/>
-            <stop offset='45%' stopColor='#202326'/>
-            <stop offset='50%' stopColor='#000000'/>
-          </radialGradient>
-          <linearGradient id='vu-needle-shadow' x1='0%' y1='0%' x2='100%' y2='0%' gradientUnits='objectBoundingBox' spreadMethod='reflect'>
-            <stop offset='0%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='50%' stopColor='#000000' stopOpacity='.1'/>
-            <stop offset='100%' stopColor='#000000' stopOpacity='.4'/>
-          </linearGradient>
-    {/* Coil Gradients */}
-          <linearGradient id='vu-coil-wire' x1='0%' y1='0%' x2='3%' y2='0%' gradientUnits='objectBoundingBox' spreadMethod='repeat'>
-            <stop offset='0%' stopColor='#3A2411' stopOpacity='.5'/>
-            <stop offset='1%' stopColor='#68411E' stopOpacity='1'/>
-            <stop offset='50%' stopColor='#68411E' stopOpacity='1'/>
-            <stop offset='100%' stopColor='#3A2411' stopOpacity='.5'/>
-          </linearGradient>
-          <linearGradient id='vu-coil-shadow' x1='0%' y1='0%' x2='0%' y2='50%' gradientUnits='objectBoundingBox' spreadMethod='reflect'>
-            <stop offset='0%' stopColor='#000000' stopOpacity='.6'/>
-            <stop offset='40%' stopColor='#000000' stopOpacity='.2'/>
-            <stop offset='100%' stopColor='#000000' stopOpacity='0'/>
-          </linearGradient>
-
-  {/* Slider */}
-    {/* Ridge Gradients */}
-          <linearGradient id='slider-ridges-top' x1='0%' y1='0%' x2='0%' y2='16.67%' gradientUnits='objectBoundingBox' spreadMethod='repeat'>
-            <stop offset='0%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='10%' stopColor='#000000' stopOpacity='.3'/>
-            <stop offset='50%' stopColor='#000000' stopOpacity='.8'/>
-            <stop offset='100%' stopColor='#000000' stopOpacity='0'/>
-          </linearGradient>
-          <linearGradient id='slider-ridges-bottom' x1='0%' y1='0%' x2='0%' y2='16.67%' gradientUnits='objectBoundingBox' spreadMethod='repeat'>
-            <stop offset='0%' stopColor='#000000' stopOpacity='0'/>
-            <stop offset='50%' stopColor='#000000' stopOpacity='.8'/>
-            <stop offset='90%' stopColor='#000000' stopOpacity='.3'/>
-            <stop offset='100%' stopColor='#000000' stopOpacity='0'/>
-          </linearGradient>
-    {/* Contour Gradients */}
-          <linearGradient id='slider-contour-horizontal' x1='0%' y1='0%' x2='0%' y2='50%' gradientUnits='objectBoundingBox' spreadMethod='reflect'>
-            <stop offset='0%' stopColor='#000000' stopOpacity='1'/>
-            <stop offset='3%' stopColor='#000000' stopOpacity='.2'/>
-            <stop offset='10%' stopColor='#000000' stopOpacity='.4'/>
-            <stop offset='50%' stopColor='#000000' stopOpacity='.6'/>
-            <stop offset='100%' stopColor='#000000' stopOpacity='.8'/>
-          </linearGradient>
-          <linearGradient id='slider-contour-vertical' x1='0%' y1='0%' x2='50%' y2='0%' gradientUnits='objectBoundingBox' spreadMethod='reflect'>
-            <stop offset='0%' stopColor='#000000' stopOpacity='1'/>
-            <stop offset='10%' stopColor='#000000' stopOpacity='.4'/>
-            <stop offset='20%' stopColor='#000000' stopOpacity='.1'/>
-            <stop offset='100%' stopColor='#000000' stopOpacity='0'/>
-          </linearGradient>
+{/* bigKnob */}
+  {/* Contour Gradients */}
+        <radialGradient id='bigknob-contour' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
+          <stop offset='0%' stopColor='#000000' stopOpacity='0'/>
+          <stop offset='20%' stopColor='#000000' stopOpacity='.1'/>
+          <stop offset='35%' stopColor='#000000' stopOpacity='.3'/>
+          <stop offset='45%' stopColor='#000000' stopOpacity='.5'/>
+          <stop offset='50%' stopColor='#000000' stopOpacity='1'/>
+        </radialGradient>
+        <radialGradient id='bigknob-glare' cx='50%' cy='50%' r='100%' fx='0%' fy='0%' fr='10%' gradientUnits='objectBoundingBox'>
+          <stop offset='0%' stopColor='#FFFFFF' stopOpacity='1'/>
+          <stop offset='5%' stopColor='#FFFFFF' stopOpacity='.5'/>
+          <stop offset='15%' stopColor='#FFFFFF' stopOpacity='.3'/>
+          <stop offset='25%' stopColor='#FFFFFF' stopOpacity='.2'/>
+          <stop offset='40%' stopColor='#FFFFFF' stopOpacity='.1'/>
+          <stop offset='65%' stopColor='#FFFFFF' stopOpacity='0'/>
+          <stop offset='70%' stopColor='#000000' stopOpacity='0'/>
+          <stop offset='80%' stopColor='#000000' stopOpacity='1'/>
+        </radialGradient>
+        <linearGradient id='bigknob-notch' x1='0%' y1='0%' x2='0%' y2='50%' gradientUnits='objectBoundingBox' spreadMethod='reflect'>
+          <stop offset='0%' stopColor='#000000' stopOpacity='.5'/>
+          <stop offset='20%' stopColor='#000000' stopOpacity='.6'/>
+          <stop offset='100%' stopColor='#000000' stopOpacity='.7'/>
+        </linearGradient>
 
 {/* glowButton */}
   {/* Contour Gradients */}
@@ -193,11 +64,461 @@ export const svgDefs = () => {
           <stop offset='70%' stopColor='#000000' stopOpacity='.2'/>
         </radialGradient>
 
+{/* colorSwatch */}
+  {/* Contour Gradients */}
+        <radialGradient id='colorswatch-contour' cx='50%' cy='50%' r='50%' gradientUnits='objectBoundingBox'>
+          <stop offset='0%' stopColor='#000000' stopOpacity='0'/>
+          <stop offset='50%' stopColor='#000000' stopOpacity='.1'/>
+          <stop offset='70%' stopColor='#000000' stopOpacity='.3'/>
+          <stop offset='90%' stopColor='#000000' stopOpacity='.7'/>
+          <stop offset='100%' stopColor='#000000' stopOpacity='1'/>
+        </radialGradient>
+        <radialGradient id='colorswatch-glare' cx='50%' cy='50%' r='50%' fx='28%' fy='28%' fr='4%' gradientUnits='objectBoundingBox'>
+          <stop offset='0%' stopColor='#FFFFFF' stopOpacity='.8'/>
+          <stop offset='1%' stopColor='#FFFFFF' stopOpacity='.6'/>
+          <stop offset='3%' stopColor='#FFFFFF' stopOpacity='.4'/>
+          <stop offset='20%' stopColor='#FFFFFF' stopOpacity='.2'/>
+          <stop offset='50%' stopColor='#000000' stopOpacity='.1'/>
+        </radialGradient>
+  {/* Halo Glow */}
+        <radialGradient id='colorswatch-glow' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
+          <stop offset='0%' stopColor='#FFFFFF' stopOpacity='.2'/>
+          <stop offset='26%' stopColor='#FFFFFF' stopOpacity='.17'/>
+          <stop offset='30%' stopColor='#FFFFFF' stopOpacity='.15'/>
+          <stop offset='32%' stopColor='#FFFFFF' stopOpacity='.1'/>
+          <stop offset='38%' stopColor='#FFFFFF' stopOpacity='.05'/>
+          <stop offset='50%' stopColor='#FFFFFF' stopOpacity='0'/>
+        </radialGradient>
+
+
+
+
+
+{/* Meter */}
+  {/* Clip Paths */}
+        <clipPath id='meter-outer-clip'>
+          <rect x='0' y='0' width='100' height='60' rx='2' ry='2' />
+        </clipPath>
+        <clipPath id='meter-middle-clip'>
+          <rect x='2.5' y='2.5' width='95' height='55' rx='2' ry='2' />
+        </clipPath>
+        <clipPath id='meter-inner-clip'>
+          <rect x='5' y='5' width='90' height='50' rx='1' ry='1' />
+        </clipPath>
+        <clipPath id='slider-clip'>
+          <rect x='0' y='0' rx='1' width='10' height='20' />
+        </clipPath>
+  {/* Filters */}
+        <filter id='meter-frame-texture'>
+          <feTurbulence type='fractalNoise' baseFrequency='5, 30' result='00noise' />
+          <feBlend in='SourceGraphic' in2='00noise' mode='multiply' />
+        </filter>
+        <filter id='meter-gradient-blur'>
+          <feGaussianBlur stdDeviation='.25' />
+        </filter>
+  {/* Frame Gradients */}
+        <linearGradient id='meter-frame-horizontal' x1='0%' y1='0%' x2='50%' y2='0%' gradientUnits='objectBoundingBox' spreadMethod='reflect'>
+          <stop offset='0%' stopColor='#000000' stopOpacity='.7'/>
+          <stop offset='6%' stopColor='#000000' stopOpacity='0'/>
+        </linearGradient>
+        <linearGradient id='meter-frame-vertical' x1='0%' y1='0%' x2='0%' y2='50%' gradientUnits='objectBoundingBox' spreadMethod='reflect'>
+          <stop offset='0%' stopColor='#000000' stopOpacity='.7'/>
+          <stop offset='10%' stopColor='#000000' stopOpacity='0'/>
+        </linearGradient>
+        <radialGradient id='meter-frame-corners' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
+          <stop offset='64%' stopColor='#000000' stopOpacity='0'/>
+          <stop offset='70%' stopColor='#000000' stopOpacity='.5'/>
+        </radialGradient>
+  {/* Panel Gradients */}
+        <linearGradient id='meter-panel-vertical' x1='0%' y1='0%' x2='50%' y2='0%' gradientUnits='objectBoundingBox' spreadMethod='reflect'>
+          <stop offset='0%' stopColor='#000000' stopOpacity='.9'/>
+          <stop offset='6%' stopColor='#000000' stopOpacity='0'/>
+        </linearGradient>
+        <linearGradient id='meter-panel-horizontal' x1='0%' y1='0%' x2='0%' y2='50%' gradientUnits='objectBoundingBox' spreadMethod='reflect'>
+          <stop offset='0%' stopColor='#000000' stopOpacity='.9'/>
+          <stop offset='10%' stopColor='#000000' stopOpacity='0'/>
+        </linearGradient>
+        <radialGradient id='meter-panel-center' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
+          <stop offset='0%' stopColor='#000000' stopOpacity='0'/>
+          <stop offset='25%' stopColor='#000000' stopOpacity='.1'/>
+          <stop offset='50%' stopColor='#000000' stopOpacity='.3'/>
+          <stop offset='70%' stopColor='#000000' stopOpacity='.6'/>
+        </radialGradient>
+
+{/* Meter - VU */}
+  {/* Masks */}
+        <mask id='vu-scale-mask'>
+          <rect x='0' y='0' width='100' height='60' fill='#FFFFFF' />
+          <line x1='50' y1='57' x2='-13.7' y2='0' stroke='#000000' strokeWidth='4.9' />
+          <line x1='50' y1='57' x2='113.7' y2='0' stroke='#000000' strokeWidth='4.9' />
+          <use href='#vu-scale-arc' transform='translate(0, -1.5)' fill='none' stroke='#000000' strokeWidth='7.35' />
+          <use href='#vu-scale-arc' transform='translate(0, 9)' fill='#000000' stroke='none' />
+        </mask>
+  {/* Paths */}
+        <path id='vu-scale-arc' d='M 12.5 18.75 Q 50 7.5, 87.5 18.75' pathLength='100' />
+  {/* Filters */}
+        <filter id='vu-panel-texture'>
+          <feTurbulence type='turbulence' baseFrequency='4, 8' numOctaves='1' result='00noise' />
+          <feColorMatrix in='00noise' type='saturate' values='0' result='01desat' />
+          <feGaussianBlur in='01desat' stdDeviation='.05' out='02blur'/>
+          <feComposite in='SourceGraphic' in2='02blur' operator='arithmetic' k1='1' k2='1' k3='.5' k4='0' />
+        </filter>
+  {/* LED Gradients */}
+        <radialGradient id='vu-led-shadow' cx='50%' cy='50%' r='100%' fx='45%' fy='45%' fr='2%' gradientUnits='objectBoundingBox'>
+          <stop offset='0%' stopColor='#000000' stopOpacity='1'/>
+          <stop offset='30%' stopColor='#000000' stopOpacity='.9'/>
+          <stop offset='46%' stopColor='#000000' stopOpacity='.2'/>
+          <stop offset='50%' stopColor='#000000' stopOpacity='0'/>
+        </radialGradient>
+        <radialGradient id='vu-led-border' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
+          <stop offset='0%' stopColor='#000000' stopOpacity='1'/>
+          <stop offset='44%' stopColor='#000000' stopOpacity='1'/>
+          <stop offset='50%' stopColor='#000000' stopOpacity='0'/>
+        </radialGradient>
+        <radialGradient id='vu-led-contour' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
+          <stop offset='0%' stopColor='#000000' stopOpacity='0'/>
+          <stop offset='25%' stopColor='#000000' stopOpacity='.1'/>
+          <stop offset='40%' stopColor='#000000' stopOpacity='.3'/>
+          <stop offset='46%' stopColor='#000000' stopOpacity='.5'/>
+          <stop offset='50%' stopColor='#000000' stopOpacity='.9'/>
+        </radialGradient>
+        <radialGradient id='vu-led-glare' cx='50%' cy='50%' r='50%' fx='28%' fy='28%' fr='4%' gradientUnits='objectBoundingBox'>
+          <stop offset='0%' stopColor='#FFFFFF' stopOpacity='.8'/>
+          <stop offset='1%' stopColor='#FFFFFF' stopOpacity='.6'/>
+          <stop offset='3%' stopColor='#FFFFFF' stopOpacity='.4'/>
+          <stop offset='20%' stopColor='#FFFFFF' stopOpacity='.2'/>
+          <stop offset='50%' stopColor='#000000' stopOpacity='.1'/>
+        </radialGradient>
+        <radialGradient id='vu-led-halo' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
+          <stop offset='0%' stopColor='#AB2D1E' stopOpacity='0'/>
+          <stop offset='25%' stopColor='#FF352E' stopOpacity='.3'/>
+          <stop offset='30%' stopColor='#FF352E' stopOpacity='.2'/>
+          <stop offset='35%' stopColor='#FF352E' stopOpacity='.1'/>
+          <stop offset='50%' stopColor='#FF352E' stopOpacity='0'/>
+        </radialGradient>
+  {/* Needle Gradients */}
+        <radialGradient id='vu-needle-cutout' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
+          <stop offset='0%' stopColor='#000000'/>
+          <stop offset='10%' stopColor='#202326'/>
+          <stop offset='40%' stopColor='#0F0D0A'/>
+          <stop offset='42%' stopColor='#131517'/>
+          <stop offset='45%' stopColor='#202326'/>
+          <stop offset='50%' stopColor='#000000'/>
+        </radialGradient>
+        <linearGradient id='vu-needle-shadow' x1='0%' y1='0%' x2='100%' y2='0%' gradientUnits='objectBoundingBox' spreadMethod='reflect'>
+          <stop offset='0%' stopColor='#000000' stopOpacity='0'/>
+          <stop offset='50%' stopColor='#000000' stopOpacity='.1'/>
+          <stop offset='100%' stopColor='#000000' stopOpacity='.4'/>
+        </linearGradient>
+  {/* Coil Gradients */}
+        <linearGradient id='vu-coil-wire' x1='0%' y1='0%' x2='3%' y2='0%' gradientUnits='objectBoundingBox' spreadMethod='repeat'>
+          <stop offset='0%' stopColor='#3A2411' stopOpacity='.5'/>
+          <stop offset='1%' stopColor='#68411E' stopOpacity='1'/>
+          <stop offset='50%' stopColor='#68411E' stopOpacity='1'/>
+          <stop offset='100%' stopColor='#3A2411' stopOpacity='.5'/>
+        </linearGradient>
+        <linearGradient id='vu-coil-shadow' x1='0%' y1='0%' x2='0%' y2='50%' gradientUnits='objectBoundingBox' spreadMethod='reflect'>
+          <stop offset='0%' stopColor='#000000' stopOpacity='.6'/>
+          <stop offset='40%' stopColor='#000000' stopOpacity='.2'/>
+          <stop offset='100%' stopColor='#000000' stopOpacity='0'/>
+        </linearGradient>
+
+{/* Slider */}
+  {/* Ridge Gradients */}
+        <linearGradient id='slider-ridges-top' x1='0%' y1='0%' x2='0%' y2='16.67%' gradientUnits='objectBoundingBox' spreadMethod='repeat'>
+          <stop offset='0%' stopColor='#000000' stopOpacity='0'/>
+          <stop offset='10%' stopColor='#000000' stopOpacity='.3'/>
+          <stop offset='50%' stopColor='#000000' stopOpacity='.8'/>
+          <stop offset='100%' stopColor='#000000' stopOpacity='0'/>
+        </linearGradient>
+        <linearGradient id='slider-ridges-bottom' x1='0%' y1='0%' x2='0%' y2='16.67%' gradientUnits='objectBoundingBox' spreadMethod='repeat'>
+          <stop offset='0%' stopColor='#000000' stopOpacity='0'/>
+          <stop offset='50%' stopColor='#000000' stopOpacity='.8'/>
+          <stop offset='90%' stopColor='#000000' stopOpacity='.3'/>
+          <stop offset='100%' stopColor='#000000' stopOpacity='0'/>
+        </linearGradient>
+  {/* Contour Gradients */}
+        <linearGradient id='slider-contour-horizontal' x1='0%' y1='0%' x2='0%' y2='50%' gradientUnits='objectBoundingBox' spreadMethod='reflect'>
+          <stop offset='0%' stopColor='#000000' stopOpacity='1'/>
+          <stop offset='3%' stopColor='#000000' stopOpacity='.2'/>
+          <stop offset='10%' stopColor='#000000' stopOpacity='.4'/>
+          <stop offset='50%' stopColor='#000000' stopOpacity='.6'/>
+          <stop offset='100%' stopColor='#000000' stopOpacity='.8'/>
+        </linearGradient>
+        <linearGradient id='slider-contour-vertical' x1='0%' y1='0%' x2='50%' y2='0%' gradientUnits='objectBoundingBox' spreadMethod='reflect'>
+          <stop offset='0%' stopColor='#000000' stopOpacity='1'/>
+          <stop offset='10%' stopColor='#000000' stopOpacity='.4'/>
+          <stop offset='20%' stopColor='#000000' stopOpacity='.1'/>
+          <stop offset='100%' stopColor='#000000' stopOpacity='0'/>
+        </linearGradient>
+
+
+
       </defs>
     </svg>
   );
 };
 
+
+
+///////////////////////////////
+// STANDALONE SVG COMPONENTS //
+///////////////////////////////
+
+export const BigKnob = (props) => {
+  const { rotation, color, handleClick, handleScroll } = props;
+  const colorKnob = color ? color : '#3A3125';
+  return (
+    <svg className='big-knob' viewBox='0 0 100 100' onMouseDown={handleClick} onWheel={handleScroll}>
+{/* Base */}
+      <circle
+        cx='50'
+        cy='50'
+        r='48'
+        fill={colorKnob}
+        stroke='#000000'
+        strokeWidth='1%'
+      />
+{/* Contours */}
+        <circle fill='url(#bigknob-contour)' cx='50' cy='50' r='48' stroke='none'/>
+        <circle fill='url(#bigknob-glare)' cx='50' cy='50' r='47' stroke='none'/>
+{/* Notch */}
+      <rect
+        fill='url(#bigknob-notch)'
+        transform={`rotate(${rotation * 3.2 - 160}, 50, 50)`}
+        x='48'
+        y='6'
+        width='4'
+        height='20'
+        stroke='#000000'
+        strokeWidth='1%'
+      />
+    </svg>
+  );
+};
+
+
+export const GlowButton = (props) => {
+  const { icon, active, handleClick } = props;
+  const colorButton = '#AAAAAA';
+  const icons = {
+    sine: `
+      M 2 5
+      Q 3.5 0, 5 5
+      Q 6.5 10, 8 5
+    `,
+    triangle: `
+      M 2 5
+      L 3.5 2.5
+      L 6.5 7.5
+      L 8 5
+    `,
+    sawtooth: `
+      M 2 5
+      L 5 2.5
+      L 5 7.5
+      L 8 5
+    `,
+    square: `
+      M 2 5
+      L 2 2.5
+      L 5 2.5
+      L 5 7.5
+      L 8 7.5
+      L 8 5
+    `,
+    mic: `
+      M 3.5 8 L 6.5 8
+      M 5 8 L 5 7
+      M 3 5 C 3 7.5, 7 7.5, 7 5
+      M 3.75 5 C 3.75 6.5, 6.25 6.5, 6.25 5
+      L 6.25 3 C 6.25 1.5, 3.75 1.5, 3.75 3 Z
+    `,
+  };
+  return (
+    <svg className='glow-button' viewBox='0 0 10 10' onClick={handleClick}>
+{/* Base Layer */}
+      <rect
+        x='0'
+        y='0'
+        rx='1'
+        width='10'
+        height='10'
+        fill={colorButton}
+        stroke='#000000'
+        strokeWidth='1%'
+      />
+{/* Button Base Active */}
+      <rect
+        fill='url(#glowbutton-active-base)'
+        opacity={active ? 1 : 0}
+        x='0'
+        y='0'
+        rx='1'
+        width='10'
+        height='10'
+      />
+{/* Logograph */}
+      <path
+        d={icons[icon]}
+        fill='none'
+        stroke='#000000'
+        strokeWidth='5%'
+      />
+{/* Contours */}
+      <rect fill='url(#glowbutton-contour-horizontal)' x='0' y='0' rx='1' width='10' height='10'/>
+      <rect fill='url(#glowbutton-contour-vertical)' x='0' y='0' rx='1' width='10' height='10'/>
+      <rect fill='url(#glowbutton-contour-center)' x='0' y='0' rx='1' width='10' height='10'/>
+{/* Glow Layer*/}
+      <rect
+        fill='url(#glowbutton-active-halo)'
+        opacity={active ? 1 : 0}
+        x='0'
+        y='0'
+        rx='1'
+        width='10'
+        height='10'
+      />
+    </svg>
+  );
+};
+
+
+export const ColorSwatch = (props) => {
+  const { color, active, handleClick } = props;
+  const pulse = {animation: 'pulsar 1s linear infinite'};
+  const hide = {display: 'none'};
+  return (
+    <svg className='color-swatch' viewBox='0 0 100 100' onClick={handleClick}>
+{/* Backpane */}
+      <circle
+        cx='50'
+        cy='50'
+        r='47'
+        fill='#FFFFFF'
+        stroke='#000000'
+        strokeWidth='6%'
+      />
+{/* Color Base */}
+      <circle
+        style={active ? pulse : null}
+        cx='50'
+        cy='50'
+        r='47'
+        fill={color}
+        stroke='#222222'
+        strokeWidth='2%'
+        opacity='.9'
+      />
+{/* Active Halo Layer */}
+      <circle
+        style={active ? pulse : hide}
+        fill='url(#colorswatch-glow)'
+        opacity={active ? .8 : 0}
+        cx='50'
+        cy='50'
+        r='47'
+      />
+{/* Contours */}
+      <circle fill='url(#colorswatch-contour)' cx='50' cy='50' r='49'/>
+      <circle fill='url(#colorswatch-glare)' cx='50' cy='50' r='49'/>
+    </svg>
+  );
+};
+
+
+export const HelpButton = (props) => {
+  const { active, handleClick } = props;
+  const helpFonts = {
+    question: {
+      fontFamily: 'Helvetica, Helvetica Neue, Arial, sans-serif',
+      fontSize: 9,
+      fontWeight: 800
+    },
+    x: {
+      fontFamily: 'Helvetica, Helvetica Neue, Arial, sans-serif',
+      fontSize: 7,
+      fontWeight: 800
+    }
+  };
+  return (
+    <svg className='help-button' viewBox='0 0 10 10' onClick={handleClick}>
+      <defs>
+  {/* Masks */}
+        <mask id='question-mask'>
+          <rect width='10' height='10' fill='#FFFFFF'/>
+          <text style={helpFonts.question} fill='#000000'
+            x='5' y='5.7' textAnchor='middle' alignmentBaseline='middle'
+          >?</text>
+        </mask>
+        <mask id='x-mask'>
+          <rect width='10' height='10' fill='#FFFFFF'/>
+          <text style={helpFonts.x} fill='#000000'
+            x='5' y='5.7' textAnchor='middle' alignmentBaseline='middle'
+          >X</text>
+        </mask>
+      </defs>
+  {/* Circle */}
+      <circle mask={active ? 'url(#x-mask)' : 'url(#question-mask)'}
+        cx='5'
+        cy='5'
+        r='5'
+        fill='#FFFFFF'
+        opacity='.5'
+      />
+    </svg>
+  );
+};
+
+
+export const SevenSegment = (props) => {
+  const { value } = props;
+  const sevenFont = {
+    fontFamily: 'DSEG7 Classic',
+    fontSize: 7
+  };
+  return (
+    <svg className='seven-segment' viewBox='0 0 20 10'>
+{/* Backpane */}
+      <rect
+        x='0'
+        y='0'
+        width='20'
+        height='10'
+        rx='1'
+        fill='#181818'
+        stroke='#000000'
+        strokeWidth='3%'
+      />
+{/* Inner Border */}
+      <rect
+        x='.75'
+        y='.75'
+        width='18.5'
+        height='8.5'
+        rx='.5'
+        fill='#000000'
+        stroke='#111111'
+        strokeWidth='1%'
+      />
+{/* Text Backpane */}
+      <text style={sevenFont} fill='#250000'
+        x='18.5' y='5.2' textAnchor='end' alignmentBaseline='middle'
+      >888</text>
+{/* Text Active */}
+      <text style={sevenFont} fill='#E00000'
+        x='18.5' y='5.2' textAnchor='end' alignmentBaseline='middle'
+      >{value}</text>
+    </svg>
+  );
+};
+
+
+
+
+/////////////////////////////////
+// SVG COMPONENT GROUP MODULES //
+/////////////////////////////////
 
 export const meterFrame = (color) => {
   const colorFrame = color ? color : '#3A3125';
@@ -295,180 +616,6 @@ export const slider = () => {
     </g>
   );
 };
-
-
-export const helpButton = (state) => {
-  const helpFonts = {
-    question: {
-      fontFamily: 'Helvetica, Helvetica Neue, Arial, sans-serif',
-      fontSize: 9,
-      fontWeight: 800
-    },
-    x: {
-      fontFamily: 'Helvetica, Helvetica Neue, Arial, sans-serif',
-      fontSize: 7,
-      fontWeight: 800
-    }
-  };
-  return (
-    <g className='help-button'>
-      <defs>
-  {/* Masks */}
-        <mask id='question-mask'>
-          <rect width='10' height='10' fill='#FFFFFF'/>
-          <text style={helpFonts.question} fill='#000000'
-            x='5' y='5.7' textAnchor='middle' alignmentBaseline='middle'
-          >?</text>
-        </mask>
-        <mask id='x-mask'>
-          <rect width='10' height='10' fill='#FFFFFF'/>
-          <text style={helpFonts.x} fill='#000000'
-            x='5' y='5.7' textAnchor='middle' alignmentBaseline='middle'
-          >X</text>
-        </mask>
-      </defs>
-  {/* Circle */}
-      <circle mask={state ? 'url(#x-mask)' : 'url(#question-mask)'}
-        cx='5'
-        cy='5'
-        r='5'
-        fill='#FFFFFF'
-        opacity='.5'
-      />
-    </g>
-  );
-};
-
-
-export const sevenSegment = (value) => {
-  const sevenFont = {
-    fontFamily: 'DSEG7 Classic',
-    fontSize: 7
-  };
-  return (
-    <g className='seven-segment'>
-{/* Backpane */}
-      <rect
-        x='0'
-        y='0'
-        width='20'
-        height='10'
-        rx='1'
-        fill='#181818'
-        stroke='#000000'
-        strokeWidth='3%'
-      />
-{/* Inner Border */}
-      <rect
-        x='.75'
-        y='.75'
-        width='18.5'
-        height='8.5'
-        rx='.5'
-        fill='#000000'
-        stroke='#111111'
-        strokeWidth='1%'
-      />
-{/* Text Backpane */}
-      <text style={sevenFont} fill='#250000'
-        x='18.5' y='5.2' textAnchor='end' alignmentBaseline='middle'
-      >888</text>
-{/* Text Active */}
-      <text style={sevenFont} fill='#E00000'
-        x='18.5' y='5.2' textAnchor='end' alignmentBaseline='middle'
-      >{value}</text>
-    </g>
-  );
-};
-
-
-export const glowButton = (icon, current) => {
-  const active = icon === current ? true : false;
-  const colorButton = '#AAAAAA';
-  const icons = {
-    sine: `
-      M 2 5
-      Q 3.5 0, 5 5
-      Q 6.5 10, 8 5
-    `,
-    triangle: `
-      M 2 5
-      L 3.5 2.5
-      L 6.5 7.5
-      L 8 5
-    `,
-    sawtooth: `
-      M 2 5
-      L 5 2.5
-      L 5 7.5
-      L 8 5
-    `,
-    square: `
-      M 2 5
-      L 2 2.5
-      L 5 2.5
-      L 5 7.5
-      L 8 7.5
-      L 8 5
-    `,
-    mic: `
-      M 3.5 8 L 6.5 8
-      M 5 8 L 5 7
-      M 3 5 C 3 7.5, 7 7.5, 7 5
-      M 3.75 5 C 3.75 6.5, 6.25 6.5, 6.25 5
-      L 6.25 3 C 6.25 1.5, 3.75 1.5, 3.75 3 Z
-    `,
-  };
-  return (
-    <g className='glowbutton'>
-{/* Base Layer */}
-      <rect
-        x='0'
-        y='0'
-        rx='1'
-        width='10'
-        height='10'
-        fill={colorButton}
-        stroke='#000000'
-        strokeWidth='1%'
-      />
-{/* Button Base Active */}
-      <rect
-        fill='url(#glowbutton-active-base)'
-        opacity={active ? 1 : 0}
-        x='0'
-        y='0'
-        rx='1'
-        width='10'
-        height='10'
-      />
-{/* Logograph */}
-      <path
-        d={icons[icon]}
-        fill='none'
-        stroke='#000000'
-        strokeWidth='5%'
-      />
-{/* Contours */}
-      <rect fill='url(#glowbutton-contour-horizontal)' x='0' y='0' rx='1' width='10' height='10'/>
-      <rect fill='url(#glowbutton-contour-vertical)' x='0' y='0' rx='1' width='10' height='10'/>
-      <rect fill='url(#glowbutton-contour-center)' x='0' y='0' rx='1' width='10' height='10'/>
-{/* Glow Layer*/}
-      <rect
-        fill='url(#glowbutton-active-halo)'
-        opacity={active ? 1 : 0}
-        x='0'
-        y='0'
-        rx='1'
-        width='10'
-        height='10'
-      />
-    </g>
-  );
-};
-
-
-
 
 
 
@@ -1615,86 +1762,6 @@ export const screenFrame = (off) => {
 
 
 
-export const bigKnob = (rotation, color) => {
-  const colorKnob = color ? color : '#3A3125';
-  return (
-    <g className='big-knob'>
-      <circle className='knob-base'
-        cx={50}
-        cy={50}
-        r={50}
-        fill={colorKnob}
-        stroke='#000000'
-        strokeWidth='1%'
-      />
-      <g className='knob-shadows'>
-        <circle fill='url(#knob-surface-contour)' cx={50} cy={50} r={50} stroke='none'/>
-        <circle fill='url(#knob-surface-shadow)' cx={50} cy={50} r={49} stroke='none'/>
-      </g>
-      <rect className='knob-notch'
-        x={48}
-        y={6}
-        width={4}
-        height={20}
-        fill='url(#knob-notch-gradient)'
-        stroke='#000000'
-        strokeWidth='1%'
-        transform={`rotate(${rotation * 3.2 - 160}, ${50}, ${50})`}
-      />
-    </g>
-  );
-};
-
-
-
-
-
-export const colorSwatch = (color, calib, src) => {
-  const active = calib === src ? true : false;
-  const pulse = {animation: 'pulsar 1s linear infinite'};
-  const hide = {display: 'none'};
-  return (
-    <g className='color-swatch'>
-{/* Swatch Base Backpane */}
-      <circle className='color-swatch-base'
-        cx={5}
-        cy={5}
-        r={5}
-        fill='#FFFFFF'
-        stroke='#444444'
-        strokeWidth='8%'
-      />
-{/* Swatch Base Color */}
-      <circle className='color-swatch-base-color'
-        style={active ? pulse : null}
-        cx={5}
-        cy={5}
-        r={5}
-        fill={color}
-        stroke='#000000'
-        strokeWidth='8%'
-        opacity={.9}
-      />
-{/* Swatch Illumination Halo Layer */}
-      <circle className='color-swatch-halo'
-        style={active ? pulse : hide}
-        cx={5}
-        cy={5}
-        r={5}
-        fill='url(#color-swatch-glow)'
-        stroke='none'
-        opacity={active ? .8 : 0}
-      />
-{/* Swatch Countour Shadows */}
-      <g className='color-swatch-shadows'>
-        <circle fill='url(#color-swatch-shadow-dark)' cx={5} cy={5} r={5} stroke='none'/>
-        <circle fill='url(#color-swatch-shadow-light)' cx={5} cy={5} r={5} stroke='#000000' strokeWidth='8%'/>
-      </g>
-    </g>
-  );
-};
-
-
 
 
 
@@ -1731,536 +1798,365 @@ export const meterIllumination = () => {
 
 
 
-
-
-    // <svg className='invisible' width='0' height='0' opacity='0' fill='none' stroke='none'>
-
-
-
-export const svgDefsOld = () => {
-  return (
-    <svg className='invisible' width='0' height='0'>
-      <defs>
-
-
-
-
-
-        <linearGradient id='slider-shadow-horizontal' x1='0%' y1='0%' x2='0%' y2='100%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='6%' stopColor='#000000' stopOpacity={.4}/>
-          <stop offset='15%' stopColor='#000000' stopOpacity={.7}/>
-          <stop offset='50%' stopColor='#000000' stopOpacity={.8}/>
-          <stop offset='60%' stopColor='#000000' stopOpacity={.6}/>
-          <stop offset='90%' stopColor='#000000' stopOpacity={.3}/>
-          <stop offset='100%' stopColor='#000000' stopOpacity={1}/>
-        </linearGradient>
-        <linearGradient id='slider-shadow-vertical' x1='0%' y1='0%' x2='100%' y2='0%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#000000' stopOpacity={1}/>
-          <stop offset='4%' stopColor='#000000' stopOpacity={.4}/>
-          <stop offset='10%' stopColor='#000000' stopOpacity={.1}/>
-          <stop offset='50%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='90%' stopColor='#000000' stopOpacity={.1}/>
-          <stop offset='96%' stopColor='#000000' stopOpacity={.4}/>
-          <stop offset='100%' stopColor='#000000' stopOpacity={1}/>
-        </linearGradient>
-
-
-
-
-
-
-
-
-
-
-  {/*
-<filter id='test'>
-  <feColorMatrix in='SourceGraphic' type='luminanceToAlpha' result='00alpha'/>
-  <feGaussianBlur in='00alpha' stdDeviation='.2' result='10blur'/>
-
-    <feSpecularLighting in="10blur" surfaceScale="1" specularConstant=".15"
-                      specularExponent="100" lighting-color="#bbbbbb"
-                      result="specOut">
-    <fePointLight x="0" y="0" z="100"/>
-
-  </feSpecularLighting>
-  <feComposite in="specOut" in2="SourceAlpha" operator="in" result="specOut"/>
-  <feComposite in="SourceGraphic" in2="specOut" operator="arithmetic"
-               k1="1" k2="0" k3="1" k4="0" result="litPaint"/>
-</filter>
-
-
-
-
-
-
-                      <feSpotLight x='-20' y='-10' z='100' pointsAtX='100' pointsAtY='30' pointsAtZ='0' specularExponent='1' limitingConeAngle='100'/>
-
-
-
-
-x
-y
-z
-
-
-limitingConeAngle
-
-
-  <feSpecularLighting in='10blur' surfaceScale='5' specularConstant='.75'
-                      specularExponent='20' lighting-color='#FF0000'
-                      result='20lit'>
-    <fePointLight x='1000' y='1000' z='-20000'/>
-  </feSpecularLighting>
-  <feComposite in='20lit' in2='00alpha' operator='in' result='30comp'/>
-  <feComposite in='SourceGraphic' in2='30comp' operator='arithmetic'
-               k1="0" k2="1" k3="1" k4="0" result="litPaint"/>
-
-
-
-
-
-<filter id="MyFilter" filterUnits="userSpaceOnUse" x="0" y="0" width="200" height="120">
-  <desc>Produces a 3D lighting effect.</desc>
-  <feGaussianBlur in="SourceAlpha" stdDeviation="4" result="blur"/>
-  <feOffset in="blur" dx="4" dy="4" result="offsetBlur"/>
-  <feSpecularLighting in="blur" surfaceScale="5" specularConstant=".75"
-                      specularExponent="20" lighting-color="#bbbbbb"
-                      result="specOut">
-    <fePointLight x="-5000" y="-10000" z="20000"/>
-  </feSpecularLighting>
-  <feComposite in="specOut" in2="SourceAlpha" operator="in" result="specOut"/>
-  <feComposite in="SourceGraphic" in2="specOut" operator="arithmetic"
-               k1="0" k2="1" k3="1" k4="0" result="litPaint"/>
-  <feMerge>
-    <feMergeNode in="offsetBlur"/>
-    <feMergeNode in="litPaint"/>
-  </feMerge>
-</filter>
-
-
-
-
-  <feOffset in="blur" dx="4" dy="4" result="offsetBlur"/>
-
-  <feGaussianBlur in="SourceGraphic" stdDeviation=".2" result="blur"/>
-  <feGaussianBlur in="start" stdDeviation=".2" result="blur"/>
-
-  <feSpecularLighting in="blur" surfaceScale="5" specularConstant=".75"
-                      specularExponent="20" lighting-color="#bbbbbb"
-                      result="specOut">
-    <fePointLight x="-5000" y="-10000" z="20000"/>
-  </feSpecularLighting>
-  <feComposite in="specOut" in2="SourceAlpha" operator="in" result="specOut"/>
-  <feComposite in="SourceGraphic" in2="specOut" operator="arithmetic"
-               k1="0" k2="1" k3="1" k4="0" result="litPaint"/>
-  <feMerge>
-    <feMergeNode in="offsetBlur"/>
-    <feMergeNode in="litPaint"/>
-  </feMerge>
-
-  */}
-
-
-
-
-{/* screenFrame */}
-  {/* screenFrame - Outer Screen Shadow Gradients */}
-        <linearGradient id='screen-outer-shadow-horizontal' x1='0%' y1='0%' x2='0%' y2='100%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#000000' stopOpacity={.7}/>
-          <stop offset='5%' stopColor='#000000' stopOpacity={.2}/>
-          <stop offset='10%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='90%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='95%' stopColor='#000000' stopOpacity={.3}/>
-          <stop offset='100%' stopColor='#000000' stopOpacity={.9}/>
-        </linearGradient>
-        <linearGradient id='screen-outer-shadow-vertical' x1='0%' y1='0%' x2='100%' y2='0%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#000000' stopOpacity={.7}/>
-          <stop offset='3%' stopColor='#000000' stopOpacity={.2}/>
-          <stop offset='10%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='90%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='97%' stopColor='#000000' stopOpacity={.3}/>
-          <stop offset='100%' stopColor='#000000' stopOpacity={.9}/>
-        </linearGradient>
-        <linearGradient id='screen-outer-shadow-diagonal' x1='0%' y1='0%' x2='100%' y2='100%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#FFFFFF' stopOpacity={.2}/>
-          <stop offset='80%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='100%' stopColor='#000000' stopOpacity={.4}/>
-        </linearGradient>
-  {/* screenFrame - Inner Screen Shadow Gradients */}
-        <linearGradient id='screen-inner-shadow-corners1' x1='0%' y1='0%' x2='100%' y2='100%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='40%' stopColor='#000000' stopOpacity={.3}/>
-          <stop offset='50%' stopColor='#000000' stopOpacity={.8}/>
-          <stop offset='60%' stopColor='#000000' stopOpacity={.3}/>
-          <stop offset='100%' stopColor='#000000' stopOpacity={0}/>
-        </linearGradient>
-        <linearGradient id='screen-inner-shadow-corners2' x1='100%' y1='0%' x2='0%' y2='100%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='40%' stopColor='#000000' stopOpacity={.3}/>
-          <stop offset='50%' stopColor='#000000' stopOpacity={.8}/>
-          <stop offset='60%' stopColor='#000000' stopOpacity={.3}/>
-          <stop offset='100%' stopColor='#000000' stopOpacity={0}/>
-        </linearGradient>
-        <linearGradient id='screen-inner-shadow-horizontal' x1='0%' y1='0%' x2='0%' y2='100%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#000000' stopOpacity={.9}/>
-          <stop offset='5%' stopColor='#000000' stopOpacity={.5}/>
-          <stop offset='50%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='95%' stopColor='#000000' stopOpacity={.2}/>
-          <stop offset='100%' stopColor='#000000' stopOpacity={.6}/>
-        </linearGradient>
-        <linearGradient id='screen-inner-shadow-vertical' x1='0%' y1='0%' x2='100%' y2='0%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#000000' stopOpacity={.8}/>
-          <stop offset='20%' stopColor='#000000' stopOpacity={.2}/>
-          <stop offset='50%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='90%' stopColor='#000000' stopOpacity={.2}/>
-          <stop offset='100%' stopColor='#000000' stopOpacity={.6}/>
-        </linearGradient>
-  {/* screenFrame - Screen Glare Gradients */}
-        <radialGradient id='screen-glare-contours' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='25%' stopColor='#000000' stopOpacity={.05}/>
-          <stop offset='40%' stopColor='#000000' stopOpacity={.3}/>
-          <stop offset='66%' stopColor='#000000' stopOpacity={.8}/>
-        </radialGradient>
-        <linearGradient id='screen-glare-horizontal' x1='0%' y1='0%' x2='0%' y2='100%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#000000' stopOpacity={.6}/>
-          <stop offset='10%' stopColor='#000000' stopOpacity={.3}/>
-          <stop offset='50%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='90%' stopColor='#000000' stopOpacity={.3}/>
-          <stop offset='100%' stopColor='#000000' stopOpacity={.6}/>
-        </linearGradient>
-        <linearGradient id='screen-glare-vertical' x1='0%' y1='0%' x2='100%' y2='0%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#000000' stopOpacity={.6}/>
-          <stop offset='8%' stopColor='#000000' stopOpacity={.3}/>
-          <stop offset='50%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='92%' stopColor='#000000' stopOpacity={.3}/>
-          <stop offset='100%' stopColor='#000000' stopOpacity={.6}/>
-        </linearGradient>
-
-{/* moduleFrame */}
-  {/* moduleFrame -- Master Clip Path */}
-        <clipPath id='module-master-clip'>
-          <rect x={0} y={0} width={100} height={60} rx={2} ry={2}/>
-        </clipPath>
-  {/* moduleFrame -- Screen Clip Path */}
-        <clipPath id='module-screen-clip'>
-          <rect x={5} y={5} width={90} height={50} rx={1} ry={1} stroke='none'/>
-        </clipPath>
-  {/* moduleFrame -- Outer Frame Gradients */}
-        <linearGradient id='module-frame-outer-shadow-horizontal' x1='0%' y1='0%' x2='0%' y2='100%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#000000' stopOpacity={.5}/>
-          <stop offset='4%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='96%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='100%' stopColor='#000000' stopOpacity={.5}/>
-        </linearGradient>
-        <linearGradient id='module-frame-outer-shadow-vertical' x1='0%' y1='0%' x2='100%' y2='0%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#000000' stopOpacity={.5}/>
-          <stop offset='2%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='98%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='100%' stopColor='#000000' stopOpacity={.5}/>
-        </linearGradient>
-        <linearGradient id='module-frame-outer-shadow-diagonal' x1='0%' y1='0%' x2='100%' y2='100%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#FFFFFF' stopOpacity={.1}/>
-          <stop offset='50%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='100%' stopColor='#000000' stopOpacity={.4}/>
-        </linearGradient>
-  {/* moduleFrame -- Inner Frame Gradients */}
-        <radialGradient id='module-frame-inner-shadow-corners' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='50%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='63%' stopColor='#000000' stopOpacity={.1}/>
-          <stop offset='70%' stopColor='#000000' stopOpacity={.5}/>
-        </radialGradient>
-        <linearGradient id='module-frame-inner-shadow-horizontal' x1='0%' y1='0%' x2='0%' y2='100%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#000000' stopOpacity={.5}/>
-          <stop offset='4%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='96%' stopColor='#000000' stopOpacity={.4}/>
-          <stop offset='100%' stopColor='#000000' stopOpacity={0}/>
-        </linearGradient>
-        <linearGradient id='module-frame-inner-shadow-vertical' x1='0%' y1='0%' x2='100%' y2='0%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#000000' stopOpacity={.5}/>
-          <stop offset='2%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='98%' stopColor='#000000' stopOpacity={.4}/>
-          <stop offset='100%' stopColor='#000000' stopOpacity={0}/>
-        </linearGradient>
-        <linearGradient id='module-frame-inner-shadow-diagonal' x1='0%' y1='0%' x2='100%' y2='100%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#000000' stopOpacity={.4}/>
-          <stop offset='45%' stopColor='#000000' stopOpacity={.3}/>
-          <stop offset='50%' stopColor='#000000' stopOpacity={.7}/>
-          <stop offset='55%' stopColor='#000000' stopOpacity={.2}/>
-          <stop offset='94%' stopColor='#FFFFFF' stopOpacity={.1}/>
-          <stop offset='100%' stopColor='#000000' stopOpacity={.2}/>
-        </linearGradient>
-
-{/* modulePanelShadows */}
-  {/* modulePanelShadows -- Panel Shadow Gradients */}
-        <linearGradient id='module-panel-shadow-vertical' x1='0%' y1='0%' x2='100%' y2='0%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#000000' stopOpacity={.8}/>
-          <stop offset='2%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='98%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='100%' stopColor='#000000' stopOpacity={.8}/>
-        </linearGradient>
-        <linearGradient id='module-panel-shadow-horizontal' x1='0%' y1='0%' x2='0%' y2='100%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#000000' stopOpacity={.8}/>
-          <stop offset='3%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='97%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='100%' stopColor='#000000' stopOpacity={.8}/>
-        </linearGradient>
-        <linearGradient id='module-panel-shadow-diagonal' x1='0%' y1='0%' x2='100%' y2='100%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#000000' stopOpacity={.35}/>
-          <stop offset='35%' stopColor='#000000' stopOpacity={.2}/>
-          <stop offset='50%' stopColor='#000000' stopOpacity={.15}/>
-          <stop offset='100%' stopColor='#000000' stopOpacity={.05}/>
-        </linearGradient>
-        <radialGradient id='module-panel-glare' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='25%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='50%' stopColor='#000000' stopOpacity={.1}/>
-          <stop offset='66%' stopColor='#000000' stopOpacity={.3}/>
-          <stop offset='70%' stopColor='#000000' stopOpacity={.5}/>
-        </radialGradient>
-
-{/* bigKnob */}
-  {/* bigKnob -- Knob Shadow Gradients */}
-        <radialGradient id='knob-surface-contour' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='10%' stopColor='#000000' stopOpacity={.025}/>
-          <stop offset='35%' stopColor='#000000' stopOpacity={.3}/>
-          <stop offset='45%' stopColor='#000000' stopOpacity={.5}/>
-          <stop offset='50%' stopColor='#000000' stopOpacity={.7}/>
-        </radialGradient>
-        <radialGradient id='knob-surface-shadow' cx='50%' cy='50%' r='100%' fx='0%' fy='0%' fr='10%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#FFFFFF' stopOpacity={1}/>
-          <stop offset='5%' stopColor='#FFFFFF' stopOpacity={.5}/>
-          <stop offset='15%' stopColor='#FFFFFF' stopOpacity={.3}/>
-          <stop offset='25%' stopColor='#FFFFFF' stopOpacity={.2}/>
-          <stop offset='40%' stopColor='#FFFFFF' stopOpacity={.1}/>
-          <stop offset='65%' stopColor='#FFFFFF' stopOpacity={0}/>
-          <stop offset='70%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='80%' stopColor='#000000' stopOpacity={1}/>
-        </radialGradient>
-        <linearGradient id='knob-notch-gradient' x1='0%' y1='0%' x2='0%' y2='100%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#000000' stopOpacity={.5}/>
-          <stop offset='10%' stopColor='#000000' stopOpacity={.6}/>
-          <stop offset='50%' stopColor='#000000' stopOpacity={.7}/>
-          <stop offset='90%' stopColor='#000000' stopOpacity={.6}/>
-          <stop offset='100%' stopColor='#000000' stopOpacity={.5}/>
-        </linearGradient>
-
-{/* oscButton */}
-  {/* oscButton -- Button Contour Gradients */}
-        <linearGradient id='button-shadow-horizontal' x1='0%' y1='0%' x2='0%' y2='100%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#000000' stopOpacity={1}/>
-          <stop offset='8%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='92%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='100%' stopColor='#000000' stopOpacity={1}/>
-        </linearGradient>
-        <linearGradient id='button-shadow-vertical' x1='0%' y1='0%' x2='100%' y2='0%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#000000' stopOpacity={1}/>
-          <stop offset='8%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='92%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='100%' stopColor='#000000' stopOpacity={1}/>
-        </linearGradient>
-        <radialGradient id='button-shadow-center' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#000000' stopOpacity={.4}/>
-          <stop offset='40%' stopColor='#000000' stopOpacity={.2}/>
-          <stop offset='50%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='60%' stopColor='#000000' stopOpacity={.2}/>
-        </radialGradient>
-  {/* oscButton -- Button Active Gradients */}
-        <radialGradient id='button-active-base' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#C12822' stopOpacity={1}/>
-          <stop offset='20%' stopColor='#C12822' stopOpacity={.8}/>
-          <stop offset='50%' stopColor='#C12822' stopOpacity={.7}/>
-          <stop offset='70%' stopColor='#C12822' stopOpacity={.5}/>
-        </radialGradient>
-        <radialGradient id='button-active-glow' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#FF0000' stopOpacity={.5}/>
-          <stop offset='30%' stopColor='#FF0000' stopOpacity={.3}/>
-          <stop offset='50%' stopColor='#000000' stopOpacity={.1}/>
-          <stop offset='70%' stopColor='#000000' stopOpacity={.2}/>
-        </radialGradient>
-
-{/* colorSwatch */}
-  {/* colorSwatch -- Contour Shadow Gradients */}
-        <radialGradient id='color-swatch-shadow-dark' cx='50%' cy='50%' r='50%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='50%' stopColor='#000000' stopOpacity={.1}/>
-          <stop offset='70%' stopColor='#000000' stopOpacity={.3}/>
-          <stop offset='90%' stopColor='#000000' stopOpacity={.7}/>
-          <stop offset='100%' stopColor='#000000' stopOpacity={1}/>
-        </radialGradient>
-        <radialGradient id='color-swatch-shadow-light' cx='50%' cy='50%' r='50%' fx='28%' fy='28%' fr='4%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#FFFFFF' stopOpacity={.8}/>
-          <stop offset='1%' stopColor='#FFFFFF' stopOpacity={.6}/>
-          <stop offset='3%' stopColor='#FFFFFF' stopOpacity={.4}/>
-          <stop offset='20%' stopColor='#FFFFFF' stopOpacity={.2}/>
-          <stop offset='50%' stopColor='#000000' stopOpacity={.1}/>
-        </radialGradient>
-  {/* colorSwatch -- Swatch Glow Gradient */}
-        <radialGradient id='color-swatch-glow' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#FFFFFF' stopOpacity={.2}/>
-          <stop offset='26%' stopColor='#FFFFFF' stopOpacity={.17}/>
-          <stop offset='30%' stopColor='#FFFFFF' stopOpacity={.15}/>
-          <stop offset='32%' stopColor='#FFFFFF' stopOpacity={.1}/>
-          <stop offset='38%' stopColor='#FFFFFF' stopOpacity={.05}/>
-          <stop offset='50%' stopColor='#FFFFFF' stopOpacity={0}/>
-        </radialGradient>
-
-
-
-      </defs>
-    </svg>
-  );
-}
-
-
-export const moduleFrame = () => {
-  const colorFrame = '#3A3125';
-  return (
-    <g className='module-frame' clipPath='url(#module-master-clip)'>
-{/* Outer Frame Group */}
-      <g className='module-frame-outer'>
-  {/* Outer Frame Base Layer */}
-        <rect className='module-frame-outer-base'
-          x={0}
-          y={0}
-          width={100}
-          height={60}
-          rx={2}
-          ry={2}
-          fill={colorFrame}
-          stroke='#000000'
-          strokeWidth='.4%'
-        />
-  {/* Outer Frame Contour Shadows */}
-        <g className='module-frame-outer-shadows'>
-          <rect fill='url(#module-frame-outer-shadow-horizontal)' x={0} y={0} width={100} height={60} rx={2} ry={2} stroke='none'/>
-          <rect fill='url(#module-frame-outer-shadow-vertical)' x={0} y={0} width={100} height={60} rx={2} ry={2} stroke='none'/>
-          <rect fill='url(#module-frame-outer-shadow-diagonal)' x={0} y={0} width={100} height={60} rx={2} ry={2} stroke='none'/>
-        </g>
-      </g>
-{/* Inner Frame Group */}
-      <g className='module-frame-inner'>
-  {/* Inner Frame Base Layer */}
-        <rect className='module-frame-inner-base'
-          x={2.5}
-          y={2.5}
-          width={95}
-          height={55}
-          rx={2}
-          ry={2}
-          fill={colorFrame}
-          stroke='#000000'
-          strokeWidth='.4%'
-          strokeOpacity={.8}
-        />
-  {/* Inner Frame Contour Shadows */}
-        <g className='module-frame-inner-shadows'>
-          <rect fill='url(#module-frame-inner-shadow-corners)' x={2.5} y={2.5} width={95} height={55} rx={2} ry={2} stroke='none'/>
-          <rect fill='url(#module-frame-inner-shadow-horizontal)' x={2.5} y={2.5} width={95} height={55} rx={2} ry={2} stroke='none'/>
-          <rect fill='url(#module-frame-inner-shadow-vertical)' x={2.5} y={2.5} width={95} height={55} rx={2} ry={2} stroke='none'/>
-          <rect fill='url(#module-frame-inner-shadow-diagonal)' x={2.5} y={2.5} width={95} height={55} rx={2} ry={2} stroke='none'/>
-        </g>
-      </g>
-    </g>
-  );
-};
-
-
-export const modulePanelShadows = () => {
-  return (
-    <g className='module-panel-shadows'>
-      <rect fill='url(#module-panel-shadow-vertical)' x={5} y={5} width={90} height={50} rx={1} ry={1} stroke='none'/>
-      <rect fill='url(#module-panel-shadow-horizontal)' x={5} y={5} width={90} height={50} rx={1} ry={1} stroke='none'/>
-      <rect fill='url(#module-panel-shadow-diagonal)' x={5} y={5} width={90} height={50} rx={1} ry={1} stroke='none'/>
-      <rect fill='url(#module-panel-glare)' x={5} y={5} width={90} height={50} rx={1} ry={1} stroke='none'/>
-    </g>
-  );
-};
-
-
-
-
-
-
-
-
-
-
-
-
-export const logo2 = (color, opacity) => {
-    const logoFonts = {
-      alpha: {
-        fontFamily: 'Arial, sans-serif',
-        fontSize: 30,
-        fontWeight: 800,
-        fontStyle: 'italic'
-      },
-      dex: {
-        fontFamily: 'Audiowide, cursive',
-        fontSize: 20,
-        fontWeight: 800
-      },
-      by: {
-        fontFamily: 'Audiowide, cursive',
-        fontSize: 5
-      }
-    };
-  return (
-    <svg className='logo' viewBox='0 0 60 32'>
-{/* Text */}
-      <g className='logo-text'>
-        <text
-          x={0}
-          y={19}
-          style={logoFonts.alpha}
-          fill={color}
-          stroke='none'
-          opacity={opacity}
-          textAnchor='left'
-          alignmentBaseline='baseline'
-        >α</text>
-        <text
-          x={18}
-          y={19}
-          style={logoFonts.dex}
-          fill={color}
-          stroke='none'
-          opacity={opacity}
-          textAnchor='left'
-          alignmentBaseline='baseline'
-        >dex</text>
-        <text
-          x={31.5}
-          y={23}
-          style={logoFonts.by}
-          fill={color}
-          stroke='none'
-          opacity={opacity}
-          // opacity={0}
-          textAnchor='left'
-          alignmentBaseline='middle'
-        >by</text>
-{/* Signature */}
-        <g transform='translate(40, 30) scale(.0018, -.0018)'
-          fill='#FFFFFF'
-          stroke='#FFFFFF'
-          strokeWidth='300%'
-          opacity={opacity}
-        >
-          <path d='M2910 5345 c-9 -11 -22 -14 -40 -10 -19 4 -31 0 -45 -15 -10 -11 -30 -20 -44 -20 -14 0 -39 -7 -55 -15 -15 -8 -36 -15 -45 -15 -9 0 -25 -6 -36 -14 -11 -7 -38 -19 -60 -26 -22 -7 -55 -21 -73 -32 -18 -10 -39 -18 -48 -18 -8 0 -32 -9 -52 -20 -43 -22 -71 -33 -92 -35 -36 -4 -80 -18 -80 -26 0 -5 -11 -9 -24 -9 -14 0 -28 -5 -31 -10 -4 -6 -29 -20 -56 -32 -27 -12 -49 -25 -49 -29 0 -9 -87 -69 -100 -69 -5 0 -17 -11 -26 -25 -9 -14 -23 -25 -31 -25 -8 0 -29 -11 -47 -25 -18 -14 -40 -25 -48 -25 -8 0 -26 -8 -39 -19 -13 -10 -42 -24 -64 -31 -22 -7 -61 -28 -87 -47 -26 -18 -50 -33 -53 -33 -3 0 -16 -10 -28 -23 -29 -30 -73 -57 -92 -57 -17 0 -135 -77 -148 -97 -4 -6 -22 -15 -40 -19 -17 -3 -52 -24 -76 -45 -24 -22 -54 -39 -68 -39 -13 0 -31 -9 -40 -20 -10 -11 -25 -20 -35 -20 -9 0 -19 -4 -23 -9 -3 -5 -39 -26 -80 -45 -41 -20 -75 -40 -75 -45 0 -5 -14 -14 -30 -20 -17 -5 -30 -15 -30 -21 0 -6 -4 -9 -9 -5 -5 3 -12 -4 -16 -15 -3 -11 -14 -20 -24 -20 -22 0 -71 -23 -71 -33 0 -4 -11 -12 -25 -17 -14 -5 -32 -27 -44 -53 -11 -24 -27 -50 -36 -57 -9 -8 -23 -26 -31 -42 -13 -26 -13 -32 3 -58 17 -30 42 -39 99 -36 37 1 65 22 57 41 -7 19 57 77 116 106 25 12 64 37 85 56 22 18 44 33 48 33 5 0 26 11 46 25 20 14 46 25 57 25 11 0 43 14 70 30 28 16 75 42 105 56 30 15 57 30 60 34 3 3 23 17 45 30 22 13 42 27 45 30 3 3 30 18 60 34 30 15 66 40 80 56 14 16 47 38 74 49 26 12 69 39 93 61 25 22 62 44 82 50 20 5 64 28 98 50 34 22 65 40 68 40 4 0 40 20 81 45 40 25 79 45 87 45 7 0 27 15 45 34 18 19 45 41 60 49 82 44 137 67 231 98 57 19 113 42 124 51 11 10 29 18 39 18 10 0 31 6 46 14 15 7 46 17 70 21 41 7 42 6 42 -23 0 -16 -9 -37 -20 -47 -12 -10 -18 -25 -15 -33 4 -11 -10 -47 -47 -112 -4 -8 -12 -25 -17 -37 -6 -11 -15 -24 -20 -28 -6 -3 -11 -14 -11 -24 0 -9 -14 -30 -31 -47 -17 -16 -35 -39 -40 -52 -5 -13 -13 -20 -19 -17 -5 3 -10 -2 -10 -13 0 -10 -9 -27 -20 -37 -11 -10 -20 -24 -20 -32 0 -15 -49 -115 -60 -123 -6 -4 -23 -46 -25 -61 0 -3 -8 -13 -17 -22 -17 -17 -46 -74 -69 -135 -7 -19 -17 -39 -23 -45 -21 -22 -84 -122 -98 -157 -9 -19 -25 -44 -37 -54 -11 -11 -21 -23 -21 -29 0 -5 -8 -21 -19 -35 -10 -15 -29 -52 -42 -82 -13 -30 -34 -63 -46 -73 -13 -10 -23 -28 -23 -39 0 -28 -44 -103 -92 -155 -21 -24 -38 -52 -38 -64 0 -23 -30 -79 -42 -79 -4 0 -8 -10 -8 -22 -1 -25 -22 -58 -37 -58 -6 0 -20 -21 -32 -47 -28 -61 -40 -80 -73 -124 -16 -20 -28 -43 -28 -51 0 -9 -7 -18 -15 -22 -8 -3 -15 -12 -15 -19 0 -8 -7 -20 -15 -27 -8 -7 -15 -21 -15 -31 0 -9 -14 -28 -31 -40 -25 -18 -30 -27 -25 -49 4 -22 0 -29 -18 -38 -23 -10 -70 -90 -80 -139 -4 -16 -22 -43 -40 -61 -18 -17 -36 -44 -39 -59 -3 -16 -19 -46 -36 -67 -17 -21 -31 -42 -31 -45 0 -3 -14 -12 -30 -19 -24 -11 -30 -20 -30 -44 0 -19 -15 -52 -40 -89 -22 -32 -40 -65 -40 -72 0 -7 -16 -28 -35 -47 -19 -19 -35 -43 -35 -53 0 -11 -15 -37 -34 -57 -19 -21 -51 -73 -71 -115 -21 -42 -49 -91 -64 -108 -32 -39 -51 -72 -51 -90 0 -8 -11 -20 -25 -27 -22 -12 -42 -44 -70 -110 -3 -8 -19 -37 -36 -65 -16 -27 -34 -62 -40 -77 -6 -16 -15 -28 -20 -28 -5 0 -9 -8 -9 -18 0 -24 -34 -89 -63 -121 -39 -43 -72 -94 -87 -131 -7 -19 -19 -42 -27 -51 -7 -8 -13 -21 -13 -27 0 -7 -4 -12 -10 -12 -5 0 -23 -27 -39 -60 -17 -34 -37 -68 -46 -76 -8 -9 -15 -24 -15 -34 0 -10 -6 -20 -13 -23 -11 -5 -32 -41 -54 -97 -25 -62 -59 -130 -65 -130 -4 0 -10 -17 -14 -37 -4 -21 -13 -47 -20 -58 -8 -11 -14 -39 -14 -63 0 -24 -7 -56 -14 -71 -8 -15 -12 -37 -10 -49 3 -11 -3 -47 -14 -79 -18 -51 -27 -124 -23 -190 1 -14 17 -31 51 -52 49 -30 51 -31 78 -14 39 24 52 43 52 75 0 21 -6 31 -25 38 -14 5 -26 14 -26 20 -1 5 -2 16 -4 23 -1 6 4 22 12 34 7 12 14 42 16 66 1 25 7 51 13 58 6 8 12 21 13 29 4 55 10 79 24 107 10 18 17 41 17 51 0 11 6 25 14 31 8 7 17 28 21 49 8 41 92 222 104 222 4 0 12 15 19 34 7 18 21 41 32 51 11 10 20 26 20 36 0 10 14 34 30 53 17 19 46 64 65 102 19 37 43 77 54 88 22 25 71 112 71 128 0 6 17 34 39 62 21 28 44 68 51 89 7 21 25 54 41 72 16 18 36 49 44 68 8 20 19 39 25 42 6 4 18 24 26 45 9 21 22 41 30 44 8 3 14 12 14 20 0 7 14 28 30 46 17 18 30 38 30 44 0 7 16 31 36 54 34 40 65 92 114 190 12 24 28 46 36 49 8 3 14 13 14 22 0 29 45 61 106 78 48 12 69 25 111 67 29 29 72 66 95 82 24 15 53 37 65 47 21 18 43 16 43 -4 0 -10 10 -24 43 -60 9 -10 17 -30 17 -43 0 -13 7 -26 15 -30 8 -3 15 -14 15 -24 0 -11 10 -34 23 -53 12 -19 22 -46 21 -61 -1 -16 3 -28 9 -28 5 0 6 -11 3 -24 -4 -15 0 -28 9 -36 10 -9 15 -32 15 -75 0 -34 5 -86 10 -115 7 -35 7 -57 0 -65 -7 -8 -5 -21 4 -41 8 -16 16 -48 17 -71 2 -24 6 -43 10 -43 4 0 11 -21 14 -47 4 -27 16 -86 27 -133 16 -64 18 -88 9 -102 -9 -15 -8 -18 5 -18 11 0 14 -5 10 -16 -9 -23 15 -135 32 -156 8 -10 18 -38 23 -64 5 -26 16 -55 25 -65 8 -9 16 -29 18 -43 1 -14 6 -29 9 -33 4 -3 7 -13 7 -20 0 -8 10 -27 21 -43 25 -33 63 -33 92 2 23 28 18 60 -59 373 -17 70 -46 239 -50 289 -3 33 -9 65 -14 70 -13 16 -28 122 -29 196 0 86 -12 184 -23 191 -5 3 -11 46 -15 95 -3 49 -9 94 -13 99 -4 6 -8 41 -9 78 -1 46 -8 81 -23 110 -25 49 -65 107 -87 125 -13 11 -11 16 17 42 18 16 32 34 32 39 0 6 8 11 18 11 9 0 43 18 76 40 32 22 64 40 71 40 6 0 20 9 30 20 10 11 27 23 39 26 18 6 77 51 140 107 11 9 25 17 31 17 7 0 31 15 55 33 47 35 119 79 163 99 15 7 27 16 27 20 0 4 5 8 11 8 6 0 38 16 70 35 33 19 66 35 73 35 7 0 22 11 33 24 11 13 54 42 95 64 41 23 90 58 109 77 32 34 118 85 142 85 7 0 39 18 73 39 33 21 77 44 96 50 20 7 42 19 48 26 7 8 43 32 81 52 38 20 69 41 69 45 0 4 8 8 18 8 19 0 132 54 141 68 4 4 26 16 50 27 65 29 91 53 91 83 0 15 -4 32 -8 38 -20 31 -94 45 -109 22 -4 -7 -21 -14 -38 -15 -48 -2 -89 -15 -98 -29 -4 -8 -19 -14 -33 -14 -14 0 -35 -11 -48 -25 -13 -14 -30 -25 -39 -25 -9 0 -19 -4 -22 -10 -3 -5 -16 -10 -29 -10 -13 0 -31 -9 -41 -20 -10 -11 -14 -20 -9 -20 4 0 -9 -9 -31 -20 -22 -11 -44 -20 -51 -20 -6 0 -22 -10 -35 -23 -14 -12 -32 -21 -42 -19 -9 2 -17 -1 -17 -6 0 -6 -14 -13 -30 -17 -17 -4 -35 -15 -40 -26 -6 -10 -20 -19 -31 -19 -31 0 -88 -27 -125 -60 -41 -36 -126 -90 -194 -125 -28 -14 -53 -32 -56 -39 -3 -7 -24 -22 -47 -32 -23 -10 -55 -28 -70 -41 -16 -13 -35 -23 -42 -23 -8 0 -31 -11 -51 -25 -20 -14 -43 -25 -51 -25 -16 0 -45 -23 -98 -77 -17 -18 -37 -33 -44 -33 -13 0 -68 -36 -86 -56 -5 -6 -26 -17 -45 -24 -19 -8 -48 -24 -65 -37 -75 -60 -142 -104 -165 -110 -14 -3 -45 -24 -70 -46 -25 -22 -73 -52 -107 -68 -34 -15 -66 -37 -73 -48 -12 -23 -60 -30 -60 -8 0 15 44 57 59 57 9 0 16 44 9 53 -2 1 7 16 20 34 12 17 22 34 22 38 0 4 13 25 29 48 62 91 111 172 130 213 5 12 14 23 19 25 15 6 60 84 73 127 7 23 18 42 25 42 13 0 64 98 64 123 0 7 9 18 20 25 11 7 20 17 20 23 0 6 9 24 21 40 11 16 17 29 14 29 -4 0 3 12 14 26 12 15 21 31 21 37 0 6 9 20 19 31 11 12 31 43 45 69 14 27 41 65 61 85 19 20 35 43 35 51 0 7 26 62 57 120 73 134 113 219 113 236 0 8 9 20 20 28 10 7 37 48 58 89 21 42 51 91 65 108 15 17 27 37 27 45 0 16 18 50 48 92 12 17 22 35 22 40 0 5 8 18 18 29 33 38 62 83 62 99 0 8 19 50 42 92 23 43 48 91 56 106 8 15 23 33 33 40 11 7 19 23 19 39 0 14 11 48 24 75 13 26 29 68 36 92 11 40 10 44 -12 59 -32 23 -111 27 -128 7z'/>
-          <path d='M8200 2680 c-36 -33 -70 -60 -76 -60 -19 0 -125 -65 -186 -114 -31 -25 -62 -46 -69 -46 -7 0 -19 -7 -28 -15 -34 -33 -131 -83 -151 -78 -12 3 -20 0 -20 -6 0 -7 -12 -17 -28 -24 -15 -7 -36 -20 -47 -30 -31 -29 -124 -86 -152 -93 -13 -4 -27 -13 -30 -21 -3 -7 -20 -21 -37 -30 -17 -9 -47 -29 -66 -44 -19 -16 -44 -29 -57 -29 -30 0 -55 27 -44 48 33 65 56 168 52 236 -1 28 3 52 9 56 6 4 13 42 15 86 2 43 7 87 10 97 17 41 -5 69 -65 82 -8 2 -31 12 -52 21 -38 17 -38 17 -61 -8 -26 -28 -48 -110 -40 -149 3 -15 0 -37 -7 -49 -9 -17 -9 -28 0 -51 7 -16 9 -37 5 -46 -4 -10 -9 -65 -11 -123 -2 -72 -8 -116 -20 -143 -14 -30 -15 -43 -6 -57 7 -12 8 -29 2 -50 -5 -17 -12 -70 -16 -116 -4 -47 -11 -87 -15 -90 -5 -3 -9 -48 -9 -100 0 -53 -5 -105 -11 -117 -7 -11 -13 -44 -15 -72 -1 -27 -7 -71 -12 -97 -8 -43 -7 -47 14 -58 35 -19 87 -5 107 29 9 16 17 38 17 49 0 12 4 23 10 27 5 3 9 18 9 33 0 63 27 241 39 255 6 7 13 31 16 53 4 37 42 113 57 114 15 1 92 -64 96 -81 3 -10 9 -19 14 -19 5 0 9 -9 9 -20 0 -11 11 -27 25 -36 14 -9 25 -22 25 -29 0 -7 6 -15 14 -18 8 -3 29 -29 48 -56 18 -28 37 -51 43 -51 11 0 37 -28 121 -130 54 -66 124 -180 124 -203 0 -9 13 -31 28 -49 15 -18 39 -49 54 -68 47 -64 119 -130 142 -130 12 0 32 7 44 16 35 24 29 82 -20 177 -5 10 -6 21 -4 26 3 4 -14 28 -37 52 -23 24 -41 47 -39 52 1 5 -11 26 -28 47 -16 21 -30 43 -30 49 0 6 -4 11 -10 11 -5 0 -10 7 -10 15 0 8 -9 24 -20 35 -11 11 -20 29 -20 40 0 13 -5 18 -15 14 -10 -4 -15 0 -15 11 0 10 -13 32 -30 49 -16 17 -50 52 -75 78 -25 26 -45 54 -45 62 0 7 -13 27 -28 44 -46 49 -102 136 -102 158 0 14 14 28 42 44 23 13 54 36 68 50 15 15 38 30 53 34 28 7 91 45 118 71 9 8 23 15 31 15 9 0 21 7 28 15 7 8 18 15 25 15 6 0 20 9 30 20 10 11 28 20 40 20 13 0 29 7 36 17 8 9 32 25 54 35 68 33 88 46 105 68 9 11 34 31 56 43 79 44 104 62 121 95 10 17 21 32 25 32 17 0 38 35 38 65 0 24 -9 43 -35 69 -19 20 -40 36 -48 36 -7 0 -41 -27 -77 -60z'/>
-          <path d='M6267 2651 c-16 -36 -75 -128 -87 -136 -9 -6 -22 -31 -51 -102 -8 -18 -17 -33 -21 -33 -5 0 -8 -9 -8 -19 0 -11 -13 -44 -30 -74 -16 -30 -30 -66 -30 -80 0 -14 -7 -38 -15 -53 -8 -16 -15 -37 -15 -46 0 -9 -4 -19 -9 -23 -13 -7 -38 -57 -63 -125 -12 -30 -27 -64 -33 -75 -7 -11 -15 -41 -19 -68 -4 -31 -14 -57 -31 -75 -14 -15 -28 -38 -31 -52 -13 -66 -68 -199 -104 -250 -40 -57 -26 -135 27 -159 46 -21 99 -3 148 51 50 55 51 60 59 167 4 54 11 83 26 103 11 15 20 32 20 37 0 18 52 71 70 71 10 0 22 5 25 11 4 6 19 7 35 4 16 -3 31 -2 35 4 3 6 19 11 35 11 16 0 32 5 35 10 9 14 27 12 50 -6 17 -13 20 -28 22 -152 4 -226 30 -322 87 -322 12 0 33 11 45 24 19 20 24 38 26 100 2 43 0 76 -6 76 -12 0 -12 37 1 45 7 4 10 39 9 83 -2 102 9 171 33 196 11 12 27 31 35 43 8 13 33 28 54 33 29 8 46 21 64 50 14 22 25 43 25 48 0 4 -13 22 -29 40 -29 32 -58 40 -76 23 -18 -15 -72 -29 -85 -21 -7 4 -13 21 -15 38 -1 17 -8 44 -15 62 -10 25 -10 36 0 58 14 30 13 84 -2 93 -5 3 -6 17 -3 31 4 14 3 28 -2 31 -5 3 -8 37 -7 76 2 38 -2 83 -9 100 -9 25 -8 37 6 67 18 38 15 74 -7 74 -7 0 -24 9 -36 20 -18 16 -36 20 -73 19 -42 -2 -51 -6 -60 -28z m-7 -462 c0 -16 1 -18 16 -54 8 -20 11 -41 8 -47 -4 -6 -7 -45 -6 -85 2 -40 -1 -73 -5 -74 -14 -1 -40 -7 -59 -12 -11 -4 -34 -3 -53 1 -45 10 -60 52 -32 91 23 34 51 91 51 105 0 6 9 19 20 29 11 9 20 25 20 35 0 10 3 21 6 25 8 8 34 -3 34 -14z'/>
-          <path d='M3286 2559 c-43 -5 -80 -10 -81 -11 -39 -54 -65 -101 -65 -117 0 -12 -17 -38 -37 -58 -36 -37 -38 -41 -39 -113 -1 -41 -8 -97 -16 -125 -23 -74 -35 -203 -33 -345 2 -104 6 -133 24 -170 28 -60 89 -124 137 -145 21 -9 53 -23 69 -30 54 -25 133 -21 193 11 15 8 32 14 37 14 15 0 150 128 148 139 -2 6 5 12 15 15 18 6 72 109 72 137 0 9 7 19 15 23 8 3 15 11 15 19 0 7 11 35 24 63 27 57 41 190 24 233 -6 14 -12 42 -15 61 -6 57 -22 108 -38 124 -8 8 -15 19 -15 23 0 12 -72 111 -102 141 -39 39 -110 84 -140 88 -16 1 -33 6 -38 9 -6 3 -18 8 -27 10 -10 2 -25 5 -33 8 -8 2 -50 1 -94 -4z m87 -231 c4 -10 8 -10 15 1 7 9 19 12 38 7 16 -4 43 -10 59 -13 56 -11 84 -44 116 -134 24 -69 29 -99 29 -168 -1 -46 -6 -93 -11 -103 -5 -10 -9 -24 -8 -31 1 -6 -3 -25 -9 -40 -7 -16 -12 -32 -12 -37 0 -5 -6 -13 -13 -17 -24 -15 -127 -137 -127 -150 0 -16 -60 -42 -103 -44 -44 -3 -78 9 -102 36 -11 12 -30 25 -42 29 -12 4 -25 17 -29 29 -10 31 -12 218 -2 245 4 13 9 51 9 85 1 34 6 65 12 69 6 4 12 17 12 30 2 38 46 107 82 128 25 15 33 26 33 49 0 28 10 38 37 40 6 1 14 -5 16 -11z'/>
-          <path d='M5154 2535 c-5 -12 -14 -14 -34 -10 -16 3 -31 1 -35 -4 -3 -6 -15 -11 -25 -11 -10 0 -34 -9 -54 -20 -24 -15 -57 -22 -108 -25 -40 -2 -116 -8 -168 -14 -52 -7 -114 -14 -138 -16 -24 -2 -54 -11 -67 -19 -13 -9 -30 -13 -38 -10 -8 3 -20 -2 -27 -11 -7 -8 -27 -15 -44 -15 -40 0 -191 -72 -199 -94 -10 -25 16 -79 48 -100 20 -13 47 -18 99 -18 62 0 79 4 139 36 37 20 78 36 91 36 14 0 37 5 52 11 16 5 68 12 116 14 49 3 97 9 108 15 10 5 35 10 55 10 35 0 37 -1 30 -27 -12 -48 -175 -223 -207 -223 -10 0 -18 -3 -18 -7 0 -5 -39 -42 -87 -83 -47 -41 -93 -82 -102 -90 -9 -9 -31 -22 -48 -29 -20 -8 -43 -32 -63 -65 -18 -29 -42 -56 -53 -62 -12 -5 -34 -34 -49 -64 -21 -43 -27 -70 -28 -122 0 -38 4 -68 9 -68 5 0 12 -11 15 -24 3 -13 23 -42 44 -64 40 -41 90 -62 150 -62 17 0 32 -4 32 -10 0 -15 121 -11 150 5 14 8 48 15 75 15 58 0 104 15 159 50 72 45 81 50 103 50 27 0 69 18 102 42 13 10 31 18 40 18 10 0 40 23 69 51 44 43 51 55 46 77 -10 41 -14 44 -47 37 -59 -13 -176 -53 -199 -69 -12 -9 -32 -16 -43 -16 -30 0 -133 -56 -164 -89 -30 -32 -28 -32 -210 -10 -90 11 -166 45 -174 77 -4 20 19 72 33 72 6 0 10 5 10 11 0 12 68 100 88 112 6 4 12 14 12 21 0 7 21 22 48 34 26 12 54 31 62 43 38 55 73 87 128 116 58 29 132 92 132 111 0 5 13 15 30 22 16 7 35 18 41 26 6 8 18 14 26 14 7 0 27 16 44 35 17 19 35 35 39 35 14 0 70 54 70 67 0 7 6 13 13 13 16 0 76 119 84 167 4 26 2 39 -9 47 -8 6 -17 17 -19 25 -3 8 -22 16 -44 18 -22 2 -50 11 -63 19 -20 13 -23 13 -28 -1z'/>
-        </g>
-      </g>
-    </svg>
-  );
-};
+// export const svgDefsOld = () => {
+//   return (
+//     <svg className='invisible' width='0' height='0'>
+//       <defs>
+
+
+// <filter id='test'>
+//   <feColorMatrix in='SourceGraphic' type='luminanceToAlpha' result='00alpha'/>
+//   <feGaussianBlur in='00alpha' stdDeviation='.2' result='10blur'/>
+
+//     <feSpecularLighting in="10blur" surfaceScale="1" specularConstant=".15"
+//                       specularExponent="100" lighting-color="#bbbbbb"
+//                       result="specOut">
+//     <fePointLight x="0" y="0" z="100"/>
+
+//   </feSpecularLighting>
+//   <feComposite in="specOut" in2="SourceAlpha" operator="in" result="specOut"/>
+//   <feComposite in="SourceGraphic" in2="specOut" operator="arithmetic"
+//                k1="1" k2="0" k3="1" k4="0" result="litPaint"/>
+// </filter>
+
+//                       <feSpotLight x='-20' y='-10' z='100' pointsAtX='100' pointsAtY='30' pointsAtZ='0' specularExponent='1' limitingConeAngle='100'/>
+
+
+// limitingConeAngle
+
+
+//   <feSpecularLighting in='10blur' surfaceScale='5' specularConstant='.75'
+//                       specularExponent='20' lighting-color='#FF0000'
+//                       result='20lit'>
+//     <fePointLight x='1000' y='1000' z='-20000'/>
+//   </feSpecularLighting>
+//   <feComposite in='20lit' in2='00alpha' operator='in' result='30comp'/>
+//   <feComposite in='SourceGraphic' in2='30comp' operator='arithmetic'
+//                k1="0" k2="1" k3="1" k4="0" result="litPaint"/>
+
+
+
+// <filter id="MyFilter" filterUnits="userSpaceOnUse" x="0" y="0" width="200" height="120">
+//   <desc>Produces a 3D lighting effect.</desc>
+//   <feGaussianBlur in="SourceAlpha" stdDeviation="4" result="blur"/>
+//   <feOffset in="blur" dx="4" dy="4" result="offsetBlur"/>
+//   <feSpecularLighting in="blur" surfaceScale="5" specularConstant=".75"
+//                       specularExponent="20" lighting-color="#bbbbbb"
+//                       result="specOut">
+//     <fePointLight x="-5000" y="-10000" z="20000"/>
+//   </feSpecularLighting>
+//   <feComposite in="specOut" in2="SourceAlpha" operator="in" result="specOut"/>
+//   <feComposite in="SourceGraphic" in2="specOut" operator="arithmetic"
+//                k1="0" k2="1" k3="1" k4="0" result="litPaint"/>
+//   <feMerge>
+//     <feMergeNode in="offsetBlur"/>
+//     <feMergeNode in="litPaint"/>
+//   </feMerge>
+// </filter>
+
+
+//   <feOffset in="blur" dx="4" dy="4" result="offsetBlur"/>
+
+//   <feGaussianBlur in="SourceGraphic" stdDeviation=".2" result="blur"/>
+//   <feGaussianBlur in="start" stdDeviation=".2" result="blur"/>
+
+//   <feSpecularLighting in="blur" surfaceScale="5" specularConstant=".75"
+//                       specularExponent="20" lighting-color="#bbbbbb"
+//                       result="specOut">
+//     <fePointLight x="-5000" y="-10000" z="20000"/>
+//   </feSpecularLighting>
+//   <feComposite in="specOut" in2="SourceAlpha" operator="in" result="specOut"/>
+//   <feComposite in="SourceGraphic" in2="specOut" operator="arithmetic"
+//                k1="0" k2="1" k3="1" k4="0" result="litPaint"/>
+//   <feMerge>
+//     <feMergeNode in="offsetBlur"/>
+//     <feMergeNode in="litPaint"/>
+//   </feMerge>
+
+//   */}
+
+
+
+
+// {/* screenFrame */}
+//   {/* screenFrame - Outer Screen Shadow Gradients */}
+//         <linearGradient id='screen-outer-shadow-horizontal' x1='0%' y1='0%' x2='0%' y2='100%' gradientUnits='objectBoundingBox'>
+//           <stop offset='0%' stopColor='#000000' stopOpacity={.7}/>
+//           <stop offset='5%' stopColor='#000000' stopOpacity={.2}/>
+//           <stop offset='10%' stopColor='#000000' stopOpacity={0}/>
+//           <stop offset='90%' stopColor='#000000' stopOpacity={0}/>
+//           <stop offset='95%' stopColor='#000000' stopOpacity={.3}/>
+//           <stop offset='100%' stopColor='#000000' stopOpacity={.9}/>
+//         </linearGradient>
+//         <linearGradient id='screen-outer-shadow-vertical' x1='0%' y1='0%' x2='100%' y2='0%' gradientUnits='objectBoundingBox'>
+//           <stop offset='0%' stopColor='#000000' stopOpacity={.7}/>
+//           <stop offset='3%' stopColor='#000000' stopOpacity={.2}/>
+//           <stop offset='10%' stopColor='#000000' stopOpacity={0}/>
+//           <stop offset='90%' stopColor='#000000' stopOpacity={0}/>
+//           <stop offset='97%' stopColor='#000000' stopOpacity={.3}/>
+//           <stop offset='100%' stopColor='#000000' stopOpacity={.9}/>
+//         </linearGradient>
+//         <linearGradient id='screen-outer-shadow-diagonal' x1='0%' y1='0%' x2='100%' y2='100%' gradientUnits='objectBoundingBox'>
+//           <stop offset='0%' stopColor='#FFFFFF' stopOpacity={.2}/>
+//           <stop offset='80%' stopColor='#000000' stopOpacity={0}/>
+//           <stop offset='100%' stopColor='#000000' stopOpacity={.4}/>
+//         </linearGradient>
+//   {/* screenFrame - Inner Screen Shadow Gradients */}
+//         <linearGradient id='screen-inner-shadow-corners1' x1='0%' y1='0%' x2='100%' y2='100%' gradientUnits='objectBoundingBox'>
+//           <stop offset='0%' stopColor='#000000' stopOpacity={0}/>
+//           <stop offset='40%' stopColor='#000000' stopOpacity={.3}/>
+//           <stop offset='50%' stopColor='#000000' stopOpacity={.8}/>
+//           <stop offset='60%' stopColor='#000000' stopOpacity={.3}/>
+//           <stop offset='100%' stopColor='#000000' stopOpacity={0}/>
+//         </linearGradient>
+//         <linearGradient id='screen-inner-shadow-corners2' x1='100%' y1='0%' x2='0%' y2='100%' gradientUnits='objectBoundingBox'>
+//           <stop offset='0%' stopColor='#000000' stopOpacity={0}/>
+//           <stop offset='40%' stopColor='#000000' stopOpacity={.3}/>
+//           <stop offset='50%' stopColor='#000000' stopOpacity={.8}/>
+//           <stop offset='60%' stopColor='#000000' stopOpacity={.3}/>
+//           <stop offset='100%' stopColor='#000000' stopOpacity={0}/>
+//         </linearGradient>
+//         <linearGradient id='screen-inner-shadow-horizontal' x1='0%' y1='0%' x2='0%' y2='100%' gradientUnits='objectBoundingBox'>
+//           <stop offset='0%' stopColor='#000000' stopOpacity={.9}/>
+//           <stop offset='5%' stopColor='#000000' stopOpacity={.5}/>
+//           <stop offset='50%' stopColor='#000000' stopOpacity={0}/>
+//           <stop offset='95%' stopColor='#000000' stopOpacity={.2}/>
+//           <stop offset='100%' stopColor='#000000' stopOpacity={.6}/>
+//         </linearGradient>
+//         <linearGradient id='screen-inner-shadow-vertical' x1='0%' y1='0%' x2='100%' y2='0%' gradientUnits='objectBoundingBox'>
+//           <stop offset='0%' stopColor='#000000' stopOpacity={.8}/>
+//           <stop offset='20%' stopColor='#000000' stopOpacity={.2}/>
+//           <stop offset='50%' stopColor='#000000' stopOpacity={0}/>
+//           <stop offset='90%' stopColor='#000000' stopOpacity={.2}/>
+//           <stop offset='100%' stopColor='#000000' stopOpacity={.6}/>
+//         </linearGradient>
+//   {/* screenFrame - Screen Glare Gradients */}
+//         <radialGradient id='screen-glare-contours' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
+//           <stop offset='0%' stopColor='#000000' stopOpacity={0}/>
+//           <stop offset='25%' stopColor='#000000' stopOpacity={.05}/>
+//           <stop offset='40%' stopColor='#000000' stopOpacity={.3}/>
+//           <stop offset='66%' stopColor='#000000' stopOpacity={.8}/>
+//         </radialGradient>
+//         <linearGradient id='screen-glare-horizontal' x1='0%' y1='0%' x2='0%' y2='100%' gradientUnits='objectBoundingBox'>
+//           <stop offset='0%' stopColor='#000000' stopOpacity={.6}/>
+//           <stop offset='10%' stopColor='#000000' stopOpacity={.3}/>
+//           <stop offset='50%' stopColor='#000000' stopOpacity={0}/>
+//           <stop offset='90%' stopColor='#000000' stopOpacity={.3}/>
+//           <stop offset='100%' stopColor='#000000' stopOpacity={.6}/>
+//         </linearGradient>
+//         <linearGradient id='screen-glare-vertical' x1='0%' y1='0%' x2='100%' y2='0%' gradientUnits='objectBoundingBox'>
+//           <stop offset='0%' stopColor='#000000' stopOpacity={.6}/>
+//           <stop offset='8%' stopColor='#000000' stopOpacity={.3}/>
+//           <stop offset='50%' stopColor='#000000' stopOpacity={0}/>
+//           <stop offset='92%' stopColor='#000000' stopOpacity={.3}/>
+//           <stop offset='100%' stopColor='#000000' stopOpacity={.6}/>
+//         </linearGradient>
+
+// {/* moduleFrame */}
+//   {/* moduleFrame -- Master Clip Path */}
+//         <clipPath id='module-master-clip'>
+//           <rect x={0} y={0} width={100} height={60} rx={2} ry={2}/>
+//         </clipPath>
+//   {/* moduleFrame -- Screen Clip Path */}
+//         <clipPath id='module-screen-clip'>
+//           <rect x={5} y={5} width={90} height={50} rx={1} ry={1} stroke='none'/>
+//         </clipPath>
+//   {/* moduleFrame -- Outer Frame Gradients */}
+//         <linearGradient id='module-frame-outer-shadow-horizontal' x1='0%' y1='0%' x2='0%' y2='100%' gradientUnits='objectBoundingBox'>
+//           <stop offset='0%' stopColor='#000000' stopOpacity={.5}/>
+//           <stop offset='4%' stopColor='#000000' stopOpacity={0}/>
+//           <stop offset='96%' stopColor='#000000' stopOpacity={0}/>
+//           <stop offset='100%' stopColor='#000000' stopOpacity={.5}/>
+//         </linearGradient>
+//         <linearGradient id='module-frame-outer-shadow-vertical' x1='0%' y1='0%' x2='100%' y2='0%' gradientUnits='objectBoundingBox'>
+//           <stop offset='0%' stopColor='#000000' stopOpacity={.5}/>
+//           <stop offset='2%' stopColor='#000000' stopOpacity={0}/>
+//           <stop offset='98%' stopColor='#000000' stopOpacity={0}/>
+//           <stop offset='100%' stopColor='#000000' stopOpacity={.5}/>
+//         </linearGradient>
+//         <linearGradient id='module-frame-outer-shadow-diagonal' x1='0%' y1='0%' x2='100%' y2='100%' gradientUnits='objectBoundingBox'>
+//           <stop offset='0%' stopColor='#FFFFFF' stopOpacity={.1}/>
+//           <stop offset='50%' stopColor='#000000' stopOpacity={0}/>
+//           <stop offset='100%' stopColor='#000000' stopOpacity={.4}/>
+//         </linearGradient>
+//   {/* moduleFrame -- Inner Frame Gradients */}
+//         <radialGradient id='module-frame-inner-shadow-corners' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
+//           <stop offset='0%' stopColor='#000000' stopOpacity={0}/>
+//           <stop offset='50%' stopColor='#000000' stopOpacity={0}/>
+//           <stop offset='63%' stopColor='#000000' stopOpacity={.1}/>
+//           <stop offset='70%' stopColor='#000000' stopOpacity={.5}/>
+//         </radialGradient>
+//         <linearGradient id='module-frame-inner-shadow-horizontal' x1='0%' y1='0%' x2='0%' y2='100%' gradientUnits='objectBoundingBox'>
+//           <stop offset='0%' stopColor='#000000' stopOpacity={.5}/>
+//           <stop offset='4%' stopColor='#000000' stopOpacity={0}/>
+//           <stop offset='96%' stopColor='#000000' stopOpacity={.4}/>
+//           <stop offset='100%' stopColor='#000000' stopOpacity={0}/>
+//         </linearGradient>
+//         <linearGradient id='module-frame-inner-shadow-vertical' x1='0%' y1='0%' x2='100%' y2='0%' gradientUnits='objectBoundingBox'>
+//           <stop offset='0%' stopColor='#000000' stopOpacity={.5}/>
+//           <stop offset='2%' stopColor='#000000' stopOpacity={0}/>
+//           <stop offset='98%' stopColor='#000000' stopOpacity={.4}/>
+//           <stop offset='100%' stopColor='#000000' stopOpacity={0}/>
+//         </linearGradient>
+//         <linearGradient id='module-frame-inner-shadow-diagonal' x1='0%' y1='0%' x2='100%' y2='100%' gradientUnits='objectBoundingBox'>
+//           <stop offset='0%' stopColor='#000000' stopOpacity={.4}/>
+//           <stop offset='45%' stopColor='#000000' stopOpacity={.3}/>
+//           <stop offset='50%' stopColor='#000000' stopOpacity={.7}/>
+//           <stop offset='55%' stopColor='#000000' stopOpacity={.2}/>
+//           <stop offset='94%' stopColor='#FFFFFF' stopOpacity={.1}/>
+//           <stop offset='100%' stopColor='#000000' stopOpacity={.2}/>
+//         </linearGradient>
+
+//       </defs>
+//     </svg>
+//   );
+// }
+
+
+// export const moduleFrame = () => {
+//   const colorFrame = '#3A3125';
+//   return (
+//     <g className='module-frame' clipPath='url(#module-master-clip)'>
+// {/* Outer Frame Group */}
+//       <g className='module-frame-outer'>
+//   {/* Outer Frame Base Layer */}
+//         <rect className='module-frame-outer-base'
+//           x={0}
+//           y={0}
+//           width={100}
+//           height={60}
+//           rx={2}
+//           ry={2}
+//           fill={colorFrame}
+//           stroke='#000000'
+//           strokeWidth='.4%'
+//         />
+//   {/* Outer Frame Contour Shadows */}
+//         <g className='module-frame-outer-shadows'>
+//           <rect fill='url(#module-frame-outer-shadow-horizontal)' x={0} y={0} width={100} height={60} rx={2} ry={2} stroke='none'/>
+//           <rect fill='url(#module-frame-outer-shadow-vertical)' x={0} y={0} width={100} height={60} rx={2} ry={2} stroke='none'/>
+//           <rect fill='url(#module-frame-outer-shadow-diagonal)' x={0} y={0} width={100} height={60} rx={2} ry={2} stroke='none'/>
+//         </g>
+//       </g>
+// {/* Inner Frame Group */}
+//       <g className='module-frame-inner'>
+//   {/* Inner Frame Base Layer */}
+//         <rect className='module-frame-inner-base'
+//           x={2.5}
+//           y={2.5}
+//           width={95}
+//           height={55}
+//           rx={2}
+//           ry={2}
+//           fill={colorFrame}
+//           stroke='#000000'
+//           strokeWidth='.4%'
+//           strokeOpacity={.8}
+//         />
+//   {/* Inner Frame Contour Shadows */}
+//         <g className='module-frame-inner-shadows'>
+//           <rect fill='url(#module-frame-inner-shadow-corners)' x={2.5} y={2.5} width={95} height={55} rx={2} ry={2} stroke='none'/>
+//           <rect fill='url(#module-frame-inner-shadow-horizontal)' x={2.5} y={2.5} width={95} height={55} rx={2} ry={2} stroke='none'/>
+//           <rect fill='url(#module-frame-inner-shadow-vertical)' x={2.5} y={2.5} width={95} height={55} rx={2} ry={2} stroke='none'/>
+//           <rect fill='url(#module-frame-inner-shadow-diagonal)' x={2.5} y={2.5} width={95} height={55} rx={2} ry={2} stroke='none'/>
+//         </g>
+//       </g>
+//     </g>
+//   );
+// };
+
+
+// export const modulePanelShadows = () => {
+//   return (
+//     <g className='module-panel-shadows'>
+//       <rect fill='url(#module-panel-shadow-vertical)' x={5} y={5} width={90} height={50} rx={1} ry={1} stroke='none'/>
+//       <rect fill='url(#module-panel-shadow-horizontal)' x={5} y={5} width={90} height={50} rx={1} ry={1} stroke='none'/>
+//       <rect fill='url(#module-panel-shadow-diagonal)' x={5} y={5} width={90} height={50} rx={1} ry={1} stroke='none'/>
+//       <rect fill='url(#module-panel-glare)' x={5} y={5} width={90} height={50} rx={1} ry={1} stroke='none'/>
+//     </g>
+//   );
+// };
+
+
+
+
+
+
+
+
+
+
+
+
+// export const logo2 = (color, opacity) => {
+//     const logoFonts = {
+//       alpha: {
+//         fontFamily: 'Arial, sans-serif',
+//         fontSize: 30,
+//         fontWeight: 800,
+//         fontStyle: 'italic'
+//       },
+//       dex: {
+//         fontFamily: 'Audiowide, cursive',
+//         fontSize: 20,
+//         fontWeight: 800
+//       },
+//       by: {
+//         fontFamily: 'Audiowide, cursive',
+//         fontSize: 5
+//       }
+//     };
+//   return (
+//     <svg className='logo' viewBox='0 0 60 32'>
+// {/* Text */}
+//       <g className='logo-text'>
+//         <text
+//           x={0}
+//           y={19}
+//           style={logoFonts.alpha}
+//           fill={color}
+//           stroke='none'
+//           opacity={opacity}
+//           textAnchor='left'
+//           alignmentBaseline='baseline'
+//         >α</text>
+//         <text
+//           x={18}
+//           y={19}
+//           style={logoFonts.dex}
+//           fill={color}
+//           stroke='none'
+//           opacity={opacity}
+//           textAnchor='left'
+//           alignmentBaseline='baseline'
+//         >dex</text>
+//         <text
+//           x={31.5}
+//           y={23}
+//           style={logoFonts.by}
+//           fill={color}
+//           stroke='none'
+//           opacity={opacity}
+//           // opacity={0}
+//           textAnchor='left'
+//           alignmentBaseline='middle'
+//         >by</text>
+// {/* Signature */}
+//         <g transform='translate(40, 30) scale(.0018, -.0018)'
+//           fill='#FFFFFF'
+//           stroke='#FFFFFF'
+//           strokeWidth='300%'
+//           opacity={opacity}
+//         >
+//           <path d='M2910 5345 c-9 -11 -22 -14 -40 -10 -19 4 -31 0 -45 -15 -10 -11 -30 -20 -44 -20 -14 0 -39 -7 -55 -15 -15 -8 -36 -15 -45 -15 -9 0 -25 -6 -36 -14 -11 -7 -38 -19 -60 -26 -22 -7 -55 -21 -73 -32 -18 -10 -39 -18 -48 -18 -8 0 -32 -9 -52 -20 -43 -22 -71 -33 -92 -35 -36 -4 -80 -18 -80 -26 0 -5 -11 -9 -24 -9 -14 0 -28 -5 -31 -10 -4 -6 -29 -20 -56 -32 -27 -12 -49 -25 -49 -29 0 -9 -87 -69 -100 -69 -5 0 -17 -11 -26 -25 -9 -14 -23 -25 -31 -25 -8 0 -29 -11 -47 -25 -18 -14 -40 -25 -48 -25 -8 0 -26 -8 -39 -19 -13 -10 -42 -24 -64 -31 -22 -7 -61 -28 -87 -47 -26 -18 -50 -33 -53 -33 -3 0 -16 -10 -28 -23 -29 -30 -73 -57 -92 -57 -17 0 -135 -77 -148 -97 -4 -6 -22 -15 -40 -19 -17 -3 -52 -24 -76 -45 -24 -22 -54 -39 -68 -39 -13 0 -31 -9 -40 -20 -10 -11 -25 -20 -35 -20 -9 0 -19 -4 -23 -9 -3 -5 -39 -26 -80 -45 -41 -20 -75 -40 -75 -45 0 -5 -14 -14 -30 -20 -17 -5 -30 -15 -30 -21 0 -6 -4 -9 -9 -5 -5 3 -12 -4 -16 -15 -3 -11 -14 -20 -24 -20 -22 0 -71 -23 -71 -33 0 -4 -11 -12 -25 -17 -14 -5 -32 -27 -44 -53 -11 -24 -27 -50 -36 -57 -9 -8 -23 -26 -31 -42 -13 -26 -13 -32 3 -58 17 -30 42 -39 99 -36 37 1 65 22 57 41 -7 19 57 77 116 106 25 12 64 37 85 56 22 18 44 33 48 33 5 0 26 11 46 25 20 14 46 25 57 25 11 0 43 14 70 30 28 16 75 42 105 56 30 15 57 30 60 34 3 3 23 17 45 30 22 13 42 27 45 30 3 3 30 18 60 34 30 15 66 40 80 56 14 16 47 38 74 49 26 12 69 39 93 61 25 22 62 44 82 50 20 5 64 28 98 50 34 22 65 40 68 40 4 0 40 20 81 45 40 25 79 45 87 45 7 0 27 15 45 34 18 19 45 41 60 49 82 44 137 67 231 98 57 19 113 42 124 51 11 10 29 18 39 18 10 0 31 6 46 14 15 7 46 17 70 21 41 7 42 6 42 -23 0 -16 -9 -37 -20 -47 -12 -10 -18 -25 -15 -33 4 -11 -10 -47 -47 -112 -4 -8 -12 -25 -17 -37 -6 -11 -15 -24 -20 -28 -6 -3 -11 -14 -11 -24 0 -9 -14 -30 -31 -47 -17 -16 -35 -39 -40 -52 -5 -13 -13 -20 -19 -17 -5 3 -10 -2 -10 -13 0 -10 -9 -27 -20 -37 -11 -10 -20 -24 -20 -32 0 -15 -49 -115 -60 -123 -6 -4 -23 -46 -25 -61 0 -3 -8 -13 -17 -22 -17 -17 -46 -74 -69 -135 -7 -19 -17 -39 -23 -45 -21 -22 -84 -122 -98 -157 -9 -19 -25 -44 -37 -54 -11 -11 -21 -23 -21 -29 0 -5 -8 -21 -19 -35 -10 -15 -29 -52 -42 -82 -13 -30 -34 -63 -46 -73 -13 -10 -23 -28 -23 -39 0 -28 -44 -103 -92 -155 -21 -24 -38 -52 -38 -64 0 -23 -30 -79 -42 -79 -4 0 -8 -10 -8 -22 -1 -25 -22 -58 -37 -58 -6 0 -20 -21 -32 -47 -28 -61 -40 -80 -73 -124 -16 -20 -28 -43 -28 -51 0 -9 -7 -18 -15 -22 -8 -3 -15 -12 -15 -19 0 -8 -7 -20 -15 -27 -8 -7 -15 -21 -15 -31 0 -9 -14 -28 -31 -40 -25 -18 -30 -27 -25 -49 4 -22 0 -29 -18 -38 -23 -10 -70 -90 -80 -139 -4 -16 -22 -43 -40 -61 -18 -17 -36 -44 -39 -59 -3 -16 -19 -46 -36 -67 -17 -21 -31 -42 -31 -45 0 -3 -14 -12 -30 -19 -24 -11 -30 -20 -30 -44 0 -19 -15 -52 -40 -89 -22 -32 -40 -65 -40 -72 0 -7 -16 -28 -35 -47 -19 -19 -35 -43 -35 -53 0 -11 -15 -37 -34 -57 -19 -21 -51 -73 -71 -115 -21 -42 -49 -91 -64 -108 -32 -39 -51 -72 -51 -90 0 -8 -11 -20 -25 -27 -22 -12 -42 -44 -70 -110 -3 -8 -19 -37 -36 -65 -16 -27 -34 -62 -40 -77 -6 -16 -15 -28 -20 -28 -5 0 -9 -8 -9 -18 0 -24 -34 -89 -63 -121 -39 -43 -72 -94 -87 -131 -7 -19 -19 -42 -27 -51 -7 -8 -13 -21 -13 -27 0 -7 -4 -12 -10 -12 -5 0 -23 -27 -39 -60 -17 -34 -37 -68 -46 -76 -8 -9 -15 -24 -15 -34 0 -10 -6 -20 -13 -23 -11 -5 -32 -41 -54 -97 -25 -62 -59 -130 -65 -130 -4 0 -10 -17 -14 -37 -4 -21 -13 -47 -20 -58 -8 -11 -14 -39 -14 -63 0 -24 -7 -56 -14 -71 -8 -15 -12 -37 -10 -49 3 -11 -3 -47 -14 -79 -18 -51 -27 -124 -23 -190 1 -14 17 -31 51 -52 49 -30 51 -31 78 -14 39 24 52 43 52 75 0 21 -6 31 -25 38 -14 5 -26 14 -26 20 -1 5 -2 16 -4 23 -1 6 4 22 12 34 7 12 14 42 16 66 1 25 7 51 13 58 6 8 12 21 13 29 4 55 10 79 24 107 10 18 17 41 17 51 0 11 6 25 14 31 8 7 17 28 21 49 8 41 92 222 104 222 4 0 12 15 19 34 7 18 21 41 32 51 11 10 20 26 20 36 0 10 14 34 30 53 17 19 46 64 65 102 19 37 43 77 54 88 22 25 71 112 71 128 0 6 17 34 39 62 21 28 44 68 51 89 7 21 25 54 41 72 16 18 36 49 44 68 8 20 19 39 25 42 6 4 18 24 26 45 9 21 22 41 30 44 8 3 14 12 14 20 0 7 14 28 30 46 17 18 30 38 30 44 0 7 16 31 36 54 34 40 65 92 114 190 12 24 28 46 36 49 8 3 14 13 14 22 0 29 45 61 106 78 48 12 69 25 111 67 29 29 72 66 95 82 24 15 53 37 65 47 21 18 43 16 43 -4 0 -10 10 -24 43 -60 9 -10 17 -30 17 -43 0 -13 7 -26 15 -30 8 -3 15 -14 15 -24 0 -11 10 -34 23 -53 12 -19 22 -46 21 -61 -1 -16 3 -28 9 -28 5 0 6 -11 3 -24 -4 -15 0 -28 9 -36 10 -9 15 -32 15 -75 0 -34 5 -86 10 -115 7 -35 7 -57 0 -65 -7 -8 -5 -21 4 -41 8 -16 16 -48 17 -71 2 -24 6 -43 10 -43 4 0 11 -21 14 -47 4 -27 16 -86 27 -133 16 -64 18 -88 9 -102 -9 -15 -8 -18 5 -18 11 0 14 -5 10 -16 -9 -23 15 -135 32 -156 8 -10 18 -38 23 -64 5 -26 16 -55 25 -65 8 -9 16 -29 18 -43 1 -14 6 -29 9 -33 4 -3 7 -13 7 -20 0 -8 10 -27 21 -43 25 -33 63 -33 92 2 23 28 18 60 -59 373 -17 70 -46 239 -50 289 -3 33 -9 65 -14 70 -13 16 -28 122 -29 196 0 86 -12 184 -23 191 -5 3 -11 46 -15 95 -3 49 -9 94 -13 99 -4 6 -8 41 -9 78 -1 46 -8 81 -23 110 -25 49 -65 107 -87 125 -13 11 -11 16 17 42 18 16 32 34 32 39 0 6 8 11 18 11 9 0 43 18 76 40 32 22 64 40 71 40 6 0 20 9 30 20 10 11 27 23 39 26 18 6 77 51 140 107 11 9 25 17 31 17 7 0 31 15 55 33 47 35 119 79 163 99 15 7 27 16 27 20 0 4 5 8 11 8 6 0 38 16 70 35 33 19 66 35 73 35 7 0 22 11 33 24 11 13 54 42 95 64 41 23 90 58 109 77 32 34 118 85 142 85 7 0 39 18 73 39 33 21 77 44 96 50 20 7 42 19 48 26 7 8 43 32 81 52 38 20 69 41 69 45 0 4 8 8 18 8 19 0 132 54 141 68 4 4 26 16 50 27 65 29 91 53 91 83 0 15 -4 32 -8 38 -20 31 -94 45 -109 22 -4 -7 -21 -14 -38 -15 -48 -2 -89 -15 -98 -29 -4 -8 -19 -14 -33 -14 -14 0 -35 -11 -48 -25 -13 -14 -30 -25 -39 -25 -9 0 -19 -4 -22 -10 -3 -5 -16 -10 -29 -10 -13 0 -31 -9 -41 -20 -10 -11 -14 -20 -9 -20 4 0 -9 -9 -31 -20 -22 -11 -44 -20 -51 -20 -6 0 -22 -10 -35 -23 -14 -12 -32 -21 -42 -19 -9 2 -17 -1 -17 -6 0 -6 -14 -13 -30 -17 -17 -4 -35 -15 -40 -26 -6 -10 -20 -19 -31 -19 -31 0 -88 -27 -125 -60 -41 -36 -126 -90 -194 -125 -28 -14 -53 -32 -56 -39 -3 -7 -24 -22 -47 -32 -23 -10 -55 -28 -70 -41 -16 -13 -35 -23 -42 -23 -8 0 -31 -11 -51 -25 -20 -14 -43 -25 -51 -25 -16 0 -45 -23 -98 -77 -17 -18 -37 -33 -44 -33 -13 0 -68 -36 -86 -56 -5 -6 -26 -17 -45 -24 -19 -8 -48 -24 -65 -37 -75 -60 -142 -104 -165 -110 -14 -3 -45 -24 -70 -46 -25 -22 -73 -52 -107 -68 -34 -15 -66 -37 -73 -48 -12 -23 -60 -30 -60 -8 0 15 44 57 59 57 9 0 16 44 9 53 -2 1 7 16 20 34 12 17 22 34 22 38 0 4 13 25 29 48 62 91 111 172 130 213 5 12 14 23 19 25 15 6 60 84 73 127 7 23 18 42 25 42 13 0 64 98 64 123 0 7 9 18 20 25 11 7 20 17 20 23 0 6 9 24 21 40 11 16 17 29 14 29 -4 0 3 12 14 26 12 15 21 31 21 37 0 6 9 20 19 31 11 12 31 43 45 69 14 27 41 65 61 85 19 20 35 43 35 51 0 7 26 62 57 120 73 134 113 219 113 236 0 8 9 20 20 28 10 7 37 48 58 89 21 42 51 91 65 108 15 17 27 37 27 45 0 16 18 50 48 92 12 17 22 35 22 40 0 5 8 18 18 29 33 38 62 83 62 99 0 8 19 50 42 92 23 43 48 91 56 106 8 15 23 33 33 40 11 7 19 23 19 39 0 14 11 48 24 75 13 26 29 68 36 92 11 40 10 44 -12 59 -32 23 -111 27 -128 7z'/>
+//           <path d='M8200 2680 c-36 -33 -70 -60 -76 -60 -19 0 -125 -65 -186 -114 -31 -25 -62 -46 -69 -46 -7 0 -19 -7 -28 -15 -34 -33 -131 -83 -151 -78 -12 3 -20 0 -20 -6 0 -7 -12 -17 -28 -24 -15 -7 -36 -20 -47 -30 -31 -29 -124 -86 -152 -93 -13 -4 -27 -13 -30 -21 -3 -7 -20 -21 -37 -30 -17 -9 -47 -29 -66 -44 -19 -16 -44 -29 -57 -29 -30 0 -55 27 -44 48 33 65 56 168 52 236 -1 28 3 52 9 56 6 4 13 42 15 86 2 43 7 87 10 97 17 41 -5 69 -65 82 -8 2 -31 12 -52 21 -38 17 -38 17 -61 -8 -26 -28 -48 -110 -40 -149 3 -15 0 -37 -7 -49 -9 -17 -9 -28 0 -51 7 -16 9 -37 5 -46 -4 -10 -9 -65 -11 -123 -2 -72 -8 -116 -20 -143 -14 -30 -15 -43 -6 -57 7 -12 8 -29 2 -50 -5 -17 -12 -70 -16 -116 -4 -47 -11 -87 -15 -90 -5 -3 -9 -48 -9 -100 0 -53 -5 -105 -11 -117 -7 -11 -13 -44 -15 -72 -1 -27 -7 -71 -12 -97 -8 -43 -7 -47 14 -58 35 -19 87 -5 107 29 9 16 17 38 17 49 0 12 4 23 10 27 5 3 9 18 9 33 0 63 27 241 39 255 6 7 13 31 16 53 4 37 42 113 57 114 15 1 92 -64 96 -81 3 -10 9 -19 14 -19 5 0 9 -9 9 -20 0 -11 11 -27 25 -36 14 -9 25 -22 25 -29 0 -7 6 -15 14 -18 8 -3 29 -29 48 -56 18 -28 37 -51 43 -51 11 0 37 -28 121 -130 54 -66 124 -180 124 -203 0 -9 13 -31 28 -49 15 -18 39 -49 54 -68 47 -64 119 -130 142 -130 12 0 32 7 44 16 35 24 29 82 -20 177 -5 10 -6 21 -4 26 3 4 -14 28 -37 52 -23 24 -41 47 -39 52 1 5 -11 26 -28 47 -16 21 -30 43 -30 49 0 6 -4 11 -10 11 -5 0 -10 7 -10 15 0 8 -9 24 -20 35 -11 11 -20 29 -20 40 0 13 -5 18 -15 14 -10 -4 -15 0 -15 11 0 10 -13 32 -30 49 -16 17 -50 52 -75 78 -25 26 -45 54 -45 62 0 7 -13 27 -28 44 -46 49 -102 136 -102 158 0 14 14 28 42 44 23 13 54 36 68 50 15 15 38 30 53 34 28 7 91 45 118 71 9 8 23 15 31 15 9 0 21 7 28 15 7 8 18 15 25 15 6 0 20 9 30 20 10 11 28 20 40 20 13 0 29 7 36 17 8 9 32 25 54 35 68 33 88 46 105 68 9 11 34 31 56 43 79 44 104 62 121 95 10 17 21 32 25 32 17 0 38 35 38 65 0 24 -9 43 -35 69 -19 20 -40 36 -48 36 -7 0 -41 -27 -77 -60z'/>
+//           <path d='M6267 2651 c-16 -36 -75 -128 -87 -136 -9 -6 -22 -31 -51 -102 -8 -18 -17 -33 -21 -33 -5 0 -8 -9 -8 -19 0 -11 -13 -44 -30 -74 -16 -30 -30 -66 -30 -80 0 -14 -7 -38 -15 -53 -8 -16 -15 -37 -15 -46 0 -9 -4 -19 -9 -23 -13 -7 -38 -57 -63 -125 -12 -30 -27 -64 -33 -75 -7 -11 -15 -41 -19 -68 -4 -31 -14 -57 -31 -75 -14 -15 -28 -38 -31 -52 -13 -66 -68 -199 -104 -250 -40 -57 -26 -135 27 -159 46 -21 99 -3 148 51 50 55 51 60 59 167 4 54 11 83 26 103 11 15 20 32 20 37 0 18 52 71 70 71 10 0 22 5 25 11 4 6 19 7 35 4 16 -3 31 -2 35 4 3 6 19 11 35 11 16 0 32 5 35 10 9 14 27 12 50 -6 17 -13 20 -28 22 -152 4 -226 30 -322 87 -322 12 0 33 11 45 24 19 20 24 38 26 100 2 43 0 76 -6 76 -12 0 -12 37 1 45 7 4 10 39 9 83 -2 102 9 171 33 196 11 12 27 31 35 43 8 13 33 28 54 33 29 8 46 21 64 50 14 22 25 43 25 48 0 4 -13 22 -29 40 -29 32 -58 40 -76 23 -18 -15 -72 -29 -85 -21 -7 4 -13 21 -15 38 -1 17 -8 44 -15 62 -10 25 -10 36 0 58 14 30 13 84 -2 93 -5 3 -6 17 -3 31 4 14 3 28 -2 31 -5 3 -8 37 -7 76 2 38 -2 83 -9 100 -9 25 -8 37 6 67 18 38 15 74 -7 74 -7 0 -24 9 -36 20 -18 16 -36 20 -73 19 -42 -2 -51 -6 -60 -28z m-7 -462 c0 -16 1 -18 16 -54 8 -20 11 -41 8 -47 -4 -6 -7 -45 -6 -85 2 -40 -1 -73 -5 -74 -14 -1 -40 -7 -59 -12 -11 -4 -34 -3 -53 1 -45 10 -60 52 -32 91 23 34 51 91 51 105 0 6 9 19 20 29 11 9 20 25 20 35 0 10 3 21 6 25 8 8 34 -3 34 -14z'/>
+//           <path d='M3286 2559 c-43 -5 -80 -10 -81 -11 -39 -54 -65 -101 -65 -117 0 -12 -17 -38 -37 -58 -36 -37 -38 -41 -39 -113 -1 -41 -8 -97 -16 -125 -23 -74 -35 -203 -33 -345 2 -104 6 -133 24 -170 28 -60 89 -124 137 -145 21 -9 53 -23 69 -30 54 -25 133 -21 193 11 15 8 32 14 37 14 15 0 150 128 148 139 -2 6 5 12 15 15 18 6 72 109 72 137 0 9 7 19 15 23 8 3 15 11 15 19 0 7 11 35 24 63 27 57 41 190 24 233 -6 14 -12 42 -15 61 -6 57 -22 108 -38 124 -8 8 -15 19 -15 23 0 12 -72 111 -102 141 -39 39 -110 84 -140 88 -16 1 -33 6 -38 9 -6 3 -18 8 -27 10 -10 2 -25 5 -33 8 -8 2 -50 1 -94 -4z m87 -231 c4 -10 8 -10 15 1 7 9 19 12 38 7 16 -4 43 -10 59 -13 56 -11 84 -44 116 -134 24 -69 29 -99 29 -168 -1 -46 -6 -93 -11 -103 -5 -10 -9 -24 -8 -31 1 -6 -3 -25 -9 -40 -7 -16 -12 -32 -12 -37 0 -5 -6 -13 -13 -17 -24 -15 -127 -137 -127 -150 0 -16 -60 -42 -103 -44 -44 -3 -78 9 -102 36 -11 12 -30 25 -42 29 -12 4 -25 17 -29 29 -10 31 -12 218 -2 245 4 13 9 51 9 85 1 34 6 65 12 69 6 4 12 17 12 30 2 38 46 107 82 128 25 15 33 26 33 49 0 28 10 38 37 40 6 1 14 -5 16 -11z'/>
+//           <path d='M5154 2535 c-5 -12 -14 -14 -34 -10 -16 3 -31 1 -35 -4 -3 -6 -15 -11 -25 -11 -10 0 -34 -9 -54 -20 -24 -15 -57 -22 -108 -25 -40 -2 -116 -8 -168 -14 -52 -7 -114 -14 -138 -16 -24 -2 -54 -11 -67 -19 -13 -9 -30 -13 -38 -10 -8 3 -20 -2 -27 -11 -7 -8 -27 -15 -44 -15 -40 0 -191 -72 -199 -94 -10 -25 16 -79 48 -100 20 -13 47 -18 99 -18 62 0 79 4 139 36 37 20 78 36 91 36 14 0 37 5 52 11 16 5 68 12 116 14 49 3 97 9 108 15 10 5 35 10 55 10 35 0 37 -1 30 -27 -12 -48 -175 -223 -207 -223 -10 0 -18 -3 -18 -7 0 -5 -39 -42 -87 -83 -47 -41 -93 -82 -102 -90 -9 -9 -31 -22 -48 -29 -20 -8 -43 -32 -63 -65 -18 -29 -42 -56 -53 -62 -12 -5 -34 -34 -49 -64 -21 -43 -27 -70 -28 -122 0 -38 4 -68 9 -68 5 0 12 -11 15 -24 3 -13 23 -42 44 -64 40 -41 90 -62 150 -62 17 0 32 -4 32 -10 0 -15 121 -11 150 5 14 8 48 15 75 15 58 0 104 15 159 50 72 45 81 50 103 50 27 0 69 18 102 42 13 10 31 18 40 18 10 0 40 23 69 51 44 43 51 55 46 77 -10 41 -14 44 -47 37 -59 -13 -176 -53 -199 -69 -12 -9 -32 -16 -43 -16 -30 0 -133 -56 -164 -89 -30 -32 -28 -32 -210 -10 -90 11 -166 45 -174 77 -4 20 19 72 33 72 6 0 10 5 10 11 0 12 68 100 88 112 6 4 12 14 12 21 0 7 21 22 48 34 26 12 54 31 62 43 38 55 73 87 128 116 58 29 132 92 132 111 0 5 13 15 30 22 16 7 35 18 41 26 6 8 18 14 26 14 7 0 27 16 44 35 17 19 35 35 39 35 14 0 70 54 70 67 0 7 6 13 13 13 16 0 76 119 84 167 4 26 2 39 -9 47 -8 6 -17 17 -19 25 -3 8 -22 16 -44 18 -22 2 -50 11 -63 19 -20 13 -23 13 -28 -1z'/>
+//         </g>
+//       </g>
+//     </svg>
+//   );
+// };
 
 

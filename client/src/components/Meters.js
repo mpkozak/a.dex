@@ -14,7 +14,9 @@ export default function Meters(props) {
         <Wave analyser={analyser}/>
       </div>
       <div className='meter outer'>
+{/*
         <VU analyser={analyser}/>
+*/}
       </div>
     </div>
   );
@@ -24,3 +26,5 @@ export default function Meters(props) {
       //   {analyser ? <Spec analyser={analyser}/> : null}
       //   {analyser ? <Freq analyser={analyser}/> : null}
       // </div>
+
+

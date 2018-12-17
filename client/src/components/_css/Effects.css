@@ -43,8 +43,7 @@
   justify-content: space-around;
 }
 
-.effect .knob {
+.effect .big-knob {
   width: 90%;
-  border-radius: 50%;
-  box-shadow: .5vmin .5vmin 1vmin #000000;
+  filter: drop-shadow(.02rem .02rem .025rem #000000);
 }

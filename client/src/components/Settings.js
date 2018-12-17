@@ -1,6 +1,6 @@
 import React from 'react';
 import './_css/Settings.css';
-import { sevenSegment, glowButton } from './_svg.js';
+import { SevenSegment, GlowButton } from './_svg.js';
 
 export default function Settings(props) {
   const { ctx } = props;
@@ -13,18 +13,14 @@ export default function Settings(props) {
 
       <div className='outer latency'>
         <div className='inner'>
-          <svg className='display' viewBox='0 0 20 10'>
-            {sevenSegment(latency)}
-          </svg>
+          <SevenSegment value={latency} />
           <h6 className='label-small'>LATENCY (ms)</h6>
         </div>
       </div>
 
       <div className='outer monitor'>
         <div className='inner'>
-          <svg className='button' viewBox='0 0 10 10' onClick={() => props.toggle()}>
-            {glowButton('mic', src)}
-          </svg>
+          <GlowButton icon='mic' active={src === 'mic'} handleClick={() => props.toggle()} />
           <h6 className='label-small'>MONITOR SRC</h6>
         </div>
       </div>

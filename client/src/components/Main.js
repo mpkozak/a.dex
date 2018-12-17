@@ -14,10 +14,11 @@ export default class Main extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      chrome: false,
       audio: false,
       tutorial: false,
       params: {
-        osc1: 'sawtooth',
+        osc1: 'triangle',
         osc2: 'sine',
         fmWidth: {v: 0, max: 1200, min: -1200},
         fmDepth: {v: 1500, max: 3000, min: 0},
@@ -35,8 +36,17 @@ export default class Main extends Component {
     this.controllerRefresh = this.controllerRefresh.bind(this);
   }
 
+  componentWillMount() {
+    const chrome = navigator.userAgent.includes('Chrome') ? true : false;
+    this.setState(prevState => ({ chrome }));
+  }
+
   componentDidMount() {
-    this.audioInit();
+    if (this.state.chrome) {
+      this.audioInit();
+    } else {
+      this.audioInitLegacy();
+    };
   }
 
   toggleHelp() {
@@ -47,7 +57,7 @@ export default class Main extends Component {
 
   audioInit() {
     const scaleBase = 10;
-    const baseHz = 220;
+    const baseHz = 50;
     const { params } = this.state;
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     const ctx = new AudioContext();
@@ -57,6 +67,62 @@ export default class Main extends Component {
     const instGain = new GainNode(ctx, {gain: 0})
     const masterGain = new GainNode(ctx, {gain: params.volume.v});
     const analyser = new AnalyserNode(ctx, {fftSize: Math.pow(2, scaleBase), minDecibels: -100, maxDecibels: -30, smoothingTimeConstant: 0});
+    const masterOut = ctx.destination;
+
+    // ctx.onstatechange = () => {
+    //   console.log(ctx.state)
+    // }
+
+    osc1.connect(fmGain);
+    fmGain.connect(osc2.frequency);
+    osc2.connect(instGain);
+    instGain.connect(masterGain);
+    masterGain.connect(analyser);
+    masterGain.connect(masterOut);
+    osc1.start();
+    osc2.start();
+
+    const audio = {
+      ctx: ctx,
+      osc1: osc1,
+      osc2: osc2,
+      fmGain: fmGain,
+      instGain: instGain,
+      masterGain: masterGain,
+      masterOut: masterOut,
+      analyser: analyser,
+      analyserSrc: 'masterGain',
+      mic: false,
+      baseHz: baseHz,
+      latency: .05
+    };
+    this.setState(prevState => ({ audio }));
+  }
+
+  audioInitLegacy() {
+    const scaleBase = 10;
+    const baseHz = 220;
+    const { params } = this.state;
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    const ctx = new AudioContext();
+    const osc1 = ctx.createOscillator();
+      osc1.type = params.osc1;
+      osc1.frequency.value = baseHz;
+    const osc2 = ctx.createOscillator();
+      osc2.type = params.osc2;
+      osc2.frequency.value = baseHz;
+      osc2.detune.value = params.fmWidth.v;
+    const fmGain = ctx.createGain();
+      fmGain.gain.value = params.fmDepth.v;
+    const instGain = ctx.createGain();
+      instGain.gain.value = 0;
+    const masterGain = ctx.createGain();
+      masterGain.gain.value = params.volume.v;
+    const analyser = ctx.createAnalyser();
+      analyser.fftSize = Math.pow(2, scaleBase);
+      analyser.minDecibels = -100;
+      analyser.maxDecibels = -30;
+      analyser.smoothingTimeConstant = 0;
     const masterOut = ctx.destination;
 
     osc1.connect(fmGain);
@@ -86,22 +152,12 @@ export default class Main extends Component {
   }
 
   audioMute() {
-    const { audio } = this.state;
-    const ctx = audio.ctx;
-    const latency = audio.latency;
-    const instGain = audio.instGain;
+    const { ctx, latency, instGain } = this.state.audio;
     help.setAudioParam(instGain.gain, 0, ctx, latency * 2);
   }
 
   audioRefresh(key) {
-    const { audio } = this.state;
-    const ctx = audio.ctx;
-    const latency = audio.latency;
-    const osc1 = audio.osc1;
-    const osc2 = audio.osc2;
-    const fmGain = audio.fmGain;
-    const instGain = audio.instGain;
-    const masterGain = audio.masterGain;
+    const { ctx, latency, osc1, osc2, fmGain, instGain, masterGain } = this.state.audio;
 
     switch (key) {
       case 'osc1' :
@@ -130,11 +186,7 @@ export default class Main extends Component {
   }
 
   toggleMic() {
-    const { ctx } = this.state.audio;
-    const { mic } = this.state.audio;
-    const { analyser } = this.state.audio;
-    const { masterGain } = this.state.audio;
-    const { analyserSrc } = this.state.audio;
+    const { ctx, mic, analyser, masterGain, analyserSrc } = this.state.audio;
 
     if (!mic) {
       navigator.mediaDevices.getUserMedia({audio: true})
@@ -181,18 +233,16 @@ export default class Main extends Component {
   }
 
   controllerRefresh(level, freq) {
-    const { audio } = this.state;
-    const { ctx } = this.state.audio;
-    const hz = freq ? freq * audio.baseHz : audio.baseHz;
-    help.setAudioParam(audio.instGain.gain, level, ctx, audio.latency);
-    help.setAudioParam(audio.osc1.frequency, hz, ctx, audio.latency);
-    help.setAudioParam(audio.osc2.frequency, hz, ctx, audio.latency);
+    const { ctx, baseHz, latency, instGain, osc1, osc2 } = this.state.audio;
+    const setLevel = level.toString().substr(0, 5);
+    const setFreq = (freq * baseHz).toString().substr(0, 8);
+    help.setAudioParam(instGain.gain, setLevel, ctx, latency);
+    help.setAudioParam(osc1.frequency, setFreq, ctx, latency);
+    help.setAudioParam(osc2.frequency, setFreq, ctx, latency);
   }
 
   render() {
-    const { params } = this.state;
-    const { audio } = this.state;
-    const { ctx } = this.state.audio;
+    const { params, audio, tutorial } = this.state;
 
     return (
       <div className='Main'>
@@ -200,16 +250,17 @@ export default class Main extends Component {
 */}
 {/*
 */}
+
         <Theremin refresh={this.controllerRefresh} mute={this.audioMute} />
 
-        <Placard show={this.state.tutorial} toggle={this.toggleHelp} />
+        <Placard show={tutorial} toggle={this.toggleHelp} />
 
-        <Instructions show={this.state.tutorial} toggle={this.toggleHelp} />
+        <Instructions show={tutorial} toggle={this.toggleHelp} />
 
-        <Settings ctx={ctx} src={audio.analyserSrc} toggle={this.toggleMic} />
-{/*
+        <Settings ctx={audio.ctx} src={audio.analyserSrc} toggle={this.toggleMic} />
+{/**/}
         <Meters analyser={audio.analyser} />
-*/}
+
         <Oscillators params={params} update={this.updateOsc} />
 
         <Effects params={params} update={this.updateParam} />

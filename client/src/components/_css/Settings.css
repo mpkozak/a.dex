@@ -30,20 +30,19 @@
   text-align: left;
 }
 
-.settings .display {
+.settings .seven-segment {
   width: 80%;
   margin: 0 5% 0 0;
   border-radius: .4vmin;
 }
 
-.settings .button {
+.settings .glow-button {
   width: 60%;
   margin: 0 8% 0 0;
-  border-radius: .3vmin;
-  box-shadow: .2vmin .2vmin .5vmin #000000;
+  filter: drop-shadow(.02rem .02rem .025rem #000000);
 }
 
-.settings .button:active {
-  transform: scale(.95);
-  box-shadow: .2vmin .2vmin .2vmin #000000;
+.settings .glow-button:active {
+  transform: scale(.96);
+  filter: drop-shadow(.02rem .02rem .015rem #000000);
 }

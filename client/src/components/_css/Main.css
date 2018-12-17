@@ -11,12 +11,12 @@
   max-height: calc(var(--grid-height) * var(--size-unit-max));
   min-width: calc(var(--grid-width) * var(--size-unit-min));
   min-height: calc(var(--grid-height) * var(--size-unit-min));
-  background: url('../_img/titanium.jpg') no-repeat center center fixed;
-  background-size: cover;
+  /*background: url('../_img/titanium.jpg') no-repeat center center fixed;*/
+  /*background-size: cover;*/
   border-radius: 1vmin;
   box-shadow: 0 0 .5vmin .1vmin #000000;
 
-  /*background-color: rgba(255,255,255,1);*/
+  background-color: rgba(100,100,100,1);
 }
 
 .theremin {

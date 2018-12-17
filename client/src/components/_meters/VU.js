@@ -38,6 +38,8 @@ export default class VU extends Component {
     const fftBins = analyser.frequencyBinCount;
     const wave = new Float32Array(fftBins);
     analyser.getFloatTimeDomainData(wave);
+              // const wave = new Uint8Array(fftBins);
+              // analyser.getByteTimeDomainData(wave)
     const sum2 = wave.reduce((a, b) => a + Math.pow(b, 2), 0);
     const rms = Math.sqrt(sum2 / fftBins);
     const rmsDBFS = 20 * Math.log10(rms);

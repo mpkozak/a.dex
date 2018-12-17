@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import './App.css';
-import { svgDefs, svgDefsOld } from './components/_svg.js';
+import { SvgDefs } from './components/_svg.js';
 import Main from './components/Main.js';
 
 export default class App extends Component {
   render() {
     return (
       <div className='App'>
-        {svgDefs()}
-        {svgDefsOld()}
+        <SvgDefs />
         <Main />
       </div>
     );
