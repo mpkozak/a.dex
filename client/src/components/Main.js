@@ -234,8 +234,10 @@ export default class Main extends Component {
 
   controllerRefresh(level, freq) {
     const { ctx, baseHz, latency, instGain, osc1, osc2 } = this.state.audio;
-    const setLevel = level.toString().substr(0, 5);
-    const setFreq = (freq * baseHz).toString().substr(0, 8);
+    // const setLevel = level.toString().substr(0, 5);
+    // const setFreq = (freq * baseHz).toString().substr(0, 8);
+    const setLevel = level;
+    const setFreq = freq * baseHz;
     help.setAudioParam(instGain.gain, setLevel, ctx, latency);
     help.setAudioParam(osc1.frequency, setFreq, ctx, latency);
     help.setAudioParam(osc2.frequency, setFreq, ctx, latency);
@@ -258,9 +260,9 @@ export default class Main extends Component {
         <Instructions show={tutorial} toggle={this.toggleHelp} />
 
         <Settings ctx={audio.ctx} src={audio.analyserSrc} toggle={this.toggleMic} />
-{/**/}
+{/*
         <Meters analyser={audio.analyser} />
-
+*/}
         <Oscillators params={params} update={this.updateOsc} />
 
         <Effects params={params} update={this.updateParam} />

@@ -8,8 +8,8 @@ help.setAudioParam = async (param, val, ctx, delay) => {
   const current = param.value;
   param.cancelScheduledValues(now);
   param.setValueAtTime(current, now);
-  param.linearRampToValueAtTime(val, now + delay);
-
+  param.linearRampToValueAtTime(Math.fround(val), Math.fround(now + delay));
+// console.log(now, ctx.currentTime, Math.fround(now + delay))
 
   // param.value = val
   // param.cancelAndHoldAtTime(ctx.currentTime);
