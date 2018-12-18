@@ -118,12 +118,12 @@
 }
 
 .theremin .color-swatch {
-  width: 5vmin;
+  height: 55%;
   filter: drop-shadow(.02rem .02rem .025rem #000000);
 }
 
 .theremin .big-knob {
-  width: 5vmin;
+  height: 55%;
   filter: drop-shadow(.02rem .02rem .025rem #000000);
 }
 

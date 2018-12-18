@@ -5,24 +5,24 @@ export default class Tracker {
     this.video = video;
     this.vWidth = video.clientWidth;
     this.vHeight = video.clientHeight;
-    this.reducer = reducer ? reducer : 8;
+    this.sense = sense ? sense : 50;
+    this.reducer = reducer ? reducer : 10;
+    this.tracker = null;
+    this.tCtx = null;
     this.tWidth = Math.floor(this.vWidth / this.reducer);
     this.tHeight = Math.floor(this.vHeight / this.reducer);
-    this.hyp = Math.sqrt(Math.pow(this.tWidth, 2) + Math.pow(this.tHeight, 2));
     this.scalar = this.vWidth / this.tWidth;
+    this.thresh = this.sense / Math.sqrt(Math.pow(this.tWidth, 2) + Math.pow(this.tHeight, 2));
     this.color1 = color1;
     this.color2 = color2;
-    this.sense = sense ? sense : 50;
-    this.tracker = null;
-    this.t = null;
     this.rAF = null;
   };
   init() {
     this.tracker = document.createElement('canvas');
-    this.t = this.tracker.getContext('2d');
+    this.tCtx = this.tracker.getContext('2d');
     this.tracker.width = this.tWidth;
     this.tracker.height = this.tHeight;
-    return {ctx: this.t, tW: this.tWidth, tH: this.tHeight, scalar: this.scalar};
+    return {ctx: this.tCtx, tW: this.tWidth, tH: this.tHeight, scalar: this.scalar};
   };
   start() {
     this.rAF = requestAnimationFrame(this.getData.bind(this));
@@ -32,15 +32,15 @@ export default class Tracker {
   };
   getData() {
     this.rAF = requestAnimationFrame(this.getData.bind(this));
-    const { tWidth, tHeight, t, video } = this;
-    // t.clearRect(0, 0, tWidth, tHeight);
-    t.drawImage(video, 0, 0, tWidth, tHeight);
-    const data = t.getImageData(0, 0, tWidth, tHeight);
+    const { tWidth, tHeight, tCtx, video } = this;
+    // tCtx.clearRect(0, 0, tWidth, tHeight);
+    tCtx.drawImage(video, 0, 0, tWidth, tHeight);
+    const data = tCtx.getImageData(0, 0, tWidth, tHeight);
     this.filterData(data.data);
   };
   filterData(data) {
     const length = data.length;
-    const { sense, color1, color2, tWidth, hyp } = this;
+    const { sense, color1, color2, tWidth, thresh } = this;
     const c1 = this.hexToRgb(color1);
     const c2 = this.hexToRgb(color2);
     const area1 = [];
@@ -65,12 +65,11 @@ export default class Tracker {
         area2.push({x, y, dist});
       };
     };
-    const limit = sense / hyp;
     const queue = [];
-    if (area1.length > limit) {
+    if (area1.length > thresh) {
       queue.push({data: area1, color: color1});
     };
-    if (area2.length > limit) {
+    if (area2.length > thresh) {
       queue.push({data: area2, color: color2});
     };
     if (queue.length) {

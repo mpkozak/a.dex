@@ -1,34 +1,44 @@
 import React, { Component } from 'react';
 import './_css/Main.css';
-import help from './_help.js';
-import Theremin from './Theremin.js';
+
+
+import Init from './Init.js'
 import Placard from './Placard.js';
 import Instructions from './Instructions.js';
 import Settings from './Settings.js';
-import { Meters } from './Meters2.js';
 import Oscillators from './Oscillators.js';
+
+
+import help from './_help.js';
+import Theremin from './Theremin.js';
+import Meters from './Meters.js';
 import Effects from './Effects.js';
 import Master from './Master.js';
+
+import MetersOrig from './MetersOrig.js';
+
 
 export default class Main extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      chrome: false,
+      active: false,
       audio: false,
-      tutorial: false,
+      data: [],
       params: {
         osc1: 'triangle',
         osc2: 'sine',
-        fmWidth: {v: 0, max: 1200, min: -1200},
+        fmWidth: {v: -1200, max: 1200, min: -1200},
         fmDepth: {v: 1500, max: 3000, min: 0},
         eqLo: {v: 5, max: 10, min: 0},
         eqMid: {v: 5, max: 10, min: 0},
         eqHi: {v: 5, max: 10, min: 0},
         volume: {v: .73, max: 1, min: 0}
       },
-      data: []
+      showHelp: false,
+      chrome: false,
     };
+    this.audioInit = this.audioInit.bind(this);
     this.toggleHelp = this.toggleHelp.bind(this);
     this.toggleMic = this.toggleMic.bind(this);
     this.updateParam = this.updateParam.bind(this);
@@ -44,21 +54,22 @@ export default class Main extends Component {
   }
 
   componentDidMount() {
-    if (this.state.chrome) {
-      this.audioInit();
-    } else {
-      this.audioInitLegacy();
-    };
+
+    // if (this.state.chrome) {
+      // this.audioInit();
+    // } else {
+    //   this.audioInitLegacy();
+    // };
   }
 
   toggleHelp() {
     this.setState(prevState => ({
-      tutorial: !prevState.tutorial
+      showHelp: !prevState.showHelp
     }));
   }
 
   audioInit() {
-    const scaleBase = 8;
+    const scaleBase = 10;
     const baseHz = 50;
     const { params } = this.state;
     const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -96,65 +107,14 @@ export default class Main extends Component {
     };
     this.setState(prevState => ({ audio }));
 
-    // const analyserInterval = Math.floor(analyser.fftSize / ctx.sampleRate * 1000) * 2;
+    // const analyserInterval = Math.floor(analyser.fftSize / ctx.sampleRate * 1000);
     // setInterval(this.getAudioData, analyserInterval);
     this.getAudioData();
   }
 
-  audioInitLegacy() {
-    const scaleBase = 10;
-    const baseHz = 220;
-    const { params } = this.state;
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
-    const ctx = new AudioContext();
-    const osc1 = ctx.createOscillator();
-      osc1.type = params.osc1;
-      osc1.frequency.value = baseHz;
-    const osc2 = ctx.createOscillator();
-      osc2.type = params.osc2;
-      osc2.frequency.value = baseHz;
-      osc2.detune.value = params.fmWidth.v;
-    const fmGain = ctx.createGain();
-      fmGain.gain.value = params.fmDepth.v;
-    const instGain = ctx.createGain();
-      instGain.gain.value = 0;
-    const masterGain = ctx.createGain();
-      masterGain.gain.value = params.volume.v;
-    const analyser = ctx.createAnalyser();
-      analyser.fftSize = Math.pow(2, scaleBase);
-      analyser.minDecibels = -100;
-      analyser.maxDecibels = -30;
-      analyser.smoothingTimeConstant = 0;
-    const masterOut = ctx.destination;
-
-    osc1.connect(fmGain);
-    fmGain.connect(osc2.frequency);
-    osc2.connect(instGain);
-    instGain.connect(masterGain);
-    masterGain.connect(analyser);
-    masterGain.connect(masterOut);
-    osc1.start();
-    osc2.start();
-
-    const audio = {
-      ctx: ctx,
-      osc1: osc1,
-      osc2: osc2,
-      fmGain: fmGain,
-      instGain: instGain,
-      masterGain: masterGain,
-      masterOut: masterOut,
-      analyser: analyser,
-      analyserSrc: 'masterGain',
-      mic: false,
-      baseHz: baseHz,
-      latency: .05
-    };
-    this.setState(prevState => ({ audio }));
-  }
-
   audioMute() {
     const { ctx, latency, instGain } = this.state.audio;
+    // const timestamp = parseFloat(ctx.currentTime);
     help.setAudioParam(instGain.gain, 0, ctx, latency * 2);
   }
 
@@ -240,7 +200,18 @@ export default class Main extends Component {
     help.setAudioParam(osc1.frequency, setFreq, ctx, latency);
     help.setAudioParam(osc2.frequency, setFreq, ctx, latency);
 
+    // const { ctx, baseHz, latency, instGain, osc1, osc2 } = this.state.audio;
+    // const timestamp = parseFloat(ctx.currentTime);
+    // const setLevel = parseFloat(level);
+    // const setFreq = parseFloat(freq * baseHz);
+    // help.setAudioParam(instGain.gain, setLevel, timestamp, latency);
+    // help.setAudioParam(osc1.frequency, setFreq, timestamp, latency);
+    // help.setAudioParam(osc2.frequency, setFreq, timestamp, latency);
 
+// console.log(setLevel)
+
+
+    // const setLevel = level === 0 ? .0001 : level;
 
     // const setFreq = freq * 600;
     // help.setAudioParam(osc1.detune, setFreq, ctx, latency);
@@ -266,28 +237,25 @@ export default class Main extends Component {
 
 
   render() {
-    const { params, audio, tutorial } = this.state;
+    const { data, params, audio, showHelp } = this.state;
+    const latency = audio ? Math.round((audio.ctx.currentTime - audio.ctx.getOutputTimestamp().contextTime) * 1000) : 0;
 
     return (
       <div className='Main'>
+        {!audio ? <Init handleClick={this.audioInit} /> : null}
+        <Placard show={showHelp} toggle={this.toggleHelp} />
+        <Instructions show={showHelp} toggle={this.toggleHelp} />
+        <Settings latency={latency} src={audio.analyserSrc} toggle={this.toggleMic} />
+        <Oscillators osc1={params.osc1} osc2={params.osc2} update={this.updateOsc} />
 {/*
 */}
+        <Theremin active={!!audio} refresh={this.controllerRefresh} mute={this.audioMute} />
+
+        <Meters active={!!audio} data={data} />
 {/*
+        <MetersOrig analyser={audio.analyser} />
 */}
 
-        <Theremin refresh={this.controllerRefresh} mute={this.audioMute} />
-
-        <Placard show={tutorial} toggle={this.toggleHelp} />
-
-        <Instructions show={tutorial} toggle={this.toggleHelp} />
-
-        <Settings ctx={audio.ctx} src={audio.analyserSrc} toggle={this.toggleMic} />
-{/*
-        <Meters analyser={audio.analyser} />
-*/}
-        <Meters data={this.state.data} />
-
-        <Oscillators params={params} update={this.updateOsc} />
 
         <Effects params={params} update={this.updateParam} />
 
@@ -297,3 +265,58 @@ export default class Main extends Component {
     );
   }
 }
+
+
+
+
+  // audioInitLegacy() {
+  //   const scaleBase = 10;
+  //   const baseHz = 220;
+  //   const { params } = this.state;
+  //   const AudioContext = window.AudioContext || window.webkitAudioContext;
+  //   const ctx = new AudioContext();
+  //   const osc1 = ctx.createOscillator();
+  //     osc1.type = params.osc1;
+  //     osc1.frequency.value = baseHz;
+  //   const osc2 = ctx.createOscillator();
+  //     osc2.type = params.osc2;
+  //     osc2.frequency.value = baseHz;
+  //     osc2.detune.value = params.fmWidth.v;
+  //   const fmGain = ctx.createGain();
+  //     fmGain.gain.value = params.fmDepth.v;
+  //   const instGain = ctx.createGain();
+  //     instGain.gain.value = 0;
+  //   const masterGain = ctx.createGain();
+  //     masterGain.gain.value = params.volume.v;
+  //   const analyser = ctx.createAnalyser();
+  //     analyser.fftSize = Math.pow(2, scaleBase);
+  //     analyser.minDecibels = -100;
+  //     analyser.maxDecibels = -30;
+  //     analyser.smoothingTimeConstant = 0;
+  //   const masterOut = ctx.destination;
+
+  //   osc1.connect(fmGain);
+  //   fmGain.connect(osc2.frequency);
+  //   osc2.connect(instGain);
+  //   instGain.connect(masterGain);
+  //   masterGain.connect(analyser);
+  //   masterGain.connect(masterOut);
+  //   osc1.start();
+  //   osc2.start();
+
+  //   const audio = {
+  //     ctx: ctx,
+  //     osc1: osc1,
+  //     osc2: osc2,
+  //     fmGain: fmGain,
+  //     instGain: instGain,
+  //     masterGain: masterGain,
+  //     masterOut: masterOut,
+  //     analyser: analyser,
+  //     analyserSrc: 'masterGain',
+  //     mic: false,
+  //     baseHz: baseHz,
+  //     latency: .05
+  //   };
+  //   this.setState(prevState => ({ audio }));
+  // }

@@ -10,10 +10,10 @@ export default class Theremin extends Component {
     super(props)
     this.state = {
       params: {
-        sense: {v: 50, max: 255, min: 0, text: 'SENSITIVITY'},
-        range: {v: 4, max: 6, min: 2, text: 'RANGE'},
+        sense: {v: 50, max: 128, min: 0, text: 'SENSITIVITY'},
+        range: {v: 6, max: 6, min: 2, text: 'RANGE'},
       },
-      video: null,
+      video: false,
       vW: 0,
       vH: 0,
       tracker: false,
@@ -38,11 +38,15 @@ export default class Theremin extends Component {
   }
 
   componentDidMount() {
-    this.videoInit();
+
   }
 
   componentDidUpdate() {
-    const { data, muted } = this.state;
+    const { video, data, muted } = this.state;
+    if (!video && this.props.active) {
+      this.setState(prevState => ({video: true}));
+      this.videoInit();
+    }
     if (data.length === 2) {
       this.audioRefresh();
       if (muted) this.setState(prevState => ({ muted: false }));
@@ -71,6 +75,7 @@ export default class Theremin extends Component {
     const canvas = tracker.init();
     tracker.start();
     this.setState(prevState => ({ tracker, canvas }));
+    // console.log(tracker);
   }
 
   trackerColorSet(target) {

@@ -1,15 +1,52 @@
 const help = {};
 
 help.setAudioParam = async (param, val, ctx, delay) => {
-  const finish = (t) => new Promise(res => setTimeout(res, t));
-  const now = ctx.currentTime;
+  // const finish = (t) => new Promise(res => setTimeout(res, t));
+  // const now = ctx.currentTime;
+  // const now = Math.fround(ctx)
+  // const now = ctx
+  //
+  // try {
+  //   const start = ctx.currentTime
+  //   const a = await param.cancelScheduledValues(start);
+  //   // console.log('a ', ctx.currentTime - start)
+  //   const b = await a.setValueAtTime(parseFloat(a.value), start);
+  //   // console.log('b ', ctx.currentTime - start)
+  //   b.exponentialRampToValueAtTime(val, parseFloat(start + delay));
+  //   // console.log('c ', ctx.currentTime - start)
+  // } catch (e) {
+  //   console.log(e);
+  // } finally {
+  //   // console.log('finished')
+  // }
 
 
-  const current = param.value;
-  param.cancelScheduledValues(now);
-  param.setValueAtTime(current, now);
-  param.linearRampToValueAtTime(Math.fround(val), Math.fround(now + delay));
-// console.log(now, ctx.currentTime, Math.fround(now + delay))
+  // val = val === 0 ? .000001 : val;
+  const a = await param.cancelScheduledValues(ctx.currentTime);
+  const b = await a.setValueAtTime(parseFloat(a.value), ctx.currentTime);
+  // const c = await b.exponentialRampToValueAtTime(val, parseFloat(ctx.currentTime + delay));
+  const c = await b.linearRampToValueAtTime(val, parseFloat(ctx.currentTime + delay));
+
+  return c;
+
+
+
+
+
+  // const start = ctx.currentTime
+
+  // console.log()
+  // console.log()
+  // console.log()
+  // console.log()
+
+  // const a = await param.cancelAndHoldAtTime(now);
+  // const b = await a.linearRampToValueAtTime(val, parseFloat(now + delay / 3));
+
+
+  // param.cancelScheduledValues(now);
+  // param.setValueAtTime(parseFloat(param.value), now);
+  // param.linearRampToValueAtTime(val, parseFloat(now + delay));
 
   // param.value = val
   // param.cancelAndHoldAtTime(ctx.currentTime);
@@ -18,21 +55,11 @@ help.setAudioParam = async (param, val, ctx, delay) => {
 
   // param.linearRampToValueAtTime(val, ctx.currentTime + delay);
 
-
-
   // param.cancelScheduledValues(now);
   // param.setValueAtTime(param.value, now);
   // param.linearRampToValueAtTime(val, now + delay);
-  await finish(delay * 1000);
-  return ctx.currentTime;
-};
-
-help.getColorDist = (orig, match) => {
-  return Math.sqrt(
-    Math.pow((orig.r - match.r), 2) +
-    Math.pow((orig.g - match.g), 2) +
-    Math.pow((orig.b - match.b), 2)
-  );
+  // await finish(delay * 1000);
+  // return ctx.currentTime;
 };
 
 help.getParamPct = (param) => {
@@ -87,6 +114,14 @@ help.makeDomain = (extent, arr) => {
 
 
 // Working Helper Functions - Currently Not Being Used //
+
+// help.getColorDist = (orig, match) => {
+//   return Math.sqrt(
+//     Math.pow((orig.r - match.r), 2) +
+//     Math.pow((orig.g - match.g), 2) +
+//     Math.pow((orig.b - match.b), 2)
+//   );
+// };
 
 // help.getNote = (Hz) => {
 //   const noteStr = ['A', 'A#/B♭', 'B', 'C', 'C#/D♭', 'D', 'D#/E♭', 'E', 'F', 'F#/G♭', 'G', 'G#/A♭'];

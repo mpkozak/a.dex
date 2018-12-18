@@ -1,6 +1,5 @@
 .placard>.outer {
 
-  /*border: 1px solid green;*/
 }
 
 .placard .inner {
@@ -12,15 +11,10 @@
 }
 
 .placard .logo {
-  /*width: 55%;*/
   height: 100%;
-
-  /*border: 1px solid white;*/
 }
 
 .placard .help-button {
   width: 10%;
   height: auto;
-
-  /*border: 1px solid green;*/
 }

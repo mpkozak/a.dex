@@ -18,4 +18,4 @@ export default function Instructions(props) {
       </div>
     </div>
   );
-}
+};

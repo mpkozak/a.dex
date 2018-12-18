@@ -19,6 +19,21 @@
   background-color: rgba(100,100,100,1);
 }
 
+.init {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 1vmin;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  background-color: rgba(0,0,0,.8);
+}
+
 .theremin {
   position: absolute;
   left: calc(0 * (100% / var(--grid-width)));
