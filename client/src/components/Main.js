@@ -5,7 +5,7 @@ import Theremin from './Theremin.js';
 import Placard from './Placard.js';
 import Instructions from './Instructions.js';
 import Settings from './Settings.js';
-import Meters from './Meters.js';
+import { Meters } from './Meters2.js';
 import Oscillators from './Oscillators.js';
 import Effects from './Effects.js';
 import Master from './Master.js';
@@ -26,7 +26,8 @@ export default class Main extends Component {
         eqMid: {v: 5, max: 10, min: 0},
         eqHi: {v: 5, max: 10, min: 0},
         volume: {v: .73, max: 1, min: 0}
-      }
+      },
+      data: []
     };
     this.toggleHelp = this.toggleHelp.bind(this);
     this.toggleMic = this.toggleMic.bind(this);
@@ -34,6 +35,7 @@ export default class Main extends Component {
     this.updateOsc = this.updateOsc.bind(this);
     this.audioMute = this.audioMute.bind(this);
     this.controllerRefresh = this.controllerRefresh.bind(this);
+    this.getAudioData = this.getAudioData.bind(this);
   }
 
   componentWillMount() {
@@ -56,7 +58,7 @@ export default class Main extends Component {
   }
 
   audioInit() {
-    const scaleBase = 10;
+    const scaleBase = 8;
     const baseHz = 50;
     const { params } = this.state;
     const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -93,6 +95,10 @@ export default class Main extends Component {
       latency: .05
     };
     this.setState(prevState => ({ audio }));
+
+    // const analyserInterval = Math.floor(analyser.fftSize / ctx.sampleRate * 1000) * 2;
+    // setInterval(this.getAudioData, analyserInterval);
+    this.getAudioData();
   }
 
   audioInitLegacy() {
@@ -241,6 +247,24 @@ export default class Main extends Component {
     // help.setAudioParam(osc2.detune, setFreq + this.state.params.fmWidth.v, ctx, latency);
   }
 
+
+
+
+
+
+  getAudioData() {
+    requestAnimationFrame(this.getAudioData);
+
+    const { analyser } = this.state.audio;
+    if (!analyser) return null
+
+    const data = new Float32Array(analyser.fftSize);
+    analyser.getFloatTimeDomainData(data);
+    this.setState(prevState => ({ data }))
+  }
+
+
+
   render() {
     const { params, audio, tutorial } = this.state;
 
@@ -259,8 +283,9 @@ export default class Main extends Component {
 
         <Settings ctx={audio.ctx} src={audio.analyserSrc} toggle={this.toggleMic} />
 {/*
-*/}
         <Meters analyser={audio.analyser} />
+*/}
+        <Meters data={this.state.data} />
 
         <Oscillators params={params} update={this.updateOsc} />
 
