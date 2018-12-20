@@ -3,19 +3,19 @@
 ///////////////////
 
 export default class Tracker {
-  constructor(callback, video, color1, color2, sense, reducer) {
+  constructor(callback, video, color1, color2, sensitivity, reducer) {
     this.callback = callback;
     this.video = video;
     this.vWidth = video.clientWidth;
     this.vHeight = video.clientHeight;
-    this.sense = sense ? sense : 50;
+    this.sensitivity = sensitivity ? sensitivity : 50;
     this.reducer = reducer ? reducer : 10;
     this.tracker = null;
     this.tCtx = null;
     this.tWidth = Math.floor(this.vWidth / this.reducer);
     this.tHeight = Math.floor(this.vHeight / this.reducer);
     this.scalar = this.vWidth / this.tWidth;
-    this.thresh = this.sense / Math.sqrt(Math.pow(this.tWidth, 2) + Math.pow(this.tHeight, 2));
+    this.thresh = this.sensitivity / Math.sqrt(Math.pow(this.tWidth, 2) + Math.pow(this.tHeight, 2));
     this.color1 = color1;
     this.color2 = color2;
     this.c1 = this.hexToRgb(color1);
@@ -51,7 +51,7 @@ export default class Tracker {
   };
   filterData(data) {
     const length = data.length;
-    const { sense, color1, color2, tWidth, thresh } = this;
+    const { sensitivity, color1, color2, tWidth, thresh } = this;
     const c1 = this.hexToRgb(color1);
     const c2 = this.hexToRgb(color2);
     const area1 = [];
@@ -63,13 +63,13 @@ export default class Tracker {
       const b = data[i + 2];
       const dist1 = this.getColorDist({r, g, b}, c1);
       const dist2 = this.getColorDist({r, g, b}, c2);
-      if (dist1 <= sense) {
+      if (dist1 <= sensitivity) {
         const dist = dist1;
         const x = scale % tWidth;
         const y = Math.floor(scale / tWidth);
         area1.push({x, y, dist});
       };
-      if (dist2 <= sense) {
+      if (dist2 <= sensitivity) {
         const dist = dist2;
         const x = scale % tWidth;
         const y = Math.floor(scale / tWidth);
