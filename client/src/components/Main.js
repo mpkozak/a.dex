@@ -1,21 +1,17 @@
 import React, { Component } from 'react';
 import './_css/Main.css';
 
-
+import help from './_help.js';
 import Init from './Init.js'
 import Placard from './Placard.js';
 import Instructions from './Instructions.js';
 import Settings from './Settings.js';
 import Oscillators from './Oscillators.js';
 
-
-import help from './_help.js';
 import Theremin from './Theremin.js';
 import Meters from './Meters.js';
 import Effects from './Effects.js';
 import Master from './Master.js';
-
-import MetersOrig from './MetersOrig.js';
 
 
 export default class Main extends Component {
@@ -54,7 +50,6 @@ export default class Main extends Component {
   }
 
   componentDidMount() {
-
     // if (this.state.chrome) {
       // this.audioInit();
     // } else {
@@ -106,15 +101,11 @@ export default class Main extends Component {
       latency: .05
     };
     this.setState(prevState => ({ audio }));
-
-    // const analyserInterval = Math.floor(analyser.fftSize / ctx.sampleRate * 1000);
-    // setInterval(this.getAudioData, analyserInterval);
     this.getAudioData();
   }
 
   audioMute() {
     const { ctx, latency, instGain } = this.state.audio;
-    // const timestamp = parseFloat(ctx.currentTime);
     help.setAudioParam(instGain.gain, 0, ctx, latency * 2);
   }
 
@@ -199,39 +190,15 @@ export default class Main extends Component {
     help.setAudioParam(instGain.gain, setLevel, ctx, latency);
     help.setAudioParam(osc1.frequency, setFreq, ctx, latency);
     help.setAudioParam(osc2.frequency, setFreq, ctx, latency);
-
-    // const { ctx, baseHz, latency, instGain, osc1, osc2 } = this.state.audio;
-    // const timestamp = parseFloat(ctx.currentTime);
-    // const setLevel = parseFloat(level);
-    // const setFreq = parseFloat(freq * baseHz);
-    // help.setAudioParam(instGain.gain, setLevel, timestamp, latency);
-    // help.setAudioParam(osc1.frequency, setFreq, timestamp, latency);
-    // help.setAudioParam(osc2.frequency, setFreq, timestamp, latency);
-
-// console.log(setLevel)
-
-
-    // const setLevel = level === 0 ? .0001 : level;
-
-    // const setFreq = freq * 600;
-    // help.setAudioParam(osc1.detune, setFreq, ctx, latency);
-    // help.setAudioParam(osc2.detune, setFreq + this.state.params.fmWidth.v, ctx, latency);
   }
-
-
-
-
-
 
   getAudioData() {
     requestAnimationFrame(this.getAudioData);
-
     const { analyser } = this.state.audio;
-    if (!analyser) return null
-
+    if (!analyser) return null;
     const data = new Float32Array(analyser.fftSize);
     analyser.getFloatTimeDomainData(data);
-    this.setState(prevState => ({ data }))
+    this.setState(prevState => ({ data }));
   }
 
 
@@ -247,26 +214,14 @@ export default class Main extends Component {
         <Instructions show={showHelp} toggle={this.toggleHelp} />
         <Settings latency={latency} src={audio.analyserSrc} toggle={this.toggleMic} />
         <Oscillators osc1={params.osc1} osc2={params.osc2} update={this.updateOsc} />
-{/*
-*/}
         <Theremin active={!!audio} refresh={this.controllerRefresh} mute={this.audioMute} />
-
         <Meters active={!!audio} data={data} />
-{/*
-        <MetersOrig analyser={audio.analyser} />
-*/}
-
-
         <Effects params={params} update={this.updateParam} />
-
         <Master params={params} update={this.updateParam} />
-
       </div>
     );
   }
 }
-
-
 
 
   // audioInitLegacy() {

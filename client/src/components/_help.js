@@ -1,65 +1,11 @@
 const help = {};
 
 help.setAudioParam = async (param, val, ctx, delay) => {
-  // const finish = (t) => new Promise(res => setTimeout(res, t));
-  // const now = ctx.currentTime;
-  // const now = Math.fround(ctx)
-  // const now = ctx
-  //
-  // try {
-  //   const start = ctx.currentTime
-  //   const a = await param.cancelScheduledValues(start);
-  //   // console.log('a ', ctx.currentTime - start)
-  //   const b = await a.setValueAtTime(parseFloat(a.value), start);
-  //   // console.log('b ', ctx.currentTime - start)
-  //   b.exponentialRampToValueAtTime(val, parseFloat(start + delay));
-  //   // console.log('c ', ctx.currentTime - start)
-  // } catch (e) {
-  //   console.log(e);
-  // } finally {
-  //   // console.log('finished')
-  // }
-
-
-  // val = val === 0 ? .000001 : val;
   const a = await param.cancelScheduledValues(ctx.currentTime);
   const b = await a.setValueAtTime(parseFloat(a.value), ctx.currentTime);
-  // const c = await b.exponentialRampToValueAtTime(val, parseFloat(ctx.currentTime + delay));
   const c = await b.linearRampToValueAtTime(val, parseFloat(ctx.currentTime + delay));
-
-  return c;
-
-
-
-
-
-  // const start = ctx.currentTime
-
-  // console.log()
-  // console.log()
-  // console.log()
-  // console.log()
-
-  // const a = await param.cancelAndHoldAtTime(now);
-  // const b = await a.linearRampToValueAtTime(val, parseFloat(now + delay / 3));
-
-
-  // param.cancelScheduledValues(now);
-  // param.setValueAtTime(parseFloat(param.value), now);
-  // param.linearRampToValueAtTime(val, parseFloat(now + delay));
-
-  // param.value = val
-  // param.cancelAndHoldAtTime(ctx.currentTime);
-  // param.cancelScheduledValues(ctx.currentTime);
-  // param.setTargetAtTime(val, now + delay, .01)
-
-  // param.linearRampToValueAtTime(val, ctx.currentTime + delay);
-
-  // param.cancelScheduledValues(now);
-  // param.setValueAtTime(param.value, now);
-  // param.linearRampToValueAtTime(val, now + delay);
-  // await finish(delay * 1000);
-  // return ctx.currentTime;
+  await c;
+  return ctx.currentTime;
 };
 
 help.getParamPct = (param) => {
@@ -113,6 +59,12 @@ help.makeDomain = (extent, arr) => {
 };
 
 
+export default help;
+
+
+
+
+
 // Working Helper Functions - Currently Not Being Used //
 
 // help.getColorDist = (orig, match) => {
@@ -143,5 +95,3 @@ help.makeDomain = (extent, arr) => {
 //   };
 //   return arr;
 // };
-
-export default help;

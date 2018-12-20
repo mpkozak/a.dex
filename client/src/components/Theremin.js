@@ -2,16 +2,16 @@ import React, { Component } from 'react';
 import * as d3 from 'd3';
 import './_css/Theremin.css';
 import help from './_help.js';
-import Tracker from './_tracker.js';
-import { ColorSwatch, BigKnob, screenFrame } from './_svg.js';
+import Tracker from './_tracker0.js';
+import { ColorSwatch, BigKnob, ScreenFrame } from './_svg.js';
 
 export default class Theremin extends Component {
     constructor(props) {
     super(props)
     this.state = {
       params: {
-        sense: {v: 50, max: 128, min: 0, text: 'SENSITIVITY'},
-        range: {v: 6, max: 6, min: 2, text: 'RANGE'},
+        sense: {v: 30, max: 128, min: 0, text: 'SENSITIVITY'},
+        range: {v: 5, max: 6, min: 2, text: 'RANGE'},
       },
       video: false,
       vW: 0,
@@ -37,16 +37,12 @@ export default class Theremin extends Component {
     };
   }
 
-  componentDidMount() {
-
-  }
-
   componentDidUpdate() {
     const { video, data, muted } = this.state;
     if (!video && this.props.active) {
-      this.setState(prevState => ({video: true}));
+      this.setState(prevState => ({ video: true }))
       this.videoInit();
-    }
+    };
     if (data.length === 2) {
       this.audioRefresh();
       if (muted) this.setState(prevState => ({ muted: false }));
@@ -75,23 +71,21 @@ export default class Theremin extends Component {
     const canvas = tracker.init();
     tracker.start();
     this.setState(prevState => ({ tracker, canvas }));
-    // console.log(tracker);
   }
 
   trackerColorSet(target) {
     this.setState(prevState => ({ calib: target }));
     const { video, canvas } = this.state;
     const { ctx, tW, tH, scalar } = canvas;
-    const { svgTracker } = this.refs;
+    const { clickBox } = this.refs;
     const getCoords = (e) => {
-      svgTracker.removeEventListener('click', getCoords);
+      clickBox.removeEventListener('click', getCoords);
       ctx.drawImage(video, 0, 0, tW, tH);
       const rgb = ctx.getImageData(e.offsetX / scalar, e.offsetY / scalar, 1, 1).data;
       const r = ('0' + rgb[0].toString(16)).slice(-2);
       const g = ('0' + rgb[1].toString(16)).slice(-2);
       const b = ('0' + rgb[2].toString(16)).slice(-2);
       const color = `#${r}${g}${b}`;
-      // ctx.clearRect(0, 0, tW, tH);
       localStorage.setItem(target, color);
       this.setState(prevState => ({
         [target]: color,
@@ -99,13 +93,12 @@ export default class Theremin extends Component {
       }));
       this.trackerColorRefresh();
     };
-    svgTracker.addEventListener('click', getCoords);
+    if (target) clickBox.addEventListener('click', getCoords);
   }
 
   trackerColorRefresh() {
     const { tracker, colorGain, colorFreq } = this.state;
-    tracker.color1 = colorGain;
-    tracker.color2 = colorFreq;
+    tracker.setColors(colorGain, colorFreq);
   }
 
   trackerHandleData(data) {
@@ -127,6 +120,101 @@ export default class Theremin extends Component {
       .style('stroke-width', '.3%');
     circles.exit().remove();
   }
+
+  updateParam(amt, key) {
+    const { params, tracker } = this.state;
+    const param = params[key];
+    const deltaV = amt * param.max;
+    const newV = param.v + deltaV;
+    if (newV >= param.min && newV <= param.max) {
+      if (key === 'sense') {
+        tracker.sensitivity = newV;
+      };
+      this.setState(prevState => ({
+        params: {...prevState.params, [key]: {...prevState.params[key], v: newV}}
+      }));
+    };
+  }
+
+  audioRefresh() {
+    const { data, vW, vH, params } = this.state;
+    const level = (vH - data[0].y) / vH;
+    const freq = Math.pow(2, (vW - data[1].x) / (vW / params.range.v));
+    this.props.refresh(level, freq);
+  }
+
+
+
+  makeColorBox() {
+    const { calib, colorGain, colorFreq } = this.state;
+    const components = [
+      {color: colorGain, name: 'colorGain', text: 'GAIN'},
+      {color: colorFreq, name: 'colorFreq', text: 'PITCH'}
+    ];
+    return (
+      <div className='settings-box'>
+        <h4 className='label'>Set Colors</h4>
+        {components.map((d, i) => {
+          return (
+            <div className='element' key={d.name}>
+              <ColorSwatch color={d.color} active={calib === d.name} handleClick={() => this.trackerColorSet(calib ? false : d.name)} />
+              <h5 className='label-small'>{d.text}</h5>
+            </div>
+          );
+        })}
+      </div>
+    );
+  }
+
+  makeControlBox() {
+    const { params } = this.state;
+    return (
+      <div className='settings-box'>
+        {Object.keys(params).map((d, i) => {
+          return (
+            <div className='element' key={i}>
+              <BigKnob rotation={help.getParamPct(params[d])} color='#313638' handleClick={(e) => help.handleClickParam(e, d, this.updateParam)} handleScroll={(e) => help.handleScrollParam(e, d, this.updateParam)} />
+              <h5 className='label-small'>{params[d].text}</h5>
+            </div>
+          );
+        })}
+      </div>
+    );
+  }
+
+
+  render() {
+    const { vW, vH } = this.state;
+    return (
+      <div className='theremin'>
+        <div className='outer'>
+{/**/}
+          <div className='video-box outer'>
+            <ScreenFrame />
+            <div className='inner'>
+              <video className='video' ref='video' preload='true' autoPlay loop muted/>
+              <svg className='tracker' ref='svgTracker' width={vW} height={vH}/>
+              <svg className='click-box' ref='clickBox' width={vW} height={vH}/>
+            </div>
+          </div>
+
+          <div className='color-box inner'>
+            {this.makeColorBox()}
+          </div>
+          <div className='control-box inner'>
+            {this.makeControlBox()}
+          </div>
+
+        </div>
+      </div>
+    );
+  }
+}
+
+
+
+
+
 
   // trackerDraw() {
   //   const { data } = this.state;
@@ -156,102 +244,3 @@ export default class Theremin extends Component {
   //   circles.exit().remove();
   // }
 
-  updateParam(amt, key) {
-    const { params, tracker } = this.state;
-    const param = params[key];
-    const deltaV = amt * param.max;
-    const newV = param.v + deltaV;
-    if (newV >= param.min && newV <= param.max) {
-      if (key === 'sense') {
-        tracker.sense = newV;
-      };
-      this.setState(prevState => ({
-        params: {...prevState.params, [key]: {...prevState.params[key], v: newV}}
-      }));
-    };
-  }
-
-  audioRefresh() {
-    const { data, vW, vH, params } = this.state;
-    const level = (vH - data[0].y) / vH;
-    const freq = Math.pow(2, (vW - data[1].x) / (vW / params.range.v));
-    this.props.refresh(level, freq);
-  }
-
-
-
-  makeColorBox() {
-    const { calib, colorGain, colorFreq } = this.state;
-    const components = [
-      {color: colorGain, name: 'colorGain', text: 'GAIN'},
-      {color: colorFreq, name: 'colorFreq', text: 'PITCH'}
-    ];
-    const elements = components.map((d, i) => {
-      return (
-        <div className='element' key={d.name}>
-          <ColorSwatch color={d.color} active={calib === d.name} handleClick={() => this.trackerColorSet(d.name)} />
-          <h5 className='label-small'>{d.text}</h5>
-        </div>
-      );
-    });
-    return (
-      <div className='settings-box'>
-        <h4 className='label'>Set Colors</h4>
-        {elements}
-      </div>
-    );
-  }
-
-  makeControlBox() {
-    const { params } = this.state;
-    const elements = Object.keys(params).map((d, i) => {
-      return (
-        <div className='element' key={i}>
-        <BigKnob rotation={help.getParamPct(params[d])} color='#313638' handleClick={(e) => help.handleClickParam(e, d, this.updateParam)} handleScroll={(e) => help.handleScrollParam(e, d, this.updateParam)} />
-          <h5 className='label-small'>{params[d].text}</h5>
-        </div>
-      );
-    });
-    return (
-      <div className='settings-box'>
-        {elements}
-      </div>
-    );
-  }
-
-
-  render() {
-    const { vW, vH } = this.state;
-    return (
-      <div className='theremin'>
-        <div className='outer'>
-
-          <div className='video-box outer'>
-
-            <div className='inner'>
-              <video className='video' ref='video' preload='true' autoPlay loop muted/>
-              <svg className='tracker' ref='svgTracker' width={vW} height={vH}/>
-            </div>
-          </div>
-
-          <div className='color-box inner'>
-            {this.makeColorBox()}
-          </div>
-          <div className='control-box inner'>
-            {this.makeControlBox()}
-          </div>
-
-        </div>
-      </div>
-    );
-  }
-}
-
-
-
-
-
-
-            // <svg className='border' ref='border' viewBox='0 0 40 30'>
-            //   {screenFrame(this.state.video)}
-            // </svg>

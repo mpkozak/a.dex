@@ -993,10 +993,14 @@ export const MeterVU = (props) => {
 
 
 
-export const screenFrame = (off) => {
+export const ScreenFrame = () => {
+  // const { active } = props;
+  // let blackout = active;
+  // console.log(active)
+  // if (active) setTimeout(() => {blackout = false}, 1000)
   const colorFrame = '#AAAAAA';
   return (
-    <g className='screen-frame'>
+    <svg className='border' viewBox='0 0 40 30'>
       <defs>
   {/* screenFrame - Screen Frame Outer Clip */}
         <clipPath id='screen-outer-clip'>
@@ -1019,10 +1023,6 @@ export const screenFrame = (off) => {
           <path d={`M ${2.5} ${0} Q ${1.5} ${15}, ${2.5} ${30}`} stroke='black' strokeWidth='4%'/>
           <path d={`M ${37.5} ${0} Q ${38.5} ${15}, ${37.5} ${30}`} stroke='black' strokeWidth='4%'/>
         </mask>
-
-
-
-
 {/* screenFrame */}
   {/* screenFrame - Outer Screen Shadow Gradients */}
         <linearGradient id='screen-outer-shadow-horizontal' x1='0%' y1='0%' x2='0%' y2='100%' gradientUnits='objectBoundingBox'>
@@ -1154,7 +1154,7 @@ export const screenFrame = (off) => {
         </g>
       </g>
 
-{/* Inner Screen Blank */}
+{/* Inner Screen Blank
       <g className='screen-blank' mask='url(#screen-inner-mask-reverse)'>
         <rect
           x={2}
@@ -1163,9 +1163,10 @@ export const screenFrame = (off) => {
           width={36}
           height={27}
           fill='#000000'
-          opacity={off ? 0 : 1}
+          // fill={blackout ? '#000000' : 'none'}
+          opacity={active ? 0 : 1}
         />
-      </g>
+      </g> */}
 
 {/* Inner Screen Contour Shadows */}
       <g className='screen-inner-shadows' mask='url(#screen-inner-mask-reverse)'>
@@ -1213,7 +1214,7 @@ export const screenFrame = (off) => {
           strokeDasharray={`${0}, ${7.7}, ${84.6}, ${7.7}`}
         />
       </g>
-    </g>
+    </svg>
   );
 };
 
@@ -1233,22 +1234,22 @@ export const screenFrame = (off) => {
 
 
 
-export const meterIllumination = () => {
-  return (
-    <g filter='url(#test)'>
-      <rect x='0' y='0' width='100' height='60' rx='2' ry='2' fill='#FFFFFF' stroke='#000000' strokeWidth='.4%' />
-      <g clipPath='url(#meter-outer-clip)'>
-        <rect fill='url(#meter-frame-horizontal' x='0' y='0' width='100' height='60' rx='2' ry='2' />
-        <rect fill='url(#meter-frame-vertical)' x='0' y='0' width='100' height='60' rx='2' ry='2' />
-      </g>
-      <g clipPath='url(#meter-middle-clip)' filter='url(#meter-gradient-blur)'>
-        <path fill='url(#meter-frame-vertical)' d='M 2.5 2.5 L 97.5 2.5 L 73.75 26.25 L 73.75 33.75 L 97.5 57.5 L 2.5 57.5 L 26.25 33.75 L 26.25 26.25 Z' />
-        <path fill='url(#meter-frame-horizontal)' d='M 2.5 2.5 L 30 30 L 70 30 L 97.5 2.5 L 97.5 57.5 L 70 30 L 30 30 L 2.5 57.5 Z' />
-        <rect fill='url(#meter-frame-corners)' x='2.5' y='2.5' width='95' height='55' rx='2' ry='2' />
-      </g>
-    </g>
-  );
-}
+// export const meterIllumination = () => {
+//   return (
+//     <g filter='url(#test)'>
+//       <rect x='0' y='0' width='100' height='60' rx='2' ry='2' fill='#FFFFFF' stroke='#000000' strokeWidth='.4%' />
+//       <g clipPath='url(#meter-outer-clip)'>
+//         <rect fill='url(#meter-frame-horizontal' x='0' y='0' width='100' height='60' rx='2' ry='2' />
+//         <rect fill='url(#meter-frame-vertical)' x='0' y='0' width='100' height='60' rx='2' ry='2' />
+//       </g>
+//       <g clipPath='url(#meter-middle-clip)' filter='url(#meter-gradient-blur)'>
+//         <path fill='url(#meter-frame-vertical)' d='M 2.5 2.5 L 97.5 2.5 L 73.75 26.25 L 73.75 33.75 L 97.5 57.5 L 2.5 57.5 L 26.25 33.75 L 26.25 26.25 Z' />
+//         <path fill='url(#meter-frame-horizontal)' d='M 2.5 2.5 L 30 30 L 70 30 L 97.5 2.5 L 97.5 57.5 L 70 30 L 30 30 L 2.5 57.5 Z' />
+//         <rect fill='url(#meter-frame-corners)' x='2.5' y='2.5' width='95' height='55' rx='2' ry='2' />
+//       </g>
+//     </g>
+//   );
+// }
 
 
 
