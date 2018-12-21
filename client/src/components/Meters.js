@@ -1,74 +1,72 @@
-import React from 'react';
-import * as d3 from 'd3';
+import React, { Component } from 'react';
 import './_css/Meters.css';
-import { MeterWave, MeterVU } from './_svg.js';
+import * as d3 from 'd3';
+import VU from './_meters/VU.js';
+import Wave from './_meters/Wave.js';
 
-
-var wave = 'M 0 30 L 100 30';
-var opacity = 1;
-var rotation = -48;
-var peak = false;
-
-export default function Meters(props) {
-  const { data } = props;
-
-  const width = 100
-  const height = 60;
-  const margin = 5;
-  const extent = d3.extent(data);
-  const waveScaleX = d3.scaleLinear().domain([0, data.length - 1]).range([0, width]);
-  const waveScaleY = d3.scaleLinear().domain([extent[0] - .1, extent[1] + .1]).range([0 + margin, height - margin]);
-  const waveScaleCurve = d3.line().curve(d3.curveLinear);
-
-  const vu = [-60, -20, -10, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 20];
-  const deg = [-48, -40, -26, -15, -10.5, -5, -0.5, 5, 10, 15, 20, 25, 30, 35, 48];
-  const vuScaleRotation = d3.scaleLinear().domain(vu).range(deg);
-
-
-  const getWave = (dataCurve) => {
-    const curvePath = d3.select('.invisible').append('path').attr('d', waveScaleCurve(dataCurve)).remove();
-    const curveNode = curvePath.node();
-    const curvePathLength = curveNode.getTotalLength();
-    wave = waveScaleCurve(dataCurve);
-    opacity = (width - Math.sqrt(curvePathLength)) / width;
-  };
-
-  const getVU = (rmsVU) => {
-    const rms = rmsVU === -Infinity ? -60 : rmsVU;
-    rotation = vuScaleRotation(rms);
-    if (rmsVU > 15) {
-      peak = true;
-      setTimeout(() => { peak = false }, 1000);
+export default class Meters extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      dataCurve: false,
+      dataVU: -60,
+      dataPeak: 0,
     };
+    this.getData = this.getData.bind(this);
   };
 
-  if (data.length) {
-    const dataCurve = []
+  componentWillMount() {
+    requestAnimationFrame(this.getData);
+  };
+
+  getData() {
+    requestAnimationFrame(this.getData);
+    const { analyser } = this.props;
+    if (!analyser) return null;
+    const fftSize = analyser.fftSize;
+    const data = new Float32Array(fftSize);
+    analyser.getFloatTimeDomainData(data);
+// d3 scales
+    const waveScaleX = d3.scaleLinear().domain([fftSize - 1, 0]).range([0, 100]);
+    const waveScaleY = d3.scaleLinear().domain([-1, 1]).range([0, 60]);
+
+    const dataCurve = new Array(fftSize);
     let dataSum = 0;
-    const length = data.length;
-    for (let i = 0; i < length; i++) {
+    for (let i = 0; i < fftSize; i++) {
       const d = data[i];
-      dataCurve.push([waveScaleX(i), waveScaleY(d)]);
-      dataSum +=  Math.pow(d, 2);
+      dataSum += Math.pow(d, 2);
+// manual calculation
+      // dataCurve[i] = [(i / (fftSize - 1)) * 100, (d * 25) + 30];
+// manual calculation declared
+      // const x = (i / (fftSize - 1)) * 100;
+      // const y = (d * 25) + 30;
+      // dataCurve[i] = [x, y];
+// d3 calculation
+      dataCurve[i] = [waveScaleX(i), waveScaleY(d)];
+// d3 calculation declared
+      // const x = waveScaleX(i);
+      // const y = waveScaleY(d);
+      // dataCurve[i] = [x, y];
     };
-    const dataVU = 20 * Math.log10(Math.sqrt(dataSum / length)) + 20;
-    getWave(dataCurve);
-    getVU(dataVU);
+    const dataVU = 20 * Math.log10(Math.sqrt(dataSum / fftSize)) + 20;
+    const dataPeak = dataVU > 14 ? new Date() : this.state.dataPeak;
+    this.setState(prevState => ({ dataCurve, dataVU, dataPeak }));
   };
 
 
-  return (
-    <div className='meters'>
-      <div className='meter outer'>
-        <div className='inner'>
-          <MeterWave wave={wave} opacity={opacity} />
+
+  render() {
+    const { dataCurve, dataVU, dataPeak } = this.state;
+
+    return (
+      <div className='meters'>
+        <div className='meter outer'>
+          <Wave data={dataCurve} />
+        </div>
+        <div className='meter outer'>
+          <VU data={dataVU} peak={dataPeak} />
         </div>
       </div>
-      <div className='meter outer'>
-        <div className='inner'>
-          <MeterVU rotation={rotation} peak={peak} />
-        </div>
-      </div>
-    </div>
-  );
+    );
+  };
 };

@@ -25,22 +25,21 @@
   justify-content: space-around;
 }
 
-.effect .fm .element {
-  width: 35%;
-  height: 90%;
+.effect .element {
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
   justify-content: space-around;
 }
 
+.effect .fm .element {
+  width: 35%;
+  height: 90%;
+}
+
 .effect .eq .element {
   width: 25%;
   height: 80%;
-  display: flex;
-  flex-flow: column nowrap;
-  align-items: center;
-  justify-content: space-around;
 }
 
 .effect .big-knob {

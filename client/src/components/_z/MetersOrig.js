@@ -1,9 +1,7 @@
 import React from 'react';
-import './_css/Meters.css';
-import VU from './_meters/newVU.js';
-import Wave from './_meters/Wave.js';
-// import Spec from './_meters/Spec.js';
-// import Freq from './_meters/Freq.js';
+import '../_css/Meters.css';
+import VU from '../_meters/VU.js';
+import Wave from '../_meters/newWave.js';
 
 export default function MetersOrig(props) {
   const { analyser } = props;

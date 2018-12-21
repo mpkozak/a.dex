@@ -11,21 +11,18 @@ export default function Effects(props) {
       {name: 'fmDepth', val: help.getParamPct(params.fmDepth), text: 'DEPTH'},
       {name: 'fmWidth', val: help.getParamPct(params.fmWidth), text: 'WIDTH'}
     ];
-
-    const elements = components.map((d, i) => {
-      return(
-        <div className='element' key={d.name}>
-          <BigKnob rotation={d.val} color='#313638' handleClick={(e) => help.handleClickParam(e, d.name, props.update)} handleScroll={(e) => help.handleScrollParam(e, d.name, props.update)} />
-          <h5 className='label-small'>{d.text}</h5>
-        </div>
-      );
-    });
-
     return (
       <div className='fm inner'>
         <h4 className='label'>FM Synth</h4>
         <div className='knob-box'>
-          {elements}
+          {components.map((d, i) => {
+            return(
+              <div className='element' key={d.name}>
+                <BigKnob rotation={d.val} color='#313638' handleClick={(e) => help.handleClickParam(e, d.name, props.update)} handleScroll={(e) => help.handleScrollParam(e, d.name, props.update)} />
+                <h5 className='label-small'>{d.text}</h5>
+              </div>
+            );
+          })}
         </div>
       </div>
     );
@@ -37,21 +34,18 @@ export default function Effects(props) {
       {name: 'eqMid', val: help.getParamPct(params.eqMid), text: 'MID'},
       {name: 'eqHi', val: help.getParamPct(params.eqHi), text: 'HIGH'}
     ];
-
-    const elements = components.map((d, i) => {
-      return(
-        <div className='element' key={d.name}>
-          <BigKnob rotation={d.val} color='' handleClick={(e) => help.handleClickParam(e, d.name, props.update)} handleScroll={(e) => help.handleScrollParam(e, d.name, props.update)} />
-          <h5 className='label-small'>{d.text}</h5>
-        </div>
-      );
-    });
-
     return (
       <div className='eq inner'>
         <h4 className='label'>EQ</h4>
         <div className='knob-box'>
-          {elements}
+          {components.map((d, i) => {
+            return(
+              <div className='element' key={d.name}>
+                <BigKnob rotation={d.val} color='' handleClick={(e) => help.handleClickParam(e, d.name, props.update)} handleScroll={(e) => help.handleScrollParam(e, d.name, props.update)} />
+                <h5 className='label-small'>{d.text}</h5>
+              </div>
+            );
+          })}
         </div>
       </div>
     );
@@ -63,10 +57,8 @@ export default function Effects(props) {
         {makeFmBox()}
       </div>
       <div className='effect outer'>
-{/*
-*/}
         {makeEqBox()}
       </div>
     </div>
   );
-}
+};

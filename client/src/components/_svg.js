@@ -266,7 +266,8 @@ export const SvgDefs = () => {
 ///////////////////////////////
 
 export const Logo = (props) => {
-  const { color, opacity } = props;
+  const color = props.color ? props.color : '#FFFFFF';
+  const opacity = props.opacity ? props.opacity : .7;
   return (
     <svg className='logo' viewBox='0 0 90 25'>
 {/* Text - adex by */}
@@ -624,6 +625,7 @@ export const slider = () => {
 
 export const MeterWave = (props) => {
   const { wave, opacity } = props;
+
   const colorBg = '#052205';
   const gridLines = [7.25, 11.75, 16.25, 20.75, 25.25, 29.75, 34.25, 38.75, 43.25, 47.75, 52.25, 56.75, 61.25, 65.75, 70.25, 74.75, 79.25, 83.75, 88.25, 92.75];
   return (

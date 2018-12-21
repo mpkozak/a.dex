@@ -7,12 +7,11 @@ import Placard from './Placard.js';
 import Instructions from './Instructions.js';
 import Settings from './Settings.js';
 import Oscillators from './Oscillators.js';
+import Effects from './Effects.js';
 
 import Theremin from './Theremin.js';
 import Meters from './Meters.js';
-import Effects from './Effects.js';
 import Master from './Master.js';
-
 
 export default class Main extends Component {
   constructor(props) {
@@ -20,7 +19,7 @@ export default class Main extends Component {
     this.state = {
       active: false,
       audio: false,
-      data: [],
+      // data: [],
       params: {
         osc1: 'triangle',
         osc2: 'sine',
@@ -41,19 +40,23 @@ export default class Main extends Component {
     this.updateOsc = this.updateOsc.bind(this);
     this.audioMute = this.audioMute.bind(this);
     this.controllerRefresh = this.controllerRefresh.bind(this);
-    this.getAudioData = this.getAudioData.bind(this);
+    // this.getAudioData = this.getAudioData.bind(this);
   }
 
   componentWillMount() {
-    const chrome = navigator.userAgent.includes('Chrome') ? true : false;
+    const chrome = navigator.userAgent.includes('Chrome');
     this.setState(prevState => ({ chrome }));
   }
 
-  componentDidMount() {
-    // if (this.state.chrome) {
-      // this.audioInit();
-    // } else {
-    //   this.audioInitLegacy();
+  componentDidUpdate() {
+    console.log('main update')
+    // console.log(!!this.state.audio.analyser)
+    console.log()
+    // const { peak } = this.state;
+    // const now = new Date();
+    // if (!!peak && now > peak) {
+    //   // this.setState(prevState => ({ peak: false }))
+    //   console.log(peak)
     // };
   }
 
@@ -96,12 +99,13 @@ export default class Main extends Component {
       masterOut: masterOut,
       analyser: analyser,
       analyserSrc: 'masterGain',
+      fftSize: analyser.fftSize,
       mic: false,
       baseHz: baseHz,
       latency: .05
     };
     this.setState(prevState => ({ audio }));
-    this.getAudioData();
+    // this.getAudioData();
   }
 
   audioMute() {
@@ -110,28 +114,29 @@ export default class Main extends Component {
   }
 
   audioRefresh(key) {
-    const { ctx, latency, osc1, osc2, fmGain, instGain, masterGain } = this.state.audio;
+    const { audio, params } = this.state;
+    const { ctx, latency, osc1, osc2, fmGain, instGain, masterGain } = audio;
     switch (key) {
       case 'osc1' :
         help.setAudioParam(instGain.gain, 0, ctx, latency)
           .then(res => {
-            osc1.type = this.state.params.osc1;
+            osc1.type = params.osc1;
           });
         break;
       case 'osc2' :
         help.setAudioParam(instGain.gain, 0, ctx, latency)
           .then(res => {
-            osc2.type = this.state.params.osc2;
+            osc2.type = params.osc2;
           });
         break;
       case 'fmDepth' :
-        help.setAudioParam(fmGain.gain, this.state.params.fmDepth.v, ctx, latency);
+        help.setAudioParam(fmGain.gain, params.fmDepth.v, ctx, latency);
         break;
       case 'fmWidth' :
-        help.setAudioParam(osc2.detune, this.state.params.fmWidth.v, ctx, latency);
+        help.setAudioParam(osc2.detune, params.fmWidth.v, ctx, latency);
         break;
       case 'volume' :
-        help.setAudioParam(masterGain.gain, this.state.params.volume.v, ctx, latency);
+        help.setAudioParam(masterGain.gain, params.volume.v, ctx, latency);
         break;
       default : return null;
     };
@@ -192,20 +197,20 @@ export default class Main extends Component {
     help.setAudioParam(osc2.frequency, setFreq, ctx, latency);
   }
 
-  getAudioData() {
-    requestAnimationFrame(this.getAudioData);
-    const { analyser } = this.state.audio;
-    if (!analyser) return null;
-    const data = new Float32Array(analyser.fftSize);
-    analyser.getFloatTimeDomainData(data);
-    this.setState(prevState => ({ data }));
-  }
+  // getAudioData() {
+  //   requestAnimationFrame(this.getAudioData);
+  //   const { analyser } = this.state.audio;
+  //   if (!analyser) return null;
+  //   const data = new Float32Array(analyser.fftSize);
+  //   analyser.getFloatTimeDomainData(data);
+  //   this.setState(prevState => ({ data }));
+  // }
 
 
 
   render() {
-    const { data, params, audio, showHelp } = this.state;
-    const latency = audio ? Math.round((audio.ctx.currentTime - audio.ctx.getOutputTimestamp().contextTime) * 1000) : 0;
+    const { params, audio, showHelp } = this.state;
+    const latency = !!audio ? Math.round((audio.ctx.currentTime - audio.ctx.getOutputTimestamp().contextTime) * 1000) : 0;
 
     return (
       <div className='Main'>
@@ -214,8 +219,11 @@ export default class Main extends Component {
         <Instructions show={showHelp} toggle={this.toggleHelp} />
         <Settings latency={latency} src={audio.analyserSrc} toggle={this.toggleMic} />
         <Oscillators osc1={params.osc1} osc2={params.osc2} update={this.updateOsc} />
+        <Meters analyser={audio.analyser} />
+{/*
+        <Meters data={data} fftSize={audio.fftSize} />
+*/}
         <Theremin active={!!audio} refresh={this.controllerRefresh} mute={this.audioMute} />
-        <Meters active={!!audio} data={data} />
         <Effects params={params} update={this.updateParam} />
         <Master params={params} update={this.updateParam} />
       </div>
@@ -223,6 +231,10 @@ export default class Main extends Component {
   }
 }
 
+
+
+
+        // {!!audio.analyser ? <Meters analyser={audio.analyser} /> : null}
 
   // audioInitLegacy() {
   //   const scaleBase = 10;
