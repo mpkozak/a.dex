@@ -47,7 +47,7 @@ Font Software is licensed under the SIL Open Font License, Version 1.1.^^^*/
 }
 
 *:not(svg):not(g):not(text) {
-  font-family: 'Audiowide', cursive;
+  font-family: 'Audiowide', sans-serif;
   text-align: center;
   color: rgba(255,255,255,.7);
 }

@@ -34,6 +34,15 @@
   background-color: rgba(0,0,0,.8);
 }
 
+.init>.message {
+  width: 90%;
+  margin: 20% 0;
+}
+
+.init>.chrome {
+  margin: 0;
+}
+
 .theremin {
   position: absolute;
   left: calc(0 * (100% / var(--grid-width)));

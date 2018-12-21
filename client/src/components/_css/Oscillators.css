@@ -18,12 +18,12 @@
   justify-content: space-around;
 }
 
-.oscillator .glow-button {
+.oscillator .glowbutton {
   width: 20%;
   filter: drop-shadow(.02rem .02rem .025rem #000000);
 }
 
-.oscillator .glow-button:active {
+.oscillator .glowbutton:active {
   transform: scale(.96);
   filter: drop-shadow(.02rem .02rem .015rem #000000);
 }

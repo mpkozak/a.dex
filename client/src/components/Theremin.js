@@ -27,7 +27,7 @@ export default class Theremin extends Component {
     this.trackerColorSet = this.trackerColorSet.bind(this);
     this.trackerHandleData = this.trackerHandleData.bind(this);
     this.updateParam = this.updateParam.bind(this);
-  }
+  };
 
   componentWillMount() {
     const colorGain = localStorage.getItem('colorGain');
@@ -35,7 +35,7 @@ export default class Theremin extends Component {
     if (colorGain && colorFreq) {
       this.setState(prevState => ({ colorGain, colorFreq }));
     };
-  }
+  };
 
   componentDidUpdate() {
     const { video, data, muted } = this.state;
@@ -51,7 +51,7 @@ export default class Theremin extends Component {
       this.props.mute();
     };
     this.trackerDraw();
-  }
+  };
 
   videoInit() {
     navigator.mediaDevices.getUserMedia({ video: true })
@@ -63,7 +63,7 @@ export default class Theremin extends Component {
         this.setState(prevState => ({ video, vW, vH }));
         this.trackerInit();
       });
-  }
+  };
 
   trackerInit() {
     const { video, colorGain, colorFreq, params } = this.state;
@@ -71,7 +71,7 @@ export default class Theremin extends Component {
     const canvas = tracker.init();
     tracker.start();
     this.setState(prevState => ({ tracker, canvas }));
-  }
+  };
 
   trackerColorSet(target) {
     this.setState(prevState => ({ calib: target }));
@@ -94,16 +94,16 @@ export default class Theremin extends Component {
       this.trackerColorRefresh();
     };
     if (target) clickBox.addEventListener('click', getCoords);
-  }
+  };
 
   trackerColorRefresh() {
     const { tracker, colorGain, colorFreq } = this.state;
     tracker.setColors(colorGain, colorFreq);
-  }
+  };
 
   trackerHandleData(data) {
     this.setState(prevState => ({ data }));
-  }
+  };
 
   trackerDraw() {
     const { data } = this.state;
@@ -119,7 +119,7 @@ export default class Theremin extends Component {
       .style('stroke', '#FFFFFF')
       .style('stroke-width', '.3%');
     circles.exit().remove();
-  }
+  };
 
   updateParam(amt, key) {
     const { params, tracker } = this.state;
@@ -134,16 +134,14 @@ export default class Theremin extends Component {
         params: {...prevState.params, [key]: {...prevState.params[key], v: newV}}
       }));
     };
-  }
+  };
 
   audioRefresh() {
     const { data, vW, vH, params } = this.state;
     const level = (vH - data[0].y) / vH;
     const freq = Math.pow(2, (vW - data[1].x) / (vW / params.range.v));
     this.props.refresh(level, freq);
-  }
-
-
+  };
 
   makeColorBox() {
     const { calib, colorGain, colorFreq } = this.state;
@@ -157,14 +155,18 @@ export default class Theremin extends Component {
         {components.map((d, i) => {
           return (
             <div className='element' key={d.name}>
-              <ColorSwatch color={d.color} active={calib === d.name} handleClick={() => this.trackerColorSet(calib ? false : d.name)} />
+              <ColorSwatch
+                color={d.color}
+                active={calib === d.name}
+                handleClick={() => this.trackerColorSet(calib ? false : d.name)}
+              />
               <h5 className='label-small'>{d.text}</h5>
             </div>
           );
         })}
       </div>
     );
-  }
+  };
 
   makeControlBox() {
     const { params } = this.state;
@@ -173,14 +175,19 @@ export default class Theremin extends Component {
         {Object.keys(params).map((d, i) => {
           return (
             <div className='element' key={i}>
-              <BigKnob rotation={help.getParamPct(params[d])} color='#313638' handleClick={(e) => help.handleClickParam(e, d, this.updateParam)} handleScroll={(e) => help.handleScrollParam(e, d, this.updateParam)} />
+              <BigKnob
+                rotation={help.getParamPct(params[d])}
+                color='#313638'
+                handleClick={(e) => help.handleClickParam(e, d, this.updateParam)}
+                handleScroll={(e) => help.handleScrollParam(e, d, this.updateParam)}
+              />
               <h5 className='label-small'>{params[d].text}</h5>
             </div>
           );
         })}
       </div>
     );
-  }
+  };
 
 
   render() {
@@ -188,7 +195,7 @@ export default class Theremin extends Component {
     return (
       <div className='theremin'>
         <div className='outer'>
-{/**/}
+
           <div className='video-box outer'>
             <ScreenFrame />
             <div className='inner'>
@@ -208,8 +215,8 @@ export default class Theremin extends Component {
         </div>
       </div>
     );
-  }
-}
+  };
+};
 
 
 

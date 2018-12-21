@@ -36,14 +36,14 @@
   /*border-radius: .4vmin;*/
 }
 
-.settings .glow-button {
+.settings .glowbutton {
   width: 60%;
   /*height: 100%;*/
   margin: 0 8% 0 0;
   filter: drop-shadow(.02rem .02rem .025rem #000000);
 }
 
-.settings .glow-button:active {
+.settings .glowbutton:active {
   transform: scale(.96);
   filter: drop-shadow(.02rem .02rem .015rem #000000);
 }

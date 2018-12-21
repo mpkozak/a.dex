@@ -85,7 +85,7 @@
   transform: scaleX(-1);
 }
 
-.theremin .border {
+.theremin .screenframe {
   position: absolute;
   top: 0;
   left: 0;
@@ -128,7 +128,7 @@
   text-align: right;
 }
 
-.theremin .color-swatch {
+.theremin .colorswatch {
   height: 55%;
   filter: drop-shadow(.02rem .02rem .025rem #000000);
 }

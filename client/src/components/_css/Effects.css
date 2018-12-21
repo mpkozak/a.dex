@@ -42,7 +42,7 @@
   height: 80%;
 }
 
-.effect .big-knob {
+.effect .bigknob {
   width: 90%;
   filter: drop-shadow(.02rem .02rem .025rem #000000);
 }
