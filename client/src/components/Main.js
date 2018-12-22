@@ -1,17 +1,15 @@
 import React, { Component } from 'react';
 import './_css/Main.css';
-
 import help from './_help.js';
 import Init from './Init.js'
-import Instructions from './Instructions.js';
+import Theremin from './Theremin.js';
 import Placard from './Placard.js';
+import Instructions from './Instructions.js';
 import Settings from './Settings.js';
 import Oscillators from './Oscillators.js';
 import Effects from './Effects.js';
-import Meters from './Meters.js';
-
-import Theremin from './Theremin.js';
 import Master from './Master.js';
+import Meters from './Meters.js';
 
 export default class Main extends Component {
   constructor(props) {
@@ -30,7 +28,6 @@ export default class Main extends Component {
         volume: {v: .73, max: 1, min: 0}
       },
       showHelp: false,
-      chrome: false,
     };
     this.audioInit = this.audioInit.bind(this);
     this.toggleHelp = this.toggleHelp.bind(this);
@@ -42,9 +39,11 @@ export default class Main extends Component {
   };
 
   componentWillMount() {
-    const chrome = navigator.userAgent.includes('Chrome');
-    this.setState(prevState => ({ chrome }));
   };
+
+  componendDidUpdate() {
+    console.log('main updated')
+  }
 
   toggleHelp() {
     this.setState(prevState => ({
@@ -53,7 +52,7 @@ export default class Main extends Component {
   };
 
   audioInit() {
-    const scaleBase = 10;
+    const scaleBase = 9;
     const baseHz = 50;
     const { params } = this.state;
     const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -90,12 +89,13 @@ export default class Main extends Component {
       baseHz: baseHz,
       latency: .05
     };
+    console.log(analyser)
     this.setState(prevState => ({ audio }));
   };
 
   audioMute() {
     const { ctx, latency, instGain } = this.state.audio;
-    help.setAudioParam(instGain.gain, 0, ctx, latency * 2);
+    help.setAudioParam(instGain.gain, 0, ctx.currentTime, latency * 2);
   };
 
   toggleMic() {
@@ -130,13 +130,13 @@ export default class Main extends Component {
     const { ctx, latency, osc2, fmGain, masterGain } = audio;
     switch (key) {
       case 'fmDepth' :
-        help.setAudioParam(fmGain.gain, params.fmDepth.v, ctx, latency);
+        help.setAudioParam(fmGain.gain, params.fmDepth.v, ctx.currentTime, latency);
         break;
       case 'fmWidth' :
-        help.setAudioParam(osc2.detune, params.fmWidth.v, ctx, latency);
+        help.setAudioParam(osc2.detune, params.fmWidth.v, ctx.currentTime, latency);
         break;
       case 'volume' :
-        help.setAudioParam(masterGain.gain, params.volume.v, ctx, latency);
+        help.setAudioParam(masterGain.gain, params.volume.v, ctx.currentTime, latency);
         break;
       default : return null;
     };
@@ -157,7 +157,7 @@ export default class Main extends Component {
   updateOsc(osc, type) {
     const { audio } = this.state;
     const { ctx, latency, instGain } = audio;
-    help.setAudioParam(instGain.gain, 0, ctx, latency)
+    help.setAudioParam(instGain.gain, 0, ctx.currentTime, latency)
       .then(res => {
         audio[osc].type = type;
       });
@@ -170,23 +170,60 @@ export default class Main extends Component {
     const { ctx, baseHz, latency, instGain, osc1, osc2 } = this.state.audio;
     const setLevel = level;
     const setFreq = freq * baseHz;
-    help.setAudioParam(instGain.gain, setLevel, ctx, latency);
-    help.setAudioParam(osc1.frequency, setFreq, ctx, latency);
-    help.setAudioParam(osc2.frequency, setFreq, ctx, latency);
+    help.setAudioParam(instGain.gain, setLevel, ctx.currentTime, latency);
+    help.setAudioParam(osc1.frequency, setFreq, ctx.currentTime, latency);
+    help.setAudioParam(osc2.frequency, setFreq, ctx.currentTime, latency);
+
+
+//   let now = ctx.currentTime;
+//   // instGain.gain.cancelScheduledValues(now)
+//   instGain.gain.setValueAtTime(instGain.gain.value, now);
+//   instGain.gain.exponentialRampToValueAtTime(setLevel + .0001, now + latency);
+//   console.log(ctx.currentTime - now)
+
+// now = ctx.currentTime;
+//   // osc1.frequency.cancelScheduledValues(now)
+//   osc1.frequency.setValueAtTime(osc1.frequency.value, now);
+//   osc1.frequency.exponentialRampToValueAtTime(setFreq, ctx.currentTime + latency);
+//   console.log(ctx.currentTime - now)
+
+// now = ctx.currentTime;
+//   // osc2.frequency.cancelScheduledValues(now)
+//   osc2.frequency.setValueAtTime(osc2.frequency.value, now);
+//   osc2.frequency.exponentialRampToValueAtTime(setFreq, ctx.currentTime + latency);
+//   console.log(ctx.currentTime - now)
+
+  // osc2.frequency.setValueAtTime(osc2.frequency.value, ctx.currentTime);
+  // osc2.frequency.exponentialRampToValueAtTime(setFreq, ctx.currentTime + latency);
+
+
+    // if (Math.abs(instGain.gain.value - setLevel) > .1) help.setAudioParam(instGain.gain, setLevel, ctx.currentTime, latency);
+    // if (Math.abs(osc1.frequency.value - setFreq) / setFreq > .01) {
+    //   console.log('freq')
+    //   help.setAudioParam(osc1.frequency, setFreq, ctx.currentTime, latency);
+    //   help.setAudioParam(osc2.frequency, setFreq, ctx.currentTime, latency);
+    // }
+
+    // const setFreq = freq * 1200;
+    // help.setAudioParam(instGain.gain, setLevel, ctx, latency)
+    // .then(res => help.setAudioParam(osc1.frequency, setFreq, ctx, latency))
+    // .then(res => help.setAudioParam(osc2.frequency, setFreq, ctx, latency))
   };
 
 
   render() {
-    const { params, audio, showHelp, chrome } = this.state;
+    const { params, audio, showHelp } = this.state;
     const latency = !!audio ? Math.round((audio.ctx.currentTime - audio.ctx.getOutputTimestamp().contextTime) * 1000) : 0;
 
     return (
       <div className='Main'>
-        {!audio ? <Init chrome={chrome} handleClick={this.audioInit} /> : null}
+        {!audio ? <Init handleClick={this.audioInit} /> : null}
         <Placard show={showHelp} toggle={this.toggleHelp} />
         <Instructions show={showHelp} toggle={this.toggleHelp} />
         <Settings latency={latency} src={audio.analyserSrc} toggle={this.toggleMic} />
         <Oscillators osc1={params.osc1} osc2={params.osc2} update={this.updateOsc} />
+{/*
+*/}
         <Meters analyser={audio.analyser} />
         <Theremin active={!!audio} refresh={this.controllerRefresh} mute={this.audioMute} />
         <Effects params={params} update={this.updateParam} />

@@ -3,6 +3,8 @@ import './_css/Oscillators.css';
 import { GlowButton } from './_svg.js';
 
 export default function Oscillators(props) {
+  console.log('oscillators mounted')
+
   const { osc1, osc2 } = props;
   const waves = ['sine', 'triangle', 'sawtooth', 'square'];
 

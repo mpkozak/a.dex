@@ -3,6 +3,8 @@ import './_css/Settings.css';
 import { SevenSegment, GlowButton } from './_svg.js';
 
 export default function Settings(props) {
+  console.log('settings mounted')
+
   const { latency, src } = props;
   return (
     <div className='settings'>

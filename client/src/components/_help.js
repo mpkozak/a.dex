@@ -1,16 +1,38 @@
 const help = {};
 
-help.setAudioParam = async (param, val, ctx, delay) => {
-  const a = await param.cancelScheduledValues(ctx.currentTime);
-  const b = await a.setValueAtTime(parseFloat(a.value), ctx.currentTime);
-  const c = await b.linearRampToValueAtTime(val, parseFloat(ctx.currentTime + delay));
-  await c;
-  return ctx.currentTime;
+
+help.setAudioParam = async (param, val, time, delay) => {
+  // param.cancelScheduledValues(time);
+  // param.setValueAtTime(param.value, time);
+  // param.linearRampToValueAtTime(val, time + delay);
+
+  param.setValueAtTime(param.value, time);
+  param.exponentialRampToValueAtTime(val + .0001, time + delay)
+
+  // const a = await param.cancelScheduledValues(ctx.currentTime);
+  // const b = await a.setValueAtTime(parseFloat(a.value), ctx.currentTime);
+  // const c = await b.linearRampToValueAtTime(val, parseFloat(ctx.currentTime + delay));
+  // await c;
+  // return ctx.currentTime;
+
+  // const a = await param.cancelScheduledValues(ctx.currentTime);
+  // const b = await a.setValueAtTime(parseFloat(a.value), ctx.currentTime);
+  // const c = await b.linearRampToValueAtTime(val, parseFloat(ctx.currentTime + delay));
+  // await c;
+  // return ctx.currentTime;
+
+  // const now = ctx.currentTime;
+  // const a = param.cancelScheduledValues(now);
+  // param.setValueAtTime(a.value, now);
+  // param.linearRampToValueAtTime(val, ctx.currentTime + delay);
+  // return ctx.currentTime;
 };
+
 
 help.getParamPct = (param) => {
   return ((param.v - param.min) / (param.max - param.min)) * 100;
 };
+
 
 help.handleClickParam = (e, key, callback) => {
   e.preventDefault();
@@ -25,6 +47,7 @@ help.handleClickParam = (e, key, callback) => {
    window.addEventListener('mouseup', clearEvent);
 };
 
+
 help.handleClickParamLinear = (e, key, callback) => {
   e.preventDefault();
   var handleDrag = (e) => {
@@ -38,15 +61,18 @@ help.handleClickParamLinear = (e, key, callback) => {
    window.addEventListener('mouseup', clearEvent);
 };
 
+
 help.handleScrollParam = (e, key, callback) => {
   e.preventDefault();
   callback(e.deltaY / 2000, key);
 };
 
+
 help.handleScrollParamLinear = (e, key, callback) => {
   e.preventDefault();
   callback(e.deltaY / 1000, key);
 };
+
 
 help.makeDomain = (extent, arr) => {
   const iter = arr.length;

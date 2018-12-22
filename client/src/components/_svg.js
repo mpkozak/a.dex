@@ -8,7 +8,6 @@ export const SvgDefs = () => {
   return (
     <svg className='invisible' width='0' height='0'>
       <defs>
-
 {/* bigKnob */}
   {/* Use Shapes */}
         <circle id='bigknob-circle' cx='50' cy='50' r='48' />
@@ -35,7 +34,6 @@ export const SvgDefs = () => {
           <stop offset='20%' stopColor='#000000' stopOpacity='.6'/>
           <stop offset='100%' stopColor='#000000' stopOpacity='.7'/>
         </linearGradient>
-
 {/* glowButton */}
   {/* Use Shapes */}
         <rect id='glowbutton-rect' x='0' y='0' rx='1' width='10' height='10' />
@@ -67,7 +65,6 @@ export const SvgDefs = () => {
           <stop offset='50%' stopColor='#000000' stopOpacity='.1'/>
           <stop offset='70%' stopColor='#000000' stopOpacity='.2'/>
         </radialGradient>
-
 {/* colorSwatch */}
   {/* Use Shapes */}
         <circle id='colorswatch-circle-inner' cx='50' cy='50' r='47' />
@@ -96,7 +93,6 @@ export const SvgDefs = () => {
           <stop offset='38%' stopColor='#FFFFFF' stopOpacity='.05'/>
           <stop offset='50%' stopColor='#FFFFFF' stopOpacity='0'/>
         </radialGradient>
-
 {/* screenFrame */}
   {/* Use Shapes */}
         <rect id='screenframe-rect-outer' x='0' y='0' rx='1' width='40' height='30' />
@@ -155,7 +151,6 @@ export const SvgDefs = () => {
           <stop offset='50%' stopColor='#000000' stopOpacity='.6'/>
           <stop offset='70%' stopColor='#000000' stopOpacity='.9'/>
         </radialGradient>
-
 {/* Meter */}
   {/* Use Shapes */}
         <rect id='meter-rect-frame' x='0' y='0' width='100' height='60' rx='2' ry='2' />
@@ -205,7 +200,6 @@ export const SvgDefs = () => {
           <stop offset='50%' stopColor='#000000' stopOpacity='.3'/>
           <stop offset='70%' stopColor='#000000' stopOpacity='.6'/>
         </radialGradient>
-
 {/* Meter - VU */}
   {/* Use Shapes */}
         <path id='vu-scale-arc' d='M 12.5 18.75 Q 50 7.5, 87.5 18.75' pathLength='100' />
@@ -283,7 +277,6 @@ export const SvgDefs = () => {
           <stop offset='40%' stopColor='#000000' stopOpacity='.2'/>
           <stop offset='100%' stopColor='#000000' stopOpacity='0'/>
         </linearGradient>
-
 {/* Slider */}
   {/* Use Shapes */}
         <rect id='slider-rect' x='0' y='0' width='10' height='20' />
@@ -318,9 +311,91 @@ export const SvgDefs = () => {
           <stop offset='20%' stopColor='#000000' stopOpacity='.1'/>
           <stop offset='100%' stopColor='#000000' stopOpacity='0'/>
         </linearGradient>
-
       </defs>
     </svg>
+  );
+};
+
+
+
+/////////////////////////////////
+// SVG COMPONENT GROUP MODULES //
+/////////////////////////////////
+
+export const meterFrame = (color) => {
+  const colorFrame = color ? color : '#3A3125';
+  return (
+    <g className='meter-frame' clipPath='url(#meter-outer-clip)'>
+      <use href='#meter-rect-frame' filter='url(#meter-frame-texture)' fill={colorFrame} stroke='#000000' strokeWidth='.4%' />
+      <use href='#meter-rect-frame' fill='url(#meter-frame-horizontal' />
+      <use href='#meter-rect-frame' fill='url(#meter-frame-vertical)' />
+      <g clipPath='url(#meter-middle-clip)' filter='url(#meter-gradient-blur)'>
+        <path fill='url(#meter-frame-vertical)' d='M 2.5 2.5 L 97.5 2.5 L 73.75 26.25 L 73.75 33.75 L 97.5 57.5 L 2.5 57.5 L 26.25 33.75 L 26.25 26.25 Z' />
+        <path fill='url(#meter-frame-horizontal)' d='M 2.5 2.5 L 30 30 L 70 30 L 97.5 2.5 L 97.5 57.5 L 70 30 L 30 30 L 2.5 57.5 Z' />
+        <rect fill='url(#meter-frame-corners)' x='2.5' y='2.5' width='95' height='55' rx='2' ry='2' />
+      </g>
+    </g>
+  );
+};
+
+
+export const meterPanelShadow = () => {
+  return (
+    <g className='meter-panel-shadow' clipPath='url(#meter-inner-clip)' filter='url(#meter-gradient-blur)'>
+      <use href='#meter-rect-panel' fill='url(#meter-panel-horizontal)' />
+      <use href='#meter-rect-panel' fill='url(#meter-panel-vertical)' />
+      <use href='#meter-rect-panel' fill='url(#meter-panel-center)' />
+    </g>
+  );
+};
+
+
+export const slider = () => {
+  return (
+    <g className='slider' clipPath='url(#slider-clip)'>
+{/* Base */}
+      <use href='#slider-rect'
+        rx='1'
+        fill='#FFFFFF'
+      />
+{/* Ridges */}
+      <rect
+        fill='url(#slider-ridges-top)'
+        x='0'
+        y='.5'
+        width='10'
+        height='7.5'
+      />
+      <rect
+        fill='url(#slider-ridges-bottom)'
+        x='0'
+        y='12'
+        width='10'
+        height='7.5'
+      />
+{/* Contour Horizontal */}
+      <use href='#slider-rect' fill='url(#slider-contour-horizontal)' />
+{/* Center Mark */}
+      <rect
+        x='0'
+        y='9.5'
+        width='10'
+        height='1'
+        fill='#FFFFFF'
+        stroke='#000000'
+        strokeWidth='.4%'
+        opacity='.7'
+      />
+{/* Contour Vertical */}
+      <use href='#slider-rect' fill='url(#slider-contour-vertical)' />
+{/* Outline */}
+      <use href='#slider-rect'
+        rx='1'
+        fill='none'
+        stroke='#000000'
+        strokeWidth='.4%'
+      />
+    </g>
   );
 };
 
@@ -363,8 +438,7 @@ export const BigKnob = (props) => {
   return (
     <svg className='bigknob' viewBox='0 0 100 100' onMouseDown={handleClick} onWheel={handleScroll}>
 {/* Base */}
-      <use
-        href='#bigknob-circle'
+      <use href='#bigknob-circle'
         fill={colorKnob}
         stroke='#000000'
         strokeWidth='1%'
@@ -401,15 +475,13 @@ export const GlowButton = (props) => {
   return (
     <svg className='glowbutton' viewBox='0 0 10 10' onClick={handleClick}>
 {/* Base Layer */}
-      <use
-        href='#glowbutton-rect'
+      <use href='#glowbutton-rect'
         fill={colorButton}
         stroke='#000000'
         strokeWidth='1%'
       />
 {/* Button Base Active */}
-      <use
-        href='#glowbutton-rect'
+      <use href='#glowbutton-rect'
         fill='url(#glowbutton-active-base)'
         opacity={active ? 1 : 0}
       />
@@ -425,8 +497,7 @@ export const GlowButton = (props) => {
       <use href='#glowbutton-rect' fill='url(#glowbutton-contour-vertical)' />
       <use href='#glowbutton-rect' fill='url(#glowbutton-contour-center)' />
 {/* Glow Layer*/}
-      <use
-        href='#glowbutton-rect'
+      <use href='#glowbutton-rect'
         fill='url(#glowbutton-active-halo)'
         opacity={active ? 1 : 0}
       />
@@ -484,7 +555,7 @@ export const HelpButton = (props) => {
     }
   };
   return (
-    <svg className='help-button' viewBox='0 0 10 10' onClick={handleClick}>
+    <svg className='helpbutton' viewBox='0 0 10 10' onClick={handleClick}>
       <defs>
         <rect id='helpbutton-rect-mask' width='10' height='10' fill='#FFFFFF' />
   {/* Masks */}
@@ -521,7 +592,7 @@ export const SevenSegment = (props) => {
     fontSize: 7
   };
   return (
-    <svg className='seven-segment' viewBox='0 0 20 10'>
+    <svg className='sevensegment' viewBox='0 0 20 10'>
 {/* Backpane */}
       <rect
         x='0'
@@ -563,8 +634,7 @@ export const ScreenFrame = () => {
     <svg className='screenframe' viewBox='0 0 40 30'>
 {/* Outer Frame*/}
       <g className='screenframe-outer' clipPath='url(#screenframe-outer-clip)' mask='url(#screenframe-inner-mask)'>
-        <use
-          href='#screenframe-rect-outer'
+        <use href='#screenframe-rect-outer'
           filter='url(#screenframe-texture)'
           fill={colorFrame}
           stroke='#000000'
@@ -577,7 +647,7 @@ export const ScreenFrame = () => {
           <use href='#screenframe-rect-outer' fill='url(#screenframe-outer-vertical)' />
         </g>
       </g>
-{/* Inner Frame Contours */}
+{/* Inner Frame */}
       <g className='screenframe-inner-contours' clipPath='url(#screenframe-middle-clip)' mask='url(#screenframe-inner-mask)' filter='url(#screenframe-blur)'>
         <path fill='url(#screenframe-inner-horizontal)' d='M 20 15 L 1 1 L 1 29 L 20 15 L 39 29 L 39 1 L 20 15 Z' />
         <path fill='url(#screenframe-inner-vertical)' d='M 20 15 L 1 1 L 39 1 L 20 15 L 39 29 L 1 29 L 20 15 Z' />
@@ -589,8 +659,7 @@ export const ScreenFrame = () => {
         />
       </g>
 {/* Screen Border */}
-      <use
-        href='#screenframe-path-inner'
+      <use href='#screenframe-path-inner'
         stroke='#101010'
         strokeWidth='.3%'
         fill='none'
@@ -603,100 +672,64 @@ export const ScreenFrame = () => {
 
 
 
-/////////////////////////////////
-// SVG COMPONENT GROUP MODULES //
-/////////////////////////////////
+//////////////////////////////
+// DEPENDENT SVG COMPONENTS //
+//////////////////////////////
 
-export const slider = () => {
+export const MasterFader = (props) => {
+  const { level, handleClick } = props;
+  const colorRed = '#C12822';
+  const ticks = [
+    {y: 10, text: '+12', color: colorRed},
+    {y: 18, text: '+6', color: colorRed},
+    {y: 26, text: '0', color: '#FFFFFF'},
+    {y: 33, text: '5', color: '#FFFFFF'},
+    {y: 39.5, text: '10', color: '#FFFFFF'},
+    {y: 45.5, text: '15', color: '#FFFFFF'},
+    {y: 51, text: '20', color: '#FFFFFF'},
+    {y: 56, text: '30', color: '#FFFFFF'},
+    {y: 60.5, text: '40', color: '#FFFFFF'},
+    {y: 64, text: '60', color: '#FFFFFF'},
+    {y: 70, text: '∞', color: '#FFFFFF'}
+  ];
+  const masterFont = {
+    fontFamily: 'Helvetica, sans-serif',
+    fontSize: 3.5 + 'px',
+    fontWeight: '600'
+  };
   return (
-    <g className='slider' clipPath='url(#slider-clip)'>
-{/* Base */}
-      <use
-        href='#slider-rect'
-        rx='1'
-        fill='#FFFFFF'
-      />
-{/* Ridges */}
-      <rect
-        fill='url(#slider-ridges-top)'
-        x='0'
-        y='.5'
-        width='10'
-        height='7.5'
-      />
-      <rect
-        fill='url(#slider-ridges-bottom)'
-        x='0'
-        y='12'
-        width='10'
-        height='7.5'
-      />
-{/* Contour Horizontal */}
-      <use
-        href='#slider-rect'
-        fill='url(#slider-contour-horizontal)'
-      />
-{/* Center Mark */}
-      <rect
-        x='0'
-        y='9.5'
-        width='10'
-        height='1'
-        fill='#FFFFFF'
-        stroke='#000000'
-        strokeWidth='.4%'
-        opacity='.7'
-      />
-{/* Contour Vertical */}
-      <use
-        href='#slider-rect'
-        fill='url(#slider-contour-vertical)'
-      />
-{/* Outline */}
-      <use
-        href='#slider-rect'
-        rx='1'
-        fill='none'
-        stroke='#000000'
-        strokeWidth='.4%'
-      />
-    </g>
-  );
-};
-
-
-export const meterFrame = (color) => {
-  const colorFrame = color ? color : '#3A3125';
-  return (
-    <g className='meter-frame' clipPath='url(#meter-outer-clip)'>
-      <use href='#meter-rect-frame' filter='url(#meter-frame-texture)' fill={colorFrame} stroke='#000000' strokeWidth='.4%' />
-      <use href='#meter-rect-frame' fill='url(#meter-frame-horizontal' />
-      <use href='#meter-rect-frame' fill='url(#meter-frame-vertical)' />
-      <g clipPath='url(#meter-middle-clip)' filter='url(#meter-gradient-blur)'>
-        <path fill='url(#meter-frame-vertical)' d='M 2.5 2.5 L 97.5 2.5 L 73.75 26.25 L 73.75 33.75 L 97.5 57.5 L 2.5 57.5 L 26.25 33.75 L 26.25 26.25 Z' />
-        <path fill='url(#meter-frame-horizontal)' d='M 2.5 2.5 L 30 30 L 70 30 L 97.5 2.5 L 97.5 57.5 L 70 30 L 30 30 L 2.5 57.5 Z' />
-        <rect fill='url(#meter-frame-corners)' x='2.5' y='2.5' width='95' height='55' rx='2' ry='2' />
+    <svg className='masterfader' viewBox='0 0 40 80'>
+{/* Panel */}
+      <g className='masterfader-panel' opacity='.8'>
+  {/* Fader Slit */}
+        <rect
+          x='19'
+          y='10'
+          width='2'
+          height='60'
+          fill='#000000'
+        />
+  {/* Tick Marks + Text */}
+        {ticks.map((d, i) => {
+          return (
+            <g key={i}>
+              <rect x='12' y={d.y} width='2' height='.3' fill={d.color} />
+              <rect x='26' y={d.y} width='1.5' height='.3' fill={d.color} />
+              <text style={masterFont} textAnchor='start' alignmentBaseline='middle'
+                x='29' y={d.y} fill={d.color}
+              >{d.text}</text>
+            </g>
+          );
+        })}
       </g>
-    </g>
+{/* Slider */}
+      <g className='masterfader-slider' transform={`translate(${15}, ${70 - level})`} onMouseDown={handleClick}>
+        {slider()}
+      </g>
+    </svg>
   );
 };
 
-
-export const meterPanelShadow = () => {
-  return (
-    <g className='meter-panel-shadow' clipPath='url(#meter-inner-clip)' filter='url(#meter-gradient-blur)'>
-      <use href='#meter-rect-panel' fill='url(#meter-panel-horizontal)' />
-      <use href='#meter-rect-panel' fill='url(#meter-panel-vertical)' />
-      <use href='#meter-rect-panel' fill='url(#meter-panel-center)' />
-    </g>
-  );
-};
-
-
-
-////////////
-// METERS //
-////////////
 
 export const MeterWave = (props) => {
   const { wave, opacity } = props;
@@ -708,7 +741,6 @@ export const MeterWave = (props) => {
       {meterFrame()}
 {/* Interior */}
       <g className='wave-interior' clipPath='url(#meter-inner-clip)'>
-
   {/* Panel */}
         <g className='wave-panel'>
     {/* Background */}
@@ -754,7 +786,6 @@ export const MeterWave = (props) => {
             } else return null;
           })}
         </g>
-
   {/* Waveform */}
         <path
           d={wave ? wave : undefined}
@@ -763,10 +794,8 @@ export const MeterWave = (props) => {
           stroke='#A0FFA0'
           strokeWidth='.15%'
         />
-
   {/* Panel Shadows */}
         {meterPanelShadow()}
-
       </g>
     </svg>
   );
@@ -832,7 +861,6 @@ export const MeterVU = (props) => {
       {meterFrame(colorFrame)}
 {/* Interior */}
       <g className='vu-interior' clipPath='url(#meter-inner-clip)'>
-
   {/* Panel
         <g className='vu-panel' filter='url(#vu-panel-texture)'> */}
         <g className='vu-panel'>
@@ -892,7 +920,6 @@ export const MeterVU = (props) => {
             {ticks.map(d => <line key={d.vu + 'tick'} x1='50' y1='57' x2={d.x2} y2='0' stroke={d.vu >= 0 ? colorRed : '#000000'} strokeWidth={d.strokeWidth} pathLength='100' strokeDasharray='0, 54.5, 19, 26.5' />)}
           </g>
         </g>
-
   {/* LED */}
         <g className='vu-led'>
     {/* Shadow */}
@@ -940,7 +967,6 @@ export const MeterVU = (props) => {
             r='4'
           />
         </g>
-
   {/* Needle */}
         <g className='vu-needle'>
     {/* Panel Cutout */}
@@ -1013,248 +1039,8 @@ export const MeterVU = (props) => {
             />
           </g>
         </g>
-
   {/* Panel Shadows */}
         {meterPanelShadow()}
-
-      </g>
-    </svg>
-  );
-};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-export const xScreenFrame = () => {
-  const colorFrame = '#AAAAAA';
-  return (
-    <svg className='screen-frame' viewBox='0 0 40 30'>
-      <defs>
-  {/* screenFrame - Screen Frame Outer Clip */}
-        <clipPath id='screen-outer-clip'>
-          <rect width={40} height={30} rx={1}/>
-        </clipPath>
-  {/* screenFrame - Screen Frame Inner Masks */}
-        <mask id='screen-inner-mask'>
-          <rect width={40} height={30} fill='white'/>
-          <rect x={2} y={1.5} rx={1} width={36} height={27} fill='black'/>
-          <path d={`M ${0} ${2} Q ${20} ${0.8}, ${40} ${2}`} stroke='white' strokeWidth='4%'/>
-          <path d={`M ${0} ${28} Q ${20} ${29.2}, ${40} ${28}`} stroke='white' strokeWidth='4%'/>
-          <path d={`M ${2.5} ${0} Q ${1.5} ${15}, ${2.5} ${30}`} stroke='white' strokeWidth='4%'/>
-          <path d={`M ${37.5} ${0} Q ${38.5} ${15}, ${37.5} ${30}`} stroke='white' strokeWidth='4%'/>
-        </mask>
-        <mask id='screen-inner-mask-reverse'>
-          <rect width={40} height={30} fill='black'/>
-          <rect x={2} y={1.5} rx={1} width={36} height={27} fill='white'/>
-          <path d={`M ${0} ${2} Q ${20} ${0.8}, ${40} ${2}`} stroke='black' strokeWidth='4%'/>
-          <path d={`M ${0} ${28} Q ${20} ${29.2}, ${40} ${28}`} stroke='black' strokeWidth='4%'/>
-          <path d={`M ${2.5} ${0} Q ${1.5} ${15}, ${2.5} ${30}`} stroke='black' strokeWidth='4%'/>
-          <path d={`M ${37.5} ${0} Q ${38.5} ${15}, ${37.5} ${30}`} stroke='black' strokeWidth='4%'/>
-        </mask>
-{/* screenFrame */}
-  {/* screenFrame - Outer Screen Shadow Gradients */}
-        <linearGradient id='screen-outer-shadow-horizontal' x1='0%' y1='0%' x2='0%' y2='100%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#000000' stopOpacity={.7}/>
-          <stop offset='5%' stopColor='#000000' stopOpacity={.2}/>
-          <stop offset='10%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='90%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='95%' stopColor='#000000' stopOpacity={.3}/>
-          <stop offset='100%' stopColor='#000000' stopOpacity={.9}/>
-        </linearGradient>
-        <linearGradient id='screen-outer-shadow-vertical' x1='0%' y1='0%' x2='100%' y2='0%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#000000' stopOpacity={.7}/>
-          <stop offset='3%' stopColor='#000000' stopOpacity={.2}/>
-          <stop offset='10%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='90%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='97%' stopColor='#000000' stopOpacity={.3}/>
-          <stop offset='100%' stopColor='#000000' stopOpacity={.9}/>
-        </linearGradient>
-        <linearGradient id='screen-outer-shadow-diagonal' x1='0%' y1='0%' x2='100%' y2='100%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#FFFFFF' stopOpacity={.2}/>
-          <stop offset='80%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='100%' stopColor='#000000' stopOpacity={.4}/>
-        </linearGradient>
-  {/* screenFrame - Inner Screen Shadow Gradients */}
-        <linearGradient id='screen-inner-shadow-corners1' x1='0%' y1='0%' x2='100%' y2='100%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='40%' stopColor='#000000' stopOpacity={.3}/>
-          <stop offset='50%' stopColor='#000000' stopOpacity={.8}/>
-          <stop offset='60%' stopColor='#000000' stopOpacity={.3}/>
-          <stop offset='100%' stopColor='#000000' stopOpacity={0}/>
-        </linearGradient>
-        <linearGradient id='screen-inner-shadow-corners2' x1='100%' y1='0%' x2='0%' y2='100%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='40%' stopColor='#000000' stopOpacity={.3}/>
-          <stop offset='50%' stopColor='#000000' stopOpacity={.8}/>
-          <stop offset='60%' stopColor='#000000' stopOpacity={.3}/>
-          <stop offset='100%' stopColor='#000000' stopOpacity={0}/>
-        </linearGradient>
-        <linearGradient id='screen-inner-shadow-horizontal' x1='0%' y1='0%' x2='0%' y2='100%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#000000' stopOpacity={.9}/>
-          <stop offset='5%' stopColor='#000000' stopOpacity={.5}/>
-          <stop offset='50%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='95%' stopColor='#000000' stopOpacity={.2}/>
-          <stop offset='100%' stopColor='#000000' stopOpacity={.6}/>
-        </linearGradient>
-        <linearGradient id='screen-inner-shadow-vertical' x1='0%' y1='0%' x2='100%' y2='0%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#000000' stopOpacity={.8}/>
-          <stop offset='20%' stopColor='#000000' stopOpacity={.2}/>
-          <stop offset='50%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='90%' stopColor='#000000' stopOpacity={.2}/>
-          <stop offset='100%' stopColor='#000000' stopOpacity={.6}/>
-        </linearGradient>
-  {/* screenFrame - Screen Glare Gradients */}
-        <radialGradient id='screen-glare-contours' cx='50%' cy='50%' r='100%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='25%' stopColor='#000000' stopOpacity={.05}/>
-          <stop offset='40%' stopColor='#000000' stopOpacity={.3}/>
-          <stop offset='66%' stopColor='#000000' stopOpacity={.8}/>
-        </radialGradient>
-        <linearGradient id='screen-glare-horizontal' x1='0%' y1='0%' x2='0%' y2='100%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#000000' stopOpacity={.6}/>
-          <stop offset='10%' stopColor='#000000' stopOpacity={.3}/>
-          <stop offset='50%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='90%' stopColor='#000000' stopOpacity={.3}/>
-          <stop offset='100%' stopColor='#000000' stopOpacity={.6}/>
-        </linearGradient>
-        <linearGradient id='screen-glare-vertical' x1='0%' y1='0%' x2='100%' y2='0%' gradientUnits='objectBoundingBox'>
-          <stop offset='0%' stopColor='#000000' stopOpacity={.6}/>
-          <stop offset='8%' stopColor='#000000' stopOpacity={.3}/>
-          <stop offset='50%' stopColor='#000000' stopOpacity={0}/>
-          <stop offset='92%' stopColor='#000000' stopOpacity={.3}/>
-          <stop offset='100%' stopColor='#000000' stopOpacity={.6}/>
-        </linearGradient>
-
-      </defs>
-
-{/* Outer Frame Group */}
-      <g className='screen-frame-outer' clipPath='url(#screen-outer-clip)' mask='url(#screen-inner-mask)'>
-  {/* Outer Frame Base Layer */}
-        <rect className='screen-frame-outer-base'
-          x={0}
-          y={0}
-          rx={1}
-          width={40}
-          height={30}
-          fill={colorFrame}
-          stroke='#000000'
-          strokeWidth='.4%'
-        />
-  {/* Outer Frame Contour Shadows */}
-        <g className='screen-frame-outer-shadows'>
-          <rect fill='url(#screen-outer-shadow-horizontal)' x={0} y={0} rx={1} width={40} height={30}/>
-          <rect fill='url(#screen-outer-shadow-vertical)' x={0} y={0} rx={1} width={40} height={30}/>
-          <rect fill='url(#screen-outer-shadow-diagonal)' x={0} y={0} rx={1} width={40} height={30}/>
-        </g>
-  {/* Outer Frame Border */}
-        <rect className='screen-frame-outer-border'
-          x={0}
-          y={0}
-          rx={1}
-          width={40}
-          height={30}
-          fill='none'
-          stroke='#000000'
-          strokeWidth='.4%'
-        />
-      </g>
-
-{/* Inner Frame Group */}
-      <g className='screen-frame-inner' clipPath='url(#screen-outer-clip)' mask='url(#screen-inner-mask)'>
-  {/* Inner Frame Base Layer */}
-        <rect className='screen-frame-inner-base'
-          x={1}
-          y={1}
-          rx={1}
-          width={38}
-          height={28}
-          fill={colorFrame}
-          stroke='#000000'
-          strokeWidth='.4%'
-          strokeOpacity={.8}
-        />
-  {/* Inner Frame Contour Shadows */}
-        <g className='screen-frame-inner-shadows'>
-          <rect fill='url(#screen-inner-shadow-corners1)' x={1} y={1} rx={1} width={38} height={28}/>
-          <rect fill='url(#screen-inner-shadow-corners2)' x={1} y={1} rx={1} width={38} height={28}/>
-          <rect fill='url(#screen-inner-shadow-horizontal)' x={1} y={1} rx={1} width={38} height={28}/>
-          <rect fill='url(#screen-inner-shadow-vertical)' x={1} y={1} rx={1} width={38} height={28}/>
-        </g>
-      </g>
-
-{/* Inner Screen Blank
-      <g className='screen-blank' mask='url(#screen-inner-mask-reverse)'>
-        <rect
-          x={2}
-          y={1.5}
-          rx={1}
-          width={36}
-          height={27}
-          fill='#000000'
-          // fill={blackout ? '#000000' : 'none'}
-          opacity={active ? 0 : 1}
-        />
-      </g> */}
-
-{/* Inner Screen Contour Shadows */}
-      <g className='screen-inner-shadows' mask='url(#screen-inner-mask-reverse)'>
-          <rect fill='url(#screen-glare-vertical)' x={2} y={1.5} rx={1} width={36} height={27}/>
-          <rect fill='url(#screen-glare-horizontal)' x={2} y={1.5} rx={1} width={36} height={27}/>
-          <rect fill='url(#screen-glare-contours)' x={2} y={1.5} rx={1} width={36} height={27}/>
-      </g>
-
-{/* Inner Frame Border */}
-      <g className='screen-frame-inner-border'>
-        <path
-          d={`M ${2.5} ${0} Q ${1.5} ${15}, ${2.5} ${30}`}
-          transform={`translate(${.7}, ${0})`}
-          fill='none'
-          stroke='#000000'
-          strokeWidth='.5%'
-          pathLength={100}
-          strokeDasharray={`${0}, ${8.2}, ${83.6}, ${8.2}`}
-        />
-        <path
-          d={`M ${37.5} ${0} Q ${38.5} ${15}, ${37.5} ${30}`}
-          transform={`translate(${-.7}, ${0})`}
-          fill='none'
-          stroke='#000000'
-          strokeWidth='.5%'
-          pathLength={100}
-          strokeDasharray={`${0}, ${8.2}, ${83.6}, ${8.2}`}
-        />
-        <path
-          d={`M ${0} ${2} Q ${20} ${0.8}, ${40} ${2}`}
-          transform={`translate(${0}, ${.7})`}
-          fill='none'
-          stroke='#000000'
-          strokeWidth='.5%'
-          pathLength={100}
-          strokeDasharray={`${0}, ${7.7}, ${84.6}, ${7.7}`}
-        />
-        <path
-          d={`M ${0} ${28} Q ${20} ${29.2}, ${40} ${28}`}
-          transform={`translate(${0}, ${-.7})`}
-          fill='none'
-          stroke='#000000'
-          strokeWidth='.5%'
-          pathLength={100}
-          strokeDasharray={`${0}, ${7.7}, ${84.6}, ${7.7}`}
-        />
       </g>
     </svg>
   );

@@ -1,7 +1,3 @@
-.placard>.outer {
-
-}
-
 .placard .inner {
   display: flex;
   flex-flow: row nowrap;
@@ -14,7 +10,7 @@
   height: 100%;
 }
 
-.placard .help-button {
+.placard .helpbutton {
   width: 10%;
   height: auto;
 }

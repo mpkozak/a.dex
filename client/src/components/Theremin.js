@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import * as d3 from 'd3';
 import './_css/Theremin.css';
 import help from './_help.js';
-import Tracker from './_tracker0.js';
+import Tracker from './_tracker3.js';
 import { ColorSwatch, BigKnob, ScreenFrame } from './_svg.js';
 
 export default class Theremin extends Component {
@@ -11,7 +11,7 @@ export default class Theremin extends Component {
     this.state = {
       params: {
         sense: {v: 30, max: 128, min: 0, text: 'SENSITIVITY'},
-        range: {v: 5, max: 6, min: 2, text: 'RANGE'},
+        range: {v: 4, max: 6, min: 2, text: 'RANGE'},
       },
       video: false,
       vW: 0,
@@ -38,6 +38,7 @@ export default class Theremin extends Component {
   };
 
   componentDidUpdate() {
+    console.log('theremin updated')
     const { video, data, muted } = this.state;
     if (!video && this.props.active) {
       this.setState(prevState => ({ video: true }))
@@ -67,7 +68,7 @@ export default class Theremin extends Component {
 
   trackerInit() {
     const { video, colorGain, colorFreq, params } = this.state;
-    const tracker = new Tracker(this.trackerHandleData, video, colorGain, colorFreq, params.sense.v);
+    const tracker = new Tracker(this.trackerHandleData, video, colorGain, colorFreq, params.sense.v, 5);
     const canvas = tracker.init();
     tracker.start();
     this.setState(prevState => ({ tracker, canvas }));
@@ -101,8 +102,22 @@ export default class Theremin extends Component {
     tracker.setColors(colorGain, colorFreq);
   };
 
-  trackerHandleData(data) {
-    this.setState(prevState => ({ data }));
+  trackerHandleData(newData) {
+    // const { data } = this.state;
+    // let smoothed = [];
+    // if (data.length === newData.length) {
+    //   smoothed = data.map((d, i) => {
+    //     const x = (d.x + newData[i].x) / 2;
+    //     const y = (d.y + newData[i].y) / 2;
+    //     const r = (d.r + newData[i].r) / 2;
+    //     const color = d.color;
+    //     return { x, y, r, color };
+    //   });
+    // } else {
+    //   smoothed = newData;
+    // }
+    // this.setState(prevState => ({ data: smoothed }));
+    this.setState(prevState => ({ data: newData }));
   };
 
   trackerDraw() {
@@ -120,6 +135,22 @@ export default class Theremin extends Component {
       .style('stroke-width', '.3%');
     circles.exit().remove();
   };
+
+  // trackerDraw() {
+  //   const { data, vW, vH } = this.state;
+  //   const { canvasTracker } = this.refs;
+  //   const ctx = canvasTracker.getContext('2d');
+  //   ctx.clearRect(0, 0, vW, vH);
+  //   ctx.strokeStyle = '#FFFFFF'
+  //   data.forEach(d => {
+  //     ctx.beginPath();
+  //     ctx.arc(d.x, d.y, d.r, 0, 2 * Math.PI);
+  //     ctx.fillStyle = d.color;
+  //     ctx.fill();
+  //     ctx.stroke();
+  //   });
+  // };
+
 
   updateParam(amt, key) {
     const { params, tracker } = this.state;
@@ -195,59 +226,26 @@ export default class Theremin extends Component {
     return (
       <div className='theremin'>
         <div className='outer'>
-
           <div className='video-box outer'>
             <ScreenFrame />
             <div className='inner'>
               <video className='video' ref='video' preload='true' autoPlay loop muted/>
+{/*
+              <canvas className='tracker' ref='canvasTracker' width={vW} height={vH}/>
+*/}
               <svg className='tracker' ref='svgTracker' width={vW} height={vH}/>
               <svg className='click-box' ref='clickBox' width={vW} height={vH}/>
             </div>
           </div>
-
           <div className='color-box inner'>
             {this.makeColorBox()}
           </div>
           <div className='control-box inner'>
             {this.makeControlBox()}
           </div>
-
         </div>
       </div>
     );
   };
 };
-
-
-
-
-
-
-  // trackerDraw() {
-  //   const { data } = this.state;
-  //   const { svgTracker } = this.refs;
-  //   const rects = d3.select(svgTracker).selectAll('rect').data(data);
-  //   rects.enter().append('rect');
-  //   rects
-  //     .attr('x', d => d.rx)
-  //     .attr('y', d => d.ry)
-  //     .attr('width', d => d.rw)
-  //     .attr('height', d => d.rh)
-  //     .style('fill', d => d.color)
-  //     .style('opacity', .5)
-  //     .style('stroke', '#FFFFFF')
-  //     .style('stroke-width', '.3%');
-  //   rects.exit().remove();
-  //   const circles = d3.select(svgTracker).selectAll('circle').data(data);
-  //   circles.enter().append('circle');
-  //   circles
-  //     .attr('cx', d => d.x)
-  //     .attr('cy', d => d.y)
-  //     .attr('r', d => d.r)
-  //     .style('fill', d => d.color)
-  //     .style('opacity', .5)
-  //     .style('stroke', '#FFFFFF')
-  //     .style('stroke-width', '.3%');
-  //   circles.exit().remove();
-  // }
 

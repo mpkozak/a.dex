@@ -94,15 +94,13 @@ p {
   justify-content: center;
 }
 
-.Mobile {
-  justify-content: flex-start;
-}
-
-.Mobile>.logo {
+.App>.logo {
   width: 80%;
-  margin: 20% 0;
+  margin: 10% 0;
 }
 
-.Mobile>.message {
+.App>.message {
   width: 90%;
 }
+
+

@@ -3,6 +3,8 @@ import './_css/Placard.css';
 import { Logo, HelpButton } from './_svg.js';
 
 export default function Placard(props) {
+  console.log('placard mounted')
+
   return (
     <div className='placard'>
       <div className='outer'>

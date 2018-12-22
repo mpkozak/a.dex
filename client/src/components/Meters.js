@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './_css/Meters.css';
-import * as d3 from 'd3';
+// import * as d3 from 'd3';
 import VU from './_meters/VU.js';
 import Wave from './_meters/Wave.js';
 
@@ -19,6 +19,10 @@ export default class Meters extends Component {
     requestAnimationFrame(this.getData);
   };
 
+  componentDidUpdate() {
+    console.log('meters updated')
+  }
+
   getData() {
     requestAnimationFrame(this.getData);
     const { analyser } = this.props;
@@ -27,8 +31,8 @@ export default class Meters extends Component {
     const data = new Float32Array(fftSize);
 
 // d3 scales
-    const waveScaleX = d3.scaleLinear().domain([fftSize - 1, 0]).range([0, 100]);
-    const waveScaleY = d3.scaleLinear().domain([-1, 1]).range([0, 60]);
+    // const waveScaleX = d3.scaleLinear().domain([fftSize - 1, 0]).range([0, 100]);
+    // const waveScaleY = d3.scaleLinear().domain([-1, 1]).range([0, 60]);
 
     const dataCurve = new Array(fftSize);
     let dataSum = 0;
@@ -41,12 +45,12 @@ export default class Meters extends Component {
       // dataCurve[i] = [(i / (fftSize - 1)) * 100, (d * 25) + 30];
 
 // manual calculation declared
-      // const x = (i / (fftSize - 1)) * 100;
-      // const y = (d * 25) + 30;
-      // dataCurve[i] = [x, y];
+      const x = (i / (fftSize - 1)) * 100;
+      const y = (d * 25) + 30;
+      dataCurve[i] = [x, y];
 
 // d3 calculation
-      dataCurve[i] = [waveScaleX(i), waveScaleY(d)];
+      // dataCurve[i] = [waveScaleX(i), waveScaleY(d)];
 
 // d3 calculation declared
       // const x = waveScaleX(i);
@@ -54,7 +58,7 @@ export default class Meters extends Component {
       // dataCurve[i] = [x, y];
     };
     const dataRms = 20 * Math.log10(Math.sqrt(dataSum / fftSize)) + 20;
-    const dataPeak = dataRms > 14 ? new Date() : this.state.dataPeak;
+    const dataPeak = dataRms > 15 ? new Date() : this.state.dataPeak;
     this.setState(prevState => ({ dataCurve, dataRms, dataPeak }));
   };
 

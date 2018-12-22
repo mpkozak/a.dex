@@ -2,6 +2,8 @@ import React from 'react';
 import './_css/Instructions.css';
 
 export default function Instructions(props) {
+  console.log('instructions mounted')
+
   return (
     <div className='instructions'>
       <div className='outer'>
