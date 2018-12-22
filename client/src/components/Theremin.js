@@ -38,7 +38,7 @@ export default class Theremin extends Component {
   };
 
   componentDidUpdate() {
-    console.log('theremin updated')
+    // console.log('theremin updated')
     const { video, data, muted } = this.state;
     if (!video && this.props.active) {
       this.setState(prevState => ({ video: true }))

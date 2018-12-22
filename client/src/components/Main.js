@@ -42,7 +42,7 @@ export default class Main extends Component {
   };
 
   componendDidUpdate() {
-    console.log('main updated')
+    // console.log('main updated')
   }
 
   toggleHelp() {
@@ -89,12 +89,12 @@ export default class Main extends Component {
       baseHz: baseHz,
       latency: .05
     };
-    console.log(analyser)
     this.setState(prevState => ({ audio }));
   };
 
   audioMute() {
     const { ctx, latency, instGain } = this.state.audio;
+    // console.log('mute fired')
     help.setAudioParam(instGain.gain, 0, ctx.currentTime, latency * 2);
   };
 
@@ -213,6 +213,7 @@ export default class Main extends Component {
 
   render() {
     const { params, audio, showHelp } = this.state;
+    // const { volume, fmWidth, fmDepth, eqLo, eqMid, eqHi } = params;
     const latency = !!audio ? Math.round((audio.ctx.currentTime - audio.ctx.getOutputTimestamp().contextTime) * 1000) : 0;
 
     return (
@@ -227,8 +228,11 @@ export default class Main extends Component {
         <Meters analyser={audio.analyser} />
         <Theremin active={!!audio} refresh={this.controllerRefresh} mute={this.audioMute} />
         <Effects params={params} update={this.updateParam} />
-        <Master params={params} update={this.updateParam} />
+        <Master volume={params.volume} update={this.updateParam} />
       </div>
     );
   };
 };
+
+
+        // <Effects fmWidth={fmWidth} fmDepth={fmDepth} eqLo={eqLo} eqMid={eqMid} eqHi={eqHi} update={this.updateParam} />

@@ -1,13 +1,17 @@
 const help = {};
 
+help.smoothAudio = () => {
+
+
+}
 
 help.setAudioParam = async (param, val, time, delay) => {
-  // param.cancelScheduledValues(time);
-  // param.setValueAtTime(param.value, time);
-  // param.linearRampToValueAtTime(val, time + delay);
-
+  param.cancelScheduledValues(time);
   param.setValueAtTime(param.value, time);
-  param.exponentialRampToValueAtTime(val + .0001, time + delay)
+  param.linearRampToValueAtTime(val, time + delay);
+
+  // param.setValueAtTime(param.value, time);
+  // param.exponentialRampToValueAtTime(val + .0001, time + delay)
 
   // const a = await param.cancelScheduledValues(ctx.currentTime);
   // const b = await a.setValueAtTime(parseFloat(a.value), ctx.currentTime);

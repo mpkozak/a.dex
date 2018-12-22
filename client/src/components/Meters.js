@@ -20,7 +20,7 @@ export default class Meters extends Component {
   };
 
   componentDidUpdate() {
-    console.log('meters updated')
+    // console.log('meters updated')
   }
 
   getData() {
