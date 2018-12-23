@@ -1,14 +1,8 @@
-const help = {};
 
-help.smoothAudio = () => {
+// help.smoothAudio = () => {
 
 
-}
-
-help.setAudioParam = async (param, val, time, delay) => {
-  param.cancelScheduledValues(time);
-  param.setValueAtTime(param.value, time);
-  param.linearRampToValueAtTime(val, time + delay);
+// }
 
   // param.setValueAtTime(param.value, time);
   // param.exponentialRampToValueAtTime(val + .0001, time + delay)
@@ -30,6 +24,15 @@ help.setAudioParam = async (param, val, time, delay) => {
   // param.setValueAtTime(a.value, now);
   // param.linearRampToValueAtTime(val, ctx.currentTime + delay);
   // return ctx.currentTime;
+
+
+const help = {};
+
+
+help.setAudioParam = async (param, val, time, delay) => {
+  param.cancelScheduledValues(time);
+  param.setValueAtTime(param.value, time);
+  param.linearRampToValueAtTime(val, time + delay);
 };
 
 

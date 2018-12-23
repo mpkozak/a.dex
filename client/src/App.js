@@ -3,7 +3,7 @@ import { Logo, SvgDefs } from './components/_svg.js';
 import Main from './components/Main.js';
 
 export default function App() {
-  console.log('app mounted')
+  // console.log('app mounted')
 
   const isMobile = () => {
     if (
@@ -19,47 +19,35 @@ export default function App() {
     } else return false;
   };
   const mobile = isMobile();
-
   const chrome = navigator.userAgent.includes('Chrome');
 
-  const showMobile = (
+  const showMain = () => {
+    if (!mobile && chrome) {
+      return (
+        <React.Fragment>
+          <SvgDefs />
+          <Main />
+        </React.Fragment>
+      );
+    } else {
+      return (
+        <React.Fragment>
+          <div className='logo'>
+            <Logo />
+          </div>
+          <div className='message'>
+            {mobile && <h1>Please relaunch using a desktop browser.</h1>}
+            <br />
+            {!chrome && <h3>For best results, please use Chrome.</h3>}
+          </div>
+        </React.Fragment>
+      );
+    }
+  };
+
+  return (
     <div className='App'>
-      <div className='logo'>
-        <Logo />
-      </div>
-      <div className='message'>
-        <h1>Please relaunch using a desktop browser.</h1>
-        <br />
-        <h3>Chrome works best.</h3>
-      </div>
+      {showMain()}
     </div>
   );
-
-  const showChrome = (
-    <div className='App'>
-      <div className='logo'>
-        <Logo />
-      </div>
-      <div className='message'>
-        <h3>For best results, please use Chrome.</h3>
-      </div>
-    </div>
-  );
-
-  const showMain = (
-    <div className='App'>
-      <SvgDefs />
-      <Main />
-    </div>
-  );
-
-  if (mobile) {
-    return showMobile;
-  } else if (!chrome) {
-    return showChrome;
-  } else return showMain;
 };
-
-
-
-
