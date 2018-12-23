@@ -4,7 +4,7 @@ import { Logo, HelpButton } from './_svg.js';
 
 export default class Placard extends PureComponent {
   render() {
-    // console.log('placard updated')
+    console.log('placard rendered')
     return (
       <div className='placard outer'>
         <div className='inner'>

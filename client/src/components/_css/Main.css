@@ -57,6 +57,16 @@
   /*background-color: rgba(0,255,0,.5);*/
 }
 
+.master {
+  position: absolute;
+  left: calc(15 * (100% / var(--grid-width)));
+  top: calc(11 * (100% / var(--grid-height)));
+  width: calc(2 * (100% / var(--grid-width)));
+  height: calc(4 * (100% / var(--grid-height)));
+
+  /*background-color: rgba(255,255,255,.5);*/
+}
+
 
 
 .outer {
@@ -72,10 +82,6 @@
   border-radius: 1vmin;
   border: 1px solid rgba(255,255,255,.5);
 }
-
-
-
-
 
 .label {
   width: 90%;
@@ -115,16 +121,6 @@
   height: calc(4 * (100% / var(--grid-height)));
 
   /*background-color: rgba(0,0,255,.5);*/
-}
-
-.master {
-  position: absolute;
-  left: calc(15 * (100% / var(--grid-width)));
-  top: calc(11 * (100% / var(--grid-height)));
-  width: calc(2 * (100% / var(--grid-width)));
-  height: calc(4 * (100% / var(--grid-height)));
-
-  /*background-color: rgba(255,255,255,.5);*/
 }
 
 

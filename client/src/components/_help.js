@@ -11,9 +11,14 @@ help.setAudioParam = async (param, val, time, delay) => {
 };
 
 
-help.getParamPct = (param) => {
-  return ((param.v - param.min) / (param.max - param.min)) * 100;
+help.getParamPct = (param, v) => {
+  v = v ? v : param.v;
+  return ((v - param.min) / (param.max - param.min)) * 100;
 };
+
+// help.getParamPct = (param) => {
+//   return ((param.v - param.min) / (param.max - param.min)) * 100;
+// };
 
 
 help.handleClickParam = (e, key, callback) => {

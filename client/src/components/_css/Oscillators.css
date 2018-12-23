@@ -1,6 +1,5 @@
 .oscillators {
   flex-flow: column nowrap;
-  align-items: center;
   justify-content: space-around;
 }
 
