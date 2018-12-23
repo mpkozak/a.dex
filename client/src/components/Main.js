@@ -1,15 +1,20 @@
 import React, { Component } from 'react';
 import './_css/Main.css';
+
 import help from './_help.js';
+
 import Init from './Init.js'
-import Theremin from './Theremin.js';
+
 import Placard from './Placard.js';
-import Instructions from './Instructions.js';
 import Settings from './Settings.js';
+import Instructions from './Instructions.js';
 import Oscillators from './Oscillators.js';
+
+
+import Meters from './Meters.js';
+import Theremin from './Theremin.js';
 import Effects from './Effects.js';
 import Master from './Master.js';
-import Meters from './Meters.js';
 
 export default class Main extends Component {
   constructor(props) {
@@ -42,7 +47,7 @@ export default class Main extends Component {
   };
 
   componendDidUpdate() {
-    // console.log('main updated')
+    console.log('main updated')
   }
 
   toggleHelp() {
@@ -223,12 +228,15 @@ export default class Main extends Component {
         <Instructions show={showHelp} toggle={this.toggleHelp} />
         <Settings latency={latency} src={audio.analyserSrc} toggle={this.toggleMic} />
         <Oscillators osc1={params.osc1} osc2={params.osc2} update={this.updateOsc} />
+
+
 {/*
 */}
         <Meters analyser={audio.analyser} />
         <Theremin active={!!audio} refresh={this.controllerRefresh} mute={this.audioMute} />
         <Effects params={params} update={this.updateParam} />
         <Master volume={params.volume} update={this.updateParam} />
+
       </div>
     );
   };

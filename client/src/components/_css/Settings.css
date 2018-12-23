@@ -1,41 +1,35 @@
 .settings {
-  display: flex;
   flex-flow: row nowrap;
-  align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
 }
 
-.settings>.latency {
-  width: 60%;
-}
-
-.settings>.monitor {
-  width: 40%;
-}
-
-.settings .inner {
+.settings>.element {
   height: 100%;
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
-  justify-content: flex-start;
-  border: none;
+  justify-content: flex-end;
+}
+
+.settings>.latency {
+  width: 58%;
+}
+
+.settings>.monitor {
+  width: 38%;
 }
 
 .settings .label-small {
   text-align: left;
+  margin: 0 1vmin;
 }
 
 .settings .sevensegment {
-  width: 80%;
-  margin: 0 5% 0 0;
-  /*border-radius: .4vmin;*/
+  height: 100%;
 }
 
 .settings .glowbutton {
-  width: 60%;
-  /*height: 100%;*/
-  margin: 0 8% 0 0;
+  height: 100%;
   filter: drop-shadow(.02rem .02rem .025rem #000000);
 }
 

@@ -1,5 +1,8 @@
-.placard .inner {
-  display: flex;
+.placard {
+  flex-flow: row nowrap;
+}
+
+.placard>.inner {
   flex-flow: row nowrap;
   align-items: flex-start;
   justify-content: space-between;
@@ -11,6 +14,5 @@
 }
 
 .placard .helpbutton {
-  width: 10%;
-  height: auto;
+  height: 40%;
 }

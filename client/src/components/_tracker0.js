@@ -44,7 +44,6 @@ export default class Tracker {
   getData() {
     this.rAF = requestAnimationFrame(this.getData.bind(this));
     const { tWidth, tHeight, tCtx, video } = this;
-    // tCtx.clearRect(0, 0, tWidth, tHeight);
     tCtx.drawImage(video, 0, 0, tWidth, tHeight);
     const data = tCtx.getImageData(0, 0, tWidth, tHeight);
     this.filterData(data.data);

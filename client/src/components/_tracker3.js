@@ -60,7 +60,6 @@ export default class Tracker {
     const queue = [];
     const area1 = [];
     const area2 = [];
-
     for (let y = 0; y < tHeight; ++y) {
       for (let x = 0; x < tWidth; ++x) {
         let i = (y * tWidth + x) * 4;
@@ -71,36 +70,8 @@ export default class Tracker {
         const dist2 = this.getColorDist({r, g, b}, c2);
         if (dist1 <= sensitivity) area1.push({x, y, dist: dist1});
         if (dist2 <= sensitivity) area2.push({x, y, dist: dist2});
-      // console.log(dist1, dist2)
-
-      }
-    }
-
-
-
-
-
-    // for (let i = 0; i < data.length; i += 4) {
-    //   const scale = i / 4;
-    //   const r = data[i];
-    //   const g = data[i + 1];
-    //   const b = data[i + 2];
-    //   const dist1 = this.getColorDist({r, g, b}, c1);
-    //   const dist2 = this.getColorDist({r, g, b}, c2);
-    //   if (dist1 <= sensitivity) {
-    //     const dist = dist1;
-    //     const x = scale % tWidth;
-    //     const y = Math.floor(scale / tWidth);
-    //     area1.push({x, y, dist});
-    //   };
-    //   if (dist2 <= sensitivity) {
-    //     const dist = dist2;
-    //     const x = scale % tWidth;
-    //     const y = Math.floor(scale / tWidth);
-    //     area2.push({x, y, dist});
-    //   };
-    // };
-    // console.log(area1)
+      };
+    };
     if (area1.length > thresh) {
       queue.push({data: area1, color: color1});
     };

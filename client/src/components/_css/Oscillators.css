@@ -1,15 +1,18 @@
-.oscillators>.outer {
-  height: 50%;
+.oscillators {
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: space-around;
 }
 
-.oscillator .inner {
-  display: flex;
+.oscillators>.inner {
+  width: calc(100% - 2vmin);
+  height: calc(50% - 2vmin);
   flex-flow: column nowrap;
   align-items: center;
   justify-content: space-between;
 }
 
-.oscillator .button-box {
+.oscillators .button-box {
   width: 95%;
   height: 100%;
   display: flex;
@@ -18,12 +21,12 @@
   justify-content: space-around;
 }
 
-.oscillator .glowbutton {
+.oscillators .glowbutton {
   width: 20%;
   filter: drop-shadow(.02rem .02rem .025rem #000000);
 }
 
-.oscillator .glowbutton:active {
+.oscillators .glowbutton:active {
   transform: scale(.96);
   filter: drop-shadow(.02rem .02rem .015rem #000000);
 }

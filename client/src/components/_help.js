@@ -1,32 +1,7 @@
-
-// help.smoothAudio = () => {
-
-
-// }
-
-  // param.setValueAtTime(param.value, time);
-  // param.exponentialRampToValueAtTime(val + .0001, time + delay)
-
-  // const a = await param.cancelScheduledValues(ctx.currentTime);
-  // const b = await a.setValueAtTime(parseFloat(a.value), ctx.currentTime);
-  // const c = await b.linearRampToValueAtTime(val, parseFloat(ctx.currentTime + delay));
-  // await c;
-  // return ctx.currentTime;
-
-  // const a = await param.cancelScheduledValues(ctx.currentTime);
-  // const b = await a.setValueAtTime(parseFloat(a.value), ctx.currentTime);
-  // const c = await b.linearRampToValueAtTime(val, parseFloat(ctx.currentTime + delay));
-  // await c;
-  // return ctx.currentTime;
-
-  // const now = ctx.currentTime;
-  // const a = param.cancelScheduledValues(now);
-  // param.setValueAtTime(a.value, now);
-  // param.linearRampToValueAtTime(val, ctx.currentTime + delay);
-  // return ctx.currentTime;
-
-
 const help = {};
+
+
+
 
 
 help.setAudioParam = async (param, val, time, delay) => {
@@ -95,6 +70,33 @@ help.makeDomain = (extent, arr) => {
 export default help;
 
 
+
+
+// help.smoothAudio = () => {
+
+
+// }
+
+  // param.setValueAtTime(param.value, time);
+  // param.exponentialRampToValueAtTime(val + .0001, time + delay)
+
+  // const a = await param.cancelScheduledValues(ctx.currentTime);
+  // const b = await a.setValueAtTime(parseFloat(a.value), ctx.currentTime);
+  // const c = await b.linearRampToValueAtTime(val, parseFloat(ctx.currentTime + delay));
+  // await c;
+  // return ctx.currentTime;
+
+  // const a = await param.cancelScheduledValues(ctx.currentTime);
+  // const b = await a.setValueAtTime(parseFloat(a.value), ctx.currentTime);
+  // const c = await b.linearRampToValueAtTime(val, parseFloat(ctx.currentTime + delay));
+  // await c;
+  // return ctx.currentTime;
+
+  // const now = ctx.currentTime;
+  // const a = param.cancelScheduledValues(now);
+  // param.setValueAtTime(a.value, now);
+  // param.linearRampToValueAtTime(val, ctx.currentTime + delay);
+  // return ctx.currentTime;
 
 
 
