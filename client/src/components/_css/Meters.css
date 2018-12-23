@@ -1,27 +1,10 @@
 .meters {
-  display: flex;
   flex-flow: column nowrap;
-  align-items: center;
-  justify-content: center;
+  justify-content: space-around;
 }
 
-.meters>.outer {
-  height: calc(100% / 2);
-}
-
-.meters .inner {
-  width: 95%;
-  height: 95%;
-  border: none;
-  border-radius: .57vmin;
-  box-shadow: 0 0 .5vmin .1vmin #000000;
-  /*filter: drop-shadow(.02rem .02rem .025rem #000000);*/
-}
-
-#spec-canvas {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  left: 0;
-  top: 0;
+.meters>.meter {
+  width: calc(100% - 2vmin);
+  height: calc(50% - 2vmin);
+  filter: drop-shadow(0 .02rem .025rem #000000) drop-shadow(.02rem 0 .025rem #000000);
 }

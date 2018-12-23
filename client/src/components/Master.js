@@ -5,7 +5,7 @@ import { MasterFader } from './_svg.js';
 
 export default class Master extends PureComponent {
   render() {
-    console.log('master rendered');
+    // console.log('Master rendered');
     const { volume } = this.props;
     const volPct = help.getParamPct(volume);
     const level = volPct * .6 + 10;

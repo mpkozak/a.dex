@@ -18,7 +18,7 @@ export default class Oscillators extends PureComponent {
   };
 
   render() {
-    console.log('oscillators rendered')
+    // console.log('Oscillators rendered')
     const { osc1, osc2 } = this.props;
     return (
       <div className='oscillators outer'>

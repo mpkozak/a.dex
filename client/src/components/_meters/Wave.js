@@ -17,8 +17,6 @@ export default function Wave(props) {
   const opacity = !!curve ? getOpacity(wave) : 1;
 
   return (
-    <div className='inner'>
-      <MeterWave wave={wave} opacity={opacity} />
-    </div>
+    <MeterWave wave={wave} opacity={opacity} />
   );
 };

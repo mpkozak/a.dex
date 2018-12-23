@@ -4,7 +4,7 @@ import { SevenSegment, GlowButton } from './_svg.js';
 
 export default class Settings extends PureComponent {
   render() {
-    console.log('settings rendered')
+    // console.log('Settings rendered')
     const { latency, src, toggle } = this.props;
     return (
       <div className='settings outer'>

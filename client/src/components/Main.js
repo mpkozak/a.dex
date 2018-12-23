@@ -20,7 +20,6 @@ export default class Main extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      active: false,
       audio: false,
       params: {
         osc1: 'triangle',
@@ -37,18 +36,14 @@ export default class Main extends Component {
     this.audioInit = this.audioInit.bind(this);
     this.toggleHelp = this.toggleHelp.bind(this);
     this.toggleMic = this.toggleMic.bind(this);
+
+    this.audioMute = this.audioMute.bind(this);
+
+
     this.updateParam = this.updateParam.bind(this);
     this.updateOsc = this.updateOsc.bind(this);
-    this.audioMute = this.audioMute.bind(this);
     this.controllerRefresh = this.controllerRefresh.bind(this);
   };
-
-  componentWillMount() {
-  };
-
-  componendDidUpdate() {
-    console.log('main updated')
-  }
 
   toggleHelp() {
     this.setState(prevState => ({
@@ -171,10 +166,10 @@ export default class Main extends Component {
     }));
   };
 
-  controllerRefresh(level, freq) {
+  controllerRefresh(x, y) {
     const { ctx, baseHz, latency, instGain, osc1, osc2 } = this.state.audio;
-    const setLevel = level;
-    const setFreq = freq * baseHz;
+    const setLevel = y;
+    const setFreq = Math.pow(2, x) * baseHz;
     help.setAudioParam(instGain.gain, setLevel, ctx.currentTime, latency);
     help.setAudioParam(osc1.frequency, setFreq, ctx.currentTime, latency);
     help.setAudioParam(osc2.frequency, setFreq, ctx.currentTime, latency);
@@ -217,7 +212,9 @@ export default class Main extends Component {
 
 
   render() {
-    console.log('theremin rendered')
+    const needle = document.getElementById('meter-needle-rotator') ;
+    console.log(needle)
+    console.log('Main rendered')
     const { params, audio, showHelp } = this.state;
     const latency = !!audio ? Math.round((audio.ctx.currentTime - audio.ctx.getOutputTimestamp().contextTime) * 1000) : 0;
 
@@ -230,9 +227,9 @@ export default class Main extends Component {
         <Oscillators osc1={params.osc1} osc2={params.osc2} update={this.updateOsc} />
         <Master volume={params.volume} update={this.updateParam} />
 
+        <Meters analyser={audio.analyser} />
 
 {/*
-        <Meters analyser={audio.analyser} />
         <Effects params={params} update={this.updateParam} />
 */}
         <Theremin active={!!audio} refresh={this.controllerRefresh} mute={this.audioMute} />

@@ -66,28 +66,6 @@ export default class Theremin extends PureComponent {
     this.tracker.start();
   };
 
-  updateColor(target) {
-    this.setState(prevState => ({ calib: target }));
-    const { ctx, tW, tH, scalar } = this.canvas;
-    const { clickBox } = this.refs;
-    const getCoords = (e) => {
-      clickBox.removeEventListener('click', getCoords);
-      ctx.drawImage(this.state.video, 0, 0, tW, tH);
-      const rgb = ctx.getImageData(e.offsetX / scalar, e.offsetY / scalar, 1, 1).data;
-      const r = ('0' + rgb[0].toString(16)).slice(-2);
-      const g = ('0' + rgb[1].toString(16)).slice(-2);
-      const b = ('0' + rgb[2].toString(16)).slice(-2);
-      const color = `#${r}${g}${b}`;
-      localStorage.setItem(target, color);
-      this.setState(prevState => ({
-        [target]: color,
-        calib: false
-      }));
-      this.trackerColorRefresh();
-    };
-    if (target) clickBox.addEventListener('click', getCoords);
-  };
-
   trackerColorRefresh() {
     const { colorGain, colorFreq } = this.state;
     this.tracker.setColors(colorGain, colorFreq);
@@ -119,9 +97,34 @@ export default class Theremin extends PureComponent {
 
   audioRefresh(data) {
     const { vW, vH, paramRange } = this.state;
-    const level = (vH - data[0].y) / vH;
-    const freq = Math.pow(2, (vW - data[1].x) / (vW / paramRange));
-    this.props.refresh(level, freq);
+    // const level = (vH - data[0].y) / vH;
+    // const freq = Math.pow(2, (vW - data[1].x) / (vW / paramRange));
+    // this.props.refresh(level, freq);
+    const x = (vW - data[1].x) / (vW / paramRange);
+    const y = (vH - data[0].y) / vH;
+    this.props.refresh(x, y)
+  };
+
+  updateColor(target) {
+    this.setState(prevState => ({ calib: target }));
+    const { ctx, tW, tH, scalar } = this.canvas;
+    const { clickBox } = this.refs;
+    const getCoords = (e) => {
+      clickBox.removeEventListener('click', getCoords);
+      ctx.drawImage(this.state.video, 0, 0, tW, tH);
+      const rgb = ctx.getImageData(e.offsetX / scalar, e.offsetY / scalar, 1, 1).data;
+      const r = ('0' + rgb[0].toString(16)).slice(-2);
+      const g = ('0' + rgb[1].toString(16)).slice(-2);
+      const b = ('0' + rgb[2].toString(16)).slice(-2);
+      const color = `#${r}${g}${b}`;
+      localStorage.setItem(target, color);
+      this.setState(prevState => ({
+        [target]: color,
+        calib: false
+      }));
+      this.trackerColorRefresh();
+    };
+    if (target) clickBox.addEventListener('click', getCoords);
   };
 
   updateParam(delta, key) {
@@ -182,7 +185,7 @@ export default class Theremin extends PureComponent {
 
 
   render() {
-    console.log('Theremin rendered')
+    // console.log('Theremin rendered')
     const { vW, vH } = this.state;
     return (
       <div className='theremin'>
