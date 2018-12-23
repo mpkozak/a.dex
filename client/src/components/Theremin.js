@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import * as d3 from 'd3';
 import './_css/Theremin.css';
 import help from './_help.js';
 import Tracker from './_tracker3.js';
 import { ColorSwatch, BigKnob, ScreenFrame } from './_svg.js';
 
-export default class Theremin extends Component {
+export default class Theremin extends PureComponent {
     constructor(props) {
     super(props)
     this.state = {
@@ -30,7 +30,6 @@ export default class Theremin extends Component {
     };
     this.tracker = undefined;
     this.canvas = undefined;
-    this.muted = true;
   };
 
   componentDidMount() {
@@ -67,7 +66,7 @@ export default class Theremin extends Component {
     this.tracker.start();
   };
 
-  trackerColorSet(target) {
+  updateColor(target) {
     this.setState(prevState => ({ calib: target }));
     const { ctx, tW, tH, scalar } = this.canvas;
     const { clickBox } = this.refs;
@@ -96,10 +95,8 @@ export default class Theremin extends Component {
 
   trackerHandleData(data) {
     if (data.length === 2) {
-      this.muted = false;
       this.audioRefresh(data);
     } else {
-      this.muted = true;
       this.props.mute();
     };
     this.trackerDraw(data);
@@ -137,7 +134,6 @@ export default class Theremin extends Component {
     };
   };
 
-
   makeColorBox() {
     const { calib } = this.state;
     return (
@@ -152,7 +148,7 @@ export default class Theremin extends Component {
               <ColorSwatch
                 color={color}
                 active={calib === id}
-                handleClick={() => this.trackerColorSet(calib ? false : id)}
+                handleClick={() => this.updateColor(calib ? false : id)}
               />
               <h5 className='label-small'>{obj.text}</h5>
             </div>
@@ -161,7 +157,6 @@ export default class Theremin extends Component {
       </div>
     );
   };
-
 
   makeControlBox() {
     return (
@@ -187,7 +182,7 @@ export default class Theremin extends Component {
 
 
   render() {
-    console.log('theremin rendered')
+    console.log('Theremin rendered')
     const { vW, vH } = this.state;
     return (
       <div className='theremin'>
@@ -211,4 +206,3 @@ export default class Theremin extends Component {
     );
   };
 };
-
