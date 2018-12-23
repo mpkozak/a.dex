@@ -4,16 +4,14 @@ import './_css/Main.css';
 import help from './_help.js';
 
 import Init from './Init.js'
-
 import Placard from './Placard.js';
 import Settings from './Settings.js';
 import Instructions from './Instructions.js';
 import Oscillators from './Oscillators.js';
 import Master from './Master.js';
+import Meters from './Meters.js';
 
 import Theremin from './Theremin.js';
-
-import Meters from './Meters.js';
 import Effects from './Effects.js';
 
 export default class Main extends Component {
@@ -212,9 +210,7 @@ export default class Main extends Component {
 
 
   render() {
-    const needle = document.getElementById('meter-needle-rotator') ;
-    console.log(needle)
-    console.log('Main rendered')
+    // console.log('Main rendered')
     const { params, audio, showHelp } = this.state;
     const latency = !!audio ? Math.round((audio.ctx.currentTime - audio.ctx.getOutputTimestamp().contextTime) * 1000) : 0;
 
