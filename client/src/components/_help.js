@@ -1,14 +1,94 @@
 const help = {};
 
 
-
-
-
-help.setAudioParam = async (param, val, time, delay) => {
-  param.cancelScheduledValues(time);
-  param.setValueAtTime(param.value, time);
-  param.linearRampToValueAtTime(val, time + delay);
+help.setAudioGain = (gain, val, ctx, delay) => {
+  // console.log('setAudioGain fired')
+  const t = ctx.currentTime + .0001;
+  gain.cancelScheduledValues(t);
+  gain.setValueAtTime(gain.value, t);
+  gain.linearRampToValueAtTime(val, ctx.currentTime + delay);
 };
+
+help.setAudioFreq = (freqs, val, ctx, delay) => {
+  // console.log('setAudioFreq fired')
+  freqs.forEach(freq => {
+    const t = ctx.currentTime + .0001;
+    freq.cancelScheduledValues(t);
+    freq.setValueAtTime(freq.value, t);
+    freq.exponentialRampToValueAtTime(val, ctx.currentTime + delay);
+  });
+};
+
+help.setAudio = (param, val, ctx) => {
+  const t = ctx.currentTime + .0001;
+  param.cancelScheduledValues(t);
+  param.setValueAtTime(param.value, t);
+  param.linearRampToValueAtTime(val, ctx.currentTime + .05);
+};
+
+
+help.newHandleScroll = (e, callback, scalar, id) => {
+  e.preventDefault();
+  scalar = Number.isInteger(scalar) ? scalar : 1000;
+  callback(e.deltaY / scalar, id);
+};
+
+
+help.newHandleClick = (e, callback, scalar, id) => {
+  e.preventDefault();
+  scalar = Number.isInteger(scalar) ? scalar : 100;
+  var handleDrag = (e) => {
+    callback((e.movementX - e.movementY) / scalar, id);
+  };
+  window.addEventListener('mousemove', handleDrag);
+  var clearEvent = () => {
+    window.removeEventListener('mousemove', handleDrag);
+    window.removeEventListener('mouseup', clearEvent);
+  };
+   window.addEventListener('mouseup', clearEvent);
+};
+
+
+help.handleLevel = (oldValue, delta, min, max) => {
+  const range = max - min;
+  const newValue = oldValue + (delta * range);
+  if (newValue < min) {
+    return min;
+  } else if (newValue > max) {
+    return max;
+  } else return newValue;
+};
+
+
+help.getPercent = (val, min, max) => ((val - min) / (max - min)) * 100;
+
+
+
+
+
+
+
+
+
+
+
+
+
+// help.setAudioParam = async (param, val, ctx) => {
+//   const t = ctx.currentTime + .0001;
+//   param.cancelScheduledValues(t);
+//   param.setValueAtTime(param.value, t);
+//   param.linearRampToValueAtTime(val, ctx.currentTime + .01);
+//   // return
+// };
+
+
+
+// help.setAudioParam = async (param, val, time, delay) => {
+//   param.cancelScheduledValues(time);
+//   param.setValueAtTime(param.value, time);
+//   param.linearRampToValueAtTime(val, time + delay);
+// };
 
 
 help.getParamPct = (param, v) => {
@@ -61,26 +141,11 @@ help.handleScrollParamLinear = (e, key, callback) => {
 };
 
 
-help.makeDomain = (extent, arr) => {
-  const iter = arr.length;
-  const unit = (extent[1] - extent[0]) / (iter - 1);
-  const domain = [];
-  for (let i = 0; i < iter; i++) {
-    domain.push(extent[0] + i * unit);
-  };
-  return domain;
-};
-
 
 export default help;
 
 
 
-
-// help.smoothAudio = () => {
-
-
-// }
 
   // param.setValueAtTime(param.value, time);
   // param.exponentialRampToValueAtTime(val + .0001, time + delay)
@@ -106,6 +171,16 @@ export default help;
 
 
 // Working Helper Functions - Currently Not Being Used //
+
+// help.makeDomain = (extent, arr) => {
+//   const iter = arr.length;
+//   const unit = (extent[1] - extent[0]) / (iter - 1);
+//   const domain = [];
+//   for (let i = 0; i < iter; i++) {
+//     domain.push(extent[0] + i * unit);
+//   };
+//   return domain;
+// };
 
 // help.getColorDist = (orig, match) => {
 //   return Math.sqrt(

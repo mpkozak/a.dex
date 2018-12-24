@@ -284,6 +284,10 @@ export const SvgDefs = () => {
         <clipPath id='slider-clip'>
           <use href='#slider-rect' />
         </clipPath>
+  {/* Filters */}
+        <filter id='slider-blur'>
+          <feGaussianBlur stdDeviation='.5' />
+        </filter>
   {/* Ridge Gradients */}
         <linearGradient id='slider-ridges-top' x1='0%' y1='0%' x2='0%' y2='16.67%' gradientUnits='objectBoundingBox' spreadMethod='repeat'>
           <stop offset='0%' stopColor='#000000' stopOpacity='0'/>
@@ -322,7 +326,7 @@ export const SvgDefs = () => {
 // SVG COMPONENT GROUP MODULES //
 /////////////////////////////////
 
-export const meterFrame = (color) => {
+const meterFrame = (color) => {
   const colorFrame = color ? color : '#3A3125';
   return (
     <g className='meter-frame' clipPath='url(#meter-outer-clip)'>
@@ -339,7 +343,7 @@ export const meterFrame = (color) => {
 };
 
 
-export const meterPanelShadow = () => {
+const meterPanelShadow = () => {
   return (
     <g className='meter-panel-shadow' clipPath='url(#meter-inner-clip)' filter='url(#meter-gradient-blur)'>
       <use href='#meter-rect-panel' fill='url(#meter-panel-horizontal)' />
@@ -350,7 +354,7 @@ export const meterPanelShadow = () => {
 };
 
 
-export const slider = () => {
+const slider = () => {
   return (
     <g className='slider' clipPath='url(#slider-clip)'>
 {/* Base */}
@@ -602,7 +606,7 @@ export const SevenSegment = (props) => {
         rx='1'
         fill='#181818'
         stroke='#000000'
-        strokeWidth='3%'
+        strokeWidth='.5%'
       />
 {/* Inner Border */}
       <rect
@@ -677,7 +681,8 @@ export const ScreenFrame = () => {
 //////////////////////////////
 
 export const MasterFader = (props) => {
-  const { level, handleClick } = props;
+  const { pct, handleClick } = props;
+  const level = pct * .6;
   const colorRed = '#C12822';
   const ticks = [
     {y: 10, text: '+12', color: colorRed},
@@ -723,14 +728,15 @@ export const MasterFader = (props) => {
         })}
       </g>
 {/* Slider */}
-      <g className='masterfader-slider' transform={`translate(${15}, ${70 - level})`} onMouseDown={handleClick}>
+      <g className='masterfader-slider' transform={`translate(${15}, ${60 - level})`} onMouseDown={handleClick}>
+
         {slider()}
       </g>
     </svg>
   );
 };
 
-
+              // <rect filter='url(#slider-blur)' x='-.1' y='-.1' width='10.5' height='20.5' />
 
 
 

@@ -1,13 +1,12 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import './_css/Meters.css';
 import * as d3 from 'd3';
 import { MeterWave, MeterVU } from './_svg.js';
 
-export default class Meters extends Component {
+export default class Meters extends PureComponent {
   constructor(props) {
     super(props)
     this.state = {
-      haveNodes: false,
       active: false,
       waveNode1: null,
       vuNode1: null,
@@ -16,28 +15,31 @@ export default class Meters extends Component {
     };
   };
 
+  componentDidMount() {
+    const waveNode1 = document.getElementById('meter-wave-node1');
+    const vuNode1 = document.getElementById('meter-vu-node1');
+    const vuNode2 = document.getElementById('meter-vu-node2');
+    const vuNode3 = document.getElementById('meter-vu-node3');
+    this.setState(prevState => ({ waveNode1, vuNode1, vuNode2, vuNode3 }));
+  };
+
   componentDidUpdate() {
-    if (!this.state.haveNodes) {
-      const waveNode1 = document.getElementById('meter-wave-node1');
-      const vuNode1 = document.getElementById('meter-vu-node1');
-      const vuNode2 = document.getElementById('meter-vu-node2');
-      const vuNode3 = document.getElementById('meter-vu-node3');
-      this.setState(prevState => ({ haveNodes: true, waveNode1, vuNode1, vuNode2, vuNode3 }));
-    } else if (!this.state.active) {
+    if (!this.state.active) {
       this.animate(this.props.analyser);
       this.setState(prevState => ({ active: true }));
     };
   };
 
-
   animate(analyser) {
     const { waveNode1, vuNode1, vuNode2, vuNode3 } = this.state;
-    const vu = [-60, -20, -10, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 20];
-    const deg = [-48, -40, -26, -15, -10.5, -5, -0.5, 5, 10, 15, 20, 25, 30, 35, 48];
-    const needleScale = d3.scaleLinear().domain(vu).range(deg);
+    const needleScale = d3.scaleLinear()
+      .domain([-60, -20, -10, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 20])
+      .range([-48, -40, -26, -15, -10.5, -5, -0.5, 5, 10, 15, 20, 25, 30, 35, 48]);
     const waveScaleCurve = d3.line().curve(d3.curveLinear);
 
-    let dataCurve = false;
+    const fftSize = analyser.fftSize;
+    const data = new Float32Array(fftSize);
+    const dataCurve = new Array(fftSize);
     let dataRms = -60;
     let dataPeak = 0;
 
@@ -79,36 +81,28 @@ export default class Meters extends Component {
     drawData();
 
     const parseData = () => {
-      const wavePathLength = waveNode1.firstChild.getTotalLength();
-      opacity = (100 - Math.sqrt(wavePathLength)) / 100;
+      const waveLength = waveNode1.firstChild.getTotalLength();
+      const rms = dataRms < -60 ? -60 : dataRms;
       wave = waveScaleCurve(dataCurve);
-
-      dataRms = dataRms < -60 ? -60 : dataRms;
-      rotation = rotation * (5/6) + (needleScale(dataRms) / 6);
+      opacity = (100 - Math.sqrt(waveLength)) / 100;
+      rotation = rotation * (5/6) + (needleScale(rms) / 6);
       peak = (new Date() - dataPeak) < 1000;
-
       drawData();
     };
 
     const getData = () => {
       requestAnimationFrame(getData);
-
-      const fftSize = analyser.fftSize;
-      const data = new Float32Array(fftSize);
-      dataCurve = new Array(fftSize);
-      let dataSum = 0;
-
       analyser.getFloatTimeDomainData(data);
+      let dataSum = 0;
       for (let i = 0; i < fftSize; i++) {
         const d = data[i];
         dataSum += Math.pow(d, 2);
         const x = (i / (fftSize - 1)) * 100;
-        const y = (d * 25) + 30;
+        const y = (d * 50) + 30;
         dataCurve[i] = [x, y];
       };
       dataRms = 20 * Math.log10(Math.sqrt(dataSum / fftSize)) + 20;
       dataPeak = dataRms > 15 ? new Date() : dataPeak;
-
       parseData();
     };
 
@@ -117,6 +111,7 @@ export default class Meters extends Component {
 
 
   render() {
+    // console.log('Meters rendered')
     return (
       <div className='meters outer'>
         <MeterWave />

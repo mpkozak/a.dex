@@ -11,12 +11,22 @@
   max-height: calc(var(--grid-height) * var(--size-unit-max));
   min-width: calc(var(--grid-width) * var(--size-unit-min));
   min-height: calc(var(--grid-height) * var(--size-unit-min));
-  background: url('../_img/titanium.jpg') no-repeat center center fixed;
-  background-size: cover;
+  /*background: url('../_img/titanium.jpg') no-repeat center center fixed;*/
+  /*background-size: cover;*/
   border-radius: 1vmin;
   box-shadow: 0 0 .5vmin .1vmin #000000;
 
-  /*background-color: rgba(100,100,100,1);*/
+  background-color: rgba(127,127,127,1);
+}
+
+.theremin {
+  position: absolute;
+  left: calc(0 * (100% / var(--grid-width)));
+  top: calc(0 * (100% / var(--grid-height)));
+  width: calc(12 * (100% / var(--grid-width)));
+  height: calc(11 * (100% / var(--grid-height)));
+
+  background-color: rgba(255,255,0,.5);
 }
 
 .placard {
@@ -29,52 +39,24 @@
   background-color: rgba(0,255,255,.5);
 }
 
-.settings {
-  position: absolute;
-  left: calc(12 * (100% / var(--grid-width)));
-  top: calc(1.5 * (100% / var(--grid-height)));
-  width: calc(5 * (100% / var(--grid-width)));
-  height: calc(1 * (100% / var(--grid-height)));
-
-  background-color: rgba(255,0,255,.5);
-}
-
 .instructions {
   position: absolute;
   left: calc(12 * (100% / var(--grid-width)));
   top: calc(1.5 * (100% / var(--grid-height)));
   width: calc(5 * (100% / var(--grid-width)));
   height: calc(13.5 * (100% / var(--grid-height)));
+
+  /*background-color: rgba(255,0,255,.5);*/
 }
 
-.oscillators {
+.settings {
   position: absolute;
-  left: calc(0 * (100% / var(--grid-width)));
-  top: calc(11 * (100% / var(--grid-height)));
-  width: calc(4 * (100% / var(--grid-width)));
-  height: calc(4 * (100% / var(--grid-height)));
+  left: calc(12 * (100% / var(--grid-width)));
+  top: calc(1.5 * (100% / var(--grid-height)));
+  width: calc(5 * (100% / var(--grid-width)));
+  height: calc(.99 * (100% / var(--grid-height)));
 
-  background-color: rgba(0,255,0,.5);
-}
-
-.master {
-  position: absolute;
-  left: calc(15 * (100% / var(--grid-width)));
-  top: calc(11 * (100% / var(--grid-height)));
-  width: calc(2 * (100% / var(--grid-width)));
-  height: calc(4 * (100% / var(--grid-height)));
-
-  background-color: rgba(255,255,255,.5);
-}
-
-.theremin {
-  position: absolute;
-  left: calc(0 * (100% / var(--grid-width)));
-  top: calc(0 * (100% / var(--grid-height)));
-  width: calc(12 * (100% / var(--grid-width)));
-  height: calc(11 * (100% / var(--grid-height)));
-
-  /*background-color: rgba(255,255,0,.5);*/
+  background-color: rgba(255,0,0,.5);
 }
 
 .meters {
@@ -84,7 +66,47 @@
   width: calc(5 * (100% / var(--grid-width)));
   height: calc(6 * (100% / var(--grid-height)));
 
-  background-color: rgba(255,0,0,.5);
+  background-color: rgba(0,255,0,.5);
+}
+
+.oscillators {
+  position: absolute;
+  left: calc(0 * (100% / var(--grid-width)));
+  top: calc(11 * (100% / var(--grid-height)));
+  width: calc(4 * (100% / var(--grid-width)));
+  height: calc(4 * (100% / var(--grid-height)));
+
+  background-color: rgba(0,0,255,.5);
+}
+
+.fmsynth {
+  position: absolute;
+  left: calc(4 * (100% / var(--grid-width)));
+  top: calc(11 * (100% / var(--grid-height)));
+  width: calc(5.5 * (100% / var(--grid-width)));
+  height: calc(4 * (100% / var(--grid-height)));
+
+  background-color: rgba(127,127,0,.5);
+}
+
+.fx2 {
+  position: absolute;
+  left: calc(9.5 * (100% / var(--grid-width)));
+  top: calc(11 * (100% / var(--grid-height)));
+  width: calc(5.5 * (100% / var(--grid-width)));
+  height: calc(4 * (100% / var(--grid-height)));
+
+  background-color: rgba(0,127,127,.5);
+}
+
+.master {
+  position: absolute;
+  left: calc(15 * (100% / var(--grid-width)));
+  top: calc(11 * (100% / var(--grid-height)));
+  width: calc(2 * (100% / var(--grid-width)));
+  height: calc(4 * (100% / var(--grid-height)));
+
+  background-color: rgba(127,0,127,.5);
 }
 
 .outer {
@@ -107,20 +129,6 @@
   text-align: left;
 }
 
-
-
-
-
-
-.effects {
-  position: absolute;
-  left: calc(4 * (100% / var(--grid-width)));
-  top: calc(11 * (100% / var(--grid-height)));
-  width: calc(11 * (100% / var(--grid-width)));
-  height: calc(4 * (100% / var(--grid-height)));
-
-  /*background-color: rgba(0,0,255,.5);*/
-}
 
 
 

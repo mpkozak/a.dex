@@ -41,8 +41,8 @@ export default class Theremin extends PureComponent {
   };
 
   componentDidUpdate() {
-    if (!this.state.video && this.props.active) {
-      this.setState(prevState => ({ video: true }))
+    if (!this.state.video) {
+      this.setState(prevState => ({ video: true }));
       this.videoInit();
     };
   };

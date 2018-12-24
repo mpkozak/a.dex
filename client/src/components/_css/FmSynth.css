@@ -1,0 +1,33 @@
+.fmsynth {
+  flex-flow: column nowrap;
+  align-items: space-around;
+}
+
+.fmsynth>.inner{
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.fmsynth .knob-box {
+  width: 95%;
+  height: 100%;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.fmsynth .element {
+  width: 35%;
+  height: 90%;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.fmsynth .bigknob {
+  width: 90%;
+  filter: drop-shadow(.02rem .02rem .025rem #000000);
+}
