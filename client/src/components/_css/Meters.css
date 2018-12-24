@@ -4,7 +4,9 @@
 }
 
 .meters>.meter {
-  width: calc(100% - 2vmin);
-  height: calc(50% - 2vmin);
+/*  width: calc(100% - 2vmin);
+  height: calc(50% - 2vmin);*/
+  width: 95%;
+  height: auto;
   filter: drop-shadow(.02rem .03rem .03rem #000000);
 }
