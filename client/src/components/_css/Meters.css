@@ -8,5 +8,7 @@
   height: calc(50% - 2vmin);*/
   width: 95%;
   height: auto;
-  filter: drop-shadow(.02rem .03rem .03rem #000000);
+  border-radius: .57vmin;
+  box-shadow: 0 0 .5vmin .1vmin #000000;
+  /*filter: drop-shadow(.02rem .03rem .03rem #000000);*/
 }
