@@ -167,9 +167,9 @@ export default class Theremin extends PureComponent {
       <div className='theremin outer'>
         <div className='video-box outer'>
           <div className='video-layers'>
+            <ScreenFrame />
             <video className='video-0 video-element' ref='video' preload='true' autoPlay loop muted/>
             <svg className='video-1 video-element' ref='svgTracker' width={vW} height={vH}/>
-            <ScreenFrame />
             <svg className='video-2 video-element' ref='clickBox' width={vW} height={vH}/>
           </div>
         </div>
