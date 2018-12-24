@@ -11,12 +11,13 @@ export default class Master extends PureComponent {
     };
     this.min = 0;
     this.max = 1;
+    this.changeScalar = 800;
     this.setVolume = this.setVolume.bind(this);
   };
 
   setVolume(delta) {
     const { ctx, masterGain } = this.props;
-    const volume = help.handleLevel(this.state.volume, delta, this.min, this.max);
+    const volume = help.getLevel(this.state.volume, delta, this.min, this.max);
     if (volume) {
       help.setAudio(masterGain.gain, volume, ctx);
       this.setState(prevState => ({ volume }));
@@ -26,12 +27,13 @@ export default class Master extends PureComponent {
 
   render() {
     // console.log('Master rendered');
-    const pct = help.getPercent(this.state.volume, this.min, this.max);
+    const { min, max, changeScalar } = this;
+    const pct = help.getPercent(this.state.volume, min, max);
     return (
       <div className='master outer'>
-        <div className='inner' onWheel={(e) => help.newHandleScroll(e, this.setVolume)}>
+        <div className='inner' onWheel={(e) => help.handleScroll(e, this.setVolume, changeScalar * 5)}>
           <h5 className='label-small'>MASTER</h5>
-          <MasterFader pct={pct} handleClick={(e) => help.newHandleClick(e, this.setVolume)} />
+          <MasterFader pct={pct} handleClick={(e) => help.handleClick(e, this.setVolume, changeScalar)} />
         </div>
       </div>
     );

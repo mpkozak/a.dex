@@ -14,22 +14,17 @@ export default class Theremin extends PureComponent {
       vH: 0,
       colorGain: '#FF0000',
       colorFreq: '#00FF00',
-      paramSense: 30,
-      paramRange: 4,
+      sensitivity: 30,
+      range: 4,
       calib: false,
     };
-    this.trackerHandleData = this.trackerHandleData.bind(this);
-    this.updateParam = this.updateParam.bind(this);
-    this.colors = {
-      gain: {id: 'colorGain', text: 'GAIN'},
-      freq: {id: 'colorFreq', text: 'PITCH'}
-    };
-    this.params = {
-      sense: {id: 'paramSense', max: 442, min: 0, text: 'SENSITIVITY'},
-      range: {id: 'paramRange', max: 6, min: 2, text: 'RANGE'}
-    };
+    this.sensitivity = {min: 0, max: 221};
+    this.range = {min: 2, max: 6};
+    this.changeScalar = 1000;
     this.tracker = undefined;
     this.canvas = undefined;
+    this.trackerHandleData = this.trackerHandleData.bind(this);
+    this.updateParam = this.updateParam.bind(this);
   };
 
   componentDidMount() {
@@ -60,8 +55,8 @@ export default class Theremin extends PureComponent {
   };
 
   trackerInit() {
-    const { video, colorGain, colorFreq, paramSense } = this.state;
-    this.tracker = new Tracker(this.trackerHandleData, video, colorGain, colorFreq, paramSense, 5);
+    const { video, colorGain, colorFreq, sensitivity } = this.state;
+    this.tracker = new Tracker(this.trackerHandleData, video, colorGain, colorFreq, sensitivity, 5);
     this.canvas = this.tracker.init();
     this.tracker.start();
   };
@@ -96,11 +91,8 @@ export default class Theremin extends PureComponent {
   };
 
   audioRefresh(data) {
-    const { vW, vH, paramRange } = this.state;
-    // const level = (vH - data[0].y) / vH;
-    // const freq = Math.pow(2, (vW - data[1].x) / (vW / paramRange));
-    // this.props.refresh(level, freq);
-    const x = (vW - data[1].x) / (vW / paramRange);
+    const { vW, vH, range } = this.state;
+    const x = (vW - data[1].x) / (vW / range);
     const y = (vH - data[0].y) / vH;
     this.props.refresh(x, y)
   };
@@ -127,58 +119,42 @@ export default class Theremin extends PureComponent {
     if (target) clickBox.addEventListener('click', getCoords);
   };
 
-  updateParam(delta, key) {
-    const { id, max, min } = this.params[key];
-    const v = this.state[id];
-    const newV = v + (delta * max);
-    if (newV >= min && newV <= max) {
-      if (id === 'paramSense') this.tracker.sensitivity = newV;
-      this.setState(prevState => ({ [id]: newV }));
+  updateParam(delta, param) {
+    const { min, max } = this[param];
+    const val = help.getLevel(this.state[param], delta, min, max);
+    if (val) {
+      if (param === 'sensitivity') this.tracker.sensitivity = val;
+      this.setState(prevState => ({ [param]: val }));
     };
   };
 
-  makeColorBox() {
+  makeColorSwatch(color, text) {
     const { calib } = this.state;
-    return (
-      <div className='settings-box'>
-        <h4 className='label'>Set Colors</h4>
-        {Object.keys(this.colors).map(d => {
-          const obj = this.colors[d];
-          const id = obj.id;
-          const color = this.state[id];
-          return (
-            <div className='element' key={id}>
-              <ColorSwatch
-                color={color}
-                active={calib === id}
-                handleClick={() => this.updateColor(calib ? false : id)}
-              />
-              <h5 className='label-small'>{obj.text}</h5>
-            </div>
-          );
-        })}
+    return(
+      <div className='element'>
+        <ColorSwatch
+          color={this.state[color]}
+          active={calib === color}
+          handleClick={() => this.updateColor(calib ? false : color)}
+        />
+        <h5 className='label-small'>{text}</h5>
       </div>
     );
   };
 
-  makeControlBox() {
+  makeControlKnob(param) {
+    const { changeScalar } = this;
+    const { min, max } = this[param];
+    const pct = help.getPercent(this.state[param], min, max);
     return (
-      <div className='settings-box'>
-        {Object.keys(this.params).map(d => {
-          const obj = this.params[d];
-          const id = obj.id;
-          return (
-            <div className='element' key={id}>
-              <BigKnob
-                rotation={help.getParamPct(obj, this.state[id])}
-                color='#313638'
-                handleClick={(e) => help.handleClickParam(e, d, this.updateParam)}
-                handleScroll={(e) => help.handleScrollParam(e, d, this.updateParam)}
-              />
-              <h5 className='label-small'>{obj.text}</h5>
-            </div>
-          );
-        })}
+      <div className='element'>
+        <BigKnob
+          rotation={pct}
+          color='#313638'
+          handleClick={(e) => help.handleClick(e, this.updateParam, changeScalar, param)}
+          handleScroll={(e) => help.handleScroll(e, this.updateParam, changeScalar * 5, param)}
+        />
+        <h5 className='label-small'>{param.toUpperCase()}</h5>
       </div>
     );
   };
@@ -188,21 +164,24 @@ export default class Theremin extends PureComponent {
     // console.log('Theremin rendered')
     const { vW, vH } = this.state;
     return (
-      <div className='theremin'>
-        <div className='outer'>
-          <div className='video-box outer'>
+      <div className='theremin outer'>
+        <div className='video-box outer'>
+          <div className='video-layers'>
+            <video className='video-0 video-element' ref='video' preload='true' autoPlay loop muted/>
+            <svg className='video-1 video-element' ref='svgTracker' width={vW} height={vH}/>
             <ScreenFrame />
-            <div className='inner'>
-              <video className='video' ref='video' preload='true' autoPlay loop muted/>
-              <svg className='tracker' ref='svgTracker' width={vW} height={vH}/>
-              <svg className='click-box' ref='clickBox' width={vW} height={vH}/>
-            </div>
+            <svg className='video-2 video-element' ref='clickBox' width={vW} height={vH}/>
           </div>
+        </div>
+        <div className='settings-box outer'>
           <div className='color-box inner'>
-            {this.makeColorBox()}
+            <h4 className='label'>Set Colors</h4>
+            {this.makeColorSwatch('colorGain', 'GAIN')}
+            {this.makeColorSwatch('colorFreq', 'PITCH')}
           </div>
           <div className='control-box inner'>
-            {this.makeControlBox()}
+            {this.makeControlKnob('sensitivity')}
+            {this.makeControlKnob('range')}
           </div>
         </div>
       </div>

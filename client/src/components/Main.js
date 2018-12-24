@@ -9,6 +9,7 @@ import Settings from './Settings.js';
 import Meters from './Meters.js';
 import Oscillators from './Oscillators.js';
 import FmSynth from './FmSynth.js';
+
 import Master from './Master.js';
 
 
@@ -37,7 +38,7 @@ export default class Main extends PureComponent {
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     const ctx = new AudioContext();
     const osc1 = new OscillatorNode(ctx, {type: 'triangle', frequency: baseHz});
-    const osc2 = new OscillatorNode(ctx, {type: 'sine', frequency: baseHz, detune: 0});
+    const osc2 = new OscillatorNode(ctx, {type: 'sine', frequency: baseHz, detune: -1200});
     const fmGain = new GainNode(ctx, {gain: 1500});
     const instGain = new GainNode(ctx, {gain: 0})
     const masterGain = new GainNode(ctx, {gain: .73});
@@ -84,9 +85,6 @@ export default class Main extends PureComponent {
     this.setState(prevState => ({ showHelp: !prevState.showHelp }));
   };
 
-
-
-
   controllerRefresh(x, y) {
     const { ctx, baseHz, delay, instGain, osc1, osc2 } = this.audio;
     const setLevel = y;
@@ -96,13 +94,11 @@ export default class Main extends PureComponent {
   };
 
 
-
   render() {
-    console.log('Main rendered')
+    // console.log('Main rendered')
     const { audioEnabled, analyseMic, showHelp } = this.state;
     const { ctx, osc1, osc2, fmGain, instGain, analyser, masterGain } = this.audio;
     const latency = audioEnabled ? Math.round((ctx.currentTime - ctx.getOutputTimestamp().contextTime) * 1000) : 0;
-
     return (
       <div className='Main'>
         {!audioEnabled

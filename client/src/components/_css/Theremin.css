@@ -1,108 +1,78 @@
 .theremin {
-  display: flex;
-  flex-flow: column nowrap;
-  align-items: center;
-  justify-content: center;
-}
-
-.theremin>.outer {
   --theremin-grid-width: 12;
   --theremin-grid-height: 11;
-  --video-width: 12;
-  --video-height: calc(var(--video-width) * .75);
-  width: calc(100% - 2vmin);
-  height: calc(100% - 2vmin);
-  position: relative;
-  border: none;
-}
-
-.theremin .inner {
-  display: flex;
+  --video-height: calc(var(--theremin-grid-width) * .75);
   flex-flow: column nowrap;
-  align-items: center;
-  justify-content: space-between;
 }
 
-.theremin .video-box {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: calc(100% * (var(--video-width) / var(--theremin-grid-width)));
+.theremin>.video-box {
+  width: 100%;
   height: calc(100% * (var(--video-height) / var(--theremin-grid-height)));
+  flex-flow: column nowrap;
 }
 
-.theremin .color-box {
-  position: absolute;
-  left: -1px;
-  top: calc(100% * ((.3 + var(--video-height)) / var(--theremin-grid-height)));
-  width: calc(100% * (7 / var(--theremin-grid-width)));
-  height: calc(100% * ((var(--theremin-grid-height) - var(--video-height) - .3) / var(--theremin-grid-height)));
-}
-
-.theremin .control-box {
-  position: absolute;
-  left: calc(100% * (7.3 / var(--theremin-grid-width)) - 1px);
-  top: calc(100% * ((.3 + var(--video-height)) / var(--theremin-grid-height)));
-  width: calc(100% * (4.7 / var(--theremin-grid-width)) - 1px);
-  height: calc(100% * ((var(--theremin-grid-height) - var(--video-height) - .3) / var(--theremin-grid-height)));
-}
-
-.theremin .video-box .inner {
+.theremin .video-layers {
   position: relative;
-  width: 90%;
-  height: 90%;
-  border: none;
-  background-color: #000000;
-}
-
-.theremin .video {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 4;
-  transform: scaleX(-1);
-}
-
-.theremin .tracker {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 5;
-  transform: scaleX(-1);
-}
-
-.theremin .click-box {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 10;
-  transform: scaleX(-1);
+  width: 98%;
+  height: 98%;
 }
 
 .theremin .screenframe {
   position: absolute;
   top: 0;
   left: 0;
-  width: auto;
-  height: auto;
+  width: 100%;
+  height: 100%;
   z-index: 6;
-  border-radius: 1.8vmin;
-  box-shadow: 0 0 1vmin .2vmin #000000;
+  filter: drop-shadow(.03rem .03rem .03rem #000000);
 }
 
-.theremin .settings-box {
-  width: 95%;
-  height: 100%;
-  display: flex;
+.theremin .video-element {
+  position: absolute;
+  left: 5%;
+  top: 5%;
+  width: 90%;
+  height: 90%;
+  transform: scaleX(-1);
+}
+
+.theremin .video-0 {
+  z-index: 4;
+  background-color: #000000;
+}
+
+.theremin .video-1 {
+  z-index: 5;
+}
+
+.theremin .video-2 {
+  z-index: 10;
+}
+
+.theremin>.settings-box {
+  width: 100%;
+  height: calc(100% * ((var(--theremin-grid-height) - var(--video-height)) / var(--theremin-grid-height)));
+  flex-flow: row nowrap;
+}
+
+.theremin>.settings-box {
   flex-flow: row nowrap;
   align-items: center;
   justify-content: space-around;
+}
+
+.theremin>.settings-box>.inner {
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.theremin .color-box {
+  width: calc(60% - 2vmin);
+}
+
+.theremin .control-box {
+  width: calc(40% - 2vmin);
 }
 
 .theremin .color-box .element {
@@ -110,16 +80,7 @@
   flex-flow: column nowrap;
   align-items: center;
   justify-content: space-around;
-  width: 50%;
-  height: 90%;
-}
-
-.theremin .control-box .element {
-  display: flex;
-  flex-flow: column nowrap;
-  align-items: center;
-  justify-content: space-around;
-  width: 35%;
+  width: 90%;
   height: 90%;
 }
 
@@ -133,11 +94,6 @@
   filter: drop-shadow(.02rem .02rem .025rem #000000);
 }
 
-.theremin .bigknob {
-  height: 55%;
-  filter: drop-shadow(.02rem .02rem .025rem #000000);
-}
-
 @keyframes pulsar {
   0% {
     opacity: 1;
@@ -145,4 +101,18 @@
   50% {
     opacity: .1;
   }
+}
+
+.theremin .control-box .element {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: space-around;
+  width: 35%;
+  height: 90%;
+}
+
+.theremin .bigknob {
+  height: 55%;
+  filter: drop-shadow(.02rem .02rem .025rem #000000);
 }

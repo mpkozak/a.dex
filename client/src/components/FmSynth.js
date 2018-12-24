@@ -12,14 +12,14 @@ export default class FmSynth extends PureComponent {
     };
     this.depth = {min: 0, max: 3000, mod: 'gain'};
     this.width = {min: -1200, max: 1200, mod: 'detune'};
-    this.changeSpeed = 500;
+    this.changeScalar = 500;
     this.setValue = this.setValue.bind(this);
   };
 
   setValue(delta, param) {
     const { ctx } = this.props;
     const { min, max, mod } = this[param];
-    const val = help.handleLevel(this.state[param], delta, min, max);
+    const val = help.getLevel(this.state[param], delta, min, max);
     if (val) {
       help.setAudio(this.props[param][mod], val, ctx);
       this.setState(prevState => ({ [param]: val }));
@@ -27,7 +27,7 @@ export default class FmSynth extends PureComponent {
   };
 
   makeElement(param) {
-    const { changeSpeed } = this;
+    const { changeScalar } = this;
     const { min, max } = this[param];
     const pct = help.getPercent(this.state[param], min, max);
     return (
@@ -35,8 +35,8 @@ export default class FmSynth extends PureComponent {
         <BigKnob
           rotation={pct}
           color='#313638'
-          handleClick={(e) => help.newHandleClick(e, this.setValue, changeSpeed, param)}
-          handleScroll={(e) => help.newHandleScroll(e, this.setValue, changeSpeed * 5, param)}
+          handleClick={(e) => help.handleClick(e, this.setValue, changeScalar, param)}
+          handleScroll={(e) => help.handleScroll(e, this.setValue, changeScalar * 5, param)}
         />
         <h5 className='label-small'>{param.toUpperCase()}</h5>
       </div>

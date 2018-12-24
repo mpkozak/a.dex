@@ -6,5 +6,5 @@
 .meters>.meter {
   width: calc(100% - 2vmin);
   height: calc(50% - 2vmin);
-  filter: drop-shadow(0 .02rem .025rem #000000) drop-shadow(.02rem 0 .025rem #000000);
+  filter: drop-shadow(.02rem .03rem .03rem #000000);
 }

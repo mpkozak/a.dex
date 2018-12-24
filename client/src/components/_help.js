@@ -27,16 +27,16 @@ help.setAudio = (param, val, ctx) => {
 };
 
 
-help.newHandleScroll = (e, callback, scalar, id) => {
+help.handleScroll = (e, callback, scalar, id) => {
   e.preventDefault();
   scalar = Number.isInteger(scalar) ? scalar : 1000;
   callback(e.deltaY / scalar, id);
 };
 
 
-help.newHandleClick = (e, callback, scalar, id) => {
+help.handleClick = (e, callback, scalar, id) => {
   e.preventDefault();
-  scalar = Number.isInteger(scalar) ? scalar : 100;
+  scalar = Number.isInteger(scalar) ? scalar : 200;
   var handleDrag = (e) => {
     callback((e.movementX - e.movementY) / scalar, id);
   };
@@ -49,7 +49,7 @@ help.newHandleClick = (e, callback, scalar, id) => {
 };
 
 
-help.handleLevel = (oldValue, delta, min, max) => {
+help.getLevel = (oldValue, delta, min, max) => {
   const range = max - min;
   const newValue = oldValue + (delta * range);
   if (newValue < min) {
@@ -61,84 +61,6 @@ help.handleLevel = (oldValue, delta, min, max) => {
 
 
 help.getPercent = (val, min, max) => ((val - min) / (max - min)) * 100;
-
-
-
-
-
-
-
-
-
-
-
-
-
-// help.setAudioParam = async (param, val, ctx) => {
-//   const t = ctx.currentTime + .0001;
-//   param.cancelScheduledValues(t);
-//   param.setValueAtTime(param.value, t);
-//   param.linearRampToValueAtTime(val, ctx.currentTime + .01);
-//   // return
-// };
-
-
-
-// help.setAudioParam = async (param, val, time, delay) => {
-//   param.cancelScheduledValues(time);
-//   param.setValueAtTime(param.value, time);
-//   param.linearRampToValueAtTime(val, time + delay);
-// };
-
-
-help.getParamPct = (param, v) => {
-  v = v ? v : param.v;
-  return ((v - param.min) / (param.max - param.min)) * 100;
-};
-
-// help.getParamPct = (param) => {
-//   return ((param.v - param.min) / (param.max - param.min)) * 100;
-// };
-
-
-help.handleClickParam = (e, key, callback) => {
-  e.preventDefault();
-  var handleDrag = (e) => {
-    callback((e.movementX - e.movementY) / 500, key);
-  };
-  window.addEventListener('mousemove', handleDrag);
-  var clearEvent = () => {
-    window.removeEventListener('mousemove', handleDrag);
-    window.removeEventListener('mouseup', clearEvent);
-  };
-   window.addEventListener('mouseup', clearEvent);
-};
-
-
-help.handleClickParamLinear = (e, key, callback) => {
-  e.preventDefault();
-  var handleDrag = (e) => {
-    callback((e.movementX - e.movementY) / 100, key);
-  };
-  window.addEventListener('mousemove', handleDrag);
-  var clearEvent = () => {
-    window.removeEventListener('mousemove', handleDrag);
-    window.removeEventListener('mouseup', clearEvent);
-  };
-   window.addEventListener('mouseup', clearEvent);
-};
-
-
-help.handleScrollParam = (e, key, callback) => {
-  e.preventDefault();
-  callback(e.deltaY / 2000, key);
-};
-
-
-help.handleScrollParamLinear = (e, key, callback) => {
-  e.preventDefault();
-  callback(e.deltaY / 1000, key);
-};
 
 
 
