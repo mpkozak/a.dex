@@ -669,7 +669,7 @@ export const ScreenFrame = () => {
         fill='none'
       />
 {/* Screen Contours */}
-      <use href='#screenframe-path-inner' fill='url(#screenframe-overlay-contour)' />
+      <use href='#screenframe-path-inner' fill='url(#screenframe-overlay-contour)' opacity='.8' />
     </svg>
   );
 };
