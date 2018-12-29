@@ -26,13 +26,11 @@ help.setAudio = (param, val, ctx) => {
   param.linearRampToValueAtTime(val, ctx.currentTime + .05);
 };
 
-
 help.handleScroll = (e, callback, scalar, id) => {
   e.preventDefault();
   scalar = Number.isInteger(scalar) ? scalar : 1000;
   callback(e.deltaY / scalar, id);
 };
-
 
 help.handleClick = (e, callback, scalar, id) => {
   e.preventDefault();
@@ -48,7 +46,6 @@ help.handleClick = (e, callback, scalar, id) => {
    window.addEventListener('mouseup', clearEvent);
 };
 
-
 help.getLevel = (oldValue, delta, min, max) => {
   const range = max - min;
   const newValue = oldValue + (delta * range);
@@ -58,7 +55,6 @@ help.getLevel = (oldValue, delta, min, max) => {
     return max;
   } else return newValue;
 };
-
 
 help.getPercent = (val, min, max) => ((val - min) / (max - min)) * 100;
 

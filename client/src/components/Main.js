@@ -2,14 +2,13 @@ import React, { PureComponent } from 'react';
 import './_css/Main.css';
 import help from './_help.js';
 import Init from './Init.js'
-  import Theremin from './Theremin.js';
+import Theremin from './Theremin.js';
 import Placard from './Placard.js';
 import Instructions from './Instructions.js';
 import Settings from './Settings.js';
 import Meters from './Meters.js';
 import Oscillators from './Oscillators.js';
 import FmSynth from './FmSynth.js';
-
 import Master from './Master.js';
 
 

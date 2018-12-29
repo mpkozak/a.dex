@@ -16,7 +16,7 @@ export default class Theremin extends PureComponent {
       colorFreq: '#00FF00',
       sensitivity: 30,
       range: 4,
-      calib: false,
+      calibTarget: false,
     };
     this.sensitivity = {min: 0, max: 221};
     this.range = {min: 2, max: 6};
@@ -25,6 +25,7 @@ export default class Theremin extends PureComponent {
     this.canvas = undefined;
     this.trackerHandleData = this.trackerHandleData.bind(this);
     this.updateParam = this.updateParam.bind(this);
+    this.getCoords = this.getCoords.bind(this);
   };
 
   componentDidMount() {
@@ -97,27 +98,27 @@ export default class Theremin extends PureComponent {
     this.props.refresh(x, y)
   };
 
-  updateColor(target) {
-    this.setState(prevState => ({ calib: target }));
-    const { ctx, tW, tH, scalar } = this.canvas;
-    const { clickBox } = this.refs;
-    const getCoords = (e) => {
-      clickBox.removeEventListener('click', getCoords);
-      ctx.drawImage(this.state.video, 0, 0, tW, tH);
-      const rgb = ctx.getImageData(e.offsetX / scalar, e.offsetY / scalar, 1, 1).data;
-      const r = ('0' + rgb[0].toString(16)).slice(-2);
-      const g = ('0' + rgb[1].toString(16)).slice(-2);
-      const b = ('0' + rgb[2].toString(16)).slice(-2);
-      const color = `#${r}${g}${b}`;
-      localStorage.setItem(target, color);
-      this.setState(prevState => ({
-        [target]: color,
-        calib: false
-      }));
-      this.trackerColorRefresh();
-    };
-    if (target) clickBox.addEventListener('click', getCoords);
-  };
+  // updateColor(target) {
+  //   this.setState(prevState => ({ calib: target }));
+  //   const { ctx, tW, tH, scalar } = this.canvas;
+  //   const { clickBox } = this.refs;
+  //   const getCoords = (e) => {
+  //     clickBox.removeEventListener('click', getCoords);
+  //     ctx.drawImage(this.state.video, 0, 0, tW, tH);
+  //     const rgb = ctx.getImageData(e.offsetX / scalar, e.offsetY / scalar, 1, 1).data;
+  //     const r = ('0' + rgb[0].toString(16)).slice(-2);
+  //     const g = ('0' + rgb[1].toString(16)).slice(-2);
+  //     const b = ('0' + rgb[2].toString(16)).slice(-2);
+  //     const color = `#${r}${g}${b}`;
+  //     localStorage.setItem(target, color);
+  //     this.setState(prevState => ({
+  //       [target]: color,
+  //       calib: false
+  //     }));
+  //     this.trackerColorRefresh();
+  //   };
+  //   if (target) clickBox.addEventListener('click', getCoords);
+  // };
 
   updateParam(delta, param) {
     const { min, max } = this[param];
@@ -128,14 +129,38 @@ export default class Theremin extends PureComponent {
     };
   };
 
+  getCoords(e) {
+    const { calibTarget } = this.state;
+    const { ctx, tW, tH, scalar } = this.canvas;
+    const { clickBox } = this.refs;
+    clickBox.removeEventListener('click', this.getCoords);
+    ctx.drawImage(this.state.video, 0, 0, tW, tH);
+    const rgb = ctx.getImageData(e.offsetX / scalar, e.offsetY / scalar, 1, 1).data;
+    const r = ('0' + rgb[0].toString(16)).slice(-2);
+    const g = ('0' + rgb[1].toString(16)).slice(-2);
+    const b = ('0' + rgb[2].toString(16)).slice(-2);
+    const color = `#${r}${g}${b}`;
+    localStorage.setItem(calibTarget, color);
+    this.setState(prevState => ({
+      [calibTarget]: color,
+      calibTarget: false
+    }));
+    this.trackerColorRefresh();
+  };
+
+  updateColor(calibTarget) {
+    this.setState(prevState => ({ calibTarget }));
+    this.refs.clickBox.addEventListener('click', this.getCoords);
+  };
+
   makeColorSwatch(color, text) {
-    const { calib } = this.state;
+    const { calibTarget } = this.state;
     return(
       <div className='element'>
         <ColorSwatch
           color={this.state[color]}
-          active={calib === color}
-          handleClick={() => this.updateColor(calib ? false : color)}
+          active={calibTarget === color}
+          handleClick={() => this.updateColor(calibTarget ? false : color)}
         />
         <h5 className='label-small'>{text}</h5>
       </div>
