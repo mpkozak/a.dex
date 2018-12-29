@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import './_css/Meters.css';
 import * as d3 from 'd3';
+import { line, curveLinear } from "d3-shape";
+import { scaleLinear } from "d3-scale";
 import { MeterWave, MeterVU } from './_svg.js';
 
 export default class Meters extends PureComponent {
