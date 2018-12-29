@@ -10,8 +10,8 @@ export default class FmSynth extends PureComponent {
       depth: props.depth.gain.value,
       width: props.width.detune.value
     };
-    this.depth = {min: 0, max: 3000, mod: 'gain'};
-    this.width = {min: -1200, max: 1200, mod: 'detune'};
+    this.depth = { min: 0, max: 3000, mod: 'gain' };
+    this.width = { min: -1200, max: 1200, mod: 'detune' };
     this.changeScalar = 500;
     this.setValue = this.setValue.bind(this);
   };

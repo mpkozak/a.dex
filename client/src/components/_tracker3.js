@@ -119,44 +119,44 @@ export default class Tracker {
       Math.pow((c1.b - c2.b), 2)
     );
   };
-  _devStart(handleResult, iterations) {
-    this.handleResult = handleResult;
-    this.endIter = iterations;
-    this.px = 0;
-    this.iter = 0;
-    this.runtime = 0;
-    this.begin = 0;
-    this.rAF = requestAnimationFrame(this._devStack.bind(this));
-  };
-  _devStack() {
-    this.begin = new Date();
-    this.getData()
-      .then(res => this.filterData(res))
-      .then(res => {
-        res.forEach(d => this.px += d.data.length);
-        return this.reduceData(res);
-      })
-      .then(res => {
-        const err = {'': 'finished...'}
-        this.callback(res);
-        this.iter++;
-        this.runtime += new Date() - this.begin;
-        if (this.iter >= this.endIter) throw err;
-        this.rAF = requestAnimationFrame(this._devStack.bind(this));
-      })
-      .catch(err => {
-        this.stop();
-        console.log(err);
-        const results = {
-          '': this.__proto__.constructor.name + ' _r' + this.reducer + ' _s' + this.sensitivity + ' _i' + this.iter,
-          'ms / cycle': this.runtime / this.iter,
-          '% duty cycle': ((this.runtime / (this.iter * (1000 / 60))) * 100).toFixed(2),
-          '% pixels matched': ((this.px / (this.tWidth * this.tHeight * this.iter * 2)) * 100).toFixed(2),
-          'ms runtime (active / total)': this.runtime + ' / ' + Math.round(this.iter * (1000 / 60)),
-          'pixels / ms (actual / scaled)': Math.round(this.px / this.runtime) + ' / ' + Math.round(Math.pow(this.reducer, 2) * (this.px / this.runtime)),
-          'pixels processed': this.px,
-        };
-        this.handleResult(results);
-      });
-  };
+  // _devStart(handleResult, iterations) {
+  //   this.handleResult = handleResult;
+  //   this.endIter = iterations;
+  //   this.px = 0;
+  //   this.iter = 0;
+  //   this.runtime = 0;
+  //   this.begin = 0;
+  //   this.rAF = requestAnimationFrame(this._devStack.bind(this));
+  // };
+  // _devStack() {
+  //   this.begin = new Date();
+  //   this.getData()
+  //     .then(res => this.filterData(res))
+  //     .then(res => {
+  //       res.forEach(d => this.px += d.data.length);
+  //       return this.reduceData(res);
+  //     })
+  //     .then(res => {
+  //       const err = {'': 'finished...'}
+  //       this.callback(res);
+  //       this.iter++;
+  //       this.runtime += new Date() - this.begin;
+  //       if (this.iter >= this.endIter) throw err;
+  //       this.rAF = requestAnimationFrame(this._devStack.bind(this));
+  //     })
+  //     .catch(err => {
+  //       this.stop();
+  //       console.log(err);
+  //       const results = {
+  //         '': this.__proto__.constructor.name + ' _r' + this.reducer + ' _s' + this.sensitivity + ' _i' + this.iter,
+  //         'ms / cycle': this.runtime / this.iter,
+  //         '% duty cycle': ((this.runtime / (this.iter * (1000 / 60))) * 100).toFixed(2),
+  //         '% pixels matched': ((this.px / (this.tWidth * this.tHeight * this.iter * 2)) * 100).toFixed(2),
+  //         'ms runtime (active / total)': this.runtime + ' / ' + Math.round(this.iter * (1000 / 60)),
+  //         'pixels / ms (actual / scaled)': Math.round(this.px / this.runtime) + ' / ' + Math.round(Math.pow(this.reducer, 2) * (this.px / this.runtime)),
+  //         'pixels processed': this.px,
+  //       };
+  //       this.handleResult(results);
+  //     });
+  // };
 };

@@ -18,14 +18,13 @@ export default class Main extends PureComponent {
     this.state = {
       audioEnabled: false,
       showHelp: false,
-      analyseMic: false,
+      micActive: false,
     };
     this.audio = false;
     this.audioInit = this.audioInit.bind(this);
     this.audioMute = this.audioMute.bind(this);
     this.toggleMic = this.toggleMic.bind(this);
     this.toggleHelp = this.toggleHelp.bind(this);
-
     this.controllerRefresh = this.controllerRefresh.bind(this);
   };
 
@@ -60,24 +59,24 @@ export default class Main extends PureComponent {
   };
 
   toggleMic() {
-    const { analyseMic } = this.state;
+    const { micActive } = this.state;
     const { ctx, masterGain, analyser, mic } = this.audio;
     if (!mic) {
-      navigator.mediaDevices.getUserMedia({audio: true})
+      navigator.mediaDevices.getUserMedia({ audio: true })
         .then(stream => {
           const mic = ctx.createMediaStreamSource(stream);
           this.audio.mic = mic;
           masterGain.disconnect(analyser);
           mic.connect(analyser);
         });
-    } else if (!analyseMic) {
+    } else if (!micActive) {
       masterGain.disconnect(analyser);
       mic.connect(analyser);
     } else {
       mic.disconnect(analyser);
       masterGain.connect(analyser);
     };
-    this.setState(prevState => ({ analyseMic: !prevState.analyseMic }));
+    this.setState(prevState => ({ micActive: !prevState.micActive }));
   };
 
   toggleHelp() {
@@ -95,7 +94,7 @@ export default class Main extends PureComponent {
 
   render() {
     // console.log('Main rendered')
-    const { audioEnabled, analyseMic, showHelp } = this.state;
+    const { audioEnabled, micActive, showHelp } = this.state;
     const { ctx, osc1, osc2, fmGain, instGain, analyser, masterGain } = this.audio;
     const latency = audioEnabled ? Math.round((ctx.currentTime - ctx.getOutputTimestamp().contextTime) * 1000) : 0;
     return (
@@ -106,7 +105,7 @@ export default class Main extends PureComponent {
               <Theremin refresh={this.controllerRefresh} mute={this.audioMute} />
               <Placard show={showHelp} toggle={this.toggleHelp} />
               <Instructions show={showHelp} toggle={this.toggleHelp} />
-              <Settings latency={latency} active={analyseMic} toggle={this.toggleMic} />
+              <Settings latency={latency} micActive={micActive} toggle={this.toggleMic} />
               <Meters analyser={analyser} />
               <Oscillators ctx={ctx} osc1={osc1} osc2={osc2} instGain={instGain} />
               <FmSynth ctx={ctx} depth={fmGain} width={osc2} />
