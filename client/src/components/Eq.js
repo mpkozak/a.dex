@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import './_css/FmSynth.css';
+import './_css/Eq.css';
 import help from './_help.js';
 import { BigKnob } from './_svg.js';
 
@@ -10,14 +10,14 @@ export default class Eq extends PureComponent {
       low: props.low.frequency.value,
       high: props.high.frequency.value
     };
-    this.low = { min: 0, max: 440, mod: 'frequency' };
-    this.high = { min: 2200, max: 22000, mod: 'frequency' };
+    this.low = { min: 0, max: 880, mod: 'frequency' };
+    this.high = { min: 1100, max: 11000, mod: 'frequency' };
     this.changeScalar = 500;
     this.setValue = this.setValue.bind(this);
   };
 
   setValue(delta, param) {
-    const { ctx } = this.props;
+    const ctx = this.props[param].context;
     const { min, max, mod } = this[param];
     const val = help.getLevel(this.state[param], delta, min, max);
     if (val) {
@@ -45,7 +45,7 @@ export default class Eq extends PureComponent {
 
 
   render() {
-    console.log('Eq rendered');
+    // console.log('Eq rendered');
     return (
       <div className="eq outer">
         <div className="inner">

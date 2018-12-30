@@ -109,7 +109,7 @@
   /*background-color: rgba(127,127,0,.5);*/
 }
 
-.fx2 {
+.eq {
   position: absolute;
   left: calc(9.5 * (100% / var(--grid-width)));
   top: calc(11 * (100% / var(--grid-height)));

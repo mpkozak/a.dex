@@ -40,14 +40,13 @@ export default class Main extends PureComponent {
     const osc2 = new OscillatorNode(ctx, { type: 'sine', frequency: baseHz, detune: -1200 });
     const fmGain = new GainNode(ctx, { gain: 1500 });
     const instGain = new GainNode(ctx, { gain: 0 });
-    const eqLow = new BiquadFilterNode(ctx, { type: 'highpass', frequency: 80 });
+    const eqLow = new BiquadFilterNode(ctx, { type: 'highpass', frequency: 110 });
     const eqHigh = new BiquadFilterNode(ctx, { type: 'lowpass', frequency: 4400 });
     const masterGain = new GainNode(ctx, { gain: .73 });
     const analyser = new AnalyserNode(ctx, { fftSize: Math.pow(2, fftSizeBase), minDecibels: -100, maxDecibels: -30, smoothingTimeConstant: 0 });
     osc1.connect(fmGain);
     fmGain.connect(osc2.frequency);
     osc2.connect(instGain);
-    // instGain.connect(masterGain);
     instGain.connect(eqLow);
     eqLow.connect(eqHigh);
     eqHigh.connect(masterGain);
@@ -114,10 +113,10 @@ export default class Main extends PureComponent {
               <Instructions show={showHelp} toggle={this.toggleHelp} />
               <Settings latency={latency} micActive={micActive} toggle={this.toggleMic} />
               <Meters analyser={analyser} />
-              <Oscillators ctx={ctx} osc1={osc1} osc2={osc2} instGain={instGain} />
+              <Oscillators osc1={osc1} osc2={osc2} instGain={instGain} />
               <FmSynth depth={fmGain} width={osc2} />
-              <Eq ctx={ctx} low={eqLow} high={eqHigh} />
-              <Master ctx={ctx} masterGain={masterGain} />
+              <Eq low={eqLow} high={eqHigh} />
+              <Master masterGain={masterGain} />
             </React.Fragment>
         }
       </div>
