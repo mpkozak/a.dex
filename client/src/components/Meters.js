@@ -47,9 +47,10 @@ export default class Meters extends PureComponent {
       for (let i = 0; i < fftSize; i++) {
         const d = data[i];
         dataSum += Math.pow(d, 2);
-        const x = (i / (fftSize - 1)) * 100;
-        const y = (d * 50) + 30;
-        dataCurve[i] = [x, y];
+        // const x = (i / (fftSize - 1)) * 100;
+        // const y = (d * 50) + 30;
+        // dataCurve[i] = [x, y];
+        dataCurve[i] = [(i / (fftSize - 1)) * 100, (d * 50) + 30];
       };
       const dataRms = 20 * Math.log10(Math.sqrt(dataSum / fftSize)) + 20;
       dataPeak = dataRms > 15 ? new Date() : dataPeak;
@@ -64,7 +65,7 @@ export default class Meters extends PureComponent {
     // console.log('Meters rendered')
     const { wave, opacity, rotation, peak } = this.state;
     return (
-      <div className='meters outer'>
+      <div className="meters outer">
         <MeterWave wave={wave} opacity={opacity} />
         <MeterVU rotation={rotation} peak={peak} />
       </div>

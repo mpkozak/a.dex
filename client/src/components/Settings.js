@@ -7,14 +7,14 @@ export default class Settings extends PureComponent {
     // console.log('Settings rendered')
     const { latency, micActive, toggle } = this.props;
     return (
-      <div className='settings outer'>
-        <div className='latency element'>
+      <div className="settings outer">
+        <div className="latency element">
           <SevenSegment value={latency} />
-          <h6 className='label-small'>LATENCY (ms)</h6>
+          <h6 className="label-small">LATENCY (ms)</h6>
         </div>
-        <div className='monitor element'>
-          <GlowButton icon='mic' active={micActive} handleClick={toggle} />
-          <h6 className='label-small'>MONITOR SRC</h6>
+        <div className="monitor element">
+          <GlowButton icon={'mic'} active={micActive} handleClick={toggle} />
+          <h6 className="label-small">MONITOR SRC</h6>
         </div>
       </div>
     );

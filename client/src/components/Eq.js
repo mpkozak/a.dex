@@ -3,21 +3,21 @@ import './_css/FmSynth.css';
 import help from './_help.js';
 import { BigKnob } from './_svg.js';
 
-export default class FmSynth extends PureComponent {
+export default class Eq extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      depth: props.depth.gain.value,
-      width: props.width.detune.value
+      low: props.low.frequency.value,
+      high: props.high.frequency.value
     };
-    this.depth = { min: 0, max: 3000, mod: 'gain' };
-    this.width = { min: -1200, max: 1200, mod: 'detune' };
+    this.low = { min: 0, max: 440, mod: 'frequency' };
+    this.high = { min: 2200, max: 22000, mod: 'frequency' };
     this.changeScalar = 500;
     this.setValue = this.setValue.bind(this);
   };
 
   setValue(delta, param) {
-    const ctx = this.props[param].context;
+    const { ctx } = this.props;
     const { min, max, mod } = this[param];
     const val = help.getLevel(this.state[param], delta, min, max);
     if (val) {
@@ -45,14 +45,14 @@ export default class FmSynth extends PureComponent {
 
 
   render() {
-    // console.log('FmSynth rendered');
+    console.log('Eq rendered');
     return (
-      <div className="fmsynth outer">
+      <div className="eq outer">
         <div className="inner">
-          <h4 className="label">FM Synth</h4>
+          <h4 className="label">EQ</h4>
           <div className="knob-box">
-            {this.makeElement('depth')}
-            {this.makeElement('width')}
+            {this.makeElement('low')}
+            {this.makeElement('high')}
           </div>
         </div>
       </div>

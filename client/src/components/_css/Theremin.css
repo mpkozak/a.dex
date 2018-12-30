@@ -24,7 +24,11 @@
   width: 100%;
   height: 100%;
   z-index: 6;
-  filter: drop-shadow(.03rem .03rem .03rem #000000);
+  /*filter: drop-shadow(.03rem .03rem .03rem #000000);*/
+  border-radius: 1.75vmin;
+  /*box-shadow: .5vmin .5vmin 1vmin #000000;*/
+  box-shadow: 0 0 .5vmin .1vmin #000000;
+  /*background-color: #fff;*/
 }
 
 .theremin .video-element {

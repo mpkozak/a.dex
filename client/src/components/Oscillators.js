@@ -15,17 +15,17 @@ export default class Oscillators extends PureComponent {
   };
 
   setOsc(osc, type) {
-    const { ctx, instGain } = this.props;
-    help.setAudioGain(instGain.gain, 0, ctx, .01);
+    const { instGain } = this.props;
+    help.setAudioGain(instGain.gain, 0, instGain.context, .01);
     setTimeout(() => this.props[osc].type = type, 10);
     this.setState(prevState => ({ [osc]: type }));
   }
 
   makeElement(osc, label) {
     return (
-      <div className='inner'>
-        <h4 className='label'>{label}</h4>
-        <div className='button-box'>
+      <div className="inner">
+        <h4 className="label">{label}</h4>
+        <div className="button-box">
           {this.oscillators.map((d, i) =>
             <GlowButton
               key={label + i}
@@ -43,7 +43,7 @@ export default class Oscillators extends PureComponent {
   render() {
     // console.log('Oscillators rendered')
     return (
-      <div className='oscillators outer'>
+      <div className="oscillators outer">
         {this.makeElement('osc1', 'Osc 1')}
         {this.makeElement('osc2', 'Osc 2')}
       </div>

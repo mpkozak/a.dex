@@ -32,10 +32,10 @@ export default function App() {
     } else {
       return (
         <React.Fragment>
-          <div className='logo'>
+          <div className="logo">
             <Logo />
           </div>
-          <div className='message'>
+          <div className="message">
             {mobile && <h1>Please relaunch using a desktop browser.</h1>}
             <br />
             {!chrome && <h3>For best results, please use Chrome.</h3>}
@@ -45,8 +45,9 @@ export default function App() {
     }
   };
 
+
   return (
-    <div className='App'>
+    <div className="App">
       {showMain()}
     </div>
   );

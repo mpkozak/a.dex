@@ -162,22 +162,22 @@ export default class Theremin extends PureComponent {
     // console.log('Theremin rendered')
     const { vW, vH } = this.state;
     return (
-      <div className='theremin outer'>
-        <div className='video-box outer'>
-          <div className='video-layers'>
+      <div className="theremin outer">
+        <div className="video-box outer">
+          <div className="video-layers">
             <ScreenFrame />
-            <video className='video-0 video-element' ref='video' preload='true' autoPlay loop muted/>
-            <svg className='video-1 video-element' ref='svgTracker' width={vW} height={vH}/>
-            <svg className='video-2 video-element' ref='clickBox' width={vW} height={vH}/>
+            <video className="video-0 video-element" ref="video" preload="true" autoPlay loop muted/>
+            <svg className="video-1 video-element" ref="svgTracker" width={vW} height={vH}/>
+            <svg className="video-2 video-element" ref="clickBox" width={vW} height={vH}/>
           </div>
         </div>
-        <div className='settings-box outer'>
-          <div className='color-box inner'>
-            <h4 className='label'>Set Colors</h4>
+        <div className="settings-box outer">
+          <div className="color-box inner">
+            <h4 className="label">Set Colors</h4>
             {this.makeColorSwatch('colorGain', 'GAIN')}
             {this.makeColorSwatch('colorFreq', 'PITCH')}
           </div>
-          <div className='control-box inner'>
+          <div className="control-box inner">
             {this.makeControlKnob('sensitivity')}
             {this.makeControlKnob('range')}
           </div>

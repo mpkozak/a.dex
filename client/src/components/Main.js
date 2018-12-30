@@ -9,6 +9,7 @@ import Settings from './Settings.js';
 import Meters from './Meters.js';
 import Oscillators from './Oscillators.js';
 import FmSynth from './FmSynth.js';
+import Eq from './Eq.js';
 import Master from './Master.js';
 
 
@@ -35,21 +36,26 @@ export default class Main extends PureComponent {
     const fftSizeBase = 9;
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     const ctx = new AudioContext();
-    const osc1 = new OscillatorNode(ctx, {type: 'triangle', frequency: baseHz});
-    const osc2 = new OscillatorNode(ctx, {type: 'sine', frequency: baseHz, detune: -1200});
-    const fmGain = new GainNode(ctx, {gain: 1500});
-    const instGain = new GainNode(ctx, {gain: 0})
-    const masterGain = new GainNode(ctx, {gain: .73});
-    const analyser = new AnalyserNode(ctx, {fftSize: Math.pow(2, fftSizeBase), minDecibels: -100, maxDecibels: -30, smoothingTimeConstant: 0});
+    const osc1 = new OscillatorNode(ctx, { type: 'triangle', frequency: baseHz });
+    const osc2 = new OscillatorNode(ctx, { type: 'sine', frequency: baseHz, detune: -1200 });
+    const fmGain = new GainNode(ctx, { gain: 1500 });
+    const instGain = new GainNode(ctx, { gain: 0 });
+    const eqLow = new BiquadFilterNode(ctx, { type: 'highpass', frequency: 80 });
+    const eqHigh = new BiquadFilterNode(ctx, { type: 'lowpass', frequency: 4400 });
+    const masterGain = new GainNode(ctx, { gain: .73 });
+    const analyser = new AnalyserNode(ctx, { fftSize: Math.pow(2, fftSizeBase), minDecibels: -100, maxDecibels: -30, smoothingTimeConstant: 0 });
     osc1.connect(fmGain);
     fmGain.connect(osc2.frequency);
     osc2.connect(instGain);
-    instGain.connect(masterGain);
+    // instGain.connect(masterGain);
+    instGain.connect(eqLow);
+    eqLow.connect(eqHigh);
+    eqHigh.connect(masterGain);
     masterGain.connect(analyser);
     masterGain.connect(ctx.destination);
     osc1.start();
     osc2.start();
-    this.audio = {ctx, osc1, osc2, fmGain, instGain, masterGain, analyser, baseHz, delay, mic};
+    this.audio = {ctx, osc1, osc2, fmGain, instGain, eqLow, eqHigh, masterGain, analyser, baseHz, delay, mic};
     this.setState(prevState => ({ audioEnabled: true }));
   };
 
@@ -94,8 +100,9 @@ export default class Main extends PureComponent {
 
   render() {
     // console.log('Main rendered')
+    console.log(this.audio)
     const { audioEnabled, micActive, showHelp } = this.state;
-    const { ctx, osc1, osc2, fmGain, instGain, analyser, masterGain } = this.audio;
+    const { ctx, osc1, osc2, fmGain, eqLow, eqHigh, instGain, analyser, masterGain } = this.audio;
     const latency = audioEnabled ? Math.round((ctx.currentTime - ctx.getOutputTimestamp().contextTime) * 1000) : 0;
     return (
       <div className='Main'>
@@ -108,8 +115,8 @@ export default class Main extends PureComponent {
               <Settings latency={latency} micActive={micActive} toggle={this.toggleMic} />
               <Meters analyser={analyser} />
               <Oscillators ctx={ctx} osc1={osc1} osc2={osc2} instGain={instGain} />
-              <FmSynth ctx={ctx} depth={fmGain} width={osc2} />
-                <div className='fx2'/>
+              <FmSynth depth={fmGain} width={osc2} />
+              <Eq ctx={ctx} low={eqLow} high={eqHigh} />
               <Master ctx={ctx} masterGain={masterGain} />
             </React.Fragment>
         }
