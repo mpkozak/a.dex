@@ -28,7 +28,6 @@
   border-radius: 1.75vmin;
   /*box-shadow: .5vmin .5vmin 1vmin #000000;*/
   box-shadow: 0 0 .5vmin .1vmin #000000;
-  /*background-color: #fff;*/
 }
 
 .theremin .video-element {
@@ -50,6 +49,19 @@
 }
 
 .theremin .video-2 {
+  z-index: 6;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+  transform: none;
+}
+
+.theremin .osd {
+  animation: pulsar 1s linear infinite;
+}
+
+.theremin .video-3 {
   z-index: 10;
 }
 

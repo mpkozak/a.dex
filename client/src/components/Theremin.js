@@ -160,7 +160,7 @@ export default class Theremin extends PureComponent {
 
   render() {
     // console.log('Theremin rendered')
-    const { vW, vH } = this.state;
+    const { vW, vH, calibTarget } = this.state;
     return (
       <div className="theremin outer">
         <div className="video-box outer">
@@ -168,7 +168,12 @@ export default class Theremin extends PureComponent {
             <ScreenFrame />
             <video className="video-0 video-element" ref="video" preload="true" autoPlay loop muted />
             <svg className="video-1 video-element" ref="svgTracker" width={vW} height={vH} />
-            <svg className="video-2 video-element" ref="clickBox" width={vW} height={vH} />
+            {calibTarget &&
+              <div className="video-2 video-element">
+                <h2 className="osd">Calibrating...</h2>
+              </div>
+            }
+            <svg className="video-3 video-element" ref="clickBox" width={vW} height={vH} />
           </div>
         </div>
         <div className="settings-box outer">
