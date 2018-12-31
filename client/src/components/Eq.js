@@ -8,9 +8,11 @@ export default class Eq extends PureComponent {
     super(props);
     this.state = {
       low: props.low.frequency.value,
+      mid: props.mid.gain.value,
       high: props.high.frequency.value
     };
     this.low = { min: 0, max: 880, mod: 'frequency' };
+    this.mid = { min: -10, max: 10, mod: 'gain' };
     this.high = { min: 1100, max: 11000, mod: 'frequency' };
     this.changeScalar = 500;
     this.setValue = this.setValue.bind(this);
@@ -52,6 +54,7 @@ export default class Eq extends PureComponent {
           <h4 className="label">EQ</h4>
           <div className="knob-box">
             {this.makeElement('low')}
+            {this.makeElement('mid')}
             {this.makeElement('high')}
           </div>
         </div>

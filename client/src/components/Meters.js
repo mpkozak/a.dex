@@ -32,7 +32,7 @@ export default class Meters extends PureComponent {
 
     const parseData = (dataRms) => {
       const waveLength = document.getElementById('wave-path').getTotalLength();
-      const rms = dataRms < -60 ? -60 : dataRms;
+      const rms = dataRms < -60 ? -60 : dataRms > 20 ? 20 : dataRms;
       const wave = waveScaleCurve(dataCurve);
       const opacity = (100 - Math.sqrt(waveLength)) / 100;
       const rotation = this.state.rotation * (5 / 6) + (needleScale(rms) / 6);

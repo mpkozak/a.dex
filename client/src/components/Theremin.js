@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { select } from "d3-selection";
+import { select } from 'd3-selection';
 import './_css/Theremin.css';
 import help from './_help.js';
 import Tracker from './_tracker3.js';
@@ -166,9 +166,9 @@ export default class Theremin extends PureComponent {
         <div className="video-box outer">
           <div className="video-layers">
             <ScreenFrame />
-            <video className="video-0 video-element" ref="video" preload="true" autoPlay loop muted/>
-            <svg className="video-1 video-element" ref="svgTracker" width={vW} height={vH}/>
-            <svg className="video-2 video-element" ref="clickBox" width={vW} height={vH}/>
+            <video className="video-0 video-element" ref="video" preload="true" autoPlay loop muted />
+            <svg className="video-1 video-element" ref="svgTracker" width={vW} height={vH} />
+            <svg className="video-2 video-element" ref="clickBox" width={vW} height={vH} />
           </div>
         </div>
         <div className="settings-box outer">
