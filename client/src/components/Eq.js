@@ -7,23 +7,24 @@ export default class Eq extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      low: props.low.frequency.value,
-      mid: props.mid.gain.value,
-      high: props.high.frequency.value
+      freq: props.eq.frequency.value,
+      q: props.eq.Q.value,
+      gain: props.eq.gain.value
     };
-    this.low = { min: 0, max: 880, mod: 'frequency' };
-    this.mid = { min: -10, max: 10, mod: 'gain' };
-    this.high = { min: 1100, max: 11000, mod: 'frequency' };
+    this.freq = { min: 110, max: 2200, mod: 'frequency' };
+    this.q = { min: 1, max: 10, mod: 'Q' };
+    this.gain = { min: -10, max: 10, mod: 'gain' };
     this.changeScalar = 500;
     this.setValue = this.setValue.bind(this);
   };
 
   setValue(delta, param) {
-    const ctx = this.props[param].context;
+    console.log(this.props.eq.frequency.value, this.props.eq.Q.value, this.props.eq.gain.value)
+    const ctx = this.props.eq.context;
     const { min, max, mod } = this[param];
     const val = help.getLevel(this.state[param], delta, min, max);
     if (val) {
-      help.setAudio(this.props[param][mod], val, ctx);
+      help.setAudio(this.props.eq[mod], val, ctx);
       this.setState(prevState => ({ [param]: val }));
     };
   };
@@ -36,7 +37,7 @@ export default class Eq extends PureComponent {
       <div className="element">
         <BigKnob
           rotation={pct}
-          color={'#313638'}
+          color={'#3A3125'}
           handleClick={(e) => help.handleClick(e, this.setValue, changeScalar, param)}
           handleScroll={(e) => help.handleScroll(e, this.setValue, changeScalar * 5, param)}
         />
@@ -53,9 +54,9 @@ export default class Eq extends PureComponent {
         <div className="inner">
           <h4 className="label">EQ</h4>
           <div className="knob-box">
-            {this.makeElement('low')}
-            {this.makeElement('mid')}
-            {this.makeElement('high')}
+            {this.makeElement('freq')}
+            {this.makeElement('q')}
+            {this.makeElement('gain')}
           </div>
         </div>
       </div>

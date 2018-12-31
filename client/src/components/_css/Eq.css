@@ -19,7 +19,7 @@
 }
 
 .eq .element {
-  width: 35%;
+  width: 25%;
   height: 90%;
   display: flex;
   flex-flow: column nowrap;
