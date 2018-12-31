@@ -9,7 +9,7 @@ import Settings from './Settings.js';
 import Meters from './Meters.js';
 import Oscillators from './Oscillators.js';
 import FmSynth from './FmSynth.js';
-import Eq from './Eq.js';
+// import Eq from './Eq.js';
 import Master from './Master.js';
 
 
@@ -116,7 +116,9 @@ export default class Main extends PureComponent {
               <Meters analyser={analyser} />
               <Oscillators osc1={osc1} osc2={osc2} instGain={instGain} />
               <FmSynth depth={fmGain} width={osc2} />
+{/*
               <Eq low={eqLow} mid={eqMid} high={eqHigh} />
+*/}
               <Master masterGain={masterGain} />
             </React.Fragment>
         }

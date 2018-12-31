@@ -2,8 +2,9 @@ import React, { PureComponent } from 'react';
 import { select } from 'd3-selection';
 import './_css/Theremin.css';
 import help from './_help.js';
-import Tracker from './_tracker3.js';
+import Tracker from './_tracker4.js';
 import { ColorSwatch, BigKnob, ScreenFrame } from './_svg.js';
+
 
 export default class Theremin extends PureComponent {
     constructor(props) {
@@ -186,3 +187,11 @@ export default class Theremin extends PureComponent {
     );
   };
 };
+
+            // {this.tracker &&
+            //   <React.Fragment>
+            //     <button onClick={() => this.tracker.stop()}>stop</button>
+            //     <button onClick={() => this.tracker.start()}>start</button>
+            //   </React.Fragment>
+            // }
+            //
