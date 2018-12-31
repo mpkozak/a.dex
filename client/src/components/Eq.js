@@ -19,7 +19,6 @@ export default class Eq extends PureComponent {
   };
 
   setValue(delta, param) {
-    console.log(this.props.eq.frequency.value, this.props.eq.Q.value, this.props.eq.gain.value)
     const ctx = this.props.eq.context;
     const { min, max, mod } = this[param];
     const val = help.getLevel(this.state[param], delta, min, max);
