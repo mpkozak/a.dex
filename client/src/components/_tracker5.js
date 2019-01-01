@@ -48,8 +48,6 @@ export default class Tracker {
   async getData() {
     const { tWidth, tHeight, tCtx, video } = this;
     tCtx.drawImage(video, 0, 0, tWidth, tHeight);
-    // const data = tCtx.getImageData(0, 0, tWidth, tHeight);
-    // return data.data;
     return tCtx.getImageData(0, 0, tWidth, tHeight).data;
   };
   async filterData(data) {
