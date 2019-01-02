@@ -2,7 +2,6 @@ const help = {};
 
 
 help.setAudioGain = (gain, val, ctx, delay) => {
-  // console.log('setAudioGain fired')
   const t = ctx.currentTime + .0001;
   gain.cancelScheduledValues(t);
   gain.setValueAtTime(gain.value, t);
@@ -10,7 +9,6 @@ help.setAudioGain = (gain, val, ctx, delay) => {
 };
 
 help.setAudioFreq = (freqs, val, ctx, delay) => {
-  // console.log('setAudioFreq fired')
   freqs.forEach(freq => {
     const t = ctx.currentTime + .0001;
     freq.cancelScheduledValues(t);
@@ -61,30 +59,6 @@ help.getPercent = (val, min, max) => ((val - min) / (max - min)) * 100;
 
 
 export default help;
-
-
-
-
-  // param.setValueAtTime(param.value, time);
-  // param.exponentialRampToValueAtTime(val + .0001, time + delay)
-
-  // const a = await param.cancelScheduledValues(ctx.currentTime);
-  // const b = await a.setValueAtTime(parseFloat(a.value), ctx.currentTime);
-  // const c = await b.linearRampToValueAtTime(val, parseFloat(ctx.currentTime + delay));
-  // await c;
-  // return ctx.currentTime;
-
-  // const a = await param.cancelScheduledValues(ctx.currentTime);
-  // const b = await a.setValueAtTime(parseFloat(a.value), ctx.currentTime);
-  // const c = await b.linearRampToValueAtTime(val, parseFloat(ctx.currentTime + delay));
-  // await c;
-  // return ctx.currentTime;
-
-  // const now = ctx.currentTime;
-  // const a = param.cancelScheduledValues(now);
-  // param.setValueAtTime(a.value, now);
-  // param.linearRampToValueAtTime(val, ctx.currentTime + delay);
-  // return ctx.currentTime;
 
 
 

@@ -159,7 +159,6 @@ export default class Theremin extends PureComponent {
 
 
   render() {
-    // console.log('Theremin rendered')
     const { vW, vH, calibTarget } = this.state;
     return (
       <div className="theremin outer">

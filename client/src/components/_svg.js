@@ -470,11 +470,13 @@ export const GlowButton = (props) => {
   const { icon, active, handleClick } = props;
   const colorButton = '#AAAAAA';
   const icons = {
+    mic: 'M 3.5 8 L 6.5 8 M 5 8 L 5 7 M 3 5 C 3 7.5, 7 7.5, 7 5 M 3.75 5 C 3.75 6.5, 6.25 6.5, 6.25 5 L 6.25 3 C 6.25 1.5, 3.75 1.5, 3.75 3 Z',
     sine: 'M 2 5 Q 3.5 0, 5 5 Q 6.5 10, 8 5',
     triangle: 'M 2 5 L 3.5 2.5 L 6.5 7.5 L 8 5',
     sawtooth: 'M 2 5 L 5 2.5 L 5 7.5 L 8 5',
     square: 'M 2 5 L 2 2.5 L 5 2.5 L 5 7.5 L 8 7.5 L 8 5',
-    mic: 'M 3.5 8 L 6.5 8 M 5 8 L 5 7 M 3 5 C 3 7.5, 7 7.5, 7 5 M 3.75 5 C 3.75 6.5, 6.25 6.5, 6.25 5 L 6.25 3 C 6.25 1.5, 3.75 1.5, 3.75 3 Z',
+    // lpf: 'M 2 5 L 6 5 L 8 7',
+    // hpf: 'M 2 7 L 4 5 L 8 5'
   };
   return (
     <svg className="glowbutton" viewBox="0 0 10 10" onClick={handleClick}>
@@ -633,10 +635,10 @@ export const HelpButton = (props) => {
 
 
 export const SevenSegment = (props) => {
-  const { value, size } = props;
-  const width = size * 6 + 2;
-  const bg = '8'.repeat(size);
-  const val = Math.round(value);
+  const { value, digits, exact } = props;
+  const width = digits * 6 + 2;
+  const bg = '8.'.repeat(digits);
+  const val = exact ? value : Math.round(value);
   const sevenFont = {
     fontFamily: 'DSEG7 Classic',
     fontSize: 7

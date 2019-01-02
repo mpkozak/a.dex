@@ -1,4 +1,3 @@
-
 export default class Tracker {
   constructor(callback, video, color1, color2, sensitivity = 50, reducer = 10) {
     this.callback = callback;

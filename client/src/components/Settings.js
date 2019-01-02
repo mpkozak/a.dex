@@ -4,12 +4,11 @@ import { SevenSegment, GlowButton } from './_svg.js';
 
 export default class Settings extends PureComponent {
   render() {
-    // console.log('Settings rendered')
     const { latency, micActive, toggle } = this.props;
     return (
       <div className="settings outer">
         <div className="latency element">
-          <SevenSegment value={latency} size={3} />
+          <SevenSegment value={latency} digits={3} />
           <h6 className="label-small">LATENCY (ms)</h6>
         </div>
         <div className="monitor element">

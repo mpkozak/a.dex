@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react';
-import './_css/Eq.css';
+import './_css/Eq2.css';
 import help from './_help.js';
 import { BigKnob, SevenSegment } from './_svg.js';
 
-export default class Eq extends PureComponent {
+export default class Eq2 extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -41,7 +41,7 @@ export default class Eq extends PureComponent {
           handleClick={(e) => help.handleClick(e, this.setValue, changeScalar, param)}
           handleScroll={(e) => help.handleScroll(e, this.setValue, changeScalar * 5, param)}
         />
-        <SevenSegment value={value} size={digits} />
+        <SevenSegment value={value} digits={digits} />
         <h5 className="label-small">{param.toUpperCase()}</h5>
       </div>
     );
@@ -49,9 +49,8 @@ export default class Eq extends PureComponent {
 
 
   render() {
-    // console.log('Eq rendered');
     return (
-      <div className="eq outer">
+      <div className="eq2 outer">
         <div className="inner">
           <h4 className="label">EQ</h4>
           <div className="knob-box">

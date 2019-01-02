@@ -89,6 +89,16 @@
   /*background-color: rgba(0,255,0,.5);*/
 }
 
+.delay {
+  position: absolute;
+  left: calc(12 * (100% / var(--grid-width)));
+  top: calc(8.5 * (100% / var(--grid-height)));
+  width: calc(5 * (100% / var(--grid-width)));
+  height: calc(2.5 * (100% / var(--grid-height)));
+
+  /*background-color: rgba(0,255,0,.5);*/
+}
+
 .oscillators {
   position: absolute;
   left: calc(0 * (100% / var(--grid-width)));
@@ -103,17 +113,27 @@
   position: absolute;
   left: calc(4 * (100% / var(--grid-width)));
   top: calc(11 * (100% / var(--grid-height)));
-  width: calc(5.5 * (100% / var(--grid-width)));
+  width: calc(4 * (100% / var(--grid-width)));
   height: calc(4 * (100% / var(--grid-height)));
 
   /*background-color: rgba(127,127,0,.5);*/
 }
 
-.eq {
+.eq1 {
   position: absolute;
-  left: calc(9.5 * (100% / var(--grid-width)));
+  left: calc(8 * (100% / var(--grid-width)));
   top: calc(11 * (100% / var(--grid-height)));
-  width: calc(5.5 * (100% / var(--grid-width)));
+  width: calc(3 * (100% / var(--grid-width)));
+  height: calc(4 * (100% / var(--grid-height)));
+
+  /*background-color: rgba(0,127,127,.5);*/
+}
+
+.eq2 {
+  position: absolute;
+  left: calc(14 * (100% / var(--grid-width)));
+  top: calc(11 * (100% / var(--grid-height)));
+  width: calc(4.5 * (100% / var(--grid-width)));
   height: calc(4 * (100% / var(--grid-height)));
 
   /*background-color: rgba(0,127,127,.5);*/

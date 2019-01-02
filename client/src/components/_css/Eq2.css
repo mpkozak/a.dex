@@ -1,15 +1,15 @@
-.eq {
+.eq2 {
   flex-flow: column nowrap;
   align-items: space-around;
 }
 
-.eq>.inner{
+.eq2>.inner{
   flex-flow: column nowrap;
   align-items: center;
   justify-content: space-between;
 }
 
-.eq .knob-box {
+.eq2 .knob-box {
   width: 95%;
   height: 100%;
   display: flex;
@@ -18,7 +18,7 @@
   justify-content: space-around;
 }
 
-.eq .element {
+.eq2 .element {
   width: 25%;
   height: 90%;
   display: flex;
@@ -27,12 +27,11 @@
   justify-content: space-around;
 }
 
-.eq .bigknob {
-  /*width: 90%;*/
+.eq2 .bigknob {
   height: 40%;
   filter: drop-shadow(.02rem .02rem .025rem #000000);
 }
 
-.eq .sevensegment {
+.eq2 .sevensegment {
   height: 20%;
 }

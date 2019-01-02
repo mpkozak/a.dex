@@ -26,7 +26,6 @@ export default class Master extends PureComponent {
 
 
   render() {
-    // console.log('Master rendered');
     const { min, max, changeScalar } = this;
     const pct = help.getPercent(this.state.volume, min, max);
     return (

@@ -3,7 +3,6 @@ import './_css/Instructions.css';
 
 export default class Instructions extends PureComponent {
   render() {
-    // console.log('Instructions rendered')
     const { show, toggle } = this.props;
     return (
       <div className="instructions outer">
