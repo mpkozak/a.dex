@@ -18,14 +18,14 @@ export default class Theremin extends PureComponent {
       range: 4,
       calibTarget: false,
     };
+    this.tracker = undefined;
+    this.canvas = undefined;
     this.sensitivity = { min: 0, max: 221 };
     this.range = { min: 2, max: 6 };
     this.changeScalar = 1000;
-    this.tracker = undefined;
-    this.canvas = undefined;
     this.trackerHandleData = this.trackerHandleData.bind(this);
-    this.updateParam = this.updateParam.bind(this);
-    this.getCoords = this.getCoords.bind(this);
+    this.trackerGetCoords = this.trackerGetCoords.bind(this);
+    this.handleParam = this.handleParam.bind(this);
   };
 
   componentDidMount() {
@@ -33,6 +33,13 @@ export default class Theremin extends PureComponent {
     const colorFreq = localStorage.getItem('colorFreq');
     if (colorGain && colorFreq) this.setState(prevState => ({ colorGain, colorFreq }));
     this.videoInit();
+  };
+
+  audioRefresh(data) {
+    const { vW, vH, range } = this.state;
+    const x = (vW - data[1].x) / (vW / range);
+    const y = (vH - data[0].y) / vH;
+    this.props.refresh(x, y);
   };
 
   videoInit() {
@@ -87,10 +94,10 @@ export default class Theremin extends PureComponent {
     this.tracker.setColors(colorGain, colorFreq);
   };
 
-  getCoords(e) {
+  trackerGetCoords(e) {
     const { calibTarget } = this.state;
     const { ctx, tW, tH, scalar } = this.canvas;
-    this.refs.clickBox.removeEventListener('click', this.getCoords);
+    this.refs.clickBox.removeEventListener('click', this.trackerGetCoords);
     ctx.drawImage(this.state.video, 0, 0, tW, tH);
     const rgb = ctx.getImageData(e.offsetX / scalar, e.offsetY / scalar, 1, 1).data;
     const r = ('0' + rgb[0].toString(16)).slice(-2);
@@ -105,25 +112,18 @@ export default class Theremin extends PureComponent {
     this.trackerColorRefresh();
   };
 
-  updateColor(calibTarget) {
+  handleColor(calibTarget) {
     this.setState(prevState => ({ calibTarget }));
-    this.refs.clickBox.addEventListener('click', this.getCoords);
+    this.refs.clickBox.addEventListener('click', this.trackerGetCoords);
   };
 
-  updateParam(delta, param) {
+  handleParam(delta, param) {
     const { min, max } = this[param];
     const val = help.getLevel(this.state[param], delta, min, max);
     if (val) {
       if (param === 'sensitivity') this.tracker.sensitivity = val;
       this.setState(prevState => ({ [param]: val }));
     };
-  };
-
-  audioRefresh(data) {
-    const { vW, vH, range } = this.state;
-    const x = (vW - data[1].x) / (vW / range);
-    const y = (vH - data[0].y) / vH;
-    this.props.refresh(x, y);
   };
 
   makeColorSwatch(color, text) {
@@ -133,7 +133,7 @@ export default class Theremin extends PureComponent {
         <ColorSwatch
           color={this.state[color]}
           active={calibTarget === color}
-          handleClick={() => this.updateColor(calibTarget ? false : color)}
+          handleClick={() => this.handleColor(calibTarget ? false : color)}
         />
         <h5 className='label-small'>{text}</h5>
       </div>
@@ -149,8 +149,8 @@ export default class Theremin extends PureComponent {
         <BigKnob
           rotation={pct}
           color='#313638'
-          handleClick={(e) => help.handleClick(e, this.updateParam, changeScalar, param)}
-          handleScroll={(e) => help.handleScroll(e, this.updateParam, changeScalar * 5, param)}
+          handleClick={(e) => help.handleClick(e, this.handleParam, changeScalar, param)}
+          handleScroll={(e) => help.handleScroll(e, this.handleParam, changeScalar * 5, param)}
         />
         <h5 className='label-small'>{param.toUpperCase()}</h5>
       </div>

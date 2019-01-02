@@ -28,6 +28,11 @@
 }
 
 .eq .bigknob {
-  width: 90%;
+  /*width: 90%;*/
+  height: 40%;
   filter: drop-shadow(.02rem .02rem .025rem #000000);
+}
+
+.eq .sevensegment {
+  height: 20%;
 }

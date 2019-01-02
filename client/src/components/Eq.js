@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import './_css/Eq.css';
 import help from './_help.js';
-import { BigKnob } from './_svg.js';
+import { BigKnob, SevenSegment } from './_svg.js';
 
 export default class Eq extends PureComponent {
   constructor(props) {
@@ -11,9 +11,9 @@ export default class Eq extends PureComponent {
       q: props.eq.Q.value,
       gain: props.eq.gain.value
     };
-    this.freq = { min: 110, max: 2200, mod: 'frequency' };
-    this.q = { min: 1, max: 10, mod: 'Q' };
-    this.gain = { min: -10, max: 10, mod: 'gain' };
+    this.freq = { min: 110, max: 2200, mod: 'frequency', digits: 4 };
+    this.q = { min: 1, max: 10, mod: 'Q', digits: 2 };
+    this.gain = { min: -10, max: 10, mod: 'gain', digits: 3 };
     this.changeScalar = 500;
     this.setValue = this.setValue.bind(this);
   };
@@ -30,8 +30,9 @@ export default class Eq extends PureComponent {
 
   makeElement(param) {
     const { changeScalar } = this;
-    const { min, max } = this[param];
-    const pct = help.getPercent(this.state[param], min, max);
+    const { min, max, digits } = this[param];
+    const value = this.state[param];
+    const pct = help.getPercent(value, min, max);
     return (
       <div className="element">
         <BigKnob
@@ -40,6 +41,7 @@ export default class Eq extends PureComponent {
           handleClick={(e) => help.handleClick(e, this.setValue, changeScalar, param)}
           handleScroll={(e) => help.handleScroll(e, this.setValue, changeScalar * 5, param)}
         />
+        <SevenSegment value={value} size={digits} />
         <h5 className="label-small">{param.toUpperCase()}</h5>
       </div>
     );

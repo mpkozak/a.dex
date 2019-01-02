@@ -589,19 +589,65 @@ export const HelpButton = (props) => {
 };
 
 
+// export const xSevenSegment = (props) => {
+//   const { value } = props;
+//   const sevenFont = {
+//     fontFamily: 'DSEG7 Classic',
+//     fontSize: 7
+//   };
+//   return (
+//     <svg className="sevensegment" viewBox="0 0 20 10">
+// {/* Backpane */}
+//       <rect
+//         x="0"
+//         y="0"
+//         width="20"
+//         height="10"
+//         rx="1"
+//         fill="#181818"
+//         stroke="#000000"
+//         strokeWidth=".5%"
+//       />
+// {/* Inner Border */}
+//       <rect
+//         x=".75"
+//         y=".75"
+//         width="18.5"
+//         height="8.5"
+//         rx=".5"
+//         fill="#000000"
+//         stroke="#111111"
+//         strokeWidth="1%"
+//       />
+// {/* Text Backpane */}
+//       <text style={sevenFont} fill="#250000"
+//         x="18.5" y="5.2" textAnchor="end" alignmentBaseline="middle"
+//       >888</text>
+// {/* Text Active */}
+//       <text style={sevenFont} fill="#E00000"
+//         x="18.5" y="5.2" textAnchor="end" alignmentBaseline="middle"
+//       >{value}</text>
+//     </svg>
+//   );
+// };
+
+
 export const SevenSegment = (props) => {
-  const { value } = props;
+  const { value, size } = props;
+  const width = size * 6 + 2;
+  const bg = '8'.repeat(size);
+  const val = Math.round(value);
   const sevenFont = {
     fontFamily: 'DSEG7 Classic',
     fontSize: 7
   };
   return (
-    <svg className="sevensegment" viewBox="0 0 20 10">
+    <svg className="sevensegment" viewBox={`0 0 ${width} 10`}>
 {/* Backpane */}
       <rect
         x="0"
         y="0"
-        width="20"
+        width={width}
         height="10"
         rx="1"
         fill="#181818"
@@ -610,10 +656,10 @@ export const SevenSegment = (props) => {
       />
 {/* Inner Border */}
       <rect
-        x=".75"
-        y=".75"
-        width="18.5"
-        height="8.5"
+        x="1"
+        y="1"
+        width={width - 2}
+        height="8"
         rx=".5"
         fill="#000000"
         stroke="#111111"
@@ -621,12 +667,12 @@ export const SevenSegment = (props) => {
       />
 {/* Text Backpane */}
       <text style={sevenFont} fill="#250000"
-        x="18.5" y="5.2" textAnchor="end" alignmentBaseline="middle"
-      >888</text>
+        x={width - 1.5} y="5.2" textAnchor="end" alignmentBaseline="middle"
+      >{bg}</text>
 {/* Text Active */}
       <text style={sevenFont} fill="#E00000"
-        x="18.5" y="5.2" textAnchor="end" alignmentBaseline="middle"
-      >{value}</text>
+        x={width - 1.5} y="5.2" textAnchor="end" alignmentBaseline="middle"
+      >{val}</text>
     </svg>
   );
 };

@@ -9,7 +9,7 @@ export default class Settings extends PureComponent {
     return (
       <div className="settings outer">
         <div className="latency element">
-          <SevenSegment value={latency} />
+          <SevenSegment value={latency} size={3} />
           <h6 className="label-small">LATENCY (ms)</h6>
         </div>
         <div className="monitor element">
