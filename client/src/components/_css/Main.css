@@ -119,6 +119,26 @@
   /*background-color: rgba(127,127,0,.5);*/
 }
 
+.hpf {
+  position: absolute;
+  left: calc(8 * (100% / var(--grid-width)));
+  top: calc(11 * (100% / var(--grid-height)));
+  width: calc(3 * (100% / var(--grid-width)));
+  height: calc(2 * (100% / var(--grid-height)));
+
+  /*background-color: rgba(0,127,127,.5);*/
+}
+
+.lpf {
+  position: absolute;
+  left: calc(8 * (100% / var(--grid-width)));
+  top: calc(13 * (100% / var(--grid-height)));
+  width: calc(3 * (100% / var(--grid-width)));
+  height: calc(2 * (100% / var(--grid-height)));
+
+  /*background-color: rgba(0,127,127,.5);*/
+}
+
 .eq1 {
   position: absolute;
   left: calc(8 * (100% / var(--grid-width)));
@@ -131,9 +151,9 @@
 
 .eq2 {
   position: absolute;
-  left: calc(14 * (100% / var(--grid-width)));
+  left: calc(11 * (100% / var(--grid-width)));
   top: calc(11 * (100% / var(--grid-height)));
-  width: calc(4.5 * (100% / var(--grid-width)));
+  width: calc(4 * (100% / var(--grid-width)));
   height: calc(4 * (100% / var(--grid-height)));
 
   /*background-color: rgba(0,127,127,.5);*/

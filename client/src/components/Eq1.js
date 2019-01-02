@@ -3,15 +3,15 @@ import './_css/Eq1.css';
 import help from './_help.js';
 import { BigKnob, SevenSegment } from './_svg.js';
 
-export default class Eq1 extends PureComponent {
+export default class Eq1Hpf extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
       hpf: props.hpf.frequency.value,
       lpf: props.lpf.frequency.value
     };
-    this.hpf = { min: 0, max: 2200, mod: 'frequency', digits: 4, exact: false, unit: 'Hz' };
-    this.lpf = { min: 2200, max: 22000, mod: 'frequency', digits: 4, exact: true, unit: 'kHz' };
+    this.hpf = { min: 0, max: 2200, mod: 'frequency', exact: false, unit: 'Hz' };
+    this.lpf = { min: 2200, max: 22000, mod: 'frequency', exact: true, unit: 'kHz' };
     this.changeScalar = 500;
     this.setValue = this.setValue.bind(this);
   };
@@ -28,13 +28,13 @@ export default class Eq1 extends PureComponent {
 
   makeElement(param) {
     const { changeScalar } = this;
-    const { min, max, digits, exact, unit } = this[param];
+    const { min, max, exact, unit } = this[param];
     const value = this.state[param];
     const pct = help.getPercent(value, min, max);
     return (
-      <div className="element">
-        <h5 className="label-small">{param.toUpperCase()}</h5>
-        <div className="row">
+      <div className="inner">
+        <h4 className="label">{param.toUpperCase()}</h4>
+        <div className="knob-box">
           <BigKnob
             rotation={pct}
             color={'#3A3125'}
@@ -42,7 +42,7 @@ export default class Eq1 extends PureComponent {
             handleScroll={(e) => help.handleScroll(e, this.setValue, changeScalar * 5, param)}
           />
           <div className="display">
-            <SevenSegment value={exact ? (value / 1000).toFixed(2) : value} digits={digits} exact={exact} />
+            <SevenSegment value={exact ? (value / 1000).toFixed(2) : value} digits={4} exact={exact} />
             <h6 className="label-small">{unit}</h6>
           </div>
         </div>
@@ -54,13 +54,8 @@ export default class Eq1 extends PureComponent {
   render() {
     return (
       <div className="eq1 outer">
-        <div className="inner">
-          <h4 className="label">EQ</h4>
-          <div className="knob-box">
-            {this.makeElement('hpf')}
-            {this.makeElement('lpf')}
-          </div>
-        </div>
+        {this.makeElement('hpf')}
+        {this.makeElement('lpf')}
       </div>
     );
   };
