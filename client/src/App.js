@@ -3,7 +3,6 @@ import { Logo, SvgDefs } from './components/_svg.js';
 import Main from './components/Main.js';
 
 export default function App() {
-  // console.log('app mounted')
 
   const isMobile = () => {
     if (

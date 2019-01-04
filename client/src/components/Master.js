@@ -11,7 +11,7 @@ export default class Master extends PureComponent {
     };
     this.min = 0;
     this.max = 1;
-    this.changeScalar = 800;
+    this.changeScalar = 1500;
     this.setVolume = this.setVolume.bind(this);
   };
 

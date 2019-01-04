@@ -3,7 +3,7 @@ import './_css/Eq1.css';
 import help from './_help.js';
 import { BigKnob, SevenSegment } from './_svg.js';
 
-export default class Eq1Hpf extends PureComponent {
+export default class Eq1 extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -12,7 +12,7 @@ export default class Eq1Hpf extends PureComponent {
     };
     this.hpf = { min: 0, max: 2200, mod: 'frequency', exact: false, unit: 'Hz' };
     this.lpf = { min: 2200, max: 22000, mod: 'frequency', exact: true, unit: 'kHz' };
-    this.changeScalar = 500;
+    this.changeScalar = 800;
     this.setValue = this.setValue.bind(this);
   };
 

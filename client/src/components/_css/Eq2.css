@@ -17,7 +17,7 @@
   align-items: center;
   justify-content: space-around;
 
-  border: 1px solid red;
+  /*border: 1px solid red;*/
 }
 
 .eq2 .freq {
@@ -25,8 +25,8 @@
 }
 
 .eq2 .freq .bigknob {
-  /*width: 25%;*/
-  height: 72%;
+  /*height: 72%;*/
+  height: 95%;
 }
 
 .eq2 .display {
@@ -46,7 +46,7 @@
   align-items: center;
   justify-content: space-around;
 
-  border: 1px solid green;
+  /*border: 1px solid green;*/
 }
 
 .eq2 .bigknob {

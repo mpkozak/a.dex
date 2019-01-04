@@ -54,20 +54,18 @@ help.getLevel = (oldValue, delta, min, max) => {
   } else return newValue;
 };
 
+help.getPercent = (val, min, max) => ((val - min) / (max - min)) * 100;
+
 help.getLevelLog = (oldValue, delta, min, max) => {
   const range = max - min;
   const base = (oldValue / range) * 10000;
-  console.log(base)
-  const newValue = oldValue + (delta * base)
-  // const newValue = delta > 0 ? oldValue + Math.sqrt(delta * range) : oldValue + (delta * range);
+  const newValue = oldValue + (delta * base);
   if (newValue < min) {
     return min;
   } else if (newValue > max) {
     return max;
   } else return newValue;
 };
-
-help.getPercent = (val, min, max) => ((val - min) / (max - min)) * 100;
 
 help.getPercentLog = (val, min, max) => (Math.log(val - min + 1) / Math.log(max - min)) * 100;
 

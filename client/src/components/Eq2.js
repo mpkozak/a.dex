@@ -11,9 +11,9 @@ export default class Eq2 extends PureComponent {
       q: props.eq.Q.value,
       gain: props.eq.gain.value
     };
-    this.freq = { min: 110, max: 11000, mod: 'frequency', digits: 4 };
-    this.q = { min: 1, max: 10, mod: 'Q', digits: 2 };
-    this.gain = { min: -10, max: 10, mod: 'gain', digits: 3 };
+    this.freq = { min: 110, max: 11000, mod: 'frequency' };
+    this.q = { min: 1, max: 10, mod: 'Q' };
+    this.gain = { min: -10, max: 10, mod: 'gain' };
     this.changeScalar = 200;
     this.setValue = this.setValue.bind(this);
   };
@@ -30,7 +30,7 @@ export default class Eq2 extends PureComponent {
 
   makeElement(param) {
     const { changeScalar } = this;
-    const { min, max, digits } = this[param];
+    const { min, max } = this[param];
     const value = this.state[param];
     const pct = help.getPercent(value, min, max);
     return (
