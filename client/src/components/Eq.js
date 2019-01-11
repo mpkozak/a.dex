@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import './_css/Eq1.css';
+import './_css/Eq.css';
 import help from './_help.js';
 import { BigKnob, SevenSegment } from './_svg.js';
 

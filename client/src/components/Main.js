@@ -10,8 +10,7 @@ import Meters from './Meters.js';
 import Delay from './Delay.js';
 import Oscillators from './Oscillators.js';
 import FmSynth from './FmSynth.js';
-import Eq1 from './Eq1.js';
-import Eq2 from './Eq2.js';
+import Eq from './Eq.js';
 import Master from './Master.js';
 
 export default class Main extends PureComponent {
@@ -43,7 +42,6 @@ export default class Main extends PureComponent {
     const instGain = new GainNode(ctx, { gain: 0 });
     const hpf = new BiquadFilterNode(ctx, { type: 'highpass', frequency: 0, q: 1 });
     const lpf = new BiquadFilterNode(ctx, { type: 'lowpass', frequency: 22000, q: 1 });
-    const eq = new BiquadFilterNode(ctx, { type: 'peaking', frequency: 110, gain: 0, q: 1 });
     const delay = new DelayNode(ctx, { delayTime: 0 });
     const delayGain = new GainNode(ctx, { gain: 0 });
     const masterGain = new GainNode(ctx, { gain: .73 });
@@ -53,16 +51,15 @@ export default class Main extends PureComponent {
     osc2.connect(instGain);
     instGain.connect(hpf);
     hpf.connect(lpf);
-    lpf.connect(eq);
-    eq.connect(masterGain);
-    eq.connect(delay);
+    lpf.connect(masterGain);
+    lpf.connect(delay);
     delay.connect(delayGain);
     delayGain.connect(masterGain);
     masterGain.connect(analyser);
     masterGain.connect(ctx.destination);
     osc1.start();
     osc2.start();
-    this.audio = {ctx, osc1, osc2, fmGain, instGain, hpf, lpf, eq, delay, delayGain, masterGain, analyser, baseHz, latency, mic};
+    this.audio = {ctx, osc1, osc2, fmGain, instGain, hpf, lpf, delay, delayGain, masterGain, analyser, baseHz, latency, mic};
     this.setState(prevState => ({ audioEnabled: true }));
   };
 
@@ -122,8 +119,7 @@ export default class Main extends PureComponent {
               <Delay delay={delay} wet={delayGain} />
               <Oscillators osc1={osc1} osc2={osc2} instGain={instGain} />
               <FmSynth depth={fmGain} width={osc2} />
-              <Eq1 hpf={hpf} lpf={lpf} />
-              <Eq2 eq={eq} />
+              <Eq hpf={hpf} lpf={lpf} />
               <Master masterGain={masterGain} />
             </React.Fragment>
         }
