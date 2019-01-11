@@ -106,42 +106,4 @@ export default class Tracker {
       Math.pow((b - c2.b), 2)
     );
   };
-  // _devStart(handleResult, iterations) {
-  //   this.handleResult = handleResult;
-  //   this.endIter = iterations;
-  //   this.px = 0;
-  //   this.iter = 0;
-  //   this.runtime = 0;
-  //   this.begin = 0;
-  //   this.rAF = requestAnimationFrame(this._devStack.bind(this));
-  // };
-  // async _devStack() {
-  //   this.begin = new Date();
-  //   const a = await this.getData();
-  //   const b = await this.filterData(a);
-  //   b.forEach(d => this.px += d.data.length);
-  //   const c = await this.reduceData(b);
-  //   this.iter++;
-  //   this.runtime += new Date() - this.begin;
-  //   if (this.iter >= this.endIter) {
-  //     this.callback([]);
-  //     this._devFinished();
-  //   } else {
-  //     this.callback(c);
-  //     this.rAF = requestAnimationFrame(this._devStack.bind(this));
-  //   };
-  // };
-  // _devFinished() {
-  //   this.stop();
-  //   const results = {
-  //     '': this.__proto__.constructor.name + ' _r' + this.reducer + ' _s' + this.sensitivity + ' _i' + this.iter,
-  //     'ms / cycle': this.runtime / this.iter,
-  //     '% duty cycle': ((this.runtime / (this.iter * (1000 / 60))) * 100).toFixed(2),
-  //     '% pixels matched': ((this.px / (this.tWidth * this.tHeight * this.iter * 2)) * 100).toFixed(2),
-  //     'ms runtime (active / total)': this.runtime + ' / ' + Math.round(this.iter * (1000 / 60)),
-  //     'pixels / ms (actual / scaled)': Math.round(this.px / this.runtime) + ' / ' + Math.round(Math.pow(this.reducer, 2) * (this.px / this.runtime)),
-  //     'pixels processed': this.px,
-  //   };
-  //   this.handleResult(results);
-  // };
 };

@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { select } from 'd3-selection';
 import './_css/Theremin.css';
 import help from './_help.js';
-import Tracker from './_tracker5.js';
+import Tracker from './_tracker.js';
 import { ColorSwatch, BigKnob, ScreenFrame } from './_svg.js';
 
 export default class Theremin extends PureComponent {
@@ -148,7 +148,7 @@ export default class Theremin extends PureComponent {
       <div className='element'>
         <BigKnob
           rotation={pct}
-          color='#313638'
+          color='#1F2224'
           handleClick={(e) => help.handleClick(e, this.handleParam, changeScalar, param)}
           handleScroll={(e) => help.handleScroll(e, this.handleParam, changeScalar * 5, param)}
         />
