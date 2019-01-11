@@ -56,21 +56,6 @@ help.getLevel = (oldValue, delta, min, max) => {
 
 help.getPercent = (val, min, max) => ((val - min) / (max - min)) * 100;
 
-help.getLevelLog = (oldValue, delta, min, max) => {
-  const range = max - min;
-  const base = (oldValue / range) * 10000;
-  const newValue = oldValue + (delta * base);
-  if (newValue < min) {
-    return min;
-  } else if (newValue > max) {
-    return max;
-  } else return newValue;
-};
-
-help.getPercentLog = (val, min, max) => (Math.log(val - min + 1) / Math.log(max - min)) * 100;
-
-
-
 
 export default help;
 
@@ -86,14 +71,6 @@ export default help;
 //     domain.push(extent[0] + i * unit);
 //   };
 //   return domain;
-// };
-
-// help.getColorDist = (orig, match) => {
-//   return Math.sqrt(
-//     Math.pow((orig.r - match.r), 2) +
-//     Math.pow((orig.g - match.g), 2) +
-//     Math.pow((orig.b - match.b), 2)
-//   );
 // };
 
 // help.getNote = (Hz) => {
@@ -116,3 +93,16 @@ export default help;
 //   };
 //   return arr;
 // };
+
+// help.getLevelLog = (oldValue, delta, min, max) => {
+//   const range = max - min;
+//   const base = (oldValue / range) * 10000;
+//   const newValue = oldValue + (delta * base);
+//   if (newValue < min) {
+//     return min;
+//   } else if (newValue > max) {
+//     return max;
+//   } else return newValue;
+// };
+
+// help.getPercentLog = (val, min, max) => (Math.log(val - min + 1) / Math.log(max - min)) * 100;

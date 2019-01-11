@@ -322,89 +322,6 @@ export const SvgDefs = () => {
 
 
 
-/////////////////////////////////
-// SVG COMPONENT GROUP MODULES //
-/////////////////////////////////
-
-const meterFrame = (color) => {
-  const colorFrame = color ? color : '#3A3125';
-  return (
-    <g className="meter-frame" clipPath="url(#meter-outer-clip)">
-      <use href="#meter-rect-frame" filter="url(#meter-frame-texture)" fill={colorFrame} stroke="#000000" strokeWidth=".4%" />
-      <use href="#meter-rect-frame" fill="url(#meter-frame-horizontal" />
-      <use href="#meter-rect-frame" fill="url(#meter-frame-vertical)" />
-      <g clipPath="url(#meter-middle-clip)" filter="url(#meter-gradient-blur)">
-        <path fill="url(#meter-frame-vertical)" d="M 2.5 2.5 L 97.5 2.5 L 73.75 26.25 L 73.75 33.75 L 97.5 57.5 L 2.5 57.5 L 26.25 33.75 L 26.25 26.25 Z" />
-        <path fill="url(#meter-frame-horizontal)" d="M 2.5 2.5 L 30 30 L 70 30 L 97.5 2.5 L 97.5 57.5 L 70 30 L 30 30 L 2.5 57.5 Z" />
-        <rect fill="url(#meter-frame-corners)" x="2.5" y="2.5" width="95" height="55" rx="2" ry="2" />
-      </g>
-    </g>
-  );
-};
-
-
-const meterPanelShadow = () => {
-  return (
-    <g className="meter-panel-shadow" clipPath="url(#meter-inner-clip)" filter="url(#meter-gradient-blur)">
-      <use href="#meter-rect-panel" fill="url(#meter-panel-horizontal)" />
-      <use href="#meter-rect-panel" fill="url(#meter-panel-vertical)" />
-      <use href="#meter-rect-panel" fill="url(#meter-panel-center)" />
-    </g>
-  );
-};
-
-
-const slider = () => {
-  return (
-    <g className="slider" clipPath="url(#slider-clip)">
-{/* Base */}
-      <use href="#slider-rect"
-        rx="1"
-        fill="#FFFFFF"
-      />
-{/* Ridges */}
-      <rect
-        fill="url(#slider-ridges-top)"
-        x="0"
-        y=".5"
-        width="10"
-        height="7.5"
-      />
-      <rect
-        fill="url(#slider-ridges-bottom)"
-        x="0"
-        y="12"
-        width="10"
-        height="7.5"
-      />
-{/* Contour Horizontal */}
-      <use href="#slider-rect" fill="url(#slider-contour-horizontal)" />
-{/* Center Mark */}
-      <rect
-        x="0"
-        y="9.5"
-        width="10"
-        height="1"
-        fill="#FFFFFF"
-        stroke="#000000"
-        strokeWidth=".4%"
-        opacity=".7"
-      />
-{/* Contour Vertical */}
-      <use href="#slider-rect" fill="url(#slider-contour-vertical)" />
-{/* Outline */}
-      <use href="#slider-rect"
-        rx="1"
-        fill="none"
-        stroke="#000000"
-        strokeWidth=".4%"
-      />
-    </g>
-  );
-};
-
-
-
 ///////////////////////////////
 // STANDALONE SVG COMPONENTS //
 ///////////////////////////////
@@ -474,9 +391,7 @@ export const GlowButton = (props) => {
     sine: 'M 2 5 Q 3.5 0, 5 5 Q 6.5 10, 8 5',
     triangle: 'M 2 5 L 3.5 2.5 L 6.5 7.5 L 8 5',
     sawtooth: 'M 2 5 L 5 2.5 L 5 7.5 L 8 5',
-    square: 'M 2 5 L 2 2.5 L 5 2.5 L 5 7.5 L 8 7.5 L 8 5',
-    // lpf: 'M 2 5 L 6 5 L 8 7',
-    // hpf: 'M 2 7 L 4 5 L 8 5'
+    square: 'M 2 5 L 2 2.5 L 5 2.5 L 5 7.5 L 8 7.5 L 8 5'
   };
   return (
     <svg className="glowbutton" viewBox="0 0 10 10" onClick={handleClick}>
@@ -591,49 +506,6 @@ export const HelpButton = (props) => {
 };
 
 
-// export const xSevenSegment = (props) => {
-//   const { value } = props;
-//   const sevenFont = {
-//     fontFamily: 'DSEG7 Classic',
-//     fontSize: 7
-//   };
-//   return (
-//     <svg className="sevensegment" viewBox="0 0 20 10">
-// {/* Backpane */}
-//       <rect
-//         x="0"
-//         y="0"
-//         width="20"
-//         height="10"
-//         rx="1"
-//         fill="#181818"
-//         stroke="#000000"
-//         strokeWidth=".5%"
-//       />
-// {/* Inner Border */}
-//       <rect
-//         x=".75"
-//         y=".75"
-//         width="18.5"
-//         height="8.5"
-//         rx=".5"
-//         fill="#000000"
-//         stroke="#111111"
-//         strokeWidth="1%"
-//       />
-// {/* Text Backpane */}
-//       <text style={sevenFont} fill="#250000"
-//         x="18.5" y="5.2" textAnchor="end" alignmentBaseline="middle"
-//       >888</text>
-// {/* Text Active */}
-//       <text style={sevenFont} fill="#E00000"
-//         x="18.5" y="5.2" textAnchor="end" alignmentBaseline="middle"
-//       >{value}</text>
-//     </svg>
-//   );
-// };
-
-
 export const SevenSegment = (props) => {
   const { value, digits, exact } = props;
   const width = digits * 6 + 2;
@@ -724,10 +596,86 @@ export const ScreenFrame = () => {
 
 
 
+/////////////////////////////////
+// SVG COMPONENT GROUP MODULES //
+/////////////////////////////////
+
+const meterFrame = (color) => {
+  const colorFrame = color ? color : '#3A3125';
+  return (
+    <g className="meter-frame" clipPath="url(#meter-outer-clip)">
+      <use href="#meter-rect-frame" filter="url(#meter-frame-texture)" fill={colorFrame} stroke="#000000" strokeWidth=".4%" />
+      <use href="#meter-rect-frame" fill="url(#meter-frame-horizontal" />
+      <use href="#meter-rect-frame" fill="url(#meter-frame-vertical)" />
+      <g clipPath="url(#meter-middle-clip)" filter="url(#meter-gradient-blur)">
+        <path fill="url(#meter-frame-vertical)" d="M 2.5 2.5 L 97.5 2.5 L 73.75 26.25 L 73.75 33.75 L 97.5 57.5 L 2.5 57.5 L 26.25 33.75 L 26.25 26.25 Z" />
+        <path fill="url(#meter-frame-horizontal)" d="M 2.5 2.5 L 30 30 L 70 30 L 97.5 2.5 L 97.5 57.5 L 70 30 L 30 30 L 2.5 57.5 Z" />
+        <rect fill="url(#meter-frame-corners)" x="2.5" y="2.5" width="95" height="55" rx="2" ry="2" />
+      </g>
+    </g>
+  );
+};
 
 
+const meterPanelShadow = () => {
+  return (
+    <g className="meter-panel-shadow" clipPath="url(#meter-inner-clip)" filter="url(#meter-gradient-blur)">
+      <use href="#meter-rect-panel" fill="url(#meter-panel-horizontal)" />
+      <use href="#meter-rect-panel" fill="url(#meter-panel-vertical)" />
+      <use href="#meter-rect-panel" fill="url(#meter-panel-center)" />
+    </g>
+  );
+};
 
 
+const slider = () => {
+  return (
+    <g className="slider" clipPath="url(#slider-clip)">
+{/* Base */}
+      <use href="#slider-rect"
+        rx="1"
+        fill="#FFFFFF"
+      />
+{/* Ridges */}
+      <rect
+        fill="url(#slider-ridges-top)"
+        x="0"
+        y=".5"
+        width="10"
+        height="7.5"
+      />
+      <rect
+        fill="url(#slider-ridges-bottom)"
+        x="0"
+        y="12"
+        width="10"
+        height="7.5"
+      />
+{/* Contour Horizontal */}
+      <use href="#slider-rect" fill="url(#slider-contour-horizontal)" />
+{/* Center Mark */}
+      <rect
+        x="0"
+        y="9.5"
+        width="10"
+        height="1"
+        fill="#FFFFFF"
+        stroke="#000000"
+        strokeWidth=".4%"
+        opacity=".7"
+      />
+{/* Contour Vertical */}
+      <use href="#slider-rect" fill="url(#slider-contour-vertical)" />
+{/* Outline */}
+      <use href="#slider-rect"
+        rx="1"
+        fill="none"
+        stroke="#000000"
+        strokeWidth=".4%"
+      />
+    </g>
+  );
+};
 
 
 

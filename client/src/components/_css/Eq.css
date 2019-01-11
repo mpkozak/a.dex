@@ -1,43 +1,38 @@
-.eq1 {
-  flex-flow: column nowrap;
+.eq {
+  flex-flow: row nowrap;
   justify-content: space-around;
 }
 
-.eq1>.inner{
-  width: calc(100% - 2vmin);
-  height: calc(50% - 2vmin);
+.eq>.inner{
+  width: calc(50% - 2vmin);
+  height: calc(100% - 2vmin);
   flex-flow: column nowrap;
   align-items: center;
   justify-content: space-between;
 }
 
-.eq1 .label {
-  height: 25%;
-}
-
-.eq1 .knob-box {
+.eq .knob-box {
   width: 95%;
   height: 75%;
   display: flex;
-  flex-flow: row nowrap;
+  flex-flow: column nowrap;
   align-items: center;
   justify-content: space-around;
 }
 
-.eq1 .display {
-  width: 50%;
-  height: 80%;
+.eq .display {
+  width: 70%;
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
   justify-content: flex-end;
 }
 
-.eq1 .bigknob {
-  width: 30%;
+.eq .bigknob {
+  width: 50%;
   filter: drop-shadow(.02rem .02rem .025rem #000000);
 }
 
-.eq1 .sevensegment {
+.eq .sevensegment {
   width: 100%;
 }

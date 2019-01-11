@@ -53,7 +53,7 @@ export default class Eq1 extends PureComponent {
 
   render() {
     return (
-      <div className="eq1 outer">
+      <div className="eq outer">
         {this.makeElement('hpf')}
         {this.makeElement('lpf')}
       </div>

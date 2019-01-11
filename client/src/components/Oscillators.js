@@ -19,7 +19,7 @@ export default class Oscillators extends PureComponent {
     help.setAudioGain(instGain.gain, 0, instGain.context, .01);
     setTimeout(() => this.props[osc].type = type, 10);
     this.setState(prevState => ({ [osc]: type }));
-  }
+  };
 
   makeElement(osc, label) {
     return (

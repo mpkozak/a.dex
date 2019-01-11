@@ -26,7 +26,6 @@
   z-index: 6;
   border-radius: 1.75vmin;
   box-shadow: 0 0 .5vmin .1vmin #000000;
-  /*filter: drop-shadow(.03rem .03rem .03rem #000000);*/
 }
 
 .theremin .video-element {
@@ -106,8 +105,6 @@
 
 .theremin .colorswatch {
   height: 55%;
-  /*border-radius: 50%;*/
-  /*box-shadow: .25vmin .25vmin .5vmin #000000;*/
   filter: drop-shadow(.02rem .02rem .025rem #000000);
 }
 
@@ -131,7 +128,5 @@
 
 .theremin .bigknob {
   height: 55%;
-  /*border-radius: 50%;*/
-  /*box-shadow: .1vmin .1vmin .5vmin #000000;*/
   filter: drop-shadow(.02rem .02rem .025rem #000000);
 }

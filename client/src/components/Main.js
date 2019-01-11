@@ -104,7 +104,7 @@ export default class Main extends PureComponent {
 
   render() {
     const { audioEnabled, micActive, showHelp } = this.state;
-    const { ctx, osc1, osc2, fmGain, instGain, hpf, lpf, eq, delay, delayGain, analyser, masterGain } = this.audio;
+    const { ctx, osc1, osc2, fmGain, instGain, hpf, lpf, delay, delayGain, analyser, masterGain } = this.audio;
     const latency = audioEnabled ? Math.round((ctx.currentTime - ctx.getOutputTimestamp().contextTime) * 1000) : 0;
     return (
       <div className="Main">

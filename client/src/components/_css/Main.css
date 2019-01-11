@@ -15,8 +15,6 @@
   background-size: cover;
   border-radius: 1vmin;
   box-shadow: 0 0 .5vmin .1vmin #000000;
-
-  /*background-color: rgba(127,127,127,1);*/
 }
 
 .init {
@@ -45,8 +43,6 @@
   top: calc(0 * (100% / var(--grid-height)));
   width: calc(12 * (100% / var(--grid-width)));
   height: calc(11 * (100% / var(--grid-height)));
-
-  /*background-color: rgba(255,255,0,.5);*/
 }
 
 .placard {
@@ -55,8 +51,6 @@
   top: calc(0 * (100% / var(--grid-height)));
   width: calc(5 * (100% / var(--grid-width)));
   height: calc(1.5 * (100% / var(--grid-height)));
-
-  /*background-color: rgba(0,255,255,.5);*/
 }
 
 .instructions {
@@ -65,8 +59,6 @@
   top: calc(1.5 * (100% / var(--grid-height)));
   width: calc(5 * (100% / var(--grid-width)));
   height: calc(13.5 * (100% / var(--grid-height)));
-
-  /*background-color: rgba(255,0,255,.5);*/
 }
 
 .settings {
@@ -75,8 +67,6 @@
   top: calc(1.5 * (100% / var(--grid-height)));
   width: calc(5 * (100% / var(--grid-width)));
   height: calc(.99 * (100% / var(--grid-height)));
-
-  /*background-color: rgba(255,0,0,.5);*/
 }
 
 .meters {
@@ -85,8 +75,6 @@
   top: calc(2.5 * (100% / var(--grid-height)));
   width: calc(5 * (100% / var(--grid-width)));
   height: calc(6 * (100% / var(--grid-height)));
-
-  /*background-color: rgba(0,255,0,.5);*/
 }
 
 .delay {
@@ -95,8 +83,6 @@
   top: calc(8.5 * (100% / var(--grid-height)));
   width: calc(5 * (100% / var(--grid-width)));
   height: calc(2.5 * (100% / var(--grid-height)));
-
-  /*background-color: rgba(0,255,0,.5);*/
 }
 
 .oscillators {
@@ -105,58 +91,22 @@
   top: calc(11 * (100% / var(--grid-height)));
   width: calc(4 * (100% / var(--grid-width)));
   height: calc(4 * (100% / var(--grid-height)));
-
-  /*background-color: rgba(0,0,255,.5);*/
 }
 
 .fmsynth {
   position: absolute;
   left: calc(4 * (100% / var(--grid-width)));
   top: calc(11 * (100% / var(--grid-height)));
-  width: calc(4 * (100% / var(--grid-width)));
+  width: calc(5.5 * (100% / var(--grid-width)));
   height: calc(4 * (100% / var(--grid-height)));
-
-  /*background-color: rgba(127,127,0,.5);*/
 }
 
-.hpf {
+.eq {
   position: absolute;
-  left: calc(8 * (100% / var(--grid-width)));
+  left: calc(9.5 * (100% / var(--grid-width)));
   top: calc(11 * (100% / var(--grid-height)));
-  width: calc(3 * (100% / var(--grid-width)));
-  height: calc(2 * (100% / var(--grid-height)));
-
-  /*background-color: rgba(0,127,127,.5);*/
-}
-
-.lpf {
-  position: absolute;
-  left: calc(8 * (100% / var(--grid-width)));
-  top: calc(13 * (100% / var(--grid-height)));
-  width: calc(3 * (100% / var(--grid-width)));
-  height: calc(2 * (100% / var(--grid-height)));
-
-  /*background-color: rgba(0,127,127,.5);*/
-}
-
-.eq1 {
-  position: absolute;
-  left: calc(8 * (100% / var(--grid-width)));
-  top: calc(11 * (100% / var(--grid-height)));
-  width: calc(3 * (100% / var(--grid-width)));
+  width: calc(5.5 * (100% / var(--grid-width)));
   height: calc(4 * (100% / var(--grid-height)));
-
-  /*background-color: rgba(0,127,127,.5);*/
-}
-
-.eq2 {
-  position: absolute;
-  left: calc(11 * (100% / var(--grid-width)));
-  top: calc(11 * (100% / var(--grid-height)));
-  width: calc(4 * (100% / var(--grid-width)));
-  height: calc(4 * (100% / var(--grid-height)));
-
-  /*background-color: rgba(0,127,127,.5);*/
 }
 
 .master {
@@ -165,8 +115,6 @@
   top: calc(11 * (100% / var(--grid-height)));
   width: calc(2 * (100% / var(--grid-width)));
   height: calc(4 * (100% / var(--grid-height)));
-
-  /*background-color: rgba(127,0,127,.5);*/
 }
 
 .outer {
@@ -184,7 +132,8 @@
 }
 
 .label {
-  width: 90%;
+  width: 100%;
   padding: .25vmin 1vmin;
+  margin: 0 0 0 2vmin;
   text-align: left;
 }

@@ -190,10 +190,3 @@ export default class Theremin extends PureComponent {
     );
   };
 };
-
-            // {this.tracker &&
-            //   <React.Fragment>
-            //     <button onClick={() => this.tracker.stop()}>stop</button>
-            //     <button onClick={() => this.tracker.start()}>start</button>
-            //   </React.Fragment>
-            // }

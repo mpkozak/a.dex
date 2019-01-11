@@ -30,6 +30,7 @@ export default class Meters extends PureComponent {
 
     const getData = () => {
       requestAnimationFrame(getData);
+
       analyser.getFloatTimeDomainData(data);
       let dataSum = 0;
       for (let i = 0; i < fftSize; i++) {
@@ -39,7 +40,7 @@ export default class Meters extends PureComponent {
       };
       const waveLength = document.getElementById('wave-path').getTotalLength();
       const dataRms = 20 * Math.log10(Math.sqrt(dataSum / fftSize)) + 20;
-      const rms = dataRms < -60 ? -60 : dataRms > 20 ? 20 : dataRms;
+      const rms = dataRms < -60 ? -60 : (dataRms > 20 ? 20 : dataRms);
 
       const wave = waveScaleCurve(dataCurve);
       const opacity = (100 - Math.sqrt(waveLength)) / 100;
@@ -53,7 +54,6 @@ export default class Meters extends PureComponent {
 
 
   render() {
-    // console.log('Meters rendered')
     const { wave, opacity, rotation, peak } = this.state;
     return (
       <div className="meters outer">
