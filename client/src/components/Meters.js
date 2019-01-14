@@ -1,8 +1,11 @@
 import React, { PureComponent } from 'react';
 import './_css/Meters.css';
-import { line, curveLinear } from "d3-shape";
-import { scaleLinear } from "d3-scale";
-import { MeterWave, MeterVU } from './_svg.js';
+import { line, curveLinear } from 'd3-shape';
+import { scaleLinear } from 'd3-scale';
+// import { MeterWave, MeterVU } from './_svg.js';
+
+import MeterVU from './MeterVU.js';
+import MeterWave from './MeterWave.js';
 
 export default class Meters extends PureComponent {
   constructor(props) {
@@ -38,15 +41,14 @@ export default class Meters extends PureComponent {
         dataSum += Math.pow(d, 2);
         dataCurve[i] = [(i / (fftSize - 1)) * 100, (d * 50) + 30];
       };
-      const waveLength = document.getElementById('wave-path').getTotalLength();
       const dataRms = 20 * Math.log10(Math.sqrt(dataSum / fftSize)) + 20;
       const rms = dataRms < -60 ? -60 : (dataRms > 20 ? 20 : dataRms);
 
       const wave = waveScaleCurve(dataCurve);
-      const opacity = (100 - Math.sqrt(waveLength)) / 100;
+      // const opacity = 1;
       const rotation = this.state.rotation * (5 / 6) + (needleScale(rms) / 6);
       const peak = dataRms > 15 ? new Date() : this.state.peak;
-      this.setState(prevState => ({ wave, opacity, rotation, peak }));
+      this.setState(prevState => ({ wave, rotation, peak }));
     };
 
     requestAnimationFrame(getData);

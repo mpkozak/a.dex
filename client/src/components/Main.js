@@ -32,7 +32,7 @@ export default class Main extends PureComponent {
   audioInit() {
     const baseHz = 110;
     const latency = 0.05;
-    const fftSizeBase = 9;
+    const fftSizeBase = 8;
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     const ctx = new AudioContext();
     const osc1 = new OscillatorNode(ctx, { type: 'triangle', frequency: baseHz });
@@ -65,7 +65,7 @@ export default class Main extends PureComponent {
 
   audioMute() {
     const { ctx, instGain, latency } = this.audio;
-    help.setAudioGain(instGain.gain, 0, ctx, latency * 2);
+    help.setAudioGain(instGain.gain, 0, ctx, latency);
   };
 
   audioRefresh(x, y) {
@@ -106,6 +106,8 @@ export default class Main extends PureComponent {
               <Placard show={showHelp} toggle={this.toggleHelp} />
               <Instructions show={showHelp} toggle={this.toggleHelp} />
               <Settings latency={ctx.baseLatency * 1000} micActive={micActive} toggle={this.toggleMic} />
+{/*
+*/}
               <Meters analyser={analyser} />
               <Delay delay={delay} wet={delayGain} />
               <Oscillators osc1={osc1} osc2={osc2} instGain={instGain} />

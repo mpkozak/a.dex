@@ -16,6 +16,7 @@ export default class Theremin extends PureComponent {
       sensitivity: 30,
       range: 4,
       calibTarget: false,
+      // muted: true,
     };
     this.sensitivity = { min: 0, max: 221 };
     this.range = { min: 2, max: 6 };
@@ -63,12 +64,28 @@ export default class Theremin extends PureComponent {
   };
 
   trackerHandleData(data) {
+    // console.log(data)
     this.trackerDraw(data);
     if (data.length === 2) {
       this.audioRefresh(data);
     } else {
       this.props.mute();
     };
+
+
+
+
+
+    // const { muted } = this.state;
+    // this.trackerDraw(data);
+    // if (data.length === 2) {
+    //   this.audioRefresh(data);
+    //   if (muted) this.setState(prevState => ({ muted: false }));
+    // } else if (!muted) {
+    //   this.props.mute();
+    //   this.setState(prevState => ({ muted: true }));
+    // };
+
   };
 
   trackerDraw(data) {
@@ -161,7 +178,6 @@ export default class Theremin extends PureComponent {
 
   render() {
     const { vW, vH, calibTarget } = this.state;
-    // {calibTarget.substring(5)}
     return (
       <div className="theremin outer">
         <div className="video-box outer">
@@ -174,7 +190,7 @@ export default class Theremin extends PureComponent {
                 <h2 className="osd">Calibrating...</h2>
               </div>
             }
-            <svg className="video-3 video-element" ref="clickBox" width={vW} height={vH} />
+            <div className="video-3 video-element" ref="clickBox" width={vW} height={vH} />
           </div>
         </div>
         <div className="settings-box outer">

@@ -1,27 +1,45 @@
 const help = {};
 
+// let init = false
 
 help.setAudioGain = (gain, val, ctx, delay) => {
-  const t = ctx.currentTime + .0001;
+  // gain.exponentialRampToValueAtTime(val > 0 ? val : .0001, ctx.currentTime + (delay / 4));
+  // if (!init) {
+  //   gain.setValueAtTime(1, ctx.currentTime)
+  //   init = true;
+  // }
+
+  const current = gain.value;
+  const target = (current + val) / 2;
+  const t = ctx.currentTime;
   gain.cancelScheduledValues(t);
-  gain.setValueAtTime(gain.value, t);
-  gain.linearRampToValueAtTime(val, ctx.currentTime + delay);
+  gain.setValueAtTime(current, t);
+  gain.linearRampToValueAtTime(target, t + delay / 2);
+
+
+
+
+  // const t = ctx.currentTime;
+  // gain.cancelScheduledValues(t);
+  // gain.setValueAtTime(gain.value, t);
+  // gain.linearRampToValueAtTime(val, t + delay);
 };
 
 help.setAudioFreq = (freqs, val, ctx, delay) => {
+    const t = ctx.currentTime;
   freqs.forEach(freq => {
-    const t = ctx.currentTime + .0001;
     freq.cancelScheduledValues(t);
     freq.setValueAtTime(freq.value, t);
-    freq.exponentialRampToValueAtTime(val, ctx.currentTime + delay);
+    freq.exponentialRampToValueAtTime(val, t + delay);
   });
 };
 
 help.setAudio = (param, val, ctx) => {
-  const t = ctx.currentTime + .0001;
+  // const t = ctx.currentTime + .0001;
+  const t = ctx.currentTime;
   param.cancelScheduledValues(t);
   param.setValueAtTime(param.value, t);
-  param.linearRampToValueAtTime(val, ctx.currentTime + .05);
+  param.linearRampToValueAtTime(val, t + .05);
 };
 
 help.handleScroll = (e, callback, scalar, id) => {

@@ -600,7 +600,7 @@ export const ScreenFrame = () => {
 // SVG COMPONENT GROUP MODULES //
 /////////////////////////////////
 
-const meterFrame = (color) => {
+export const meterFrame = (color) => {
   const colorFrame = color ? color : '#3A3125';
   return (
     <g className="meter-frame" clipPath="url(#meter-outer-clip)">
@@ -617,7 +617,7 @@ const meterFrame = (color) => {
 };
 
 
-const meterPanelShadow = () => {
+export const meterPanelShadow = () => {
   return (
     <g className="meter-panel-shadow" clipPath="url(#meter-inner-clip)" filter="url(#meter-gradient-blur)">
       <use href="#meter-rect-panel" fill="url(#meter-panel-horizontal)" />
