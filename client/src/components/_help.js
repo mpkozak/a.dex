@@ -3,18 +3,31 @@ const help = {};
 // let init = false
 
 help.setAudioGain = (gain, val, ctx, delay) => {
+
+
+  gain.linearRampToValueAtTime(val, ctx.currentTime + delay);
+
+
+
   // gain.exponentialRampToValueAtTime(val > 0 ? val : .0001, ctx.currentTime + (delay / 4));
   // if (!init) {
   //   gain.setValueAtTime(1, ctx.currentTime)
   //   init = true;
   // }
 
-  const current = gain.value;
-  const target = (current + val) / 2;
-  const t = ctx.currentTime;
-  gain.cancelScheduledValues(t);
-  gain.setValueAtTime(current, t);
-  gain.linearRampToValueAtTime(target, t + delay / 2);
+  // const current = gain.value;
+  // const target = (current + val) / 2;
+  // const t = ctx.currentTime;
+  // gain.cancelScheduledValues(t);
+  // gain.setValueAtTime(current, t);
+  // gain.linearRampToValueAtTime(target, t + delay / 2);
+
+
+
+
+
+
+
 
 
 

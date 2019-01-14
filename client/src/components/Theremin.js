@@ -16,7 +16,7 @@ export default class Theremin extends PureComponent {
       sensitivity: 30,
       range: 4,
       calibTarget: false,
-      // muted: true,
+      // muted: true
     };
     this.sensitivity = { min: 0, max: 221 };
     this.range = { min: 2, max: 6 };
@@ -64,17 +64,12 @@ export default class Theremin extends PureComponent {
   };
 
   trackerHandleData(data) {
-    // console.log(data)
     this.trackerDraw(data);
     if (data.length === 2) {
       this.audioRefresh(data);
     } else {
       this.props.mute();
     };
-
-
-
-
 
     // const { muted } = this.state;
     // this.trackerDraw(data);
@@ -85,7 +80,6 @@ export default class Theremin extends PureComponent {
     //   this.props.mute();
     //   this.setState(prevState => ({ muted: true }));
     // };
-
   };
 
   trackerDraw(data) {

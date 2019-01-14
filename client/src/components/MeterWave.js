@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { select } from 'd3-selection';
+// import { select } from 'd3-selection';
 import { meterFrame, meterPanelShadow } from './_svg.js';
 
 export default class MeterWave extends PureComponent {
