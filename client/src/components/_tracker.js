@@ -38,10 +38,10 @@ export default class Tracker {
     this.callback([]);
   };
   async masterStack() {
-    const a = await this.getData();
-    const b = await this.filterData(a);
-    const c = await this.reduceData(b);
-    this.callback(c);
+    const data = await this.getData();
+    const filtered = await this.filterData(data);
+    const reduced = await this.reduceData(filtered);
+    this.callback(reduced);
     this.rAF = requestAnimationFrame(this.masterStack.bind(this));
   };
   async getData() {

@@ -32,7 +32,6 @@ export default class Main extends PureComponent {
   audioInit() {
     const baseHz = 110;
     const latency = 0.05;
-    const mic = undefined;
     const fftSizeBase = 9;
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     const ctx = new AudioContext();
@@ -46,6 +45,7 @@ export default class Main extends PureComponent {
     const delayGain = new GainNode(ctx, { gain: 0 });
     const masterGain = new GainNode(ctx, { gain: .73 });
     const analyser = new AnalyserNode(ctx, { fftSize: Math.pow(2, fftSizeBase), minDecibels: -100, maxDecibels: -30, smoothingTimeConstant: 0 });
+    const mic = ctx.createMediaStreamSource(this.props.audioStream);
     osc1.connect(fmGain);
     fmGain.connect(osc2.frequency);
     osc2.connect(instGain);
@@ -59,7 +59,7 @@ export default class Main extends PureComponent {
     masterGain.connect(ctx.destination);
     osc1.start();
     osc2.start();
-    this.audio = {ctx, osc1, osc2, fmGain, instGain, hpf, lpf, delay, delayGain, masterGain, analyser, baseHz, latency, mic};
+    this.audio = { ctx, osc1, osc2, fmGain, instGain, hpf, lpf, delay, delayGain, masterGain, analyser, baseHz, latency, mic };
     this.setState(prevState => ({ audioEnabled: true }));
   };
 
@@ -78,16 +78,8 @@ export default class Main extends PureComponent {
 
   toggleMic() {
     const { micActive } = this.state;
-    const { ctx, masterGain, analyser, mic } = this.audio;
-    if (!mic) {
-      navigator.mediaDevices.getUserMedia({ audio: true })
-        .then(stream => {
-          const mic = ctx.createMediaStreamSource(stream);
-          this.audio.mic = mic;
-          masterGain.disconnect(analyser);
-          mic.connect(analyser);
-        });
-    } else if (!micActive) {
+    const { masterGain, analyser, mic } = this.audio;
+    if (!micActive) {
       masterGain.disconnect(analyser);
       mic.connect(analyser);
     } else {
@@ -103,18 +95,17 @@ export default class Main extends PureComponent {
 
 
   render() {
-    const { audioEnabled, micActive, showHelp } = this.state;
+    const { micActive, showHelp } = this.state;
     const { ctx, osc1, osc2, fmGain, instGain, hpf, lpf, delay, delayGain, analyser, masterGain } = this.audio;
-    const latency = audioEnabled ? Math.round((ctx.currentTime - ctx.getOutputTimestamp().contextTime) * 1000) : 0;
     return (
       <div className="Main">
-        {!audioEnabled
+        {!this.audio
           ? <Init handleClick={this.audioInit} />
           : <React.Fragment>
-              <Theremin refresh={this.audioRefresh} mute={this.audioMute} />
+              <Theremin videoStream={this.props.videoStream} refresh={this.audioRefresh} mute={this.audioMute} />
               <Placard show={showHelp} toggle={this.toggleHelp} />
               <Instructions show={showHelp} toggle={this.toggleHelp} />
-              <Settings latency={latency} micActive={micActive} toggle={this.toggleMic} />
+              <Settings latency={ctx.baseLatency * 1000} micActive={micActive} toggle={this.toggleMic} />
               <Meters analyser={analyser} />
               <Delay delay={delay} wet={delayGain} />
               <Oscillators osc1={osc1} osc2={osc2} instGain={instGain} />

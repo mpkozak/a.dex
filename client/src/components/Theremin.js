@@ -9,7 +9,6 @@ export default class Theremin extends PureComponent {
     constructor(props) {
     super(props)
     this.state = {
-      video: false,
       vW: 0,
       vH: 0,
       colorGain: '#FF0000',
@@ -18,11 +17,13 @@ export default class Theremin extends PureComponent {
       range: 4,
       calibTarget: false,
     };
-    this.tracker = undefined;
-    this.canvas = undefined;
     this.sensitivity = { min: 0, max: 221 };
     this.range = { min: 2, max: 6 };
     this.changeScalar = 1000;
+    this.tracker = undefined;
+    this.canvas = undefined;
+    this.videoInit = this.videoInit.bind(this);
+    this.trackerColorRefresh = this.trackerColorRefresh.bind(this);
     this.trackerHandleData = this.trackerHandleData.bind(this);
     this.trackerGetCoords = this.trackerGetCoords.bind(this);
     this.handleParam = this.handleParam.bind(this);
@@ -31,8 +32,11 @@ export default class Theremin extends PureComponent {
   componentDidMount() {
     const colorGain = localStorage.getItem('colorGain');
     const colorFreq = localStorage.getItem('colorFreq');
-    if (colorGain && colorFreq) this.setState(prevState => ({ colorGain, colorFreq }));
-    this.videoInit();
+    if (colorGain && colorFreq) {
+      this.setState(prevState => ({ colorGain, colorFreq }), this.videoInit);
+    } else {
+      this.videoInit();
+    };
   };
 
   audioRefresh(data) {
@@ -43,20 +47,17 @@ export default class Theremin extends PureComponent {
   };
 
   videoInit() {
-    navigator.mediaDevices.getUserMedia({ video: true })
-      .then(stream => {
-        const { video } = this.refs;
-        video.srcObject = stream;
-        const vW = video.clientWidth;
-        const vH = video.clientHeight;
-        this.setState(prevState => ({ video, vW, vH }));
-        this.trackerInit();
-      });
+    const { video } = this.refs;
+    video.srcObject = this.props.videoStream;
+    const vW = video.clientWidth;
+    const vH = video.clientHeight;
+    this.setState(prevState => ({ vW, vH }));
+    this.trackerInit();
   };
 
   trackerInit() {
-    const { video, colorGain, colorFreq, sensitivity } = this.state;
-    this.tracker = new Tracker(this.trackerHandleData, video, colorGain, colorFreq, sensitivity, 5);
+    const { colorGain, colorFreq, sensitivity } = this.state;
+    this.tracker = new Tracker(this.trackerHandleData, this.refs.video, colorGain, colorFreq, sensitivity, 5);
     this.canvas = this.tracker.init();
     this.tracker.start();
   };
@@ -96,9 +97,10 @@ export default class Theremin extends PureComponent {
 
   trackerGetCoords(e) {
     const { calibTarget } = this.state;
+    const { clickBox, video } = this.refs;
     const { ctx, tW, tH, scalar } = this.canvas;
-    this.refs.clickBox.removeEventListener('click', this.trackerGetCoords);
-    ctx.drawImage(this.state.video, 0, 0, tW, tH);
+    clickBox.removeEventListener('click', this.trackerGetCoords);
+    ctx.drawImage(video, 0, 0, tW, tH);
     const rgb = ctx.getImageData(e.offsetX / scalar, e.offsetY / scalar, 1, 1).data;
     const r = ('0' + rgb[0].toString(16)).slice(-2);
     const g = ('0' + rgb[1].toString(16)).slice(-2);
@@ -108,8 +110,7 @@ export default class Theremin extends PureComponent {
     this.setState(prevState => ({
       [calibTarget]: color,
       calibTarget: false
-    }));
-    this.trackerColorRefresh();
+    }), this.trackerColorRefresh);
   };
 
   handleColor(calibTarget) {
@@ -169,7 +170,7 @@ export default class Theremin extends PureComponent {
             <svg className="video-1 video-element" ref="svgTracker" width={vW} height={vH} />
             {calibTarget &&
               <div className="video-2 video-element">
-                <h2 className="osd">Calibrating...</h2>
+                <h2 className="osd">Calibrating {calibTarget.substring(5)}...</h2>
               </div>
             }
             <svg className="video-3 video-element" ref="clickBox" width={vW} height={vH} />
