@@ -161,6 +161,7 @@ export default class Theremin extends PureComponent {
 
   render() {
     const { vW, vH, calibTarget } = this.state;
+    // {calibTarget.substring(5)}
     return (
       <div className="theremin outer">
         <div className="video-box outer">
@@ -170,7 +171,7 @@ export default class Theremin extends PureComponent {
             <svg className="video-1 video-element" ref="svgTracker" width={vW} height={vH} />
             {calibTarget &&
               <div className="video-2 video-element">
-                <h2 className="osd">Calibrating {calibTarget.substring(5)}...</h2>
+                <h2 className="osd">Calibrating...</h2>
               </div>
             }
             <svg className="video-3 video-element" ref="clickBox" width={vW} height={vH} />
