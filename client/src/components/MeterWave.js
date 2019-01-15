@@ -3,7 +3,6 @@ import React, { PureComponent } from 'react';
 import { meterFrame, meterPanelShadow } from './_svg.js';
 
 export default class MeterWave extends PureComponent {
-
   // componentDidUpdate() {
   //   const { wave, opacity } = this.props;
   //   const path = select(this.refs.waveGroupD3).selectAll('path')

@@ -16,7 +16,6 @@ export default class Theremin extends PureComponent {
       sensitivity: 30,
       range: 4,
       calibTarget: false,
-      // muted: true
     };
     this.sensitivity = { min: 0, max: 221 };
     this.range = { min: 2, max: 6 };
@@ -40,11 +39,11 @@ export default class Theremin extends PureComponent {
     };
   };
 
-  audioRefresh(data) {
+  audioRefresh(x, y) {
     const { vW, vH, range } = this.state;
-    const x = (vW - data[1].x) / (vW / range);
-    const y = (vH - data[0].y) / vH;
-    this.props.refresh(x, y);
+    const posX = (vW - x) * (range / vW);
+    const posY = (vH - y) / vH;
+    this.props.refresh(posX, posY);
   };
 
   videoInit() {
@@ -66,20 +65,10 @@ export default class Theremin extends PureComponent {
   trackerHandleData(data) {
     this.trackerDraw(data);
     if (data.length === 2) {
-      this.audioRefresh(data);
+      this.audioRefresh(data[1].x, data[0].y);
     } else {
       this.props.mute();
     };
-
-    // const { muted } = this.state;
-    // this.trackerDraw(data);
-    // if (data.length === 2) {
-    //   this.audioRefresh(data);
-    //   if (muted) this.setState(prevState => ({ muted: false }));
-    // } else if (!muted) {
-    //   this.props.mute();
-    //   this.setState(prevState => ({ muted: true }));
-    // };
   };
 
   trackerDraw(data) {

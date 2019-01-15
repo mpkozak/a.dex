@@ -70,7 +70,7 @@ export default class Main extends PureComponent {
 
   audioRefresh(x, y) {
     const { ctx, baseHz, latency, instGain, osc1, osc2 } = this.audio;
-    const setLevel = y;
+    const setLevel = Math.pow(y, 2);
     const setFreq = Math.pow(2, x) * baseHz;
     help.setAudioGain(instGain.gain, setLevel, ctx, latency);
     help.setAudioFreq([osc1.frequency, osc2.frequency], setFreq, ctx, latency);
