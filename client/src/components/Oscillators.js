@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import './_css/Oscillators.css';
-import help from './_help.js';
 import { GlowButton } from './_svg.js';
 
 export default class Oscillators extends PureComponent {
@@ -15,8 +14,7 @@ export default class Oscillators extends PureComponent {
   };
 
   setOsc(osc, type) {
-    const { instGain } = this.props;
-    help.setAudioGain(instGain.gain, 0, instGain.context, .01);
+    this.props.mute();
     setTimeout(() => this.props[osc].type = type, 10);
     this.setState(prevState => ({ [osc]: type }));
   };

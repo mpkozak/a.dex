@@ -21,7 +21,7 @@ export default class Delay extends PureComponent {
     const { min, max, mod } = this[param];
     const val = help.getLevel(this.state[param], delta, min, max);
     if (val) {
-      help.setAudio(this.props[param][mod], val, ctx);
+      help.setAudioParam(this.props[param][mod], val, ctx.currentTime);
       this.setState(prevState => ({ [param]: val }));
     };
   };

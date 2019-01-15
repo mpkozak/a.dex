@@ -102,10 +102,8 @@ export default class Theremin extends PureComponent {
     clickBox.removeEventListener('click', this.trackerGetCoords);
     ctx.drawImage(video, 0, 0, tW, tH);
     const rgb = ctx.getImageData(e.offsetX / scalar, e.offsetY / scalar, 1, 1).data;
-    const r = ('0' + rgb[0].toString(16)).slice(-2);
-    const g = ('0' + rgb[1].toString(16)).slice(-2);
-    const b = ('0' + rgb[2].toString(16)).slice(-2);
-    const color = `#${r}${g}${b}`;
+    const decTo2Hex = (dec) => ('0' + dec.toString(16)).slice(-2);
+    const color = `#${decTo2Hex(rgb[0])}${decTo2Hex(rgb[1])}${decTo2Hex(rgb[2])}`;
     localStorage.setItem(calibTarget, color);
     this.setState(prevState => ({
       [calibTarget]: color,

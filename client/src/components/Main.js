@@ -65,15 +65,15 @@ export default class Main extends PureComponent {
 
   audioMute() {
     const { ctx, instGain, latency } = this.audio;
-    help.setAudioGain(instGain.gain, 0, ctx, latency);
+    help.setAudioGain(instGain.gain, 0, ctx.currentTime, latency);
   };
 
   audioRefresh(x, y) {
-    const { ctx, baseHz, latency, instGain, osc1, osc2 } = this.audio;
+    const { ctx, osc1, osc2, instGain, baseHz, latency } = this.audio;
     const setLevel = Math.pow(y, 2);
     const setFreq = Math.pow(2, x) * baseHz;
-    help.setAudioGain(instGain.gain, setLevel, ctx, latency);
-    help.setAudioFreq([osc1.frequency, osc2.frequency], setFreq, ctx, latency);
+    help.setAudioGain(instGain.gain, setLevel, ctx.currentTime, latency);
+    help.setAudioFreqs([osc1.frequency, osc2.frequency], setFreq, ctx.currentTime, latency);
   };
 
   toggleMic() {
@@ -96,7 +96,7 @@ export default class Main extends PureComponent {
 
   render() {
     const { micActive, showHelp } = this.state;
-    const { ctx, osc1, osc2, fmGain, instGain, hpf, lpf, delay, delayGain, analyser, masterGain } = this.audio;
+    const { ctx, osc1, osc2, fmGain, hpf, lpf, delay, delayGain, masterGain, analyser } = this.audio;
     return (
       <div className="Main">
         {!this.audio
@@ -105,12 +105,12 @@ export default class Main extends PureComponent {
               <Theremin videoStream={this.props.videoStream} refresh={this.audioRefresh} mute={this.audioMute} />
               <Placard show={showHelp} toggle={this.toggleHelp} />
               <Instructions show={showHelp} toggle={this.toggleHelp} />
-              <Settings latency={ctx.baseLatency * 1000} micActive={micActive} toggle={this.toggleMic} />
+              <Settings latency={ctx.baseLatency} micActive={micActive} toggle={this.toggleMic} />
 {/*
 */}
               <Meters analyser={analyser} />
               <Delay delay={delay} wet={delayGain} />
-              <Oscillators osc1={osc1} osc2={osc2} instGain={instGain} />
+              <Oscillators osc1={osc1} osc2={osc2} mute={this.audioMute} />
               <FmSynth depth={fmGain} width={osc2} />
               <Eq hpf={hpf} lpf={lpf} />
               <Master masterGain={masterGain} />

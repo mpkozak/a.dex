@@ -19,7 +19,7 @@ export default class Master extends PureComponent {
     const { masterGain } = this.props;
     const volume = help.getLevel(this.state.volume, delta, this.min, this.max);
     if (volume) {
-      help.setAudio(masterGain.gain, volume, masterGain.context);
+      help.setAudioParam(masterGain.gain, volume, masterGain.context.currentTime);
       this.setState(prevState => ({ volume }));
     };
   };
