@@ -2,11 +2,12 @@ import React, { PureComponent } from 'react';
 import './_css/Main.css';
 import help from './_help.js';
 import Init from './Init.js'
-import Theremin from './Theremin.js';
+import AnimationStack from './AnimationStack.js';
+// import Theremin from './Theremin.js';
 import Placard from './Placard.js';
 import Instructions from './Instructions.js';
 import Settings from './Settings.js';
-import Meters from './Meters.js';
+// import Meters from './Meters.js';
 import Delay from './Delay.js';
 import Oscillators from './Oscillators.js';
 import FmSynth from './FmSynth.js';
@@ -102,13 +103,14 @@ export default class Main extends PureComponent {
         {!this.audio
           ? <Init handleClick={this.audioInit} />
           : <React.Fragment>
-              <Theremin videoStream={this.props.videoStream} refresh={this.audioRefresh} mute={this.audioMute} />
+              <AnimationStack videoStream={this.props.videoStream} audioRefresh={this.audioRefresh} audioMute={this.audioMute} analyser={analyser} />
               <Placard show={showHelp} toggle={this.toggleHelp} />
               <Instructions show={showHelp} toggle={this.toggleHelp} />
               <Settings latency={ctx.baseLatency} micActive={micActive} toggle={this.toggleMic} />
 {/*
-*/}
+              <Theremin videoStream={this.props.videoStream} refresh={this.audioRefresh} mute={this.audioMute} />
               <Meters analyser={analyser} />
+*/}
               <Delay delay={delay} wet={delayGain} />
               <Oscillators osc1={osc1} osc2={osc2} mute={this.audioMute} />
               <FmSynth depth={fmGain} width={osc2} />

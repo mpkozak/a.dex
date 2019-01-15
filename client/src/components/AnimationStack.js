@@ -44,10 +44,7 @@ export default class AnimationStack extends PureComponent {
 // import './_css/Meters.css';
 // import { line, curveLinear } from 'd3-shape';
 // import { scaleLinear } from 'd3-scale';
-
 // import Theremin from './Theremin.js';
-// // import Meters from './Meters.js';
-
 // import MeterVU from './MeterVU.js';
 // import MeterWave from './MeterWave.js';
 
@@ -69,10 +66,6 @@ export default class AnimationStack extends PureComponent {
 //     this.data = new Float32Array(this.fftSize);
 //     this.dataCurve = new Array(this.fftSize);
 //     this.getData = this.getData.bind(this);
-// // this.videoStream = props.videoStream.bind(this);
-// // this.audioRefresh = props.audioRefresh.bind(this);
-// // this.audioMute = props.audioMute.bind(this);
-
 //   };
 
 //   getData() {
@@ -88,17 +81,10 @@ export default class AnimationStack extends PureComponent {
 //     const rms = dataRms < -60 ? -60 : (dataRms > 20 ? 20 : dataRms);
 
 //     const wave = waveScaleCurve(dataCurve);
-//     // const opacity = 1;
 //     const rotation = this.state.rotation * (5 / 6) + (needleScale(rms) / 6);
 //     const peak = dataRms > 15 ? new Date() : this.state.peak;
-//     // console.log(dataRms)
-//     // if (this.state.rotation !== rotation) console.log('no rotation change')
 //     this.setState(prevState => ({ wave, rotation, peak }));
-//     // console.log(rotation)
-//     // this.setState(prevState => ({ wave, rotation, peak }));
 //   };
-
-
 
 
 //   render() {
@@ -115,8 +101,3 @@ export default class AnimationStack extends PureComponent {
 //     );
 //   };
 // };
-
-
-
-
-

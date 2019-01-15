@@ -63,6 +63,7 @@ export default class Theremin extends PureComponent {
   };
 
   trackerHandleData(data) {
+    this.props.animFrame();
     this.trackerDraw(data);
     if (data.length === 2) {
       this.audioRefresh(data[1].x, data[0].y);
