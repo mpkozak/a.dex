@@ -74,7 +74,7 @@ export default class Theremin extends PureComponent {
 
   trackerDraw(data) {
     const circles = select(this.refs.svgTracker).selectAll('circle')
-      .data(data)
+      .data(data);
     circles
       .enter()
       .append('circle');
@@ -190,3 +190,6 @@ export default class Theremin extends PureComponent {
     );
   };
 };
+
+            // <button onClick={() => this.tracker.start()}>start</button>
+            // <button onClick={() => this.tracker.stop()}>stop</button>

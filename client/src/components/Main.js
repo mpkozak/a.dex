@@ -44,7 +44,7 @@ export default class Main extends PureComponent {
     const delayGain = new GainNode(ctx, { gain: 0 });
     const masterGain = new GainNode(ctx, { gain: .73 });
     const analyser = new AnalyserNode(ctx, { fftSize: Math.pow(2, fftSizeBase), minDecibels: -100, maxDecibels: -30, smoothingTimeConstant: 0 });
-    const mic = ctx.createMediaStreamSource(this.props.audioStream);
+    const mic = new MediaStreamAudioSourceNode(ctx, { mediaStream: this.props.audioStream });
     osc1.connect(fmGain);
     fmGain.connect(osc2.frequency);
     osc2.connect(instGain);
