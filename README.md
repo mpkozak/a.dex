@@ -1,6 +1,8 @@
 # αdex by kozak
 
+[Live Deployment](https://kozak.digital/adex)
+
 ### readme coming soon
 
 ## Additional Libraries
-D3.js
+React.js, D3.js
