@@ -21,7 +21,6 @@ export default class App extends PureComponent {
   };
 
   streamInit() {
-    console.log('streaminit')
     navigator.mediaDevices.getUserMedia({ audio: true, video: true })
       .then(stream => {
         const audioStream = new MediaStream([stream.getAudioTracks()[0]]);
@@ -30,7 +29,6 @@ export default class App extends PureComponent {
       })
       .catch(err => {
         console.log(err);
-        alert(err)
         this.setState(prevState => ({ compatible: false }));
       });
   };

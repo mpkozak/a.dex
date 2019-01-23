@@ -3,14 +3,14 @@
   --grid-height: 15;
   --size-unit: calc(95vw / var(--grid-width));
   --size-unit-max: calc(90vh / var(--grid-height));
-  --size-unit-min: 30px;
+  /*--size-unit-min: 30px;*/
   position: relative;
   width: calc(var(--grid-width) * var(--size-unit));
   height: calc(var(--grid-height) * var(--size-unit));
   max-width: calc(var(--grid-width) * var(--size-unit-max));
   max-height: calc(var(--grid-height) * var(--size-unit-max));
-  min-width: calc(var(--grid-width) * var(--size-unit-min));
-  min-height: calc(var(--grid-height) * var(--size-unit-min));
+  /*min-width: calc(var(--grid-width) * var(--size-unit-min));*/
+  /*min-height: calc(var(--grid-height) * var(--size-unit-min));*/
   background: url('../_img/titanium.jpg') no-repeat center center fixed;
   background-size: cover;
   border-radius: 1vmin;
