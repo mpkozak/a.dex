@@ -9,8 +9,8 @@ export default class Theremin extends PureComponent {
     constructor(props) {
     super(props)
     this.state = {
-      vW: 0,
-      vH: 0,
+      vW: 640,
+      vH: 480,
       colorGain: '#FF0000',
       colorFreq: '#00FF00',
       sensitivity: 30,
@@ -35,9 +35,22 @@ export default class Theremin extends PureComponent {
     if (colorGain && colorFreq) {
       this.setState(prevState => ({ colorGain, colorFreq }), this.videoInit);
     } else {
+      this.canvasInit();
       this.videoInit();
+
     };
   };
+
+  componentDidUpdate() {
+    if (this.refs.video) this.refs.video.play();
+  };
+
+
+  // componentDidUpdate() {
+  //   const { video, videoCanvas, svgTracker, clickBox } = this.refs;
+  //   console.log('client', videoCanvas.clientWidth, svgTracker.clientWidth, clickBox.clientWidth)
+  //   if (video) console.log('video', video.width, 'canvas', videoCanvas.width, 'svg', svgTracker.width, 'clickbox', clickBox.width)
+  // }
 
   audioRefresh(x, y) {
     const { vW, vH, range } = this.state;
@@ -47,12 +60,32 @@ export default class Theremin extends PureComponent {
   };
 
   videoInit() {
-    const { video } = this.refs;
-    video.srcObject = this.props.videoStream;
-    const vW = video.clientWidth;
-    const vH = video.clientHeight;
-    this.setState(prevState => ({ vW, vH }));
+    this.refs.video = document.createElement('video');
+    const { vW, vH } = this.state;
+    this.refs.video.width = vW;
+    this.refs.video.height = vH;
+    this.refs.video.srcObject = this.props.videoStream;
+    this.refs.video.classList.add("video-x");
+    // video.classList.add("video-element");
+    this.refs.video.preload = true;
+    this.refs.video.loop = true;
+    this.refs.video.muted = true;
+    this.refs.video.playsInline = true;
+    this.refs.video.play();
     this.trackerInit();
+  };
+
+
+  canvasInit() {
+    const { videoCanvas } = this.refs;
+    // const vW = videoCanvas.clientWidth;
+    // const vH = videoCanvas.clientHeight;
+    videoCanvas.width = 640;
+    videoCanvas.height = 480;
+    // videoCanvas.width = vW;
+    // videoCanvas.height = vH;
+    // const drawCtx = videoCanvas.getContext('2d');
+    // this.setState(prevState => ({ vW, vH }));
   };
 
   trackerInit() {
@@ -64,12 +97,20 @@ export default class Theremin extends PureComponent {
 
   trackerHandleData(data) {
     this.props.animFrame();
+    this.canvasDraw();
     this.trackerDraw(data);
     if (data.length === 2) {
       this.audioRefresh(data[1].x, data[0].y);
     } else {
       this.props.mute();
     };
+  };
+
+  canvasDraw() {
+    const { vW, vH } = this.state;
+    // this.refs.video.play();
+    const drawCtx = this.refs.videoCanvas.getContext('2d');
+    drawCtx.drawImage(this.refs.video, 0, 0, vW, vH);
   };
 
   trackerDraw(data) {
@@ -97,12 +138,18 @@ export default class Theremin extends PureComponent {
   };
 
   trackerGetCoords(e) {
-    const { calibTarget } = this.state;
-    const { clickBox, video } = this.refs;
-    const { ctx, tW, tH, scalar } = this.canvas;
+    console.log(e)
+    const { calibTarget, vW, vH } = this.state;
+    const { clickBox, videoCanvas } = this.refs;
+    // const { ctx, tW, tH, scalar } = this.canvas;
     clickBox.removeEventListener('click', this.trackerGetCoords);
-    ctx.drawImage(video, 0, 0, tW, tH);
-    const rgb = ctx.getImageData(e.offsetX / scalar, e.offsetY / scalar, 1, 1).data;
+    // ctx.drawImage(videoCanvas, 0, 0, tW, tH);
+    // const rgb = ctx.getImageData(e.offsetX / scalar, e.offsetY / scalar, 1, 1).data;
+
+    const drawCtx = this.refs.videoCanvas.getContext('2d')
+    const hitSpotX = vW - Math.floor(e.layerX * (vW / videoCanvas.clientWidth));
+    const hitSpotY = Math.floor(e.layerY * (vH / videoCanvas.clientHeight))
+    const rgb = drawCtx.getImageData(hitSpotX, hitSpotY, 1, 1).data;
     const decTo2Hex = (dec) => ('0' + dec.toString(16)).slice(-2);
     const color = `#${decTo2Hex(rgb[0])}${decTo2Hex(rgb[1])}${decTo2Hex(rgb[2])}`;
     localStorage.setItem(calibTarget, color);
@@ -160,13 +207,23 @@ export default class Theremin extends PureComponent {
 
   render() {
     const { vW, vH, calibTarget } = this.state;
+    console.log('in theremin', this.props.width, this.props.height)
+    // console.log(vW, vH)
+    // const { videoCanvas } = this.refs;
+    // // if (videoCanvas) console.log(videoCanvas.clientWidth)
+    // const noClick = calibTarget
+    //   ? {}
+    //   : {pointerEvents: 'none'};
     return (
       <div className="theremin outer">
         <div className="video-box outer">
           <div className="video-layers">
             <ScreenFrame />
-            <video className="video-0 video-element" ref="video" preload="true" autoPlay loop muted />
-            <svg className="video-1 video-element" ref="svgTracker" width={vW} height={vH} />
+{/*
+            <video className="video-0 video-element" ref="video" playsInline autoplay />
+*/}
+            <canvas className="video-0 video-element" ref="videoCanvas" width={vW} height={vH} />
+            <svg className="video-1 video-element" ref="svgTracker" viewBox={`0 0 ${vW} ${vH}`} />
             {calibTarget &&
               <div className="video-2 video-element">
                 <h2 className="osd">Calibrating...</h2>

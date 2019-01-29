@@ -393,37 +393,37 @@ export const HelpButton = (props) => {
   const helpFonts = {
     question: {
       fontFamily: 'Helvetica, Helvetica Neue, Arial, sans-serif',
-      fontSize: 9,
+      fontSize: 90,
       fontWeight: 800
     },
     x: {
       fontFamily: 'Helvetica, Helvetica Neue, Arial, sans-serif',
-      fontSize: 7,
+      fontSize: 70,
       fontWeight: 800
     }
   };
   return (
-    <svg className="helpbutton" viewBox="0 0 10 10" onClick={handleClick}>
+    <svg className="helpbutton" viewBox="0 0 100 100" onClick={handleClick}>
       <defs>
   {/* Masks */}
         <mask id="question-mask">
-          <rect width="10" height="10" fill="#FFFFFF" />
+          <rect width="100" height="100" fill="#FFFFFF" />
           <text style={helpFonts.question} fill="#000000"
-            x="5" y="5.7" textAnchor="middle" alignmentBaseline="middle"
+            x="50" y="57" textAnchor="middle" alignmentBaseline="middle"
           >?</text>
         </mask>
         <mask id="x-mask">
-          <rect width="10" height="10" fill="#FFFFFF" />
+          <rect width="100" height="100" fill="#FFFFFF" />
           <text style={helpFonts.x} fill="#000000"
-            x="5" y="5.7" textAnchor="middle" alignmentBaseline="middle"
+            x="50" y="57" textAnchor="middle" alignmentBaseline="middle"
           >X</text>
         </mask>
       </defs>
   {/* Circle */}
       <circle mask={active ? "url(#x-mask)" : "url(#question-mask)"}
-        cx="5"
-        cy="5"
-        r="5"
+        cx="50"
+        cy="50"
+        r="50"
         fill="#FFFFFF"
         opacity=".5"
       />
@@ -487,24 +487,24 @@ export const BigKnob = (props) => {
   const { rotation, color, handleClick, handleScroll } = props;
   const colorKnob = color ? color : '#3A3125';
   return (
-    <svg className="bigknob" viewBox="0 0 100 100" onMouseDown={handleClick} onWheel={handleScroll}>
+    <svg className="bigknob" viewBox="0 0 1000 1000" onClick={handleClick} onTouchStart={handleScroll}>
   {/* Base */}
-      <circle cx="50" cy="50" r="48"
+      <circle cx="500" cy="500" r="480"
         fill={colorKnob}
         stroke="#000000"
         strokeWidth="1%"
       />
   {/* Contour + Glare */}
-      <circle cx="50" cy="50" r="48" fill="url(#bigknob-contour)" />
-      <circle cx="50" cy="50" r="48" fill="url(#bigknob-glare)" />
+      <circle cx="500" cy="500" r="480" fill="url(#bigknob-contour)" />
+      <circle cx="500" cy="500" r="480" fill="url(#bigknob-glare)" />
   {/* Notch */}
       <rect
         fill="url(#bigknob-notch)"
-        transform={`rotate(${rotation * 3.2 - 160}, 50, 50)`}
-        x="48"
-        y="6"
-        width="4"
-        height="20"
+        transform={`rotate(${rotation * 3.2 - 160}, 500, 500)`}
+        x="480"
+        y="60"
+        width="40"
+        height="200"
         stroke="#000000"
         strokeWidth="1%"
       />
@@ -524,31 +524,32 @@ export const GlowButton = (props) => {
     square: 'M 2 5 L 2 2.5 L 5 2.5 L 5 7.5 L 8 7.5 L 8 5'
   };
   return (
-    <svg className="glowbutton" viewBox="0 0 10 10" onClick={handleClick}>
+    <svg className="glowbutton" viewBox="0 0 100 100" onClick={handleClick}>
   {/* Base Layer */}
-      <rect x="0" y="0" rx="1" width="10" height="10"
+      <rect x="0" y="0" rx="10" width="100" height="100"
         fill={colorButton}
         stroke="#000000"
         strokeWidth="1%"
       />
   {/* Button Base Active */}
-      <rect x="0" y="0" rx="1" width="10" height="10"
+      <rect x="0" y="0" rx="10" width="100" height="100"
         fill="url(#glowbutton-active-base)"
         opacity={active ? 1 : 0}
       />
   {/* Logograph */}
       <path
         d={icons[icon]}
+        transform="scale(10)"
         fill="none"
         stroke="#000000"
-        strokeWidth="5%"
+        strokeWidth=".5%"
       />
   {/* Contours */}
-      <rect x="0" y="0" rx="1" width="10" height="10" fill="url(#glowbutton-contour-horizontal)" />
-      <rect x="0" y="0" rx="1" width="10" height="10" fill="url(#glowbutton-contour-vertical)" />
-      <rect x="0" y="0" rx="1" width="10" height="10" fill="url(#glowbutton-contour-center)" />
+      <rect x="0" y="0" rx="10" width="100" height="100" fill="url(#glowbutton-contour-horizontal)" />
+      <rect x="0" y="0" rx="10" width="100" height="100" fill="url(#glowbutton-contour-vertical)" />
+      <rect x="0" y="0" rx="10" width="100" height="100" fill="url(#glowbutton-contour-center)" />
   {/* Glow Layer*/}
-      <rect x="0" y="0" rx="1" width="10" height="10"
+      <rect x="0" y="0" rx="10" width="100" height="100"
         fill="url(#glowbutton-active-halo)"
         opacity={active ? 1 : 0}
       />
@@ -758,8 +759,9 @@ export const MasterFader = (props) => {
           );
         })}
       </g>
-  {/* Slider */}
-      <g className="masterfader-slider" transform={`translate(${15}, ${60 - level})`} onMouseDown={handleClick}>
+  {/* Slider
+      <g className="masterfader-slider" transform={`translate(${15}, ${60 - level})`} onMouseDown={handleClick}> */}
+      <g className="masterfader-slider" transform={`translate(${15}, ${60 - level})`} >
         {slider()}
       </g>
     </svg>

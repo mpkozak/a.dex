@@ -2,8 +2,12 @@ export default class Tracker {
   constructor(callback, video, color1, color2, sensitivity = 50, reducer = 10) {
     this.callback = callback;
     this.video = video;
-    this.vWidth = video.clientWidth;
-    this.vHeight = video.clientHeight;
+    // this.vWidth = video.clientWidth;
+    // this.vHeight = video.clientHeight;
+    this.vWidth = video.width;
+    this.vHeight = video.height;
+    // this.vWidth = 640;
+    // this.vHeight = 480;
     this.color1 = color1;
     this.color2 = color2;
     this.c1 = this.hexToRgb(color1);

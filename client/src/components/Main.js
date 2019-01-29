@@ -28,9 +28,12 @@ export default class Main extends PureComponent {
     this.toggleHelp = this.toggleHelp.bind(this);
   };
 
+  componentDidMount() {
+    // this.refs.main.addEventListener('touchstart', (e) => e.preventDefault())
+  }
 
 
- audioInit() {
+  audioInit() {
     const baseHz = 110;
     const latency = 0.05;
     const fftSizeBase = 8;
@@ -121,11 +124,11 @@ export default class Main extends PureComponent {
     const { micActive, showHelp } = this.state;
     const { ctx, osc1, osc2, fmGain, hpf, lpf, delay, delayGain, masterGain, analyser } = this.audio;
     return (
-      <div className="Main">
+      <div className="Main" ref="main">
         {!this.audio
           ? <Init handleClick={this.audioInit} />
           : <React.Fragment>
-              <AnimationStack videoStream={this.props.videoStream} audioRefresh={this.audioRefresh} audioMute={this.audioMute} analyser={analyser} />
+              <AnimationStack videoStream={this.props.videoStream} width={this.props.width} height={this.props.height} audioRefresh={this.audioRefresh} audioMute={this.audioMute} analyser={analyser} />
               <Placard show={showHelp} toggle={this.toggleHelp} />
               <Instructions show={showHelp} toggle={this.toggleHelp} />
               <Settings latency={ctx.baseLatency * 1000 || 'err'} micActive={micActive} toggle={this.toggleMic} />

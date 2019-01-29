@@ -17,11 +17,11 @@ export default class AnimationStack extends PureComponent {
   };
 
   render() {
-    const { videoStream, audioRefresh, audioMute, analyser } = this.props;
+    const { videoStream, width, height, audioRefresh, audioMute, analyser } = this.props;
     const { animFrame } = this.state;
     return (
       <React.Fragment>
-        <Theremin videoStream={videoStream} refresh={audioRefresh} mute={audioMute} animFrame={animFrame} />
+        <Theremin videoStream={videoStream} width={width} height={height} refresh={audioRefresh} mute={audioMute} animFrame={animFrame} />
         <Meters analyser={analyser} handleCallback={this.handleCallback} />
       </React.Fragment>
     );

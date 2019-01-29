@@ -37,6 +37,10 @@
   transform: scaleX(-1);
 }
 
+.video-x {
+  display: none;
+}
+
 .theremin .video-0 {
   z-index: 4;
   background-color: #000000;

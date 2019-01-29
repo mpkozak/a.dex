@@ -34,12 +34,24 @@ export default class App extends PureComponent {
     };
   };
 
+  // { width: 640, height: 480 }
+
   streamInit() {
-    navigator.mediaDevices.getUserMedia({ audio: true, video: true })
+    navigator.mediaDevices.getUserMedia({
+      audio: true,
+      video: true
+      // {
+      //   width: {ideal: 640},
+      //   height: {ideal: 480}
+      // }
+    })
       .then(stream => {
+        const { width, height } = stream.getVideoTracks()[0].getSettings();
+        // const width = stream.getVideoTracks()[0].getSettings().width;
+        // const height = stream.getVideoTracks()[0].getSettings().height;
         const audioStream = new MediaStream([stream.getAudioTracks()[0]]);
         const videoStream = new MediaStream([stream.getVideoTracks()[0]]);
-        this.setState(prevState => ({ audioStream, videoStream }));
+        this.setState(prevState => ({ audioStream, videoStream, width, height }));
       })
       .catch(err => {
         console.log(err);
@@ -49,14 +61,14 @@ export default class App extends PureComponent {
 
 
   render() {
-    const { compatible, audioStream, videoStream } = this.state;
+    const { compatible, audioStream, videoStream, width, height } = this.state;
     return (
       <div className="App">
         {compatible
           ? (audioStream && videoStream &&
               <React.Fragment>
                 <SvgDefs />
-                <Main audioStream={audioStream} videoStream={videoStream} />
+                <Main audioStream={audioStream} videoStream={videoStream} width={width} height={height} />
               </React.Fragment>
             )
           : <React.Fragment>

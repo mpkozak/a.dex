@@ -40,8 +40,11 @@
 
 /*^^^Copyright (c) 2017, keshikan (http://www.keshikan.net), with Reserved Font Name "DSEG".
 Font Software is licensed under the SIL Open Font License, Version 1.1.^^^*/
-
-
+/*
+*::-webkit-media-media-controls-panel {
+  display: none!important;
+  -webkit-appearance: none;
+}*/
 
 
 @font-face {

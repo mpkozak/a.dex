@@ -30,7 +30,7 @@ export default class Master extends PureComponent {
     const pct = help.getPercent(this.state.volume, min, max);
     return (
       <div className="master outer">
-        <div className="inner" onWheel={(e) => help.handleScroll(e, this.setVolume, changeScalar * 5)}>
+        <div className="inner" onClick={(e) => help.handleTouch(e, this.setVolume, changeScalar * 5)}>
           <h5 className="label-small">MASTER</h5>
           <MasterFader pct={pct} handleClick={(e) => help.handleClick(e, this.setVolume, changeScalar)} />
         </div>
