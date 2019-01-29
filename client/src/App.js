@@ -13,7 +13,9 @@ export default class App extends PureComponent {
   };
 
   componentDidMount() {
-// POLYFILL FROM https://github.com/mohayonao/get-float-time-domain-data/blob/master/lib/get-float-time-domain-data.js
+///////////////////
+// POLYFILL FROM: https://github.com/mohayonao/get-float-time-domain-data/blob/master/lib/get-float-time-domain-data.js
+///////////////////
     if (global.AnalyserNode && !global.AnalyserNode.prototype.getFloatTimeDomainData) {
       var uint8 = new Uint8Array(2048);
       global.AnalyserNode.prototype.getFloatTimeDomainData = function(array) {
@@ -23,8 +25,9 @@ export default class App extends PureComponent {
         }
       };
     };
-////////////
-    if (!!window.AnalyserNode.prototype.getFloatTimeDomainData) {
+///////////////////
+///////////////////
+    if (!!global.AnalyserNode.prototype.getFloatTimeDomainData) {
       this.streamInit();
     } else {
       this.setState(prevState => ({ compatible: false }));
@@ -63,7 +66,7 @@ export default class App extends PureComponent {
               <div className="message">
                 <h2>This browser does not fully support WebAudio.</h2>
                 <br />
-                <h3>For best results, please use Chrome.</h3>
+                <h3>For best results, please use the latest version of Chrome.</h3>
               </div>
             </React.Fragment>
         }

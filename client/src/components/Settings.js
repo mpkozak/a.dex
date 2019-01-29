@@ -8,7 +8,7 @@ export default class Settings extends PureComponent {
     return (
       <div className="settings outer">
         <div className="latency element">
-          <SevenSegment value={latency * 1000} digits={3} />
+          <SevenSegment value={latency} digits={3} exact={typeof latency === 'string'} />
           <h6 className="label-small">LATENCY (ms)</h6>
         </div>
         <div className="monitor element">

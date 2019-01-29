@@ -59,7 +59,7 @@ export default class MeterVU extends PureComponent {
 
   render() {
     const { colorBg, colorRed, ticks, vuFonts, rotator } = this;
-    const { rotation, peak } = this.props;
+    const { rotation = -48, peak = false } = this.props;
     return (
       <svg className="meter" viewBox="0 0 100 60">
         <MeterFrame />
@@ -76,9 +76,19 @@ export default class MeterVU extends PureComponent {
               {ticks.map(d => d.x ? <text style={vuFonts.medium} fill={d.vu >= 0 ? colorRed : '#000000'} key={'text' + d.vu} x={d.x} y={d.y} textLength={d.textLength} lengthAdjust="spacingAndGlyphs">{Math.abs(d.vu)}</text>: null)}
             </g>
             <g mask="url(#vu-scale-mask)" fill="none">
-              <use href="#vu-scale-arc" transform="translate(0, 9)" stroke="#000000" strokeWidth=".8%" pathLength="100" strokeDasharray="0, 8, 58.5, 33.5" />
-              <use href="#vu-scale-arc" transform="translate(0, 9)" stroke={colorRed} strokeWidth="5%" pathLength="100" strokeDasharray="0, 67.5, 25.5, 7" />
-              {ticks.map(d => <line key={'tick' + d.vu} x1="50" y1="57" x2={d.x2} y2="0" stroke={d.vu >= 0 ? colorRed : "#000000"} strokeWidth={d.strokeWidth} pathLength="100" strokeDasharray="0, 54.5, 19, 26.5" />)}
+              <path d="M 12.5 18.75 Q 50 7.5, 87.5 18.75" transform="translate(0, 9)" stroke="#000000" strokeWidth=".8%" strokeDasharray="0, 6.089, 44.525, 25.497" />
+              <path d="M 12.5 18.75 Q 50 7.5, 87.5 18.75" transform="translate(0, 9)" stroke={colorRed} strokeWidth="5%" strokeDasharray="0, 51.375, 19.408, 5.328" />
+              {ticks.map(d => {
+                const length = Math.sqrt(((50 - d.x2) ** 2) + (57 ** 2));
+                return(
+                  <line key={'tick' + d.vu}
+                    x1="50" y1="57" x2={d.x2} y2="0"
+                    stroke={d.vu >= 0 ? colorRed : "#000000"}
+                    strokeWidth={d.strokeWidth}
+                    strokeDasharray={`0, ${.545 * length}, ${.19 * length}, ${.265 * length}`}
+                  />
+                );
+              })}
             </g>
           </g>
           <g className="vu-led">

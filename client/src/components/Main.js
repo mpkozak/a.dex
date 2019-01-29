@@ -28,23 +28,46 @@ export default class Main extends PureComponent {
     this.toggleHelp = this.toggleHelp.bind(this);
   };
 
-  audioInit() {
+
+
+ audioInit() {
     const baseHz = 110;
     const latency = 0.05;
     const fftSizeBase = 8;
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     const ctx = new AudioContext();
-    const osc1 = new OscillatorNode(ctx, { type: 'triangle', frequency: baseHz });
-    const osc2 = new OscillatorNode(ctx, { type: 'sine', frequency: baseHz, detune: -1200 });
-    const fmGain = new GainNode(ctx, { gain: 1500 });
-    const instGain = new GainNode(ctx, { gain: 0 });
-    const hpf = new BiquadFilterNode(ctx, { type: 'highpass', frequency: 0, q: 1 });
-    const lpf = new BiquadFilterNode(ctx, { type: 'lowpass', frequency: 22000, q: 1 });
-    const delay = new DelayNode(ctx, { delayTime: 0 });
-    const delayGain = new GainNode(ctx, { gain: 0 });
-    const masterGain = new GainNode(ctx, { gain: .73 });
-    const analyser = new AnalyserNode(ctx, { fftSize: Math.pow(2, fftSizeBase), minDecibels: -100, maxDecibels: -30, smoothingTimeConstant: 0 });
-    const mic = new MediaStreamAudioSourceNode(ctx, { mediaStream: this.props.audioStream });
+    const osc1 = ctx.createOscillator();
+      osc1.type = 'triangle';
+      osc1.frequency.setValueAtTime(baseHz, ctx.currentTime);
+    const osc2 = ctx.createOscillator();
+      osc2.type = 'sine';
+      osc2.frequency.setValueAtTime(baseHz, ctx.currentTime);
+      osc2.detune.setValueAtTime(-1200, ctx.currentTime);
+    const fmGain = ctx.createGain();
+      fmGain.gain.setValueAtTime(1500, ctx.currentTime);
+    const instGain = ctx.createGain({ gain: 0 });
+      instGain.gain.setValueAtTime(0, ctx.currentTime);
+    const hpf = ctx.createBiquadFilter();
+      hpf.type = 'highpass';
+      hpf.frequency.setValueAtTime(0, ctx.currentTime);
+      hpf.Q.setValueAtTime(1, ctx.currentTime);
+    const lpf = ctx.createBiquadFilter();
+      lpf.type = 'lowpass';
+      lpf.frequency.setValueAtTime(22000, ctx.currentTime);
+      lpf.Q.setValueAtTime(1, ctx.currentTime);
+    const delay = ctx.createDelay();
+      delay.delayTime.setValueAtTime(0, ctx.currentTime);
+    const delayGain = ctx.createGain();
+      delayGain.gain.setValueAtTime(0, ctx.currentTime);
+    const masterGain = ctx.createGain();
+      masterGain.gain.setValueAtTime(.73, ctx.currentTime);
+    const analyser = ctx.createAnalyser();
+      analyser.fftSize = Math.pow(2, fftSizeBase);
+      analyser.minDecibels = -100;
+      analyser.maxDecibels = -30;
+      analyser.smoothingTimeConstant = 0;
+    const mic = ctx.createMediaStreamSource(this.props.audioStream);
+
     osc1.connect(fmGain);
     fmGain.connect(osc2.frequency);
     osc2.connect(instGain);
@@ -58,6 +81,7 @@ export default class Main extends PureComponent {
     masterGain.connect(ctx.destination);
     osc1.start();
     osc2.start();
+
     this.audio = { ctx, osc1, osc2, fmGain, instGain, hpf, lpf, delay, delayGain, masterGain, analyser, baseHz, latency, mic };
     this.setState(prevState => ({ audioEnabled: true }));
   };
@@ -104,7 +128,7 @@ export default class Main extends PureComponent {
               <AnimationStack videoStream={this.props.videoStream} audioRefresh={this.audioRefresh} audioMute={this.audioMute} analyser={analyser} />
               <Placard show={showHelp} toggle={this.toggleHelp} />
               <Instructions show={showHelp} toggle={this.toggleHelp} />
-              <Settings latency={ctx.baseLatency} micActive={micActive} toggle={this.toggleMic} />
+              <Settings latency={ctx.baseLatency * 1000 || 'err'} micActive={micActive} toggle={this.toggleMic} />
               <Delay delay={delay} wet={delayGain} />
               <Oscillators osc1={osc1} osc2={osc2} mute={this.audioMute} />
               <FmSynth depth={fmGain} width={osc2} />
