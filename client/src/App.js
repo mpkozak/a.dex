@@ -39,27 +39,27 @@ export default class App extends PureComponent {
 // INITIALIZATION STACK //
 
   videoInit() {
-    // navigator.mediaDevices.getUserMedia({
-    //   video: {
-    //     width: { ideal: 640 },
-    //     height: { ideal: 480 }
-    //   }
-    // })
-    //   .then(stream => {
-    //     this.videoStream = stream;
-    //     this.setState(prevState => ({ cameraOk: true }), () => {
-    //       enableBodyScroll(this.refs.app);
-    //       window.addEventListener('touchstart', this.handleSwipe);
-    //     });
-    //   })
-    //   .catch(err => {
-    //     console.log(err);
-    //   });
-
+    navigator.mediaDevices.getUserMedia({
+      video: {
+        width: { ideal: 640 },
+        height: { ideal: 480 }
+      }
+    })
+      .then(stream => {
+        this.videoStream = stream;
         this.setState(prevState => ({ cameraOk: true }), () => {
           enableBodyScroll(this.refs.app);
           window.addEventListener('touchstart', this.handleSwipe);
         });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+
+        // this.setState(prevState => ({ cameraOk: true }), () => {
+        //   enableBodyScroll(this.refs.app);
+        //   window.addEventListener('touchstart', this.handleSwipe);
+        // });
   };
 
   audioInit() {

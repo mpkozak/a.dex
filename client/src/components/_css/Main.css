@@ -5,8 +5,8 @@
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
-  justify-content: space-around;
-
+  /*justify-content: space-around;*/
+  justify-content: flex-start;
 }
 
 
@@ -38,234 +38,27 @@
 }
 
 .r1 {
-  /*height: 8%;*/
-  height: 12vmin;
-  background-color: rgba(255,0,0,.3);
+  height: 8%;
+  /*height: 12vmin;*/
+  /*background-color: rgba(255,0,0,.3);*/
 }
 
 .r2 {
   /*height: 45%;*/
-  height: 76vmin;
-  background-color: rgba(0,255,0,.3);
-}
-
-.r3 {
-  height: 20%;
-  /*height: 35vmin;*/
-  background-color: rgba(0,0,255,.3);
-}
-
-.r4 {
-  /*height: 20%;*/
-  height: 32vmin;
-  background-color: rgba(255,255,0,.3);
-}
-
-
-
-
-
-
-
-.Main>.top {
-  width: 100%;
-  height: 10%;
-
-  /*background-color: rgba(255,0,0,.3);*/
-}
-
-.Main>.middle {
-  width: 100%;
-  height: 45%;
-
+  height: 75vmin;
   /*background-color: rgba(0,255,0,.3);*/
 }
 
-.Main>.bottom {
-  width: 100%;
-  height: 45%;
-
-  display: flex;
-  flex-flow: row nowrap;
-  /*align-items: center;*/
-  /*justify-content: center;*/
-
+.r3 {
+  /*height: 20%;*/
+  height: 35vmin;
   /*background-color: rgba(0,0,255,.3);*/
 }
 
-.Main>.bottom>.left {
-  width: 55%;
-  height: 100%;
-
-  /*background-color: orange;*/
-}
-
-.Main>.bottom>.right {
-  width: 45%;
-  height: 100%;
-
-  /*background-color: pink;*/
-}
-
-.Main>.bottom>.left>.top {
-  width: 100%;
-  height: 25%;
-
-  /*background-color: gray;*/
-}
-
-.Main>.bottom>.left>.bottom {
-  width: 100%;
-  height: 75%;
-
-  display: flex;
-  flex-flow: row nowrap;
-
-  /*background-color: pink;*/
+.r4 {
+  height: 20%;
+  /*height: 32vmin;*/
+  /*background-color: rgba(255,255,0,.3);*/
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.screen {
-  /*width: 100vmin;*/
-  /*height: 75vmin;*/
-  /*border: 1px solid green;*/
-  /*background-color: #fff;*/
-
-  /*border: 1px solid yellow;*/
-}
-
-.bottom {
-  /*width: 100%;*/
-  /*height: 30%;*/
-
-  /*background-color: green;*/
-  /*display: flex;*/
-  /*flex-flow: row nowrap;*/
-  /*align-items: center;*/
-  /*justify-content: flex-end;*/
-
-  /*border: 1px solid red;*/
-}
-
-.oscillators {
-  /*width: 30%;*/
-  /*height: 100%;*/
-  /*height: 40vmin;*/
-  /*border: 1px solid green;*/
-}
-
-.meters {
-  /*width: 42%;*/
-  /*height: 100%;*/
-  /*width: auto;*/
-  /*height: 60vmin;*/
-  /*width: 100vmin;*/
-  /*height: 30vmin;*/
-  /*display: none;*/
-  /*border: 1px solid green;*/
-  /*border: 1px solid yellow;*/
-}
-
-
-
-
-/*.init {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  border-radius: 1vmin;
-  display: flex;
-  flex-flow: column nowrap;
-  align-items: center;
-  justify-content: center;
-  z-index: 50;
-  background-color: rgba(0,0,0,.8);
-}*/
-
-/*.init>.message {
-  width: 90%;
-  margin: 20% 0;
-}*/
-/*
-.theremin {
-  position: absolute;
-  left: calc(0 * (100% / var(--grid-width)));
-  top: calc(0 * (100% / var(--grid-height)));
-  width: calc(12 * (100% / var(--grid-width)));
-  height: calc(11 * (100% / var(--grid-height)));
-}
-
-.placard {
-  position: absolute;
-  left: calc(12 * (100% / var(--grid-width)));
-  top: calc(0 * (100% / var(--grid-height)));
-  width: calc(5 * (100% / var(--grid-width)));
-  height: calc(1.5 * (100% / var(--grid-height)));
-}
-
-.instructions {
-  position: absolute;
-  left: calc(12 * (100% / var(--grid-width)));
-  top: calc(1.5 * (100% / var(--grid-height)));
-  width: calc(5 * (100% / var(--grid-width)));
-  height: calc(13.5 * (100% / var(--grid-height)));
-}
-
-.settings {
-  position: absolute;
-  left: calc(12 * (100% / var(--grid-width)));
-  top: calc(1.5 * (100% / var(--grid-height)));
-  width: calc(5 * (100% / var(--grid-width)));
-  height: calc(.99 * (100% / var(--grid-height)));
-}
-
-
-.delay {
-  position: absolute;
-  left: calc(12 * (100% / var(--grid-width)));
-  top: calc(8.5 * (100% / var(--grid-height)));
-  width: calc(5 * (100% / var(--grid-width)));
-  height: calc(2.5 * (100% / var(--grid-height)));
-}
-
-
-.fmsynth {
-  position: absolute;
-  left: calc(4 * (100% / var(--grid-width)));
-  top: calc(11 * (100% / var(--grid-height)));
-  width: calc(5.5 * (100% / var(--grid-width)));
-  height: calc(4 * (100% / var(--grid-height)));
-}
-
-.eq {
-  position: absolute;
-  left: calc(9.5 * (100% / var(--grid-width)));
-  top: calc(11 * (100% / var(--grid-height)));
-  width: calc(5.5 * (100% / var(--grid-width)));
-  height: calc(4 * (100% / var(--grid-height)));
-}
-
-.master {
-  position: absolute;
-  left: calc(15 * (100% / var(--grid-width)));
-  top: calc(11 * (100% / var(--grid-height)));
-  width: calc(2 * (100% / var(--grid-width)));
-  height: calc(4 * (100% / var(--grid-height)));
-}
-*/

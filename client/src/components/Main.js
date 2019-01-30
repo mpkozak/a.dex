@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import './_css/Main.css';
-import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
+// import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
 
 import Placard from './Placard.js';
 import Screen from './Screen.js';
@@ -15,7 +15,7 @@ export default class Main extends PureComponent {
       showHelp: false,
       video: false,
     };
-    // this.audio = props.audio;
+    this.videoInit = this.videoInit.bind(this);
 
 
     this.toggleHelp = this.toggleHelp.bind(this);
@@ -24,68 +24,11 @@ export default class Main extends PureComponent {
     this.audioRefresh = this.audioRefresh.bind(this);
     this.passbackMeters = this.passbackMeters.bind(this)
     this.start = this.start.bind(this);
-    this.videoInit = this.videoInit.bind(this);
   };
 
 
-
-
   componentDidMount() {
-    console.log('main mounted')
-
-    // this.videoInit();
-
-
-    // const mainWidth = this.refs.main.clientWidth;
-    // const mainHeight = this.refs.main.clientHeight;
-    // const { innerWidth, innerHeight } = window;
-
-    // (() => {
-    //   console.log('hid')
-    //   setTimeout(function() {
-    //     if(window.pageYOffset !== 0) return;
-    //     window.scrollTo(0, window.pageYOffset + 1);
-
-    //   }, 1000)}
-    // )();
-
-    // disableBodyScroll(this.refs.main)
-
-    // setTimeout(() => {
-    //   window.scrollTo(0,100)
-    // }, 1000)
-
-    // setTimeout(() => {
-    //   window.scrollTo(0,-100)
-    // }, 2000)
-
-    // const body = document.query
-    // clearAllBodyScrollLocks()
-    // window.addEventListener('touchstart', () => {
-    //   // window.scrollTo(0,100)
-    //   console.log(mainWidth, mainHeight, innerWidth, innerHeight)
-    //   console.log(window.scrollY)
-    // })
-
-
-
-    // console.log('main mount', this.props.videoStream)
-    // this.setState(prevState => ({ videoStream: this.props.videoStream }))
-    // console.log(this.refs)
-    // this.refs.video = document.createElement('video');
-    // console.log(this.props.audio)
-    // window.addEventListener('touchstart', () => this.props.audio.setGain(Math.random()))
-
-    // const { ctx, instGain } = this.audio;
-    // this.props.audio.setGain(instGain.gain, 0, ctx.currentTime, .001)
-
-
-
-    // console.log(this.props.audio.instGain.gain)
-
-
-        // const { width, height } = this.props.videoStream.getVideoTracks()[0].getSettings();
-        // console.log('in main ', width, height)
+    this.videoInit();
   };
 
   componentDidUpdate() {
@@ -130,7 +73,8 @@ export default class Main extends PureComponent {
 
   start() {
     this.getData();
-    requestAnimationFrame(this.start);
+    this.rAF = requestAnimationFrame(this.start);
+    this.setState(prevState => ({ raf: this.rAF }))
   };
 
 
@@ -140,8 +84,6 @@ export default class Main extends PureComponent {
 
 
   render() {
-    console.log('main render')
-    console.log(this.props.audio)
     const { showHelp, video } = this.state;
     const { ctx, osc1, osc2, instGain, analyser, mute, setGain, setFreq, setOsc } = this.props.audio;
     return (
@@ -150,10 +92,10 @@ export default class Main extends PureComponent {
           <Placard active={showHelp} handleClick={this.toggleHelp} />
         </div>
         <div className="r r2">
-          <Screen video={video} />
+          {video && <Screen video={video} />}
         </div>
         <div className="r r3">
-          <Oscillators osc1={osc1} osc2={osc2} setOsc={setOsc} />
+          <Oscillators osc1={osc1.type} osc2={osc2.type} setOsc={setOsc} />
         </div>
         <div className="r r4">
           <Meters analyser={analyser} passback={this.passbackMeters} />
@@ -163,55 +105,3 @@ export default class Main extends PureComponent {
   };
 };
 
-
-
-          // <div className="left">
-          //   <div className="top">top</div>
-          //   <div className="bottom">
-          //
-          //   </div>
-          // </div>
-          // <div className="right">
-          // </div>
-
-
-          // {video && <Screen video={video} />}
-
-
-
-
-
-
-
-            // <div className="bottom">
-            //   <Oscillators osc1={osc1} osc2={osc2} mute={mute} />
-            //   <Meters analyser={analyser} passback={this.passbackMeters} />
-            // </div>
-
-
-
-{/*
-
-
-              <button onClick={() => mute(ctx.currentTime)}>mute</button>
-              <button onClick={() => setGain(Math.random(), ctx.currentTime)}>gain</button>
-              <button onClick={() => setFreq(Math.random() * 1000, ctx.currentTime)}>freq</button>
-
-
-        {!this.audio
-          ? <Init handleClick={this.audioInit} />
-              <Theremin videoStream={videoStream} width={width} height={height} refresh={audioRefresh} mute={audioMute} animFrame={animFrame} />
-          : <React.Fragment>
-              <AnimationStack videoStream={this.props.videoStream} width={this.props.width} height={this.props.height} audioRefresh={this.audioRefresh} audioMute={this.audioMute} analyser={analyser} />
-              <Placard show={showHelp} toggle={this.toggleHelp} />
-              <Instructions show={showHelp} toggle={this.toggleHelp} />
-              <Settings latency={ctx.baseLatency * 1000 || 'err'} micActive={micActive} toggle={this.toggleMic} />
-              <Delay delay={delay} wet={delayGain} />
-              <FmSynth depth={fmGain} width={osc2} />
-              <Eq hpf={hpf} lpf={lpf} />
-              <Master masterGain={masterGain} />
-            </React.Fragment>
-        }
-
-
-*/}

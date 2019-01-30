@@ -5,17 +5,17 @@ import { GlowButton } from './_svg.js';
 export default class Oscillators extends PureComponent {
   constructor(props) {
     super(props);
-    this.state = {
-      osc1: props.osc1.type,
-      osc2: props.osc2.type
-    };
+    // this.state = {
+    //   osc1: props.osc1,
+    //   osc2: props.osc2
+    // };
     this.oscTypes = ['sine', 'triangle', 'sawtooth', 'square'];
-    this.setOsc = this.setOsc.bind(this);
+    // this.setOsc = this.setOsc.bind(this);
   };
 
   setOsc(osc, type) {
     this.props.setOsc(osc, type);
-    this.setState(prevState => ({ [osc]: type }));
+    // this.setState(prevState => ({ [osc]: type }));
   };
 
   // setOsc(e) {
@@ -38,9 +38,8 @@ export default class Oscillators extends PureComponent {
               key={label + i}
               id={osc + d}
               icon={d}
-              active={d === this.state[osc]}
-              // handleClick={this.setOsc}
-              handleClick={() => this.setOsc(osc, d)}
+              active={d === this.props[osc]}
+              handleClick={() => this.props.setOsc(osc, d)}
             />
           )}
         </div>
