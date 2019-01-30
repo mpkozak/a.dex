@@ -1,113 +1,65 @@
 import React, { PureComponent } from 'react';
-import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
+import './App.css';
+import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
+import { NoAudio, NoVideo, Init } from './_splash.js';
 import { Logo, SvgDefs } from './components/_svg.js';
-import Init from './components/Init.js';
 import Main from './components/Main.js';
 
 export default class App extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      compatible: false,
-      initialized: false,
-      videoStream: false,
-      audio: false,
+      webAudioOk: false,
+      cameraOk: false,
+      initOk: false
     };
+    this.videoStream = undefined;
+    this.audio = undefined;
     this.handleSwipe = this.handleSwipe.bind(this);
     this.handleScrollEvent = this.handleScrollEvent.bind(this);
-    this.lockIt = this.lockIt.bind(this);
-    this.init = this.initialize.bind(this);
-
+    this.handleLock = this.handleLock.bind(this);
     this.handleResize = this.handleResize.bind(this);
-
     this.audioMute = this.audioMute.bind(this);
     this.audioSetGain = this.audioSetGain.bind(this);
     this.audioSetFreq = this.audioSetFreq.bind(this);
+    this.audioSetOsc = this.audioSetOsc.bind(this);
   };
 
   componentDidMount() {
+    disableBodyScroll(this.refs.app);
     if (!!global.AnalyserNode.prototype.getFloatTimeDomainData) {
-      this.setState(prevState => ({ compatible: true }), () => {
-        window.addEventListener('touchstart', this.handleSwipe);
+      this.setState(prevState => ({ webAudioOk: true }), () => {
+        this.audioInit() && this.videoInit();
       });
     };
   };
 
-  handleSwipe() {
-    window.removeEventListener('touchstart', this.handleSwipe);
-    window.addEventListener('scroll', this.handleScrollEvent);
-  };
 
-  handleScrollEvent() {
-    clearTimeout(this.scrollTimeout);
-    this.scrollTimeout = setTimeout(this.lockIt, 50);
-  };
-
-  lockIt() {
-    const { initialized } = this.state;
-    const offset = !initialized ? 1000 : 0;
-    if ((window.innerHeight + offset) === this.refs.app.clientHeight) {
-      window.removeEventListener('scroll', this.handleScrollEvent);
-      // this.refs.app.style.height = window.innerHeight + 'px'
-      // this.refs.app.style.width = window.innerWidth + 'px'
-      this.refs.app.style.height = '100vh';
-      this.refs.app.style.width = '100vw';
-      disableBodyScroll(this.refs.app);
-      window.scrollTo(0, 0);
-      if (!initialized) {
-        window.addEventListener('resize', this.handleResize)
-        this.initialize();
-      };
-    };
-  };
-
-  handleResize() {
-    enableBodyScroll(this.refs.app);
-    console.log('resize')
-    window.addEventListener('scroll', this.handleScrollEvent);
-  }
-
-  initialize() {
-    this.setState(prevState => ({ initialized: true }), () => {
-      this.videoInit();
-      this.audioInit();
-    });
-  };
-
-
-
-
-  // handleResize() {
-  //   console.log('resize')
-  //   // enableBodyScroll(this.refs.app)
-  //   // this.refs.app.style.height = window.innerHeight + 1 + 'px'
-  //   // this.refs.app.style.width = window.innerWidth + 1 + 'px'
-  //   const { innerWidth, innerHeight } = window;
-  //   const { clientWidth, clientHeight } = this.refs.app;
-  //   // console.log(innerWidth, innerHeight, clientWidth, clientHeight)
-  //   setTimeout(this.lockIt, 500)
-  // };
-
-
-
-
+//////////////////////////
+// INITIALIZATION STACK //
 
   videoInit() {
-    navigator.mediaDevices.getUserMedia({
-      video: true
-      // video: {
-      //   width: {ideal: 640},
-      //   height: {ideal: 480}
-      // }
-    })
-      .then(videoStream => {
-        this.setState(prevState => ({ videoStream }));
-      })
-      .catch(err => {
-        this.setState(prevState => ({ compatible: false }));
-        console.log(err);
-      });
-    // this.setState(prevState => ({ videoStream: true }));
+    // navigator.mediaDevices.getUserMedia({
+    //   video: {
+    //     width: { ideal: 640 },
+    //     height: { ideal: 480 }
+    //   }
+    // })
+    //   .then(stream => {
+    //     this.videoStream = stream;
+    //     this.setState(prevState => ({ cameraOk: true }), () => {
+    //       enableBodyScroll(this.refs.app);
+    //       window.addEventListener('touchstart', this.handleSwipe);
+    //     });
+    //   })
+    //   .catch(err => {
+    //     console.log(err);
+    //   });
+
+        this.setState(prevState => ({ cameraOk: true }), () => {
+          enableBodyScroll(this.refs.app);
+          window.addEventListener('touchstart', this.handleSwipe);
+        });
   };
 
   audioInit() {
@@ -137,13 +89,13 @@ export default class App extends PureComponent {
     osc1.connect(fmGain);
     fmGain.connect(osc2.frequency);
     osc2.connect(instGain);
-    instGain.connect(masterGain);
     masterGain.connect(analyser);
+    instGain.connect(analyser);
     masterGain.connect(ctx.destination);
     osc1.start();
     osc2.start();
 
-    const audio = {
+    this.audio = {
       ctx,
       osc1,
       osc2,
@@ -156,22 +108,22 @@ export default class App extends PureComponent {
       mute: this.audioMute,
       setGain: this.audioSetGain,
       setFreq: this.audioSetFreq,
+      setOsc: this.audioSetOsc
     };
-    this.setState(prevState => ({ audio }));
+    return true;
   };
-
+//////////////////////////
 
 
 ///////////////////////////
 // AUDIO REFRESH METHODS //
-///////////////////////////
 
-  audioMute(t = this.state.audio.ctx.currentTime) {
+  audioMute(t = this.audio.ctx.currentTime) {
     this.audioSetGain(0, t);
   };
 
   audioSetGain(val, t) {
-    const { instGain, latency } = this.state.audio;
+    const { instGain, latency } = this.audio;
     const node = instGain.gain;
     const prevVal = node.value;
     node.cancelScheduledValues(t - 1);
@@ -180,7 +132,7 @@ export default class App extends PureComponent {
   };
 
   audioSetFreq(val, t) {
-    const { osc1, osc2, latency } = this.state.audio;
+    const { osc1, osc2, latency } = this.audio;
     [osc1.frequency, osc2.frequency].forEach(d => {
       const prevVal = d.value;
       d.cancelScheduledValues(t - 1);
@@ -189,32 +141,96 @@ export default class App extends PureComponent {
     });
   };
 
+  audioSetOsc(osc, type) {
+    this.audioMute();
+    setTimeout(() => {
+      this.audio[osc].type = type;
+    }, 10);
+  };
+///////////////////////////
+
+
+/////////////////////
+// LAYOUT HANDLERS //
+
+  handleSwipe() {
+    this.audio.ctx.resume();
+    window.removeEventListener('touchstart', this.handleSwipe);
+    window.addEventListener('scroll', this.handleScrollEvent);
+    window.scrollY === 400 || window.scrollTo(0, 400);
+  };
+
+  handleScrollEvent() {
+    clearTimeout(this.scrollTimeout);
+    this.scrollTimeout = setTimeout(this.handleLock, 50);
+    if (!this.state.initOk) {
+      window.scrollY > 400 || window.scrollTo(0, 400);
+      window.scrollY < 1500 || window.scrollTo(0, 1500);
+      document.querySelector('.splash').style.opacity = 0;
+    };
+  };
+
+  handleLock() {
+    const { initOk } = this.state;
+    if ((window.innerHeight + 2000) === this.refs.app.clientHeight) {
+      window.removeEventListener('scroll', this.handleScrollEvent);
+      this.refs.app.style.height = '100vh';
+      disableBodyScroll(this.refs.app);
+      window.scrollTo(0, 0);
+      if (!initOk) {
+        this.setState(prevState => ({ initOk: true }));
+        window.addEventListener('resize', this.handleResize);
+      };
+    };
+  };
+
+  handleResize() {
+    window.scrollY === 0 || window.scrollTo(0, 0);
+    this.refs.app.style.height = 'calc(100vh + 2000px)';
+    enableBodyScroll(this.refs.app);
+    window.addEventListener('scroll', this.handleScrollEvent);
+  };
+/////////////////////
+
 
   render() {
-    const { compatible, initialized, videoStream, audio } = this.state;
+    const { webAudioOk, cameraOk, initOk } = this.state;
+    const { videoStream, audio } = this;
+    const bgColor = {
+      backgroundColor: !initOk ? 'rgba(0, 0, 0, .7)' : 'none'
+    };
+
     return (
-      <div className="App" ref="app">
-        {compatible
-          ? (!initialized
-              ? <Init handleClick={this.init} />
-              : videoStream && audio &&
-                  <React.Fragment>
-                    <SvgDefs />
-                    <Main videoStream={videoStream} audio={audio} />
-                  </React.Fragment>
-            )
-          : <React.Fragment>
-              <div className="logo">
-                <Logo />
+      <div className="App" ref="app" style={bgColor}>
+        <SvgDefs />
+        {initOk
+          ? <Main videoStream={videoStream} audio={audio} />
+          : <div className="splash">
+              <div className="logo-box">
+                <Logo opacity={.6} />
               </div>
-              <div className="message">
-                <h2>This browser does not fully support WebAudio.</h2>
-                <br />
-                <h3>For best results, please use the latest version of Chrome.</h3>
+              <div className="message-box">
+                {cameraOk
+                  ? <Init />
+                  : webAudioOk
+                    ? <NoVideo />
+                    : <NoAudio />
+                }
               </div>
-            </React.Fragment>
+            </div>
         }
       </div>
     );
   };
 };
+
+
+
+        // {!webAudioOk
+        //   ? <NoAudio />
+        //   : !cameraOk
+        //     ? <NoVideo />
+        //     : !initOk
+        //       ? <Init />
+        //       : <Main videoStream={videoStream} audio={audio} />
+        // }

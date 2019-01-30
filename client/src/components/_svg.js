@@ -28,7 +28,7 @@ export const Logo = ({color = '#FFFFFF', opacity = .7}) => {
 };
 
 
-export const HelpButton = ({ active, handleClick }) => {
+export const HelpButton = ({ active = false, handleClick }) => {
   const helpFonts = {
     question: {
       fontFamily: 'Helvetica, Helvetica Neue, Arial, sans-serif',
@@ -66,6 +66,83 @@ export const HelpButton = ({ active, handleClick }) => {
         fill="#FFFFFF"
         opacity=".5"
       />
+    </svg>
+  );
+};
+
+
+export const GlowButton = ({ id, icon = 'none', active = false, handleClick }) => {
+  const colorButton = '#AAAAAA';
+  const icons = {
+    sine: 'M 2 5 Q 3.5 0, 5 5 Q 6.5 10, 8 5',
+    triangle: 'M 2 5 L 3.5 2.5 L 6.5 7.5 L 8 5',
+    sawtooth: 'M 2 5 L 5 2.5 L 5 7.5 L 8 5',
+    square: 'M 2 5 L 2 2.5 L 5 2.5 L 5 7.5 L 8 7.5 L 8 5',
+    none: ''
+  };
+  return (
+    <svg id={id} className="glowbutton" viewBox="0 0 100 100" onClick={handleClick}>
+  {/* Base Layer */}
+      <rect x="0" y="0" rx="10" width="100" height="100"
+        fill={colorButton}
+        stroke="#000000"
+        strokeWidth="1%"
+      />
+  {/* Button Base Active */}
+      <rect x="0" y="0" rx="10" width="100" height="100"
+        fill="url(#glowbutton-active-base)"
+        opacity={active ? 1 : 0}
+      />
+  {/* Logograph */}
+      <path
+        d={icons[icon]}
+        transform="scale(10)"
+        fill="none"
+        stroke="#000000"
+        strokeWidth=".5%"
+      />
+  {/* Contours */}
+      <rect x="0" y="0" rx="10" width="100" height="100" fill="url(#glowbutton-contour-horizontal)" />
+      <rect x="0" y="0" rx="10" width="100" height="100" fill="url(#glowbutton-contour-vertical)" />
+      <rect x="0" y="0" rx="10" width="100" height="100" fill="url(#glowbutton-contour-center)" />
+  {/* Glow Layer*/}
+      <rect x="0" y="0" rx="10" width="100" height="100"
+        fill="url(#glowbutton-active-halo)"
+        opacity={active ? 1 : 0}
+      />
+    </svg>
+  );
+};
+
+
+export const ColorSwatch = ({ color, active = false, handleClick }) => {
+  const pulse = {animation: 'pulsar 1s linear infinite'};
+  const hide = {display: 'none'};
+  return (
+    <svg className="colorswatch" viewBox="0 0 100 100" onClick={handleClick}>
+  {/* Backpane */}
+      <circle cx="50" cy="50" r="47"
+        fill="#FFFFFF"
+        stroke="#000000"
+        strokeWidth="6%"
+      />
+  {/* Color Base */}
+      <circle cx="50" cy="50" r="47"
+        style={active ? pulse : null}
+        fill={color}
+        stroke="#222222"
+        strokeWidth="2%"
+        opacity=".9"
+      />
+  {/* Active Halo Layer */}
+      <circle cx="50" cy="50" r="47"
+        style={active ? pulse : hide}
+        fill="url(#colorswatch-glow)"
+        opacity={active ? .8 : 0}
+      />
+  {/* Contour + Glare */}
+      <circle cx="50" cy="50" r="49" fill="url(#colorswatch-contour)" />
+      <circle cx="50" cy="50" r="49" fill="url(#colorswatch-glare)" />
     </svg>
   );
 };
@@ -116,12 +193,6 @@ export const ScreenFrame = () => {
 };
 
 
-
-
-
-
-
-
 export const MeterFrame = () => {
   return (
     <g className="meter-frame" clipPath="url(#meter-outer-clip)">
@@ -149,51 +220,6 @@ export const MeterPanelShadow = () => {
 };
 
 
-export const GlowButton = (props) => {
-  const { icon, active, handleClick } = props;
-  const colorButton = '#AAAAAA';
-  const icons = {
-    sine: 'M 2 5 Q 3.5 0, 5 5 Q 6.5 10, 8 5',
-    triangle: 'M 2 5 L 3.5 2.5 L 6.5 7.5 L 8 5',
-    sawtooth: 'M 2 5 L 5 2.5 L 5 7.5 L 8 5',
-    square: 'M 2 5 L 2 2.5 L 5 2.5 L 5 7.5 L 8 7.5 L 8 5'
-  };
-  return (
-    <svg className="glowbutton" viewBox="0 0 100 100" onClick={handleClick}>
-  {/* Base Layer */}
-      <rect x="0" y="0" rx="10" width="100" height="100"
-        fill={colorButton}
-        stroke="#000000"
-        strokeWidth="1%"
-      />
-  {/* Button Base Active */}
-      <rect x="0" y="0" rx="10" width="100" height="100"
-        fill="url(#glowbutton-active-base)"
-        opacity={active ? 1 : 0}
-      />
-  {/* Logograph */}
-      <path
-        d={icons[icon]}
-        transform="scale(10)"
-        fill="none"
-        stroke="#000000"
-        strokeWidth=".5%"
-      />
-  {/* Contours */}
-      <rect x="0" y="0" rx="10" width="100" height="100" fill="url(#glowbutton-contour-horizontal)" />
-      <rect x="0" y="0" rx="10" width="100" height="100" fill="url(#glowbutton-contour-vertical)" />
-      <rect x="0" y="0" rx="10" width="100" height="100" fill="url(#glowbutton-contour-center)" />
-  {/* Glow Layer*/}
-      <rect x="0" y="0" rx="10" width="100" height="100"
-        fill="url(#glowbutton-active-halo)"
-        opacity={active ? 1 : 0}
-      />
-    </svg>
-  );
-};
-
-
-
 
 ///////////////////////////////////
 // MASTER SVG DEFINITIONS MODULE //
@@ -201,34 +227,8 @@ export const GlowButton = (props) => {
 
 export const SvgDefs = () => {
   return (
-    <svg className="invisible" width="0" height="0">
+    <svg id="svg-defs" className="invisible" width="0" height="0">
       <defs>
-  {/* bigKnob */}
-    {/* Contour Gradients */}
-        <radialGradient id="bigknob-contour" cx="50%" cy="50%" r="100%" gradientUnits="objectBoundingBox">
-          <stop offset="0%" stopColor="#000000" stopOpacity="0"/>
-          <stop offset="20%" stopColor="#000000" stopOpacity=".1"/>
-          <stop offset="35%" stopColor="#000000" stopOpacity=".3"/>
-          <stop offset="45%" stopColor="#000000" stopOpacity=".5"/>
-          <stop offset="50%" stopColor="#000000" stopOpacity="1"/>
-        </radialGradient>
-        <radialGradient id="bigknob-glare" cx="50%" cy="50%" r="100%" fx="0%" fy="0%" fr="10%" gradientUnits="objectBoundingBox">
-          <stop offset="0%" stopColor="#FFFFFF" stopOpacity="1"/>
-          <stop offset="5%" stopColor="#FFFFFF" stopOpacity=".5"/>
-          <stop offset="15%" stopColor="#FFFFFF" stopOpacity=".3"/>
-          <stop offset="25%" stopColor="#FFFFFF" stopOpacity=".2"/>
-          <stop offset="40%" stopColor="#FFFFFF" stopOpacity=".1"/>
-          <stop offset="65%" stopColor="#FFFFFF" stopOpacity="0"/>
-          <stop offset="70%" stopColor="#000000" stopOpacity="0"/>
-          <stop offset="80%" stopColor="#000000" stopOpacity="1"/>
-        </radialGradient>
-        <linearGradient id="bigknob-notch" x1="0%" y1="0%" x2="0%" y2="100%" gradientUnits="objectBoundingBox">
-          <stop offset="0%" stopColor="#000000" stopOpacity=".5"/>
-          <stop offset="10%" stopColor="#000000" stopOpacity=".6"/>
-          <stop offset="50%" stopColor="#000000" stopOpacity=".7"/>
-          <stop offset="90%" stopColor="#000000" stopOpacity=".6"/>
-          <stop offset="100%" stopColor="#000000" stopOpacity=".5"/>
-        </linearGradient>
   {/* glowButton */}
     {/* Contour Gradients */}
         <linearGradient id="glowbutton-contour-horizontal" x1="0%" y1="0%" x2="0%" y2="100%" gradientUnits="objectBoundingBox">
@@ -404,7 +404,7 @@ export const SvgDefs = () => {
           <stop offset="50%" stopColor="#000000" stopOpacity=".3"/>
           <stop offset="70%" stopColor="#000000" stopOpacity=".6"/>
         </radialGradient>
-  {/* Meter - VU */}
+  {/* MeterVU */}
     {/* Masks */}
         <mask id="vu-scale-mask">
           <rect x="0" y="0" width="100" height="60" fill="#FFFFFF" />
@@ -481,74 +481,100 @@ export const SvgDefs = () => {
           <stop offset="80%" stopColor="#000000" stopOpacity=".2"/>
           <stop offset="100%" stopColor="#000000" stopOpacity=".6"/>
         </linearGradient>
-
-
-
-
-
-
-
-  {/* Slider */}
-    {/* Clip Paths */}
-        <clipPath id="slider-clip">
-          <rect x="0" y="0" width="10" height="20" />
-        </clipPath>
-    {/* Filters */}
-        <filter id="slider-blur">
-          <feGaussianBlur stdDeviation=".5" />
-        </filter>
-    {/* Ridge Gradients */}
-        <linearGradient id="slider-ridges-top" x1="0%" y1="0%" x2="0%" y2="100%" gradientUnits="objectBoundingBox">
-          {[0, 1, 2, 3, 4, 5].map(d => {
-            const unit = (100 / 6);
-            return (
-              <React.Fragment key={'slider-ridges-bottom-' + d}>
-                <stop offset={(unit * d) + '%'} stopColor="#000000" stopOpacity="0"/>
-                <stop offset={(unit * (d + .1)) + '%'} stopColor="#000000" stopOpacity=".3"/>
-                <stop offset={(unit * (d + .5)) + '%'} stopColor="#000000" stopOpacity=".8"/>
-              </React.Fragment>
-            );
-          })}
-          <stop offset="100%" stopColor="#000000" stopOpacity="0"/>
-        </linearGradient>
-        <linearGradient id="slider-ridges-bottom" x1="0%" y1="0%" x2="0%" y2="100%" gradientUnits="objectBoundingBox">
-          {[0, 1, 2, 3, 4, 5].map(d => {
-            const unit = (100 / 6);
-            return (
-              <React.Fragment key={'slider-ridges-bottom-' + d}>
-                <stop offset={(unit * d) + '%'} stopColor="#000000" stopOpacity="0"/>
-                <stop offset={(unit * (d + .5)) + '%'} stopColor="#000000" stopOpacity=".8"/>
-                <stop offset={(unit * (d + .9)) + '%'} stopColor="#000000" stopOpacity=".3"/>
-              </React.Fragment>
-            );
-          })}
-          <stop offset="100%" stopColor="#000000" stopOpacity="0"/>
-        </linearGradient>
-    {/* Contour Gradients */}
-        <linearGradient id="slider-contour-horizontal" x1="0%" y1="0%" x2="0%" y2="100%" gradientUnits="objectBoundingBox">
-          <stop offset="0%" stopColor="#000000" stopOpacity="1"/>
-          <stop offset="1.5%" stopColor="#000000" stopOpacity=".2"/>
-          <stop offset="5%" stopColor="#000000" stopOpacity=".4"/>
-          <stop offset="25%" stopColor="#000000" stopOpacity=".6"/>
-          <stop offset="50%" stopColor="#000000" stopOpacity=".8"/>
-          <stop offset="75%" stopColor="#000000" stopOpacity=".6"/>
-          <stop offset="95%" stopColor="#000000" stopOpacity=".4"/>
-          <stop offset="98.5%" stopColor="#000000" stopOpacity=".2"/>
-          <stop offset="0%" stopColor="#000000" stopOpacity="1"/>
-        </linearGradient>
-        <linearGradient id="slider-contour-vertical" x1="0%" y1="0%" x2="100%" y2="0%" gradientUnits="objectBoundingBox">
-          <stop offset="0%" stopColor="#000000" stopOpacity="1"/>
-          <stop offset="5%" stopColor="#000000" stopOpacity=".4"/>
-          <stop offset="10%" stopColor="#000000" stopOpacity=".1"/>
-          <stop offset="50%" stopColor="#000000" stopOpacity="0"/>
-          <stop offset="90%" stopColor="#000000" stopOpacity=".1"/>
-          <stop offset="95%" stopColor="#000000" stopOpacity=".4"/>
-          <stop offset="100%" stopColor="#000000" stopOpacity="1"/>
-        </linearGradient>
       </defs>
     </svg>
   );
 };
+
+
+
+///////////////////////////
+// CURRENTLY UNUSED DEFS //
+
+  // {/* bigKnob */}
+  //   {/* Contour Gradients */}
+  //       <radialGradient id="bigknob-contour" cx="50%" cy="50%" r="100%" gradientUnits="objectBoundingBox">
+  //         <stop offset="0%" stopColor="#000000" stopOpacity="0"/>
+  //         <stop offset="20%" stopColor="#000000" stopOpacity=".1"/>
+  //         <stop offset="35%" stopColor="#000000" stopOpacity=".3"/>
+  //         <stop offset="45%" stopColor="#000000" stopOpacity=".5"/>
+  //         <stop offset="50%" stopColor="#000000" stopOpacity="1"/>
+  //       </radialGradient>
+  //       <radialGradient id="bigknob-glare" cx="50%" cy="50%" r="100%" fx="0%" fy="0%" fr="10%" gradientUnits="objectBoundingBox">
+  //         <stop offset="0%" stopColor="#FFFFFF" stopOpacity="1"/>
+  //         <stop offset="5%" stopColor="#FFFFFF" stopOpacity=".5"/>
+  //         <stop offset="15%" stopColor="#FFFFFF" stopOpacity=".3"/>
+  //         <stop offset="25%" stopColor="#FFFFFF" stopOpacity=".2"/>
+  //         <stop offset="40%" stopColor="#FFFFFF" stopOpacity=".1"/>
+  //         <stop offset="65%" stopColor="#FFFFFF" stopOpacity="0"/>
+  //         <stop offset="70%" stopColor="#000000" stopOpacity="0"/>
+  //         <stop offset="80%" stopColor="#000000" stopOpacity="1"/>
+  //       </radialGradient>
+  //       <linearGradient id="bigknob-notch" x1="0%" y1="0%" x2="0%" y2="100%" gradientUnits="objectBoundingBox">
+  //         <stop offset="0%" stopColor="#000000" stopOpacity=".5"/>
+  //         <stop offset="10%" stopColor="#000000" stopOpacity=".6"/>
+  //         <stop offset="50%" stopColor="#000000" stopOpacity=".7"/>
+  //         <stop offset="90%" stopColor="#000000" stopOpacity=".6"/>
+  //         <stop offset="100%" stopColor="#000000" stopOpacity=".5"/>
+  //       </linearGradient>
+  // {/* Slider */}
+  //   {/* Clip Paths */}
+  //       <clipPath id="slider-clip">
+  //         <rect x="0" y="0" width="10" height="20" />
+  //       </clipPath>
+  //   {/* Filters */}
+  //       <filter id="slider-blur">
+  //         <feGaussianBlur stdDeviation=".5" />
+  //       </filter>
+  //   {/* Ridge Gradients */}
+  //       <linearGradient id="slider-ridges-top" x1="0%" y1="0%" x2="0%" y2="100%" gradientUnits="objectBoundingBox">
+  //         {[0, 1, 2, 3, 4, 5].map(d => {
+  //           const unit = (100 / 6);
+  //           return (
+  //             <React.Fragment key={'slider-ridges-bottom-' + d}>
+  //               <stop offset={(unit * d) + '%'} stopColor="#000000" stopOpacity="0"/>
+  //               <stop offset={(unit * (d + .1)) + '%'} stopColor="#000000" stopOpacity=".3"/>
+  //               <stop offset={(unit * (d + .5)) + '%'} stopColor="#000000" stopOpacity=".8"/>
+  //             </React.Fragment>
+  //           );
+  //         })}
+  //         <stop offset="100%" stopColor="#000000" stopOpacity="0"/>
+  //       </linearGradient>
+  //       <linearGradient id="slider-ridges-bottom" x1="0%" y1="0%" x2="0%" y2="100%" gradientUnits="objectBoundingBox">
+  //         {[0, 1, 2, 3, 4, 5].map(d => {
+  //           const unit = (100 / 6);
+  //           return (
+  //             <React.Fragment key={'slider-ridges-bottom-' + d}>
+  //               <stop offset={(unit * d) + '%'} stopColor="#000000" stopOpacity="0"/>
+  //               <stop offset={(unit * (d + .5)) + '%'} stopColor="#000000" stopOpacity=".8"/>
+  //               <stop offset={(unit * (d + .9)) + '%'} stopColor="#000000" stopOpacity=".3"/>
+  //             </React.Fragment>
+  //           );
+  //         })}
+  //         <stop offset="100%" stopColor="#000000" stopOpacity="0"/>
+  //       </linearGradient>
+  //   {/* Contour Gradients */}
+  //       <linearGradient id="slider-contour-horizontal" x1="0%" y1="0%" x2="0%" y2="100%" gradientUnits="objectBoundingBox">
+  //         <stop offset="0%" stopColor="#000000" stopOpacity="1"/>
+  //         <stop offset="1.5%" stopColor="#000000" stopOpacity=".2"/>
+  //         <stop offset="5%" stopColor="#000000" stopOpacity=".4"/>
+  //         <stop offset="25%" stopColor="#000000" stopOpacity=".6"/>
+  //         <stop offset="50%" stopColor="#000000" stopOpacity=".8"/>
+  //         <stop offset="75%" stopColor="#000000" stopOpacity=".6"/>
+  //         <stop offset="95%" stopColor="#000000" stopOpacity=".4"/>
+  //         <stop offset="98.5%" stopColor="#000000" stopOpacity=".2"/>
+  //         <stop offset="0%" stopColor="#000000" stopOpacity="1"/>
+  //       </linearGradient>
+  //       <linearGradient id="slider-contour-vertical" x1="0%" y1="0%" x2="100%" y2="0%" gradientUnits="objectBoundingBox">
+  //         <stop offset="0%" stopColor="#000000" stopOpacity="1"/>
+  //         <stop offset="5%" stopColor="#000000" stopOpacity=".4"/>
+  //         <stop offset="10%" stopColor="#000000" stopOpacity=".1"/>
+  //         <stop offset="50%" stopColor="#000000" stopOpacity="0"/>
+  //         <stop offset="90%" stopColor="#000000" stopOpacity=".1"/>
+  //         <stop offset="95%" stopColor="#000000" stopOpacity=".4"/>
+  //         <stop offset="100%" stopColor="#000000" stopOpacity="1"/>
+  //       </linearGradient>
+///////////////////////////
 
 
 
@@ -631,41 +657,6 @@ export const BigKnob = (props) => {
         stroke="#000000"
         strokeWidth="1%"
       />
-    </svg>
-  );
-};
-
-
-
-export const ColorSwatch = (props) => {
-  const { color, active, handleClick } = props;
-  const pulse = {animation: 'pulsar 1s linear infinite'};
-  const hide = {display: 'none'};
-  return (
-    <svg className="colorswatch" viewBox="0 0 100 100" onClick={handleClick}>
-  {/* Backpane */}
-      <circle cx="50" cy="50" r="47"
-        fill="#FFFFFF"
-        stroke="#000000"
-        strokeWidth="6%"
-      />
-  {/* Color Base */}
-      <circle cx="50" cy="50" r="47"
-        style={active ? pulse : null}
-        fill={color}
-        stroke="#222222"
-        strokeWidth="2%"
-        opacity=".9"
-      />
-  {/* Active Halo Layer */}
-      <circle cx="50" cy="50" r="47"
-        style={active ? pulse : hide}
-        fill="url(#colorswatch-glow)"
-        opacity={active ? .8 : 0}
-      />
-  {/* Contour + Glare */}
-      <circle cx="50" cy="50" r="49" fill="url(#colorswatch-contour)" />
-      <circle cx="50" cy="50" r="49" fill="url(#colorswatch-glare)" />
     </svg>
   );
 };

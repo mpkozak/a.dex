@@ -1,13 +1,70 @@
 .Main {
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
 
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-around;
 
 }
+
+
+
+.outer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+
+.inner {
+  border-radius: 1.5vmin;
+  border: 1px solid rgba(255,255,255,.5);
+}
+
+.label {
+  width: 95%;
+  margin: 1% 0 0 1%;
+  text-align: left;
+}
+
+
+.r {
+  width: 100%;
+}
+
+.c {
+  height: 100%;
+}
+
+.r1 {
+  /*height: 8%;*/
+  height: 12vmin;
+  background-color: rgba(255,0,0,.3);
+}
+
+.r2 {
+  /*height: 45%;*/
+  height: 76vmin;
+  background-color: rgba(0,255,0,.3);
+}
+
+.r3 {
+  height: 20%;
+  /*height: 35vmin;*/
+  background-color: rgba(0,0,255,.3);
+}
+
+.r4 {
+  /*height: 20%;*/
+  height: 32vmin;
+  background-color: rgba(255,255,0,.3);
+}
+
+
+
+
+
 
 
 .Main>.top {
@@ -65,31 +122,6 @@
   flex-flow: row nowrap;
 
   /*background-color: pink;*/
-}
-
-
-
-.outer {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  /*align-items: center;*/
-  /*justify-content: center;*/
-}
-
-.inner {
-  width: calc(100% - 2vmin);
-  height: calc(100% - 2vmin);
-  display: flex;
-  border-radius: 1vmin;
-  border: 1px solid rgba(255,255,255,.5);
-}
-
-.label {
-  width: 100%;
-  padding: .25vmin 1vmin;
-  margin: 0 0 0 2vmin;
-  text-align: left;
 }
 
 

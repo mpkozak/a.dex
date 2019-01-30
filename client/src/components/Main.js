@@ -12,11 +12,10 @@ export default class Main extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      audioEnabled: false,
       showHelp: false,
       video: false,
     };
-    this.audio = props.audio;
+    // this.audio = props.audio;
 
 
     this.toggleHelp = this.toggleHelp.bind(this);
@@ -32,8 +31,9 @@ export default class Main extends PureComponent {
 
 
   componentDidMount() {
+    console.log('main mounted')
 
-    this.videoInit();
+    // this.videoInit();
 
 
     // const mainWidth = this.refs.main.clientWidth;
@@ -79,6 +79,8 @@ export default class Main extends PureComponent {
     // const { ctx, instGain } = this.audio;
     // this.props.audio.setGain(instGain.gain, 0, ctx.currentTime, .001)
 
+
+
     // console.log(this.props.audio.instGain.gain)
 
 
@@ -107,7 +109,7 @@ export default class Main extends PureComponent {
 
 
   audioRefresh(x, y) {
-    const { ctx, baseHz, setGain, setFreq } = this.audio;
+    const { ctx, baseHz, setGain, setFreq } = this.props.audio;
     const gain = (y ** 2);
     const freq = (2 ** x) * baseHz;
     setGain(gain, ctx.currentTime);
@@ -122,7 +124,7 @@ export default class Main extends PureComponent {
 
   passbackMeters(getData) {
     this.getData = getData;
-    // this.start();
+    this.start();
   };
 
 
@@ -138,26 +140,23 @@ export default class Main extends PureComponent {
 
 
   render() {
+    console.log('main render')
+    console.log(this.props.audio)
     const { showHelp, video } = this.state;
-    const { ctx, osc1, osc2, instGain, analyser, mute, setGain, setFreq } = this.audio;
+    const { ctx, osc1, osc2, instGain, analyser, mute, setGain, setFreq, setOsc } = this.props.audio;
     return (
       <div className="Main" ref="main">
-        <div className="top">
+        <div className="r r1">
           <Placard active={showHelp} handleClick={this.toggleHelp} />
         </div>
-        <div className="middle">
-          {video && <Screen video={video} />}
+        <div className="r r2">
+          <Screen video={video} />
         </div>
-        <div className="bottom">
-          <div className="left">
-            <div className="top">top</div>
-            <div className="bottom">
-              <Oscillators osc1={osc1} osc2={osc2} mute={mute} />
-            </div>
-          </div>
-          <div className="right">
-            <Meters analyser={analyser} passback={this.passbackMeters} />
-          </div>
+        <div className="r r3">
+          <Oscillators osc1={osc1} osc2={osc2} setOsc={setOsc} />
+        </div>
+        <div className="r r4">
+          <Meters analyser={analyser} passback={this.passbackMeters} />
         </div>
       </div>
     );
@@ -166,10 +165,21 @@ export default class Main extends PureComponent {
 
 
 
+          // <div className="left">
+          //   <div className="top">top</div>
+          //   <div className="bottom">
+          //
+          //   </div>
+          // </div>
+          // <div className="right">
+          // </div>
+
+
+          // {video && <Screen video={video} />}
 
 
 
-          // <Screen video={video} />
+
 
 
 

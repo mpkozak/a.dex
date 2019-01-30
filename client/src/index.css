@@ -56,6 +56,16 @@ Font Software is licensed under the SIL Open Font License, Version 1.1.^^^*/
        url('./components/_fonts/DSEG7Classic-BoldItalic.ttf') format('ttf');
 }
 
+
+
+
+
+
+
+
+
+
+
 * {
   margin: 0;
   padding: 0;
@@ -100,18 +110,3 @@ h6 {
 p {
   font-size: 5%;
 }
-
-
-
-.App {
-  width: 100vw;
-  /*height: 100vh;*/
-  height: calc(100vh + 1000px);
-  display: flex;
-  flex-flow: column nowrap;
-  align-items: center;
-  justify-content: center;
-}
-
-
-

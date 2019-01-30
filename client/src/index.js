@@ -4,8 +4,9 @@ import './index.css';
 import App from './App.js';
 
 ///////////////////
-// POLYFILL FROM: https://github.com/mohayonao/get-float-time-domain-data/blob/master/lib/get-float-time-domain-data.js
-///////////////////
+// ANALYSER POLYFILL FROM:
+// https://github.com/mohayonao/get-float-time-domain-data/blob/master/lib/get-float-time-domain-data.js
+
     if (global.AnalyserNode && !global.AnalyserNode.prototype.getFloatTimeDomainData) {
       var uint8 = new Uint8Array(2048);
       global.AnalyserNode.prototype.getFloatTimeDomainData = function(array) {
@@ -15,7 +16,6 @@ import App from './App.js';
         };
       };
     };
-///////////////////
 ///////////////////
 
 

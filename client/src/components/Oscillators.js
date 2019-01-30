@@ -9,26 +9,37 @@ export default class Oscillators extends PureComponent {
       osc1: props.osc1.type,
       osc2: props.osc2.type
     };
-    this.oscillators = ['sine', 'triangle', 'sawtooth', 'square'];
+    this.oscTypes = ['sine', 'triangle', 'sawtooth', 'square'];
     this.setOsc = this.setOsc.bind(this);
   };
 
   setOsc(osc, type) {
-    this.props.mute();
-    setTimeout(() => this.props[osc].type = type, 10);
+    this.props.setOsc(osc, type);
     this.setState(prevState => ({ [osc]: type }));
   };
+
+  // setOsc(e) {
+  //   const { id } = e.target.parentNode;
+  //   const osc = id.substring(0, 4);
+  //   const type = id.substring(4);
+  //   this.oscTypes.includes(type) && this.props.setOsc(osc, type, this.oscSet);
+  //   setTimeout(() => {
+  //     this.forceUpdate()
+  //   }, 100)
+  // };
 
   makeElement(osc, label) {
     return (
       <div className="inner">
         <h4 className="label">{label}</h4>
         <div className="button-box">
-          {this.oscillators.map((d, i) =>
+          {this.oscTypes.map((d, i) =>
             <GlowButton
               key={label + i}
+              id={osc + d}
               icon={d}
               active={d === this.state[osc]}
+              // handleClick={this.setOsc}
               handleClick={() => this.setOsc(osc, d)}
             />
           )}

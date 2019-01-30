@@ -20,20 +20,20 @@ export default class Screen extends PureComponent {
     this.canvasDraw = this.canvasDraw.bind(this);
   };
 
-  componentDidMount() {
-    const { video } = this.props;
-    // video.play()
+  // componentDidMount() {
+  //   const { video } = this.props;
+  //   // video.play()
 
-    const vW = video.width;
-    const vH = video.height;
-    // const vW = 640;
-    // const vH = 480;
-    // console.log(vW, vH)
-    // this.refs.videoCanvas.width = 640;
-    // this.refs.videoCanvas.height = 480;
-    this.setState(prevState => ({ vW, vH }), this.canvasInit);
-    // window.addEventListener('resize', this.canvasInit);
-  };
+  //   const vW = video.width;
+  //   const vH = video.height;
+  //   // const vW = 640;
+  //   // const vH = 480;
+  //   // console.log(vW, vH)
+  //   // this.refs.videoCanvas.width = 640;
+  //   // this.refs.videoCanvas.height = 480;
+  //   this.setState(prevState => ({ vW, vH }), this.canvasInit);
+  //   // window.addEventListener('resize', this.canvasInit);
+  // };
 
   componentDidUpdate() {
   };
