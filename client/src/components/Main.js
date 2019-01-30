@@ -2,6 +2,8 @@ import React, { PureComponent } from 'react';
 import './_css/Main.css';
 // import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
 
+import { Logo } from './_svg.js';
+
 import Placard from './Placard.js';
 import Screen from './Screen.js';
 import Oscillators from './Oscillators.js';
@@ -12,10 +14,12 @@ export default class Main extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
+      orientationOk: true,
       showHelp: false,
       video: false,
     };
     this.videoInit = this.videoInit.bind(this);
+    this.handleOrientationChange = this.handleOrientationChange.bind(this);
 
 
     this.toggleHelp = this.toggleHelp.bind(this);
@@ -28,12 +32,42 @@ export default class Main extends PureComponent {
 
 
   componentDidMount() {
-    this.videoInit();
+    window.addEventListener('orientationchange', this.handleOrientationChange);
+    this.handleOrientationChange();
   };
 
   componentDidUpdate() {
     // if (!this.refs.video) this.videoInit();
   }
+
+  handleOrientationChange() {
+    const orientation = Math.abs(window.orientation);
+    this.setState(prevState => ({ orientationOk: !orientation }));
+  };
+
+
+
+  // handleOrientationChange() {
+  //   // console.log('orientationchange', this.state.video.width, this.props.videoStream)
+  //   const orientation = Math.abs(window.orientation)
+  //   // this.state.video.srcObject = null
+  //   this.setState(prevState => ({ video: false }), () => {
+  //     setTimeout(() => {
+  //       // this.videoInit();
+  //     }, 2000);
+  //   });
+  // };
+
+
+
+
+
+
+
+
+
+
+
 
 
   videoInit() {
@@ -48,6 +82,7 @@ export default class Main extends PureComponent {
     video.playsInline = true;
     video.play();
     this.setState(prevState => ({ video }));
+    console.log('in videoinit', width, height)
   };
 
 
@@ -67,7 +102,7 @@ export default class Main extends PureComponent {
 
   passbackMeters(getData) {
     this.getData = getData;
-    this.start();
+    // this.start();
   };
 
 
@@ -84,22 +119,31 @@ export default class Main extends PureComponent {
 
 
   render() {
-    const { showHelp, video } = this.state;
+    const { orientationOk, showHelp, video } = this.state;
     const { ctx, osc1, osc2, instGain, analyser, mute, setGain, setFreq, setOsc } = this.props.audio;
     return (
       <div className="Main" ref="main">
-        <div className="r r1">
-          <Placard active={showHelp} handleClick={this.toggleHelp} />
-        </div>
-        <div className="r r2">
-          {video && <Screen video={video} />}
-        </div>
-        <div className="r r3">
-          <Oscillators osc1={osc1.type} osc2={osc2.type} setOsc={setOsc} />
-        </div>
-        <div className="r r4">
-          <Meters analyser={analyser} passback={this.passbackMeters} />
-        </div>
+        {!orientationOk
+          ? <div className="splash">
+              <div className="logo-box">
+                <Logo opacity={.6} />
+              </div>
+            </div>
+          : <React.Fragment>
+              <div className="r r1">
+                <Placard active={showHelp} handleClick={this.toggleHelp} />
+              </div>
+              <div className="r r2">
+                {video && <Screen video={video} />}
+              </div>
+              <div className="r r3">
+                <Oscillators osc1={osc1.type} osc2={osc2.type} setOsc={setOsc} />
+              </div>
+              <div className="r r4">
+                <Meters analyser={analyser} passback={this.passbackMeters} />
+              </div>
+            </React.Fragment>
+        }
       </div>
     );
   };

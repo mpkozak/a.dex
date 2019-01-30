@@ -9,6 +9,7 @@ export default class App extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
+      pending: true,
       webAudioOk: false,
       cameraOk: false,
       initOk: false
@@ -23,6 +24,8 @@ export default class App extends PureComponent {
     this.audioSetGain = this.audioSetGain.bind(this);
     this.audioSetFreq = this.audioSetFreq.bind(this);
     this.audioSetOsc = this.audioSetOsc.bind(this);
+
+    // this.checkScroll = this.checkScroll.bind(this)
   };
 
   componentDidMount() {
@@ -39,27 +42,29 @@ export default class App extends PureComponent {
 // INITIALIZATION STACK //
 
   videoInit() {
-    navigator.mediaDevices.getUserMedia({
-      video: {
-        width: { ideal: 640 },
-        height: { ideal: 480 }
-      }
-    })
-      .then(stream => {
-        this.videoStream = stream;
+    // navigator.mediaDevices.getUserMedia({
+    //   // video: true
+    //   video: {
+    //     width: { ideal: 640 },
+    //     height: { ideal: 480 }
+    //   }
+    // })
+      // .then(stream => {
+      //   this.videoStream = stream;
+      //   this.setState(prevState => ({ cameraOk: true, pending: false }), () => {
+      //     enableBodyScroll(this.refs.app);
+      //     window.addEventListener('touchstart', this.handleSwipe);
+      //   });
+      // })
+      // .catch(err => {
+      //   console.log(err);
+      //   this.setState(prevState => ({ pending: false }));
+      // });
+
         this.setState(prevState => ({ cameraOk: true }), () => {
           enableBodyScroll(this.refs.app);
           window.addEventListener('touchstart', this.handleSwipe);
         });
-      })
-      .catch(err => {
-        console.log(err);
-      });
-
-        // this.setState(prevState => ({ cameraOk: true }), () => {
-        //   enableBodyScroll(this.refs.app);
-        //   window.addEventListener('touchstart', this.handleSwipe);
-        // });
   };
 
   audioInit() {
@@ -156,65 +161,127 @@ export default class App extends PureComponent {
   handleSwipe() {
     this.audio.ctx.resume();
     window.removeEventListener('touchstart', this.handleSwipe);
-    window.addEventListener('scroll', this.handleScrollEvent);
     window.scrollY === 400 || window.scrollTo(0, 400);
+    window.addEventListener('scroll', this.handleScrollEvent);
   };
 
   handleScrollEvent() {
     clearTimeout(this.scrollTimeout);
-    this.scrollTimeout = setTimeout(this.handleLock, 50);
+    this.scrollTimeout = setTimeout(this.handleLock, 20);
     if (!this.state.initOk) {
       window.scrollY > 400 || window.scrollTo(0, 400);
       window.scrollY < 1500 || window.scrollTo(0, 1500);
-      document.querySelector('.splash').style.opacity = 0;
+      document.getElementById('app-splash').style.opacity = 0;
     };
   };
 
   handleLock() {
+    // clearInterval(this.checkScrollInterval)
     const { initOk } = this.state;
     if ((window.innerHeight + 2000) === this.refs.app.clientHeight) {
       window.removeEventListener('scroll', this.handleScrollEvent);
       this.refs.app.style.height = '100vh';
       disableBodyScroll(this.refs.app);
       window.scrollTo(0, 0);
+      document.getElementById('shadow-mask').style.opacity = 0;
       if (!initOk) {
         this.setState(prevState => ({ initOk: true }));
         window.addEventListener('resize', this.handleResize);
       };
     };
+    // this.resizing = false;
+    // this.checkScrollInterval = setInterval(this.checkScroll, 1000)
   };
 
+  checkScroll() {
+    // console.log('check ran')
+    // const {outerHeight, outerWidth, pageXOffset, pageYOffset, screenLeft, screenTop, screenX, screenY, scrollX, scrollY} = window;
+    // console.log(outerHeight, outerWidth, pageXOffset, pageYOffset, screenLeft, screenTop, screenX, screenY, scrollX, scrollY)
+    // console.log('checkScroll', 'window', window.scrollY, 'app', this.refs.app.scrollTop)
+    // if (window.scrollY && !this.resizing) {
+      // console.log('checkScroll', window.scrollY)
+      // this.handleResize();
+    // }
+  }
+
+
+
   handleResize() {
-    window.scrollY === 0 || window.scrollTo(0, 0);
+    // console.log('resizeEvent')
+    // this.resizing = true;
     this.refs.app.style.height = 'calc(100vh + 2000px)';
-    enableBodyScroll(this.refs.app);
-    window.addEventListener('scroll', this.handleScrollEvent);
+    window.scrollY === 0 || window.scrollTo(0, 0);
+    if ((window.innerHeight + 2000) !== this.refs.app.clientHeight) {
+      enableBodyScroll(this.refs.app);
+      window.addEventListener('scroll', this.handleScrollEvent);
+      document.getElementById('shadow-mask').style.opacity = 1;
+    };
+
+
+
+
+
+    // this.refs.app.style.height = 'calc(100vh + 2000px)';
+    // window.scrollY === 0 || window.scrollTo(0, 0);
+    // if ((window.innerHeight + 2000) !== this.refs.app.clientHeight) {
+    //   enableBodyScroll(this.refs.app);
+    //   window.addEventListener('scroll', this.handleScrollEvent);
+    //   document.getElementById('shadow-mask').style.opacity = 1;
+    // } else {
+    //   console.log('else')
+    //   // setTimeout(() => {
+    //   //   this.refs.app.style.height = '100vh';
+    //   // }, 1000)
+    // }
+
+
+    // // this.refs.app.style.height = 'calc(100vh + 2000px)';
+    // // window.scrollY === 0 || window.scrollTo(0, 0);
+    // if ((window.innerHeight) !== this.refs.app.clientHeight) {
+    //   this.refs.app.style.height = 'calc(100vh + 2000px)'
+    //   window.scrollY === 0 || window.scrollTo(0, 0);
+    //   enableBodyScroll(this.refs.app);
+    //   window.addEventListener('scroll', this.handleScrollEvent);
+    // } else {
+    //   // this.refs.app.style.height = '100vh';
+    // };
+
+
+
+// THIS STACK WORKS
+    // window.scrollY === 0 || window.scrollTo(0, 0);
+    // this.refs.app.style.height = 'calc(100vh + 2000px)';
+    // enableBodyScroll(this.refs.app);
+    // window.addEventListener('scroll', this.handleScrollEvent);
   };
 /////////////////////
 
 
   render() {
-    const { webAudioOk, cameraOk, initOk } = this.state;
+    const { pending, webAudioOk, cameraOk, initOk } = this.state;
     const { videoStream, audio } = this;
     const bgColor = {
       backgroundColor: !initOk ? 'rgba(0, 0, 0, .7)' : 'none'
     };
 
     return (
-      <div className="App" ref="app" style={bgColor}>
+      <div id="App" ref="app" style={bgColor}>
+        <div id="shadow-mask" />
         <SvgDefs />
         {initOk
           ? <Main videoStream={videoStream} audio={audio} />
-          : <div className="splash">
+          : <div id="app-splash" className="splash">
               <div className="logo-box">
                 <Logo opacity={.6} />
               </div>
               <div className="message-box">
                 {cameraOk
                   ? <Init />
-                  : webAudioOk
-                    ? <NoVideo />
-                    : <NoAudio />
+                  : pending
+                    ? null
+                    : webAudioOk
+                      ? <NoVideo />
+                      : <NoAudio />
                 }
               </div>
             </div>
@@ -223,6 +290,53 @@ export default class App extends PureComponent {
     );
   };
 };
+
+
+
+
+
+        // {initOk
+        //   ? <Main videoStream={videoStream} audio={audio} />
+        //   : <div className="splash">
+        //       <div className="logo-box">
+        //         <Logo opacity={.6} />
+        //       </div>
+        //       <div className="message-box">
+        //         {cameraOk
+        //           ? <Init />
+        //           : pending
+        //             ? null
+        //             : webAudioOk
+        //               ? <NoVideo />
+        //               : <NoAudio />
+        //         }
+        //       </div>
+        //     </div>
+        // }
+
+
+
+
+        // <SvgDefs />
+        // {initOk
+        //   ? <Main videoStream={videoStream} audio={audio} />
+        //   : <div className="splash">
+        //       <div className="logo-box">
+        //         <Logo opacity={.6} />
+        //       </div>
+        //       <div className="message-box">
+        //         {cameraOk
+        //           ? <Init />
+        //           : webAudioOk
+        //             ? <NoVideo />
+        //             : <NoAudio />
+        //         }
+        //       </div>
+        //     </div>
+        // }
+
+
+
 
 
 

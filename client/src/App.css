@@ -1,10 +1,26 @@
-.App {
+#App {
   width: 100vw;
   height: calc(100vh + 2000px);
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
   justify-content: flex-start;
+
+  /*border: 1px solid white;*/
+}
+
+#shadow-mask {
+  position: fixed;
+  width: 100vw;
+  height: calc(100vh + 2000px);
+  background-color: rgba(0, 0, 0, .8);
+  z-index: 1000;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 500ms;
+
+  /*display: none;*/
+  /*border: 1px solid white;*/
 }
 
 .splash {
@@ -18,9 +34,11 @@
   justify-content: space-around;
   opacity: 1;
   transition: opacity 250ms;
+
+  /*border: 1px solid green;*/
 }
 
-.splash .logo-box {
+.splash>.logo-box {
   width: 90vmin;
   height: 40vmin;
   display: flex;
@@ -29,7 +47,7 @@
   justify-content: center;
 }
 
-.splash .message-box {
+.splash>.message-box {
   width: 95%;
   height: 40%;
   display: flex;

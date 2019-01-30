@@ -30,6 +30,22 @@ export const Init = () => {
 
 
 
+// export const Rotate = () => {
+//   return (
+//     <div className="splash">
+//       <div className="logo-box">
+//         <Logo opacity={.6} />
+//       </div>
+//       <div className="message-box">
+//       </div>
+//     </div>
+//   );
+// };
+
+
+
+
+
 
 // import React from 'react';
 // import { Logo } from './components/_svg.js';

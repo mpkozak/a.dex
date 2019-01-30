@@ -5,8 +5,11 @@
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
-  /*justify-content: space-around;*/
-  justify-content: flex-start;
+  justify-content: space-around;
+  /*justify-content: flex-start;*/
+
+  /*background-color: #fff;*/
+  /*border :1px solid green;*/
 }
 
 
@@ -46,6 +49,7 @@
 .r2 {
   /*height: 45%;*/
   height: 75vmin;
+  width: 100vmin;
   /*background-color: rgba(0,255,0,.3);*/
 }
 
