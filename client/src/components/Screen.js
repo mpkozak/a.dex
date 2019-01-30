@@ -8,32 +8,21 @@ export default class Screen extends PureComponent {
     constructor(props) {
     super(props)
     this.state = {
-      vW: 0,
-      vH: 0,
+      vW: 640,
+      vH: 480,
       colorGain: '#FF0000',
       colorFreq: '#00FF00',
       sensitivity: 30,
       range: 4,
       calibTarget: false,
     };
-  //   this.sensitivity = { min: 0, max: 221 };
-  //   this.range = { min: 2, max: 6 };
-  //   this.changeScalar = 1000;
-  //   this.tracker = undefined;
-  //   this.canvas = undefined;
-  //   this.videoInit = this.videoInit.bind(this);
-  //   this.trackerColorRefresh = this.trackerColorRefresh.bind(this);
-  //   this.trackerHandleData = this.trackerHandleData.bind(this);
-  //   this.trackerGetCoords = this.trackerGetCoords.bind(this);
-  //   this.handleParam = this.handleParam.bind(this);
-
     this.canvasInit = this.canvasInit.bind(this);
     this.canvasDraw = this.canvasDraw.bind(this);
   };
 
   componentDidMount() {
     const { video } = this.props;
-    video.play()
+    // video.play()
 
     const vW = video.width;
     const vH = video.height;
@@ -59,9 +48,6 @@ export default class Screen extends PureComponent {
     const marginX = vW - cW;
     const marginY = vH - cH;
 
-
-
-
     console.log('margin x, y', marginX, marginY)
     console.log('video aspect', vW / vH)
     console.log('canvas aspect', cW / cH)
@@ -81,8 +67,10 @@ export default class Screen extends PureComponent {
     this.rAF = requestAnimationFrame(this.canvasDraw);
   };
 
+
+
   render() {
-    // console.log(this.props, this.state)
+    // console.log('screen mounted')
     const { calibTarget, vW, vH } = this.state;
     return (
       <div className="screen outer">

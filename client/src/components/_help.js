@@ -25,7 +25,16 @@ help.setAudioParam = (param, val, t) => {
 };
 
 
-
+// WORKING SCROLL DETECTION
+    // var scrollTrue = false;
+    // window.addEventListener('scroll', () => {
+    //   console.log(scrollTrue)
+    //   clearTimeout(this.scrollTimeout)
+    //   scrollTrue = true;
+    //   this.scrollTimeout = setTimeout(() => {
+    //     scrollTrue = false;
+    //   }, 50)
+    // });
 
 
 

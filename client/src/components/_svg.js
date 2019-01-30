@@ -28,6 +28,48 @@ export const Logo = ({color = '#FFFFFF', opacity = .7}) => {
 };
 
 
+export const HelpButton = ({ active, handleClick }) => {
+  const helpFonts = {
+    question: {
+      fontFamily: 'Helvetica, Helvetica Neue, Arial, sans-serif',
+      fontSize: 90,
+      fontWeight: 800
+    },
+    x: {
+      fontFamily: 'Helvetica, Helvetica Neue, Arial, sans-serif',
+      fontSize: 70,
+      fontWeight: 800
+    }
+  };
+  return (
+    <svg className="helpbutton" viewBox="0 0 100 100" onClick={handleClick}>
+      <defs>
+  {/* Masks */}
+        <mask id="question-mask">
+          <rect width="100" height="100" fill="#FFFFFF" />
+          <text style={helpFonts.question} fill="#000000"
+            x="50" y="57" textAnchor="middle" alignmentBaseline="middle"
+          >?</text>
+        </mask>
+        <mask id="x-mask">
+          <rect width="100" height="100" fill="#FFFFFF" />
+          <text style={helpFonts.x} fill="#000000"
+            x="50" y="57" textAnchor="middle" alignmentBaseline="middle"
+          >X</text>
+        </mask>
+      </defs>
+  {/* Circle */}
+      <circle mask={active ? "url(#x-mask)" : "url(#question-mask)"}
+        cx="50"
+        cy="50"
+        r="50"
+        fill="#FFFFFF"
+        opacity=".5"
+      />
+    </svg>
+  );
+};
+
 
 
 
@@ -511,49 +553,6 @@ export const SvgDefs = () => {
 
 
 
-
-export const HelpButton = (props) => {
-  const { active, handleClick } = props;
-  const helpFonts = {
-    question: {
-      fontFamily: 'Helvetica, Helvetica Neue, Arial, sans-serif',
-      fontSize: 90,
-      fontWeight: 800
-    },
-    x: {
-      fontFamily: 'Helvetica, Helvetica Neue, Arial, sans-serif',
-      fontSize: 70,
-      fontWeight: 800
-    }
-  };
-  return (
-    <svg className="helpbutton" viewBox="0 0 100 100" onClick={handleClick}>
-      <defs>
-  {/* Masks */}
-        <mask id="question-mask">
-          <rect width="100" height="100" fill="#FFFFFF" />
-          <text style={helpFonts.question} fill="#000000"
-            x="50" y="57" textAnchor="middle" alignmentBaseline="middle"
-          >?</text>
-        </mask>
-        <mask id="x-mask">
-          <rect width="100" height="100" fill="#FFFFFF" />
-          <text style={helpFonts.x} fill="#000000"
-            x="50" y="57" textAnchor="middle" alignmentBaseline="middle"
-          >X</text>
-        </mask>
-      </defs>
-  {/* Circle */}
-      <circle mask={active ? "url(#x-mask)" : "url(#question-mask)"}
-        cx="50"
-        cy="50"
-        r="50"
-        fill="#FFFFFF"
-        opacity=".5"
-      />
-    </svg>
-  );
-};
 
 
 export const SevenSegment = (props) => {

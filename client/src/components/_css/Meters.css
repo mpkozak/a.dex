@@ -1,11 +1,30 @@
 .meters {
+  height: 100%;
   flex-flow: column nowrap;
-  justify-content: space-around;
+  align-items: center;
+  /*justify-content: space-around;*/
+  justify-content: flex-end;
 }
 
-.meters>.meter {
-  height: 48%;
-  width: auto;
+.meters>.meter-box {
+  height: 40%;
+  width: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+
+  /*border: 1px solid green;*/
+}
+
+
+.meters .meter {
+  width: 100%;
+  height: 100%;
+  /*max-width: 95%;*/
+  /*max-height: 95%;*/
+  /*border: 1px solid green;*/
+  /*width: auto;*/
   /*border-radius: .57vmin;*/
   /*box-shadow: 0 0 .5vmin .1vmin #000000;*/
 }

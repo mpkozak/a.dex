@@ -50,8 +50,12 @@ export default class Meters extends PureComponent {
     const { wave, rotation, peak } = this.state;
     return (
       <div className="meters outer">
-        <MeterWave wave={wave} />
-        <MeterVU rotation={rotation} peak={(new Date() - peak) < 1000} />
+        <div className="meter-box">
+          <MeterWave wave={wave} />
+        </div>
+        <div className="meter-box">
+          <MeterVU rotation={rotation} peak={(new Date() - peak) < 1000} />
+        </div>
       </div>
     );
   };

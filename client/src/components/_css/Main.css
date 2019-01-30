@@ -5,76 +5,76 @@
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
 
-
-
-  /*border: 1px solid green;*/
-  /*--grid-width: 17;*/
-  /*--grid-height: 15;*/
-  /*--size-unit: calc(95vw / var(--grid-width));*/
-  /*--size-unit-max: calc(90vh / var(--grid-height));*/
-  /*--size-unit-min: 30px;*/
-  /*position: relative;*/
-  /*width: calc(var(--grid-width) * var(--size-unit));*/
-  /*height: calc(var(--grid-height) * var(--size-unit));*/
-  /*max-width: calc(var(--grid-width) * var(--size-unit-max));*/
-  /*max-height: calc(var(--grid-height) * var(--size-unit-max));*/
-  /*min-width: calc(var(--grid-width) * var(--size-unit-min));*/
-  /*min-height: calc(var(--grid-height) * var(--size-unit-min));*/
-  /*background: url('../_img/titanium.jpg') no-repeat center center fixed;*/
-  /*background-size: cover;*/
-  /*border-radius: 1vmin;*/
-  /*box-shadow: 0 0 .5vmin .1vmin #000000;*/
 }
 
 
-.screen {
-  width: 100vmin;
-  height: 75vmin;
-  /*border: 1px solid green;*/
-  /*background-color: #fff;*/
-
-  /*border: 1px solid yellow;*/
-}
-
-.bottom {
+.Main>.top {
   width: 100%;
-  height: 30%;
+  height: 10%;
 
-  /*background-color: green;*/
+  /*background-color: rgba(255,0,0,.3);*/
+}
+
+.Main>.middle {
+  width: 100%;
+  height: 45%;
+
+  /*background-color: rgba(0,255,0,.3);*/
+}
+
+.Main>.bottom {
+  width: 100%;
+  height: 45%;
+
   display: flex;
   flex-flow: row nowrap;
-  align-items: center;
-  justify-content: flex-end;
+  /*align-items: center;*/
+  /*justify-content: center;*/
 
-  /*border: 1px solid red;*/
+  /*background-color: rgba(0,0,255,.3);*/
 }
 
-.oscillators {
-  width: 30%;
+.Main>.bottom>.left {
+  width: 55%;
   height: 100%;
-  /*height: 40vmin;*/
-  /*border: 1px solid green;*/
+
+  /*background-color: orange;*/
 }
 
-.meters {
-  width: 42%;
+.Main>.bottom>.right {
+  width: 45%;
   height: 100%;
-  /*width: auto;*/
-  /*height: 60vmin;*/
-  /*width: 100vmin;*/
-  /*height: 30vmin;*/
-  /*display: none;*/
-  /*border: 1px solid green;*/
-  /*border: 1px solid yellow;*/
+
+  /*background-color: pink;*/
 }
+
+.Main>.bottom>.left>.top {
+  width: 100%;
+  height: 25%;
+
+  /*background-color: gray;*/
+}
+
+.Main>.bottom>.left>.bottom {
+  width: 100%;
+  height: 75%;
+
+  display: flex;
+  flex-flow: row nowrap;
+
+  /*background-color: pink;*/
+}
+
 
 
 .outer {
+  width: 100%;
+  height: 100%;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  /*align-items: center;*/
+  /*justify-content: center;*/
 }
 
 .inner {
@@ -94,6 +94,59 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+.screen {
+  /*width: 100vmin;*/
+  /*height: 75vmin;*/
+  /*border: 1px solid green;*/
+  /*background-color: #fff;*/
+
+  /*border: 1px solid yellow;*/
+}
+
+.bottom {
+  /*width: 100%;*/
+  /*height: 30%;*/
+
+  /*background-color: green;*/
+  /*display: flex;*/
+  /*flex-flow: row nowrap;*/
+  /*align-items: center;*/
+  /*justify-content: flex-end;*/
+
+  /*border: 1px solid red;*/
+}
+
+.oscillators {
+  /*width: 30%;*/
+  /*height: 100%;*/
+  /*height: 40vmin;*/
+  /*border: 1px solid green;*/
+}
+
+.meters {
+  /*width: 42%;*/
+  /*height: 100%;*/
+  /*width: auto;*/
+  /*height: 60vmin;*/
+  /*width: 100vmin;*/
+  /*height: 30vmin;*/
+  /*display: none;*/
+  /*border: 1px solid green;*/
+  /*border: 1px solid yellow;*/
+}
 
 
 

@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-// import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
+import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
 import { Logo, SvgDefs } from './components/_svg.js';
 import Init from './components/Init.js';
 import Main from './components/Main.js';
@@ -13,7 +13,13 @@ export default class App extends PureComponent {
       videoStream: false,
       audio: false,
     };
+    this.handleSwipe = this.handleSwipe.bind(this);
+    this.handleScrollEvent = this.handleScrollEvent.bind(this);
+    this.lockIt = this.lockIt.bind(this);
     this.init = this.initialize.bind(this);
+
+    this.handleResize = this.handleResize.bind(this);
+
     this.audioMute = this.audioMute.bind(this);
     this.audioSetGain = this.audioSetGain.bind(this);
     this.audioSetFreq = this.audioSetFreq.bind(this);
@@ -21,9 +27,45 @@ export default class App extends PureComponent {
 
   componentDidMount() {
     if (!!global.AnalyserNode.prototype.getFloatTimeDomainData) {
-      this.setState(prevState => ({ compatible: true }));
+      this.setState(prevState => ({ compatible: true }), () => {
+        window.addEventListener('touchstart', this.handleSwipe);
+      });
     };
   };
+
+  handleSwipe() {
+    window.removeEventListener('touchstart', this.handleSwipe);
+    window.addEventListener('scroll', this.handleScrollEvent);
+  };
+
+  handleScrollEvent() {
+    clearTimeout(this.scrollTimeout);
+    this.scrollTimeout = setTimeout(this.lockIt, 50);
+  };
+
+  lockIt() {
+    const { initialized } = this.state;
+    const offset = !initialized ? 1000 : 0;
+    if ((window.innerHeight + offset) === this.refs.app.clientHeight) {
+      window.removeEventListener('scroll', this.handleScrollEvent);
+      // this.refs.app.style.height = window.innerHeight + 'px'
+      // this.refs.app.style.width = window.innerWidth + 'px'
+      this.refs.app.style.height = '100vh';
+      this.refs.app.style.width = '100vw';
+      disableBodyScroll(this.refs.app);
+      window.scrollTo(0, 0);
+      if (!initialized) {
+        window.addEventListener('resize', this.handleResize)
+        this.initialize();
+      };
+    };
+  };
+
+  handleResize() {
+    enableBodyScroll(this.refs.app);
+    console.log('resize')
+    window.addEventListener('scroll', this.handleScrollEvent);
+  }
 
   initialize() {
     this.setState(prevState => ({ initialized: true }), () => {
@@ -31,6 +73,24 @@ export default class App extends PureComponent {
       this.audioInit();
     });
   };
+
+
+
+
+  // handleResize() {
+  //   console.log('resize')
+  //   // enableBodyScroll(this.refs.app)
+  //   // this.refs.app.style.height = window.innerHeight + 1 + 'px'
+  //   // this.refs.app.style.width = window.innerWidth + 1 + 'px'
+  //   const { innerWidth, innerHeight } = window;
+  //   const { clientWidth, clientHeight } = this.refs.app;
+  //   // console.log(innerWidth, innerHeight, clientWidth, clientHeight)
+  //   setTimeout(this.lockIt, 500)
+  // };
+
+
+
+
 
   videoInit() {
     navigator.mediaDevices.getUserMedia({
@@ -100,6 +160,12 @@ export default class App extends PureComponent {
     this.setState(prevState => ({ audio }));
   };
 
+
+
+///////////////////////////
+// AUDIO REFRESH METHODS //
+///////////////////////////
+
   audioMute(t = this.state.audio.ctx.currentTime) {
     this.audioSetGain(0, t);
   };
@@ -108,7 +174,6 @@ export default class App extends PureComponent {
     const { instGain, latency } = this.state.audio;
     const node = instGain.gain;
     const prevVal = node.value;
-    // const t = ctx.currentTime;
     node.cancelScheduledValues(t - 1);
     node.setValueAtTime(prevVal, t);
     node.linearRampToValueAtTime(val, t + latency);
@@ -117,7 +182,6 @@ export default class App extends PureComponent {
   audioSetFreq(val, t) {
     const { osc1, osc2, latency } = this.state.audio;
     [osc1.frequency, osc2.frequency].forEach(d => {
-      // const t = ctx.currentTime
       const prevVal = d.value;
       d.cancelScheduledValues(t - 1);
       d.setValueAtTime(prevVal, t);
@@ -129,7 +193,7 @@ export default class App extends PureComponent {
   render() {
     const { compatible, initialized, videoStream, audio } = this.state;
     return (
-      <div className="App">
+      <div className="App" ref="app">
         {compatible
           ? (!initialized
               ? <Init handleClick={this.init} />

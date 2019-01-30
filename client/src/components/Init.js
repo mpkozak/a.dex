@@ -1,26 +1,18 @@
-import React, { PureComponent } from 'react';
-import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
+import React from 'react';
+import './_css/Init.css'
 import { Logo } from './_svg.js';
 
-export default class Init extends PureComponent {
-  componentDidMount() {
-    disableBodyScroll(this.refs.init)
-  };
-
-  componentWillUnmount() {
-    clearAllBodyScrollLocks();
-  };
-
-  render() {
-    return (
-      <div className="init" ref="init" onClick={this.props.handleClick} onTouchStart={this.props.handleClick}>
+export default function Init() {
+  return (
+    <div className="init">
+      <div className="content">
         <div className="message">
-          <h1>Tap Anywhere To Begin...</h1>
+          <h1>Swipe Up To Begin...</h1>
         </div>
         <div className="logo-box">
           <Logo />
         </div>
       </div>
-    );
-  };
+    </div>
+  );
 };

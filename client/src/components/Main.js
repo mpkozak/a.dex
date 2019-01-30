@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import './_css/Main.css';
+import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
 
+import Placard from './Placard.js';
 import Screen from './Screen.js';
 import Oscillators from './Oscillators.js';
 import Meters from './Meters.js';
@@ -15,15 +17,57 @@ export default class Main extends PureComponent {
       video: false,
     };
     this.audio = props.audio;
-    this.audioRefresh = this.audioRefresh.bind(this);
+
+
     this.toggleHelp = this.toggleHelp.bind(this);
+
+
+    this.audioRefresh = this.audioRefresh.bind(this);
     this.passbackMeters = this.passbackMeters.bind(this)
     this.start = this.start.bind(this);
     this.videoInit = this.videoInit.bind(this);
   };
 
+
+
+
   componentDidMount() {
+
     this.videoInit();
+
+
+    // const mainWidth = this.refs.main.clientWidth;
+    // const mainHeight = this.refs.main.clientHeight;
+    // const { innerWidth, innerHeight } = window;
+
+    // (() => {
+    //   console.log('hid')
+    //   setTimeout(function() {
+    //     if(window.pageYOffset !== 0) return;
+    //     window.scrollTo(0, window.pageYOffset + 1);
+
+    //   }, 1000)}
+    // )();
+
+    // disableBodyScroll(this.refs.main)
+
+    // setTimeout(() => {
+    //   window.scrollTo(0,100)
+    // }, 1000)
+
+    // setTimeout(() => {
+    //   window.scrollTo(0,-100)
+    // }, 2000)
+
+    // const body = document.query
+    // clearAllBodyScrollLocks()
+    // window.addEventListener('touchstart', () => {
+    //   // window.scrollTo(0,100)
+    //   console.log(mainWidth, mainHeight, innerWidth, innerHeight)
+    //   console.log(window.scrollY)
+    // })
+
+
 
     // console.log('main mount', this.props.videoStream)
     // this.setState(prevState => ({ videoStream: this.props.videoStream }))
@@ -37,7 +81,6 @@ export default class Main extends PureComponent {
 
     // console.log(this.props.audio.instGain.gain)
 
-    // window.scrollTo(0,1)
 
         // const { width, height } = this.props.videoStream.getVideoTracks()[0].getSettings();
         // console.log('in main ', width, height)
@@ -72,6 +115,7 @@ export default class Main extends PureComponent {
   };
 
   toggleHelp() {
+    alert(this.state.help)
     this.setState(prevState => ({ showHelp: !prevState.showHelp }));
   };
 
@@ -97,20 +141,42 @@ export default class Main extends PureComponent {
     const { showHelp, video } = this.state;
     const { ctx, osc1, osc2, instGain, analyser, mute, setGain, setFreq } = this.audio;
     return (
-      <div className="Main">
-            {video &&
-              <Screen video={video} />
-            }
-
+      <div className="Main" ref="main">
+        <div className="top">
+          <Placard active={showHelp} handleClick={this.toggleHelp} />
+        </div>
+        <div className="middle">
+          {video && <Screen video={video} />}
+        </div>
+        <div className="bottom">
+          <div className="left">
+            <div className="top">top</div>
             <div className="bottom">
               <Oscillators osc1={osc1} osc2={osc2} mute={mute} />
-              <Meters analyser={analyser} passback={this.passbackMeters} />
             </div>
+          </div>
+          <div className="right">
+            <Meters analyser={analyser} passback={this.passbackMeters} />
+          </div>
+        </div>
       </div>
     );
   };
 };
 
+
+
+
+
+
+          // <Screen video={video} />
+
+
+
+            // <div className="bottom">
+            //   <Oscillators osc1={osc1} osc2={osc2} mute={mute} />
+            //   <Meters analyser={analyser} passback={this.passbackMeters} />
+            // </div>
 
 
 
