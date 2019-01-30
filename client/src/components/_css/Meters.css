@@ -4,8 +4,8 @@
 }
 
 .meters>.meter {
-  width: 95%;
-  height: auto;
-  border-radius: .57vmin;
-  box-shadow: 0 0 .5vmin .1vmin #000000;
+  height: 48%;
+  width: auto;
+  /*border-radius: .57vmin;*/
+  /*box-shadow: 0 0 .5vmin .1vmin #000000;*/
 }

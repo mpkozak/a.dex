@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import './_css/Meters.css';
-import { line, curveLinear } from 'd3-shape';
-import { scaleLinear } from 'd3-scale';
+import { d3 } from './_d3.js';
 import MeterVU from './MeterVU.js';
 import MeterWave from './MeterWave.js';
 
@@ -14,10 +13,10 @@ export default class Meters extends PureComponent {
       peak: 0
     };
     this.analyser = props.analyser;
-    this.needleScale = scaleLinear()
+    this.needleScale = d3.scaleLinear()
       .domain([-60, -20, -10, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 20])
       .range([-48, -40, -26, -15, -10.5, -5, -0.5, 5, 10, 15, 20, 25, 30, 35, 48]);
-    this.waveScaleCurve = line().curve(curveLinear);
+    this.waveScaleCurve = d3.line().curve(d3.curveLinear);
     this.fftSize = this.analyser.fftSize;
     this.data = new Float32Array(this.fftSize);
     this.dataCurve = new Array(this.fftSize);
@@ -25,7 +24,7 @@ export default class Meters extends PureComponent {
   };
 
   componentDidMount() {
-    this.props.handleCallback(this.getData);
+    this.props.passback(this.getData);
   };
 
   getData() {

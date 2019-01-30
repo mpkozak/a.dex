@@ -1,0 +1,60 @@
+.screen {
+  flex-flow: row nowrap;
+  align-items: space-around;
+  justify-content: space-around;
+}
+
+.screen .video-box {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.screen .screenframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 6;
+  /*border-radius: 1.75vmin;*/
+  /*box-shadow: 0 0 .5vmin .1vmin #000000;*/
+}
+
+.screen .video-element {
+  position: absolute;
+  left: 5%;
+  top: 5%;
+  width: 90%;
+  height: 90%;
+  transform: scaleX(-1);
+}
+
+.screen .video-0 {
+  z-index: 4;
+  /*background-color: #000000;*/
+}
+
+.screen .video-1 {
+  z-index: 5;
+}
+
+.screen .video-2 {
+  z-index: 6;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+  transform: none;
+}
+
+.screen .osd {
+  animation: pulsar 1s linear infinite;
+}
+
+.screen .video-3 {
+  z-index: 10;
+}

@@ -1,27 +1,28 @@
 .oscillators {
-  flex-flow: column nowrap;
+  flex-flow: row nowrap;
+  align-items: space-around;
   justify-content: space-around;
 }
 
 .oscillators>.inner {
-  width: calc(100% - 2vmin);
-  height: calc(50% - 2vmin);
+  width: calc(50% - 2vmin);
   flex-flow: column nowrap;
   align-items: center;
   justify-content: space-between;
 }
 
 .oscillators .button-box {
-  width: 95%;
-  height: 100%;
+  width: 100%;
+  height: 90%;
   display: flex;
-  flex-flow: row nowrap;
+  flex-flow: column nowrap;
   align-items: center;
   justify-content: space-around;
 }
 
 .oscillators .glowbutton {
-  width: 20%;
+  height: 23%;
+  width: auto;
   filter: drop-shadow(.02rem .02rem .025rem #000000);
 }
 

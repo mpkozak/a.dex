@@ -219,9 +219,6 @@ export default class Theremin extends PureComponent {
         <div className="video-box outer">
           <div className="video-layers">
             <ScreenFrame />
-{/*
-            <video className="video-0 video-element" ref="video" playsInline autoplay />
-*/}
             <canvas className="video-0 video-element" ref="videoCanvas" width={vW} height={vH} />
             <svg className="video-1 video-element" ref="svgTracker" viewBox={`0 0 ${vW} ${vH}`} />
             {calibTarget &&
@@ -232,6 +229,8 @@ export default class Theremin extends PureComponent {
             <div className="video-3 video-element" ref="clickBox" width={vW} height={vH} />
           </div>
         </div>
+
+
         <div className="settings-box outer">
           <div className="color-box inner">
             <h4 className="label">Set Colors</h4>
@@ -244,6 +243,9 @@ export default class Theremin extends PureComponent {
           </div>
         </div>
       </div>
+
+
+
     );
   };
 };
