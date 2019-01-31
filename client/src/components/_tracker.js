@@ -1,37 +1,36 @@
 export default class Tracker {
-  constructor(video, colors, callback = undefined, sensitivity = 50, reducer = 10) {
+  constructor(video, colors, callback = undefined, sensitivity = 50, reducer = 5) {
     this.video = video;
-    this.colors = [];
+    this.colors = undefined;
     this.callback = callback;
     this.sensitivity = sensitivity;
     this.reducer = reducer;
-
     this.rgbColors = [];
     this.vWidth = video.width;
     this.vHeight = video.height;
     this.tWidth = Math.floor(this.vWidth / this.reducer);
     this.tHeight = Math.floor(this.vHeight / this.reducer);
     this.scalar = this.vWidth / this.tWidth;
-
+    this.cropX = 0;
+    this.cropY = 0;
     this.tracker = undefined;
     this.tCtx = undefined;
-
     this.setColors(colors);
     this.setVideo(video);
   };
   setColors(colors) {
-// d.match(/^#([0-9a-f]{3}|[0-9a-f]{6})$/i)
+    this.colors = [];
+    this.rgbColors = [];
     colors.forEach((d, i) => {
       if (typeof d === 'string' && d.match(/^#[0-9a-f]{6}$/i)) {
         this.colors.push(d.toUpperCase());
         this.rgbColors.push(this.hexToRgb(d));
       } else {
-        console.error(`Tracker Error: "${d}" is not a valid hex color. Colors must be of the format "#FFFFFF".`)
+        console.error(`Tracker Error: "${d}" is not a valid hex color. Colors must be of the format "#FFFFFF".`);
       };
     });
   };
   setVideo(video) {
-    // const { tagName, nodeName, attributes } = video;
     if (video instanceof HTMLElement && video.tagName === 'VIDEO') {
       this.video = video;
     } else {
@@ -45,20 +44,12 @@ export default class Tracker {
     this.tCtx = this.tracker.getContext('2d');
     return { ctx: this.tCtx, tW: this.tWidth, tH: this.tHeight, scalar: this.scalar };
   };
-
-
   async masterStack() {
-    // const start = window.performance.now()
     const data = await this.getData();
     const distance = await this.getDistance(data);
     const reduce = await this.reduceData(distance);
-    // console.log('in track', window.performance.now() - start)
-    this.callback(reduce)
-    // console.log(reduce)
-    // return await this.reduceData(distance);
+    this.callback(reduce);
   };
-
-
   async getData() {
     const { tWidth, tHeight, tCtx, video } = this;
     tCtx.drawImage(video, 0, 0, tWidth, tHeight);
@@ -82,7 +73,7 @@ export default class Tracker {
     return trackData;
   };
   async reduceData(data) {
-    const { scalar } = this;
+    const { scalar, cropX, cropY } = this;
     return data.map((c, ci) => {
       const pts = c.length;
       if (!pts) return [];
@@ -97,17 +88,13 @@ export default class Tracker {
         sumX += pt.pop() * multi;
       };
       return {
-        x: (sumX / denom) * scalar,
-        y: (sumY / denom) * scalar,
+        x: (sumX / denom) * scalar - cropX,
+        y: (sumY / denom) * scalar - cropY,
         r: Math.sqrt(pts) * scalar,
-        // x: (sumX / denom) * scalar || 0,
-        // y: (sumY / denom) * scalar || 0,
-        // r: 50,
         color: this.colors[ci]
       };
     });
   };
-
   hexToRgb(hex) {
     return [
       parseInt(hex.substring(1, 3), 16),

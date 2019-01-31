@@ -58,7 +58,6 @@ export default class App extends PureComponent {
         console.log(err);
         this.setState(prevState => ({ pending: false }));
       });
-
         // this.setState(prevState => ({ cameraOk: true }), () => {
         //   enableBodyScroll(this.refs.app);
         //   window.addEventListener('touchstart', this.handleSwipe);
@@ -92,8 +91,8 @@ export default class App extends PureComponent {
     osc1.connect(fmGain);
     fmGain.connect(osc2.frequency);
     osc2.connect(instGain);
+    instGain.connect(masterGain);
     masterGain.connect(analyser);
-    instGain.connect(analyser);
     masterGain.connect(ctx.destination);
     osc1.start();
     osc2.start();
@@ -108,10 +107,10 @@ export default class App extends PureComponent {
       analyser,
       baseHz,
       latency,
-      mute: this.audioMute,
-      setGain: this.audioSetGain,
-      setFreq: this.audioSetFreq,
-      setOsc: this.audioSetOsc
+      audioMute: this.audioMute,
+      audioSetGain: this.audioSetGain,
+      audioSetFreq: this.audioSetFreq,
+      audioSetOsc: this.audioSetOsc
     };
     return true;
   };

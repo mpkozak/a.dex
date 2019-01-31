@@ -10,7 +10,7 @@ export default class Placard extends PureComponent {
           <Logo color={'#FFFFFF'} opacity={.7} />
         </div>
         <div className="help-box">
-          <HelpButton active={this.props.active} handleClick={this.props.handleClick} />
+          <HelpButton active={this.props.active} handleClick={this.props.toggleHelp} />
         </div>
       </div>
     );

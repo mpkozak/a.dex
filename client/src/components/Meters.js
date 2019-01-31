@@ -28,7 +28,6 @@ export default class Meters extends PureComponent {
   };
 
   getData() {
-    // console.log('get data ran')
     const { analyser, needleScale, waveScaleCurve, fftSize, data, dataCurve } = this;
     analyser.getFloatTimeDomainData(data);
     let dataSum = 0;
@@ -40,7 +39,6 @@ export default class Meters extends PureComponent {
     const dataRms = 20 * Math.log10(Math.sqrt(dataSum / fftSize)) + 20;
     const rms = dataRms < -60 ? -60 : (dataRms > 20 ? 20 : dataRms);
 
-// console.log(data)
     const wave = waveScaleCurve(dataCurve);
     const rotation = this.state.rotation * (5 / 6) + (needleScale(rms) / 6);
     const peak = dataRms > 15 ? new Date() : this.state.peak;
@@ -49,7 +47,6 @@ export default class Meters extends PureComponent {
 
 
   render() {
-    // console.log('meters render')
     const { wave, rotation, peak } = this.state;
     return (
       <div className="meters outer">

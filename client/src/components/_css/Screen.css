@@ -64,5 +64,5 @@
 }
 
 .screen .video-3 {
-  z-index: 10;
+  z-index: 1000;
 }

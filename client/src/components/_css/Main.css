@@ -10,6 +10,15 @@
   justify-content: center;
 }
 
+@keyframes pulsar {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: .1;
+  }
+}
+
 
 .outer {
   width: 100%;
