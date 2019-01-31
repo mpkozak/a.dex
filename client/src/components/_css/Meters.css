@@ -1,17 +1,17 @@
 .meters {
-  /*height: 100%;*/
-  /*width: 100%;*/
-  /*display: flex;*/
+  width: 100%;
+  min-width: 100vmin;
   flex-flow: row nowrap;
   align-items: center;
-  justify-content: space-around;
+  justify-content: center;
 }
 
 .meters>.meter {
-  width: 49%;
-  height: auto;
-  /*max-width: 49%;*/
-  max-height: 95%;
+  width: 49vmin;
+  height: 29.4vmin;
+  min-width: 49vmin;
+  min-height: 29.4vmin;
+  margin: .5vmin;
   /*border-radius: .57vmin;*/
   /*box-shadow: 0 0 .5vmin .1vmin #000000;*/
 }

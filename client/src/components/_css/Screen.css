@@ -1,13 +1,21 @@
 .screen {
-  flex-flow: row nowrap;
-  align-items: space-around;
-  justify-content: space-around;
+  width: 100%;
+  min-width: 100vmin;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+
+  /*border: 1px solid red;*/
 }
 
-.screen .video-box {
+.screen>.video-box {
   position: relative;
-  width: 95%;
-  height: 95%;
+  width: 99vmin;
+  height: 74.25vmin;
+  min-width: 99vmin;
+  min-height: 74.25vmin;
+  margin: 1vmin;
+  display: flex;
   flex-flow: column nowrap;
   align-items: center;
   justify-content: center;

@@ -5,8 +5,6 @@
   flex-flow: column nowrap;
   align-items: center;
   justify-content: flex-start;
-
-  /*border: 1px solid white;*/
 }
 
 #shadow-mask {
@@ -18,9 +16,6 @@
   pointer-events: none;
   opacity: 0;
   transition: opacity 500ms;
-
-  /*display: none;*/
-  /*border: 1px solid white;*/
 }
 
 .splash {
@@ -34,8 +29,6 @@
   justify-content: space-around;
   opacity: 1;
   transition: opacity 250ms;
-
-  /*border: 1px solid green;*/
 }
 
 .splash>.logo-box {

@@ -1,0 +1,72 @@
+.settings {
+  width: 55%;
+  min-width: 55vmin;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.settings>.border {
+  width: 53vmin;
+  height: 31.5vmin;
+  min-width: 53vmin;
+  min-height: 31.5vmin;
+  margin: .5vmin;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.settings .color-box {
+  width: 100%;
+  height: 50%;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.color-box>.element {
+  height: 100%;
+  width: 48%;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: center;
+
+  /*border: 1px solid yellow;*/
+}
+
+.color-box .label-box {
+  margin: 0 3%;
+
+  /*border: 1px solid green;*/
+}
+
+.color-box .swatch-box {
+  width: 50%;
+  height: 90%;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+
+  /*border: 1px solid red;*/
+}
+
+.color-box .colorswatch {
+  width: 95%;
+  height: auto;
+}
+
+
+
+
+
+.settings .slider-box {
+  width: 100%;
+  height: 50%;
+}
+
+

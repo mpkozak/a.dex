@@ -49,7 +49,7 @@ export default class Meters extends PureComponent {
 
 
   render() {
-    console.log('meters render')
+    // console.log('meters render')
     const { wave, rotation, peak } = this.state;
     return (
       <div className="meters outer">

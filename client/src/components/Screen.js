@@ -12,35 +12,23 @@ export default class Screen extends PureComponent {
       vH: props.video.height,
       vCropW: 640,
       vCropH: 480,
-      // colorGain: '#FF0000',
-      // colorFreq: '#00FF00',
-      // sensitivity: 30,
-      // range: 4,
-      // calibTarget: false,
     };
-    this.rAF = null;
     this.canvasInit = this.canvasInit.bind(this);
     this.canvasDraw = this.canvasDraw.bind(this);
+
+    this.drawScreen = this.drawScreen.bind(this);
+    this.trackerDraw = this.trackerDraw.bind(this);
   };
 
   componentDidMount() {
     this.canvasInit();
-    // window.addEventListener('orientationchange', this.canvasInit)
+    this.props.passback(this.drawScreen)
+    // this.props.passback(this.trackerDraw)
   };
-
-  componentDidUpdate() {
-    // this.canvasInit();
-  };
-
-  componentWillUnmount() {
-    cancelAnimationFrame(this.rAF);
-    console.log('screen unmount')
-  }
-
 
   canvasInit() {
-    cancelAnimationFrame(this.rAF);
-    this.props.video.play();
+    // cancelAnimationFrame(this.rAF);
+    // this.props.video.play();
     const { video } = this.props;
     const { videoCanvas } = this.refs;
     const vW = video.width;
@@ -62,10 +50,10 @@ export default class Screen extends PureComponent {
     };
     this.setState(prevState =>
       ({ cW, cH, vCropW, vCropH, vDrawStartX, vDrawStartY }),
-      this.canvasDraw
+      // () => this.props.passback()
     );
 
-    console.log( 'video', vW, vH, 'canvas', cW, cH, 'vcrop', vCropW, vCropH, 'vdrawstart', vDrawStartX, vDrawStartY )
+    // console.log( 'video', vW, vH, 'canvas', cW, cH, 'vcrop', vCropW, vCropH, 'vdrawstart', vDrawStartX, vDrawStartY )
   };
 
   canvasDraw() {
@@ -79,7 +67,31 @@ export default class Screen extends PureComponent {
       vCropH,
       0, 0, vCropW, vCropH
     );
-    this.rAF = requestAnimationFrame(this.canvasDraw);
+  };
+
+  trackerDraw(data) {
+    const circles = d3.select(this.refs.videoSvg).selectAll('circle')
+      .data(data);
+    circles
+      .enter()
+      .append('circle');
+    circles
+      .attr('cx', d => d.x)
+      .attr('cy', d => d.y)
+      .attr('r', d => d.r)
+      .style('fill', d => d.color)
+      .style('opacity', .5)
+      .style('stroke', '#FFFFFF')
+      .style('stroke-width', '.3%');
+    circles
+      .exit()
+      .remove();
+  };
+
+
+  drawScreen(data) {
+    this.canvasDraw();
+    this.trackerDraw(data);
   };
 
 
@@ -115,20 +127,21 @@ export default class Screen extends PureComponent {
 
 
   render() {
+    // console.log('screen render')
     const { calibTarget, vCropW, vCropH } = this.state;
     return (
       <div className="screen outer">
-          <div className="video-box">
-            <ScreenFrame />
-            <canvas className="video-0 video-element" ref="videoCanvas" width={vCropW} height={vCropH} />
-            <svg className="video-1 video-element" ref="videoTracker" viewBox={`0 0 ${vCropW} ${vCropH}`} />
-            {calibTarget &&
-              <div className="video-2 video-element">
-                <h2 className="osd">Calibrating...</h2>
-              </div>
-            }
-            <div className="video-3 video-element" ref="videoClickbox" width={vCropW} height={vCropH} />
-          </div>
+        <div className="video-box">
+          <ScreenFrame />
+          <canvas className="video-0 video-element" ref="videoCanvas" width={vCropW} height={vCropH} />
+          <svg className="video-1 video-element" ref="videoSvg" viewBox={`0 0 ${vCropW} ${vCropH}`} />
+          {calibTarget &&
+            <div className="video-2 video-element">
+              <h2 className="osd">Calibrating...</h2>
+            </div>
+          }
+          <div className="video-3 video-element" ref="videoClickbox" width={vCropW} height={vCropH} />
+        </div>
       </div>
     );
   };

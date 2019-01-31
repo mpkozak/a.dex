@@ -115,7 +115,7 @@ export const GlowButton = ({ id, icon = 'none', active = false, handleClick }) =
 };
 
 
-export const ColorSwatch = ({ color, active = false, handleClick }) => {
+export const ColorSwatch = ({ color = '#FFFFFF', active = false, handleClick }) => {
   const pulse = {animation: 'pulsar 1s linear infinite'};
   const hide = {display: 'none'};
   return (

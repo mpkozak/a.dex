@@ -30,8 +30,10 @@ export default class Oscillators extends PureComponent {
 
   makeElement(osc, label) {
     return (
-      <div className="inner">
-        <h4 className="label">{label}</h4>
+      <div className="osc border">
+        <div className="label-box">
+          <h4>{label}</h4>
+        </div>
         <div className="button-box">
           {this.oscTypes.map((d, i) =>
             <GlowButton

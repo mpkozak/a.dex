@@ -1,40 +1,44 @@
 .oscillators {
-  width: 45vmin;
+  width: 45%;
+  min-width: 45vmin;
   flex-flow: column nowrap;
-  align-items: space-around;
-  justify-content: space-around;
-
+  align-items: center;
+  justify-content: center;
 }
 
-.oscillators>.inner {
-  width: 96%;
-  height: 45%;
+.oscillators>.osc {
+  width: 43vmin;
+  height: 15vmin;
+  min-width: 43vmin;
+  min-height: 15vmin;
+  margin: .5vmin;
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
   justify-content: center;
 }
 
-.oscillators .button-box {
-  /*width: 80%;*/
+.osc>.label-box {
+  width: 98%;
+  height: 20%;
+}
+
+.osc>.button-box {
+  width: 98%;
   height: 80%;
   display: flex;
   flex-flow: row nowrap;
-  /*align-items: flex-start;*/
+  align-items: center;
   justify-content: space-around;
-
-  /*border: 1px solid yellow;*/
 }
 
-.oscillators .glowbutton {
+.osc .glowbutton {
   width: 24%;
-  /*height: 100%;*/
-  /*max-width: 23%;*/
-  max-height: 95%;
+  height: auto;
   /*filter: drop-shadow(.02rem .02rem .025rem #000000);*/
 }
 
-.oscillators .glowbutton:active {
+.osc .glowbutton:active {
   transform: scale(.96);
   /*filter: drop-shadow(.02rem .02rem .015rem #000000);*/
 }
