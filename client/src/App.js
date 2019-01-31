@@ -35,34 +35,8 @@ export default class App extends PureComponent {
     };
   };
 
-
 //////////////////////////
-// INITIALIZATION STACK //
-
-  videoInit() {
-    navigator.mediaDevices.getUserMedia({
-      // video: true
-      video: {
-        width: { ideal: 640 },
-        height: { ideal: 480 }
-      }
-    })
-      .then(stream => {
-        this.videoStream = stream;
-        this.setState(prevState => ({ cameraOk: true, pending: false }), () => {
-          enableBodyScroll(this.refs.app);
-          window.addEventListener('touchstart', this.handleSwipe);
-        });
-      })
-      .catch(err => {
-        console.log(err);
-        this.setState(prevState => ({ pending: false }));
-      });
-        // this.setState(prevState => ({ cameraOk: true }), () => {
-        //   enableBodyScroll(this.refs.app);
-        //   window.addEventListener('touchstart', this.handleSwipe);
-        // });
-  };
+// Initialization Stack //
 
   audioInit() {
     const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -114,11 +88,35 @@ export default class App extends PureComponent {
     };
     return true;
   };
+
+  videoInit() {
+    navigator.mediaDevices.getUserMedia({
+      // video: true
+      video: {
+        width: { ideal: 640 },
+        height: { ideal: 480 }
+      }
+    })
+      .then(stream => {
+        this.videoStream = stream;
+        this.setState(prevState => ({ cameraOk: true, pending: false }), () => {
+          enableBodyScroll(this.refs.app);
+          window.addEventListener('touchstart', this.handleSwipe);
+        });
+      })
+      .catch(err => {
+        console.log(err);
+        this.setState(prevState => ({ pending: false }));
+      });
+        // this.setState(prevState => ({ cameraOk: true }), () => {
+        //   enableBodyScroll(this.refs.app);
+        //   window.addEventListener('touchstart', this.handleSwipe);
+        // });
+  };
 //////////////////////////
 
-
 ///////////////////////////
-// AUDIO REFRESH METHODS //
+// Audio Handler Methods //
 
   audioMute(t = this.audio.ctx.currentTime) {
     this.audioSetGain(0, t);
@@ -151,9 +149,8 @@ export default class App extends PureComponent {
   };
 ///////////////////////////
 
-
 /////////////////////
-// LAYOUT HANDLERS //
+// Layout Handlers //
 
   handleSwipe() {
     this.audio.ctx.resume();
@@ -205,6 +202,25 @@ export default class App extends PureComponent {
     const bgColor = {
       backgroundColor: !initOk ? 'rgba(0, 0, 0, .7)' : 'none'
     };
+    const message = (
+      cameraOk
+        ? <Init />
+        : pending
+          ? null
+          : webAudioOk
+            ? <NoVideo />
+            : <NoAudio />
+    );
+    const splash = (
+      <div id="app-splash" className="splash">
+        <div className="logo-box">
+          <Logo opacity={.6} />
+        </div>
+        <div className="message-box">
+          {message}
+        </div>
+      </div>
+    );
 
     return (
       <div id="App" ref="app" style={bgColor}>
@@ -212,81 +228,9 @@ export default class App extends PureComponent {
         <SvgDefs />
         {initOk
           ? <Main videoStream={videoStream} audio={audio} />
-          : <div id="app-splash" className="splash">
-              <div className="logo-box">
-                <Logo opacity={.6} />
-              </div>
-              <div className="message-box">
-                {cameraOk
-                  ? <Init />
-                  : pending
-                    ? null
-                    : webAudioOk
-                      ? <NoVideo />
-                      : <NoAudio />
-                }
-              </div>
-            </div>
+          : splash
         }
       </div>
     );
   };
 };
-
-
-
-
-
-        // {initOk
-        //   ? <Main videoStream={videoStream} audio={audio} />
-        //   : <div className="splash">
-        //       <div className="logo-box">
-        //         <Logo opacity={.6} />
-        //       </div>
-        //       <div className="message-box">
-        //         {cameraOk
-        //           ? <Init />
-        //           : pending
-        //             ? null
-        //             : webAudioOk
-        //               ? <NoVideo />
-        //               : <NoAudio />
-        //         }
-        //       </div>
-        //     </div>
-        // }
-
-
-
-
-        // <SvgDefs />
-        // {initOk
-        //   ? <Main videoStream={videoStream} audio={audio} />
-        //   : <div className="splash">
-        //       <div className="logo-box">
-        //         <Logo opacity={.6} />
-        //       </div>
-        //       <div className="message-box">
-        //         {cameraOk
-        //           ? <Init />
-        //           : webAudioOk
-        //             ? <NoVideo />
-        //             : <NoAudio />
-        //         }
-        //       </div>
-        //     </div>
-        // }
-
-
-
-
-
-
-        // {!webAudioOk
-        //   ? <NoAudio />
-        //   : !cameraOk
-        //     ? <NoVideo />
-        //     : !initOk
-        //       ? <Init />
-        //       : <Main videoStream={videoStream} audio={audio} />
-        // }

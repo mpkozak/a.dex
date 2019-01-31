@@ -8,7 +8,6 @@ import Oscillators from './Oscillators.js';
 import Settings from './Settings.js';
 import Meters from './Meters.js';
 
-
 export default class Main extends PureComponent {
   constructor(props) {
     super(props);
@@ -16,47 +15,40 @@ export default class Main extends PureComponent {
       orientationOk: true,
       showHelp: false,
       video: false,
-
-      track: false,
-
+      trackerCtx: false,
       osc1: props.audio.osc1.type,
       osc2: props.audio.osc2.type,
       color1: '#00FF00',
       color2: '#FF0000',
       colorActive: false,
     };
-    this.getData = undefined;
+    this.rAF = undefined;
+    this.drawMeters = undefined;
     this.drawScreen = undefined;
-    this.videoInit = this.videoInit.bind(this);
     this.trackerInit = this.trackerInit.bind(this);
-    this.trackerCallback = this.trackerCallback.bind(this);
-    this.trackerColorRefresh = this.trackerColorRefresh.bind(this);
+    this.trackerSetColors = this.trackerSetColors.bind(this);
+    this.trackerRuntime = this.trackerRuntime.bind(this);
     this.runtimeStack = this.runtimeStack.bind(this);
-
     this.passbackMeters = this.passbackMeters.bind(this)
     this.passbackScreen = this.passbackScreen.bind(this);
-
-
-    // this.audioRefresh = this.audioRefresh.bind(this);
     this.handleOrientationChange = this.handleOrientationChange.bind(this);
     this.handleToggleHelp = this.handleToggleHelp.bind(this);
     this.handleSetOsc = this.handleSetOsc.bind(this);
     this.handleGetColor = this.handleGetColor.bind(this);
     this.handleSetColor = this.handleSetColor.bind(this);
-
   };
-
 
   componentDidMount() {
     const color1 = localStorage.getItem('color1');
     const color2 = localStorage.getItem('color2');
-    if (color1 && color2) {
-      this.setState(prevState => ({ color1, color2 }));
-    };
+    color1 && color2 && this.setState(prevState => ({ color1, color2 }));
     this.handleOrientationChange();
     window.addEventListener('orientationchange', this.handleOrientationChange);
     this.videoInit();
   };
+
+//////////////////////////
+// Initialization Stack //
 
   videoInit() {
     const { videoStream } = this.props;
@@ -74,48 +66,22 @@ export default class Main extends PureComponent {
 
   trackerInit() {
     const { video, color1, color2 } = this.state;
-    this.tracker = new Tracker(video, [color1, color2], this.trackerCallback);
-    const track = this.tracker.init();
-    this.setState(prevState => ({ track }), this.runtimeStack);
+    this.tracker = new Tracker(video, [color1, color2], this.trackerRuntime);
+    this.tracker.cropX = this.cropX;
+    this.tracker.cropY = this.cropY;
+    const trackerCtx = this.tracker.init();
+    this.setState(prevState => ({ trackerCtx }), this.runtimeStack);
   };
 
-  trackerCallback(data) {
-    this.audioRefresh(data[1].x, data[0].y);
-    this.drawScreen(data)
-  };
-
-  trackerColorRefresh() {
+  trackerSetColors() {
     const { color1, color2 } = this.state;
     this.tracker.setColors([color1, color2]);
-
   };
+//////////////////////////
 
-  runtimeStack() {
-    this.tracker.masterStack();
-    this.drawMeters();
-    this.rAF = requestAnimationFrame(this.runtimeStack);
-  };
-
-
-
-////////////////////////////
-// CHILD PASSBACK METHODS //
-
-  passbackMeters(getData) {
-    this.drawMeters = getData;
-  };
-
-  passbackScreen(drawScreen, cropX, cropY, cW, cH) {
-    this.tracker.cropX = cropX;
-    this.tracker.cropY = cropY;
-    this.cW = cW;
-    this.cH = cH;
-    this.drawScreen = drawScreen;
-  };
-////////////////////////////
-
-
-  audioRefresh(posX, posY) {
+///////////////////
+// Runtime Stack //
+  audioRuntime(posX, posY) {
     const { ctx, baseHz, audioMute, audioSetGain, audioSetFreq } = this.props.audio;
     if (!posX || !posY) {
       audioMute();
@@ -130,6 +96,38 @@ export default class Main extends PureComponent {
     };
   };
 
+  trackerRuntime(data) {
+    this.audioRuntime(data[1].x, data[0].y);
+    this.drawScreen(data)
+  };
+
+  runtimeStack() {
+    this.drawMeters();
+    this.tracker.runtime();
+    // this.tracker.getData();
+    this.rAF = requestAnimationFrame(this.runtimeStack);
+  };
+///////////////////
+
+////////////////////////////
+// Child Passback Capture //
+
+  passbackMeters(getData) {
+    this.drawMeters = getData;
+  };
+
+  passbackScreen(drawScreen, cropX, cropY, cW, cH) {
+    this.drawScreen = drawScreen;
+    this.cropX = cropX;
+    this.cropY = cropY;
+    this.cW = cW;
+    this.cH = cH;
+  };
+////////////////////////////
+
+////////////////////////
+// Handlers + Helpers //
+
   rgbaToHex(rgba) {
     let color = '#';
     rgba.forEach((d, i) => {
@@ -138,19 +136,12 @@ export default class Main extends PureComponent {
     return color;
   };
 
-
-
-
-
-
-
   handleOrientationChange() {
     const orientation = Math.abs(window.orientation);
     this.setState(prevState => ({ orientationOk: !orientation }));
   };
 
   handleToggleHelp() {
-    alert(this.state.help)
     this.setState(prevState => ({ showHelp: !prevState.showHelp }));
   };
 
@@ -159,12 +150,9 @@ export default class Main extends PureComponent {
     this.setState(prevState => ({ [osc]: type }));
   };
 
-  handleGetColor(colorActive) {
-    if (this.state.colorActive !== colorActive) {
-      this.setState(prevState => ({ colorActive }));
-    } else {
-      this.setState(prevState => ({ colorActive: false }));
-    }
+  handleGetColor(colorSet) {
+    const colorActive = (this.state.colorActive !== colorSet) && colorSet;
+    this.setState(prevState => ({ colorActive }));
   };
 
   handleSetColor(rgba) {
@@ -174,12 +162,12 @@ export default class Main extends PureComponent {
     this.setState(prevState => ({
       [setTarget]: color,
       colorActive: false
-    }), this.trackerColorRefresh);
+    }), this.trackerSetColors);
   };
+////////////////////////
 
 
   render() {
-    const { analyser } = this.props.audio;
     const {
       orientationOk,
       showHelp,
@@ -190,7 +178,6 @@ export default class Main extends PureComponent {
       color2,
       colorActive,
     } = this.state;
-
     return (
       <div className="Main" ref="main">
         {!orientationOk
@@ -231,7 +218,7 @@ export default class Main extends PureComponent {
               </div>
               <div className="r r4">
                 <Meters
-                  analyser={analyser}
+                  analyser={this.props.audio.analyser}
                   passback={this.passbackMeters}
                 />
               </div>

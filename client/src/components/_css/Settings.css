@@ -34,14 +34,10 @@
   flex-flow: row nowrap;
   align-items: center;
   justify-content: center;
-
-  /*border: 1px solid yellow;*/
 }
 
 .color-box .label-box {
   margin: 0 3%;
-
-  /*border: 1px solid green;*/
 }
 
 .color-box .swatch-box {
@@ -51,16 +47,12 @@
   flex-flow: column nowrap;
   align-items: center;
   justify-content: center;
-
-  /*border: 1px solid red;*/
 }
 
 .color-box .colorswatch {
   width: 95%;
   height: auto;
 }
-
-
 
 
 

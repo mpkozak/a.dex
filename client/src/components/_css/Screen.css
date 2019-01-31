@@ -4,8 +4,6 @@
   flex-flow: column nowrap;
   align-items: center;
   justify-content: center;
-
-  /*border: 1px solid red;*/
 }
 
 .screen>.video-box {
@@ -43,7 +41,6 @@
 
 .screen .video-0 {
   z-index: 4;
-  /*background-color: #000000;*/
 }
 
 .screen .video-1 {

@@ -3,7 +3,6 @@ import './_css/Screen.css';
 import { d3 } from './_d3.js';
 import { ScreenFrame } from './_svg.js';
 
-
 export default class Screen extends PureComponent {
     constructor(props) {
     super(props)
@@ -30,6 +29,9 @@ export default class Screen extends PureComponent {
     };
   };
 
+///////////////////////
+// Screen Draw Stack //
+
   canvasInit() {
     const { video } = this.props;
     const { videoCanvas } = this.refs;
@@ -48,15 +50,9 @@ export default class Screen extends PureComponent {
       vCropH = (vW * cH) / cW;
       vDrawStartY = (vH - vCropH) / 2;
     };
-    this.setState(
-      prevState => ({ cW, cH, vCropW, vCropH, vDrawStartX, vDrawStartY }),
-      () => this.props.passback(this.drawScreen, vDrawStartX, vDrawStartY, cW, cH)
-    );
+    this.props.passback(this.drawScreen, vDrawStartX, vDrawStartY, cW, cH)
+    this.setState(prevState => ({ cW, cH, vCropW, vCropH, vDrawStartX, vDrawStartY }));
   };
-
-
-/////////////////
-// SCREEN DRAW //
 
   canvasDraw() {
     const { vCropW, vCropH, vDrawStartX, vDrawStartY } = this.state;
@@ -73,7 +69,6 @@ export default class Screen extends PureComponent {
 
   svgDraw(data) {
     const circles = d3.select(this.refs.videoSvg).selectAll('circle')
-      // .data(data, d => d);
       .data(data);
     circles
       .enter()
@@ -95,20 +90,21 @@ export default class Screen extends PureComponent {
     this.canvasDraw();
     this.svgDraw(data);
   };
-/////////////////
+///////////////////////
 
-
+//////////////////////
+// Clickbox Handler //
   handleClickbox(e) {
     this.refs.videoClickbox.removeEventListener('touchstart', this.handleClickbox);
-    // const { vCropW, vCropH } = this.state;
     const { clientX, clientY, target } = e.targetTouches[0];
     const { offsetTop, offsetLeft, offsetParent } = target;
     const top = clientY - (offsetTop + offsetParent.offsetTop);
     const left = clientX - (offsetLeft + offsetParent.offsetLeft);
-    const drawCtx = this.refs.videoCanvas.getContext('2d')
+    const drawCtx = this.refs.videoCanvas.getContext('2d');
     const data = drawCtx.getImageData(this.state.cW - left, top, 1, 1).data;
     this.props.setColor(data)
   };
+//////////////////////
 
 
   render() {
@@ -128,11 +124,11 @@ export default class Screen extends PureComponent {
             className="video-1 video-element"
             viewBox={`0 0 ${vCropW} ${vCropH}`}
           />
-          {this.props.colorActive &&
-            <div className="video-2 video-element">
+          <div className="video-2 video-element">
+            {this.props.colorActive &&
               <h2 className="osd">Calibrating...</h2>
-            </div>
-          }
+            }
+          </div>
           <div
             ref="videoClickbox"
             className="video-3 video-element"

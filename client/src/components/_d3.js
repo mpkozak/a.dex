@@ -3,5 +3,3 @@ import { line, curveLinear } from 'd3-shape';
 import { scaleLinear } from 'd3-scale';
 
 export const d3 = { select, line, curveLinear, scaleLinear };
-
-// module.exports = d3;

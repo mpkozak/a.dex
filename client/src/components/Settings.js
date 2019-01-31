@@ -2,9 +2,7 @@ import React, { PureComponent } from 'react';
 import './_css/Settings.css';
 import { ColorSwatch } from './_svg.js';
 
-
 export default class Settings extends PureComponent {
-
 
   // makeColorSwatch(color, text) {
   //   const { calibTarget } = this.state;
@@ -19,8 +17,6 @@ export default class Settings extends PureComponent {
   //     </div>
   //   );
   // };
-
-
 
   render() {
     const { color1, color2, active, getColor } = this.props;

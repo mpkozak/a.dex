@@ -5,7 +5,7 @@ import { GlowButton } from './_svg.js';
 export default class Oscillators extends PureComponent {
 
   makeElement(osc) {
-    const oscTypes = ['sine', 'triangle', 'sawtooth', 'square']
+    const oscTypes = ['sine', 'triangle', 'sawtooth', 'square'];
     return (
       <div className="osc border">
         <div className="label-box">
