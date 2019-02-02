@@ -234,7 +234,7 @@ export default class Main extends PureComponent {
                   color1={color1}
                   color2={color2}
                   active={colorActive}
-                  sensitivity={sensitivity / 200}
+                  sensitivity={sensitivity / 150}
                   getColor={this.handleGetColor}
                   setSensitivity={this.handleSetSensitivity}
                 />
