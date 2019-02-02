@@ -31,7 +31,6 @@ export default class Screen extends PureComponent {
 
 ///////////////////////
 // Screen Draw Stack //
-
   canvasInit() {
     const { video } = this.props;
     const { videoCanvas } = this.refs;
@@ -50,8 +49,9 @@ export default class Screen extends PureComponent {
       vCropH = (vW * cH) / cW;
       vDrawStartY = (vH - vCropH) / 2;
     };
+    const scalar = cW / vCropW;
     this.props.passback(this.drawScreen, vDrawStartX, vDrawStartY, cW, cH)
-    this.setState(prevState => ({ cW, cH, vCropW, vCropH, vDrawStartX, vDrawStartY }));
+    this.setState(prevState => ({ cW, cH, vCropW, vCropH, vDrawStartX, vDrawStartY, scalar }));
   };
 
   canvasDraw() {
@@ -96,12 +96,13 @@ export default class Screen extends PureComponent {
 // Clickbox Handler //
   handleClickbox(e) {
     this.refs.videoClickbox.removeEventListener('touchstart', this.handleClickbox);
+    const { cW, scalar } = this.state;
     const { clientX, clientY, target } = e.targetTouches[0];
     const { offsetTop, offsetLeft, offsetParent } = target;
-    const top = clientY - (offsetTop + offsetParent.offsetTop);
-    const left = clientX - (offsetLeft + offsetParent.offsetLeft);
+    const top = (clientY - (offsetTop + offsetParent.offsetTop)) / scalar;
+    const left = (cW - (clientX - (offsetLeft + offsetParent.offsetLeft))) / scalar;
     const drawCtx = this.refs.videoCanvas.getContext('2d');
-    const data = drawCtx.getImageData(this.state.cW - left, top, 1, 1).data;
+    const data = drawCtx.getImageData(left, top, 1, 1).data;
     this.props.setColor(data)
   };
 //////////////////////

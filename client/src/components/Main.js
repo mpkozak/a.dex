@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import './_css/Main.css';
 import { Logo } from './_svg.js';
+import Instructions from './Instructions.js';
 import Tracker from './_tracker.js'
 import Placard from './Placard.js';
 import Screen from './Screen.js';
@@ -49,7 +50,6 @@ export default class Main extends PureComponent {
 
 //////////////////////////
 // Initialization Stack //
-
   videoInit() {
     const { videoStream } = this.props;
     const { width, height } = videoStream.getVideoTracks()[0].getSettings();
@@ -111,7 +111,6 @@ export default class Main extends PureComponent {
 
 ////////////////////////////
 // Child Passback Capture //
-
   passbackMeters(getData) {
     this.drawMeters = getData;
   };
@@ -127,7 +126,6 @@ export default class Main extends PureComponent {
 
 ////////////////////////
 // Handlers + Helpers //
-
   rgbaToHex(rgba) {
     let color = '#';
     rgba.forEach((d, i) => {
@@ -165,6 +163,11 @@ export default class Main extends PureComponent {
     }), this.trackerSetColors);
   };
 ////////////////////////
+
+
+              // {showHelp &&
+              //   <Instructions show={showHelp} toggleHelp={this.handleToggleHelp} />
+              // }
 
 
   render() {

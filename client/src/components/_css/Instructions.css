@@ -1,0 +1,40 @@
+.instructions {
+  position: fixed;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+}
+
+.instructions>.show {
+  position: absolute;
+  /*top: 0;*/
+  /*width: calc(100% - 2vmin);*/
+  /*height: auto;*/
+  width: 90%;
+  height: 80%;
+  overflow: hidden;
+  z-index: 20;
+  transition: background-color 500ms ease-out, border 100ms ease-out, max-height 500ms ease-out;
+  background-color: rgba(0,0,0,.9);
+  border-radius: 1vmin;
+  border: 1px solid rgba(255,255,255,.5);
+  max-height: 100%;
+}
+
+.instructions>.hide {
+  background-color: rgba(0,0,0,0);
+  border: 1px solid rgba(255,255,255,0);
+  max-height: 0;
+}
+
+.instructions .list {
+  padding: 4% 2% 0 12%;
+}
+
+.instructions .step {
+  margin: 0 4% 4% 0;
+  text-align: left;
+  font-size: 5vmin;
+  font-family: 'Montserrat Alternates', sans-serif;
+}
