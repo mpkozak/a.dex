@@ -54,11 +54,13 @@
   height: auto;
 }
 
-
-
 .settings .slider-box {
   width: 100%;
   height: 50%;
 }
 
-
+.slider-box .fader {
+  width: 95%;
+  height: auto;
+  max-height: 100%;
+}

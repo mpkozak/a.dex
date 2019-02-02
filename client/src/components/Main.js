@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import './_css/Main.css';
 import { Logo } from './_svg.js';
-import Instructions from './Instructions.js';
+// import Instructions from './Instructions.js';
 import Tracker from './_tracker.js'
 import Placard from './Placard.js';
 import Screen from './Screen.js';
@@ -22,6 +22,7 @@ export default class Main extends PureComponent {
       color1: '#00FF00',
       color2: '#FF0000',
       colorActive: false,
+      sensitivity: 30,
     };
     this.rAF = undefined;
     this.drawMeters = undefined;
@@ -37,6 +38,7 @@ export default class Main extends PureComponent {
     this.handleSetOsc = this.handleSetOsc.bind(this);
     this.handleGetColor = this.handleGetColor.bind(this);
     this.handleSetColor = this.handleSetColor.bind(this);
+    this.handleSetSensitivity = this.handleSetSensitivity.bind(this);
   };
 
   componentDidMount() {
@@ -65,8 +67,8 @@ export default class Main extends PureComponent {
   };
 
   trackerInit() {
-    const { video, color1, color2 } = this.state;
-    this.tracker = new Tracker(video, [color1, color2], this.trackerRuntime);
+    const { video, color1, color2, sensitivity } = this.state;
+    this.tracker = new Tracker(video, [color1, color2], this.trackerRuntime, sensitivity);
     this.tracker.cropX = this.cropX;
     this.tracker.cropY = this.cropY;
     const trackerCtx = this.tracker.init();
@@ -162,6 +164,21 @@ export default class Main extends PureComponent {
       colorActive: false
     }), this.trackerSetColors);
   };
+
+  handleSetSensitivity(e) {
+    const parent = e.target.parentNode.parentNode.parentNode.parentNode;
+    const { offsetLeft, offsetWidth } = parent;
+    const { clientX } = e.targetTouches[0];
+    let pct = (clientX - offsetLeft) / offsetWidth;
+    if (pct > 1) {
+      pct = 1;
+    } else if (pct < 0) {
+      pct = 0;
+    };
+    const sensitivity = pct * 150;
+    this.tracker.sensitivity = sensitivity;
+    this.setState(prevState => ({ sensitivity }));
+  };
 ////////////////////////
 
 
@@ -180,6 +197,7 @@ export default class Main extends PureComponent {
       color1,
       color2,
       colorActive,
+      sensitivity,
     } = this.state;
     return (
       <div className="Main" ref="main">
@@ -216,7 +234,9 @@ export default class Main extends PureComponent {
                   color1={color1}
                   color2={color2}
                   active={colorActive}
+                  sensitivity={sensitivity / 200}
                   getColor={this.handleGetColor}
+                  setSensitivity={this.handleSetSensitivity}
                 />
               </div>
               <div className="r r4">

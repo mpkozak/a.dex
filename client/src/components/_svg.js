@@ -258,6 +258,69 @@ import React from 'react';
             <stop offset="80%" stopColor="#000000" stopOpacity=".2"/>
             <stop offset="100%" stopColor="#000000" stopOpacity=".6"/>
           </linearGradient>
+
+
+
+   {/* Slider */}
+     {/* Clip Paths */}
+        <clipPath id="slider-clip">
+          <rect x="0" y="0" width="10" height="20" />
+        </clipPath>
+     {/* Filters */}
+        <filter id="slider-blur">
+          <feGaussianBlur stdDeviation=".5" />
+        </filter>
+     {/* Ridge Gradients */}
+        <linearGradient id="slider-ridges-top" x1="0%" y1="0%" x2="0%" y2="100%" gradientUnits="objectBoundingBox">
+          {[0, 1, 2, 3, 4, 5].map(d => {
+            const unit = (100 / 6);
+            return (
+              <React.Fragment key={'slider-ridges-bottom-' + d}>
+                <stop offset={(unit * d) + '%'} stopColor="#000000" stopOpacity="0"/>
+                <stop offset={(unit * (d + .1)) + '%'} stopColor="#000000" stopOpacity=".3"/>
+                <stop offset={(unit * (d + .5)) + '%'} stopColor="#000000" stopOpacity=".8"/>
+              </React.Fragment>
+            );
+          })}
+          <stop offset="100%" stopColor="#000000" stopOpacity="0"/>
+        </linearGradient>
+        <linearGradient id="slider-ridges-bottom" x1="0%" y1="0%" x2="0%" y2="100%" gradientUnits="objectBoundingBox">
+          {[0, 1, 2, 3, 4, 5].map(d => {
+            const unit = (100 / 6);
+            return (
+              <React.Fragment key={'slider-ridges-bottom-' + d}>
+                <stop offset={(unit * d) + '%'} stopColor="#000000" stopOpacity="0"/>
+                <stop offset={(unit * (d + .5)) + '%'} stopColor="#000000" stopOpacity=".8"/>
+                <stop offset={(unit * (d + .9)) + '%'} stopColor="#000000" stopOpacity=".3"/>
+              </React.Fragment>
+            );
+          })}
+          <stop offset="100%" stopColor="#000000" stopOpacity="0"/>
+        </linearGradient>
+    {/* Contour Gradients */}
+        <linearGradient id="slider-contour-horizontal" x1="0%" y1="0%" x2="0%" y2="100%" gradientUnits="objectBoundingBox">
+          <stop offset="0%" stopColor="#000000" stopOpacity="1"/>
+          <stop offset="1.5%" stopColor="#000000" stopOpacity=".2"/>
+          <stop offset="5%" stopColor="#000000" stopOpacity=".4"/>
+          <stop offset="25%" stopColor="#000000" stopOpacity=".6"/>
+          <stop offset="50%" stopColor="#000000" stopOpacity=".8"/>
+          <stop offset="75%" stopColor="#000000" stopOpacity=".6"/>
+          <stop offset="95%" stopColor="#000000" stopOpacity=".4"/>
+          <stop offset="98.5%" stopColor="#000000" stopOpacity=".2"/>
+          <stop offset="0%" stopColor="#000000" stopOpacity="1"/>
+        </linearGradient>
+        <linearGradient id="slider-contour-vertical" x1="0%" y1="0%" x2="100%" y2="0%" gradientUnits="objectBoundingBox">
+          <stop offset="0%" stopColor="#000000" stopOpacity="1"/>
+          <stop offset="5%" stopColor="#000000" stopOpacity=".4"/>
+          <stop offset="10%" stopColor="#000000" stopOpacity=".1"/>
+          <stop offset="50%" stopColor="#000000" stopOpacity="0"/>
+          <stop offset="90%" stopColor="#000000" stopOpacity=".1"/>
+          <stop offset="95%" stopColor="#000000" stopOpacity=".4"/>
+          <stop offset="100%" stopColor="#000000" stopOpacity="1"/>
+        </linearGradient>
+
+
+
         </defs>
       </svg>
     );
@@ -490,6 +553,83 @@ import React from 'react';
 
 
 
+  const slider = () => {
+    return (
+      <g className="slider" clipPath="url(#slider-clip)" transform="rotate(90)scale(1.5)">
+    {/* Base */}
+        <rect x="0" y="0" width="10" height="20"
+          rx="1"
+          fill="#FFFFFF"
+        />
+    {/* Ridges */}
+        <rect
+          fill="url(#slider-ridges-top)"
+          x="0"
+          y=".5"
+          width="10"
+          height="7.5"
+        />
+        <rect
+          fill="url(#slider-ridges-bottom)"
+          x="0"
+          y="12"
+          width="10"
+          height="7.5"
+        />
+    {/* Contour Horizontal */}
+        <rect x="0" y="0" width="10" height="20" fill="url(#slider-contour-horizontal)" />
+    {/* Center Mark */}
+        <rect
+          x="0"
+          y="9.5"
+          width="10"
+          height="1"
+          fill="#FFFFFF"
+          stroke="#000000"
+          strokeWidth=".4%"
+          opacity=".7"
+        />
+    {/* Contour Vertical */}
+        <rect x="0" y="0" width="10" height="20" fill="url(#slider-contour-vertical)" />
+    {/* Outline */}
+        <rect x="0" y="0" width="10" height="20"
+          rx="1"
+          fill="none"
+          stroke="#000000"
+          strokeWidth=".4%"
+        />
+      </g>
+    );
+  };
+
+  export const Fader = ({ pct, handleTouchMove }) => {
+    const level = 35 + (pct * 60);
+    return (
+      <svg className="fader" viewBox="0 0 100 20">
+    {/* Panel */}
+        <g className="fader-panel" opacity=".8">
+      {/* Fader Slit */}
+          <rect id="fader-panel-slit"
+            x="15"
+            y="8.5"
+            width="70"
+            height="3"
+            fill="#000000"
+            stroke="#151515"
+            strokeWidth=".5%"
+          />
+        </g>
+    {/* Slider */}
+        <g className="fader-slider" transform={`translate(${level}, ${2.5})`} onTouchMove={handleTouchMove} >
+          {slider()}
+        </g>
+      </svg>
+    );
+  };
+
+
+
+
 
 
 
@@ -543,63 +683,7 @@ import React from 'react';
   //         <stop offset="90%" stopColor="#000000" stopOpacity=".6"/>
   //         <stop offset="100%" stopColor="#000000" stopOpacity=".5"/>
   //       </linearGradient>
-  // {/* Slider */}
-  //   {/* Clip Paths */}
-  //       <clipPath id="slider-clip">
-  //         <rect x="0" y="0" width="10" height="20" />
-  //       </clipPath>
-  //   {/* Filters */}
-  //       <filter id="slider-blur">
-  //         <feGaussianBlur stdDeviation=".5" />
-  //       </filter>
-  //   {/* Ridge Gradients */}
-  //       <linearGradient id="slider-ridges-top" x1="0%" y1="0%" x2="0%" y2="100%" gradientUnits="objectBoundingBox">
-  //         {[0, 1, 2, 3, 4, 5].map(d => {
-  //           const unit = (100 / 6);
-  //           return (
-  //             <React.Fragment key={'slider-ridges-bottom-' + d}>
-  //               <stop offset={(unit * d) + '%'} stopColor="#000000" stopOpacity="0"/>
-  //               <stop offset={(unit * (d + .1)) + '%'} stopColor="#000000" stopOpacity=".3"/>
-  //               <stop offset={(unit * (d + .5)) + '%'} stopColor="#000000" stopOpacity=".8"/>
-  //             </React.Fragment>
-  //           );
-  //         })}
-  //         <stop offset="100%" stopColor="#000000" stopOpacity="0"/>
-  //       </linearGradient>
-  //       <linearGradient id="slider-ridges-bottom" x1="0%" y1="0%" x2="0%" y2="100%" gradientUnits="objectBoundingBox">
-  //         {[0, 1, 2, 3, 4, 5].map(d => {
-  //           const unit = (100 / 6);
-  //           return (
-  //             <React.Fragment key={'slider-ridges-bottom-' + d}>
-  //               <stop offset={(unit * d) + '%'} stopColor="#000000" stopOpacity="0"/>
-  //               <stop offset={(unit * (d + .5)) + '%'} stopColor="#000000" stopOpacity=".8"/>
-  //               <stop offset={(unit * (d + .9)) + '%'} stopColor="#000000" stopOpacity=".3"/>
-  //             </React.Fragment>
-  //           );
-  //         })}
-  //         <stop offset="100%" stopColor="#000000" stopOpacity="0"/>
-  //       </linearGradient>
-  //   {/* Contour Gradients */}
-  //       <linearGradient id="slider-contour-horizontal" x1="0%" y1="0%" x2="0%" y2="100%" gradientUnits="objectBoundingBox">
-  //         <stop offset="0%" stopColor="#000000" stopOpacity="1"/>
-  //         <stop offset="1.5%" stopColor="#000000" stopOpacity=".2"/>
-  //         <stop offset="5%" stopColor="#000000" stopOpacity=".4"/>
-  //         <stop offset="25%" stopColor="#000000" stopOpacity=".6"/>
-  //         <stop offset="50%" stopColor="#000000" stopOpacity=".8"/>
-  //         <stop offset="75%" stopColor="#000000" stopOpacity=".6"/>
-  //         <stop offset="95%" stopColor="#000000" stopOpacity=".4"/>
-  //         <stop offset="98.5%" stopColor="#000000" stopOpacity=".2"/>
-  //         <stop offset="0%" stopColor="#000000" stopOpacity="1"/>
-  //       </linearGradient>
-  //       <linearGradient id="slider-contour-vertical" x1="0%" y1="0%" x2="100%" y2="0%" gradientUnits="objectBoundingBox">
-  //         <stop offset="0%" stopColor="#000000" stopOpacity="1"/>
-  //         <stop offset="5%" stopColor="#000000" stopOpacity=".4"/>
-  //         <stop offset="10%" stopColor="#000000" stopOpacity=".1"/>
-  //         <stop offset="50%" stopColor="#000000" stopOpacity="0"/>
-  //         <stop offset="90%" stopColor="#000000" stopOpacity=".1"/>
-  //         <stop offset="95%" stopColor="#000000" stopOpacity=".4"/>
-  //         <stop offset="100%" stopColor="#000000" stopOpacity="1"/>
-  //       </linearGradient>
+
 ///////////////////////////
 
 
@@ -691,54 +775,6 @@ import React from 'react';
 
 
 
-// const slider = () => {
-//   return (
-//     <g className="slider" clipPath="url(#slider-clip)">
-//   {/* Base */}
-//       <rect x="0" y="0" width="10" height="20"
-//         rx="1"
-//         fill="#FFFFFF"
-//       />
-//   {/* Ridges */}
-//       <rect
-//         fill="url(#slider-ridges-top)"
-//         x="0"
-//         y=".5"
-//         width="10"
-//         height="7.5"
-//       />
-//       <rect
-//         fill="url(#slider-ridges-bottom)"
-//         x="0"
-//         y="12"
-//         width="10"
-//         height="7.5"
-//       />
-//   {/* Contour Horizontal */}
-//       <rect x="0" y="0" width="10" height="20" fill="url(#slider-contour-horizontal)" />
-//   {/* Center Mark */}
-//       <rect
-//         x="0"
-//         y="9.5"
-//         width="10"
-//         height="1"
-//         fill="#FFFFFF"
-//         stroke="#000000"
-//         strokeWidth=".4%"
-//         opacity=".7"
-//       />
-//   {/* Contour Vertical */}
-//       <rect x="0" y="0" width="10" height="20" fill="url(#slider-contour-vertical)" />
-//   {/* Outline */}
-//       <rect x="0" y="0" width="10" height="20"
-//         rx="1"
-//         fill="none"
-//         stroke="#000000"
-//         strokeWidth=".4%"
-//       />
-//     </g>
-//   );
-// };
 
 
 // export const MasterFader = (props) => {

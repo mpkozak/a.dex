@@ -37,7 +37,6 @@ export default class App extends PureComponent {
 
 //////////////////////////
 // Initialization Stack //
-
   audioInit() {
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     const baseHz = 110;
@@ -117,7 +116,6 @@ export default class App extends PureComponent {
 
 ///////////////////////////
 // Audio Handler Methods //
-
   audioMute(t = this.audio.ctx.currentTime) {
     this.audioSetGain(0, t);
   };
@@ -151,7 +149,6 @@ export default class App extends PureComponent {
 
 /////////////////////
 // Layout Handlers //
-
   handleSwipe() {
     this.audio.ctx.resume();
     window.removeEventListener('touchstart', this.handleSwipe);
