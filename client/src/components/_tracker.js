@@ -44,7 +44,7 @@ export default class Tracker {
     this.tCtx = this.tracker.getContext('2d');
     return { ctx: this.tCtx, tW: this.tWidth, tH: this.tHeight, scalar: this.scalar };
   };
-  async runtime(frame) {
+  async runtime() {
     this.getData()
       .then(data => this.getDistance(data))
       .then(dist => this.reduceData(dist))

@@ -4,8 +4,6 @@
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
-  /*justify-content: space-around;*/
-  /*justify-content: flex-start;*/
   justify-content: center;
 }
 
@@ -21,8 +19,8 @@
 }
 
 .r {
+  position: relative;
   width: 100%;
-  /*margin: .5vmin 0;*/
   display: flex;
   flex-flow: row nowrap;
   align-items: center;

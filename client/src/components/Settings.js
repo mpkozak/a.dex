@@ -24,19 +24,16 @@ export default class Settings extends PureComponent {
     return (
       <div className="settings outer">
         <div className="border">
-
           <div className="color-box">
             {this.makeColorBoxElement('Gain', color1, 1)}
             {this.makeColorBoxElement('Pitch', color2, 2)}
           </div>
-
           <div className="slider-box">
             <div className="label-box">
               <h4>Sensitivity</h4>
             </div>
             <Fader pct={sensitivity} handleTouchMove={(e) => setSensitivity(e)} />
           </div>
-
         </div>
       </div>
     );

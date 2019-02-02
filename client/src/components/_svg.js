@@ -3,7 +3,6 @@ import React from 'react';
 
 ///////////////////////////////////
 // Master SVG Definitions Module //
-
   export const SvgDefs = () => {
     return (
       <svg id="svg-defs" className="invisible" width="0" height="0">
@@ -243,14 +242,20 @@ import React from 'react';
             <stop offset="75%" stopColor="#000000" stopOpacity=".1"/>
             <stop offset="0%" stopColor="#000000" stopOpacity="0"/>
           </linearGradient>
-    {/* Coil Gradients
-          <linearGradient id="vu-coil-wire" x1="0%" y1="0%" x2="3%" y2="0%" gradientUnits="objectBoundingBox" spreadMethod="repeat">
-            <stop offset="0%" stopColor="#3A2411" stopOpacity=".5"/>
-            <stop offset="1%" stopColor="#68411E" stopOpacity="1"/>
-            <stop offset="50%" stopColor="#68411E" stopOpacity="1"/>
+      {/* Coil Gradients */}
+          <linearGradient id="vu-coil-wire" x1="0%" y1="0%" x2="100%" y2="0%" gradientUnits="objectBoundingBox">
+            {new Array(33).fill(1).map((d, i) => {
+              const unit = (100 / 33);
+              return (
+                <React.Fragment key={'vu-coil-wire-' + i}>
+                  <stop offset={(unit * i) + '%'} stopColor="#3A2411" stopOpacity=".5"/>
+                  <stop offset={(unit * (i + .01)) + '%'} stopColor="#68411E" stopOpacity="1"/>
+                  <stop offset={(unit * (i + .5)) + '%'} stopColor="#68411E" stopOpacity="1"/>
+                </React.Fragment>
+              );
+            })}
             <stop offset="100%" stopColor="#3A2411" stopOpacity=".5"/>
           </linearGradient>
-   */}
           <linearGradient id="vu-coil-shadow" x1="0%" y1="0%" x2="0%" y2="100%" gradientUnits="objectBoundingBox">
             <stop offset="0%" stopColor="#000000" stopOpacity=".6"/>
             <stop offset="20%" stopColor="#000000" stopOpacity=".2"/>
@@ -258,69 +263,63 @@ import React from 'react';
             <stop offset="80%" stopColor="#000000" stopOpacity=".2"/>
             <stop offset="100%" stopColor="#000000" stopOpacity=".6"/>
           </linearGradient>
-
-
-
-   {/* Slider */}
-     {/* Clip Paths */}
-        <clipPath id="slider-clip">
-          <rect x="0" y="0" width="10" height="20" />
-        </clipPath>
-     {/* Filters */}
-        <filter id="slider-blur">
-          <feGaussianBlur stdDeviation=".5" />
-        </filter>
-     {/* Ridge Gradients */}
-        <linearGradient id="slider-ridges-top" x1="0%" y1="0%" x2="0%" y2="100%" gradientUnits="objectBoundingBox">
-          {[0, 1, 2, 3, 4, 5].map(d => {
-            const unit = (100 / 6);
-            return (
-              <React.Fragment key={'slider-ridges-bottom-' + d}>
-                <stop offset={(unit * d) + '%'} stopColor="#000000" stopOpacity="0"/>
-                <stop offset={(unit * (d + .1)) + '%'} stopColor="#000000" stopOpacity=".3"/>
-                <stop offset={(unit * (d + .5)) + '%'} stopColor="#000000" stopOpacity=".8"/>
-              </React.Fragment>
-            );
-          })}
-          <stop offset="100%" stopColor="#000000" stopOpacity="0"/>
-        </linearGradient>
-        <linearGradient id="slider-ridges-bottom" x1="0%" y1="0%" x2="0%" y2="100%" gradientUnits="objectBoundingBox">
-          {[0, 1, 2, 3, 4, 5].map(d => {
-            const unit = (100 / 6);
-            return (
-              <React.Fragment key={'slider-ridges-bottom-' + d}>
-                <stop offset={(unit * d) + '%'} stopColor="#000000" stopOpacity="0"/>
-                <stop offset={(unit * (d + .5)) + '%'} stopColor="#000000" stopOpacity=".8"/>
-                <stop offset={(unit * (d + .9)) + '%'} stopColor="#000000" stopOpacity=".3"/>
-              </React.Fragment>
-            );
-          })}
-          <stop offset="100%" stopColor="#000000" stopOpacity="0"/>
-        </linearGradient>
-    {/* Contour Gradients */}
-        <linearGradient id="slider-contour-horizontal" x1="0%" y1="0%" x2="0%" y2="100%" gradientUnits="objectBoundingBox">
-          <stop offset="0%" stopColor="#000000" stopOpacity="1"/>
-          <stop offset="1.5%" stopColor="#000000" stopOpacity=".2"/>
-          <stop offset="5%" stopColor="#000000" stopOpacity=".4"/>
-          <stop offset="25%" stopColor="#000000" stopOpacity=".6"/>
-          <stop offset="50%" stopColor="#000000" stopOpacity=".8"/>
-          <stop offset="75%" stopColor="#000000" stopOpacity=".6"/>
-          <stop offset="95%" stopColor="#000000" stopOpacity=".4"/>
-          <stop offset="98.5%" stopColor="#000000" stopOpacity=".2"/>
-          <stop offset="0%" stopColor="#000000" stopOpacity="1"/>
-        </linearGradient>
-        <linearGradient id="slider-contour-vertical" x1="0%" y1="0%" x2="100%" y2="0%" gradientUnits="objectBoundingBox">
-          <stop offset="0%" stopColor="#000000" stopOpacity="1"/>
-          <stop offset="5%" stopColor="#000000" stopOpacity=".4"/>
-          <stop offset="10%" stopColor="#000000" stopOpacity=".1"/>
-          <stop offset="50%" stopColor="#000000" stopOpacity="0"/>
-          <stop offset="90%" stopColor="#000000" stopOpacity=".1"/>
-          <stop offset="95%" stopColor="#000000" stopOpacity=".4"/>
-          <stop offset="100%" stopColor="#000000" stopOpacity="1"/>
-        </linearGradient>
-
-
-
+    {/* Slider */}
+      {/* Clip Paths */}
+          <clipPath id="slider-clip">
+            <rect x="0" y="0" width="10" height="20" />
+          </clipPath>
+      {/* Filters */}
+          <filter id="slider-blur">
+            <feGaussianBlur stdDeviation=".5" />
+          </filter>
+      {/* Ridge Gradients */}
+          <linearGradient id="slider-ridges-top" x1="0%" y1="0%" x2="0%" y2="100%" gradientUnits="objectBoundingBox">
+            {new Array(6).fill(1).map((d, i) => {
+              const unit = (100 / 6);
+              return (
+                <React.Fragment key={'slider-ridges-top-' + i}>
+                  <stop offset={(unit * i) + '%'} stopColor="#000000" stopOpacity="0"/>
+                  <stop offset={(unit * (i + .1)) + '%'} stopColor="#000000" stopOpacity=".3"/>
+                  <stop offset={(unit * (i + .5)) + '%'} stopColor="#000000" stopOpacity=".8"/>
+                </React.Fragment>
+              );
+            })}
+            <stop offset="100%" stopColor="#000000" stopOpacity="0"/>
+          </linearGradient>
+          <linearGradient id="slider-ridges-bottom" x1="0%" y1="0%" x2="0%" y2="100%" gradientUnits="objectBoundingBox">
+            {new Array(6).fill(1).map((d, i) => {
+              const unit = (100 / 6);
+              return (
+                <React.Fragment key={'slider-ridges-bottom-' + i}>
+                  <stop offset={(unit * i) + '%'} stopColor="#000000" stopOpacity="0"/>
+                  <stop offset={(unit * (i + .5)) + '%'} stopColor="#000000" stopOpacity=".8"/>
+                  <stop offset={(unit * (i + .9)) + '%'} stopColor="#000000" stopOpacity=".3"/>
+                </React.Fragment>
+              );
+            })}
+            <stop offset="100%" stopColor="#000000" stopOpacity="0"/>
+          </linearGradient>
+      {/* Contour Gradients */}
+          <linearGradient id="slider-contour-horizontal" x1="0%" y1="0%" x2="0%" y2="100%" gradientUnits="objectBoundingBox">
+            <stop offset="0%" stopColor="#000000" stopOpacity="1"/>
+            <stop offset="1.5%" stopColor="#000000" stopOpacity=".2"/>
+            <stop offset="5%" stopColor="#000000" stopOpacity=".4"/>
+            <stop offset="25%" stopColor="#000000" stopOpacity=".6"/>
+            <stop offset="50%" stopColor="#000000" stopOpacity=".8"/>
+            <stop offset="75%" stopColor="#000000" stopOpacity=".6"/>
+            <stop offset="95%" stopColor="#000000" stopOpacity=".4"/>
+            <stop offset="98.5%" stopColor="#000000" stopOpacity=".2"/>
+            <stop offset="0%" stopColor="#000000" stopOpacity="1"/>
+          </linearGradient>
+          <linearGradient id="slider-contour-vertical" x1="0%" y1="0%" x2="100%" y2="0%" gradientUnits="objectBoundingBox">
+            <stop offset="0%" stopColor="#000000" stopOpacity="1"/>
+            <stop offset="5%" stopColor="#000000" stopOpacity=".4"/>
+            <stop offset="10%" stopColor="#000000" stopOpacity=".1"/>
+            <stop offset="50%" stopColor="#000000" stopOpacity="0"/>
+            <stop offset="90%" stopColor="#000000" stopOpacity=".1"/>
+            <stop offset="95%" stopColor="#000000" stopOpacity=".4"/>
+            <stop offset="100%" stopColor="#000000" stopOpacity="1"/>
+          </linearGradient>
         </defs>
       </svg>
     );
@@ -330,7 +329,6 @@ import React from 'react';
 
 ///////////////////////////////
 // Standalone SVG Components //
-
   export const Logo = ({color = '#FFFFFF', opacity = .7}) => {
     return (
       <svg className="logo" viewBox="0 0 90 25">
@@ -352,7 +350,6 @@ import React from 'react';
       </svg>
     );
   };
-
 
   export const HelpButton = ({ active = false, handleClick }) => {
     const helpFonts = {
@@ -400,7 +397,6 @@ import React from 'react';
 
 //////////////////////////////
 // Def-Dependent Components //
-
   export const GlowButton = ({ id, icon = 'none', active = false, handleClick }) => {
     const colorButton = '#AAAAAA';
     const icons = {
@@ -517,41 +513,6 @@ import React from 'react';
       </svg>
     );
   };
-//////////////////////////////
-
-
-///////////////////////////
-// Subsidiary Components //
-
-  export const MeterFrame = () => {
-    return (
-      <g className="meter-frame" clipPath="url(#meter-outer-clip)">
-        <rect x="0" y="0" width="100" height="60" rx="2" ry="2" filter="url(#meter-frame-texture)" fill="#3A3125" stroke="#000000" strokeWidth=".4%" />
-        <rect x="0" y="0" width="100" height="60" rx="2" ry="2" fill="url(#meter-frame-horizontal" />
-        <rect x="0" y="0" width="100" height="60" rx="2" ry="2" fill="url(#meter-frame-vertical)" />
-        <g clipPath="url(#meter-middle-clip)" filter="url(#meter-gradient-blur)">
-          <path fill="url(#meter-frame-vertical)" d="M 2.5 2.5 L 97.5 2.5 L 73.75 26.25 L 73.75 33.75 L 97.5 57.5 L 2.5 57.5 L 26.25 33.75 L 26.25 26.25 Z" />
-          <path fill="url(#meter-frame-horizontal)" d="M 2.5 2.5 L 30 30 L 70 30 L 97.5 2.5 L 97.5 57.5 L 70 30 L 30 30 L 2.5 57.5 Z" />
-          <rect fill="url(#meter-frame-corners)" x="2.5" y="2.5" width="95" height="55" rx="2" ry="2" />
-        </g>
-      </g>
-    );
-  };
-
-
-  export const MeterPanelShadow = () => {
-    return (
-      <g className="meter-panel-shadow" clipPath="url(#meter-inner-clip)" filter="url(#meter-gradient-blur)">
-        <rect x="4.75" y="4.75" width="90.5" height="50.5" rx="1" ry="1" fill="url(#meter-panel-horizontal)" />
-        <rect x="4.75" y="4.75" width="90.5" height="50.5" rx="1" ry="1" fill="url(#meter-panel-vertical)" />
-        <rect x="4.75" y="4.75" width="90.5" height="50.5" rx="1" ry="1" fill="url(#meter-panel-center)" />
-      </g>
-    );
-  };
-///////////////////////////
-
-
-
 
   const slider = () => {
     return (
@@ -609,7 +570,7 @@ import React from 'react';
     {/* Panel */}
         <g className="fader-panel" opacity=".8">
       {/* Fader Slit */}
-          <rect id="fader-panel-slit"
+          <rect
             x="15"
             y="8.5"
             width="70"
@@ -626,210 +587,33 @@ import React from 'react';
       </svg>
     );
   };
-
-
-
-
-
-
-
-
-
-
-
-
-/// disregard below
-
-
-
-
-
-
-
-
-
-
-
-
-
+//////////////////////////////
 
 
 ///////////////////////////
-// CURRENTLY UNUSED DEFS //
+// Subsidiary Components //
+  export const MeterFrame = () => {
+    return (
+      <g className="meter-frame" clipPath="url(#meter-outer-clip)">
+        <rect x="0" y="0" width="100" height="60" rx="2" ry="2" filter="url(#meter-frame-texture)" fill="#3A3125" stroke="#000000" strokeWidth=".4%" />
+        <rect x="0" y="0" width="100" height="60" rx="2" ry="2" fill="url(#meter-frame-horizontal" />
+        <rect x="0" y="0" width="100" height="60" rx="2" ry="2" fill="url(#meter-frame-vertical)" />
+        <g clipPath="url(#meter-middle-clip)" filter="url(#meter-gradient-blur)">
+          <path fill="url(#meter-frame-vertical)" d="M 2.5 2.5 L 97.5 2.5 L 73.75 26.25 L 73.75 33.75 L 97.5 57.5 L 2.5 57.5 L 26.25 33.75 L 26.25 26.25 Z" />
+          <path fill="url(#meter-frame-horizontal)" d="M 2.5 2.5 L 30 30 L 70 30 L 97.5 2.5 L 97.5 57.5 L 70 30 L 30 30 L 2.5 57.5 Z" />
+          <rect fill="url(#meter-frame-corners)" x="2.5" y="2.5" width="95" height="55" rx="2" ry="2" />
+        </g>
+      </g>
+    );
+  };
 
-  // {/* bigKnob */}
-  //   {/* Contour Gradients */}
-  //       <radialGradient id="bigknob-contour" cx="50%" cy="50%" r="100%" gradientUnits="objectBoundingBox">
-  //         <stop offset="0%" stopColor="#000000" stopOpacity="0"/>
-  //         <stop offset="20%" stopColor="#000000" stopOpacity=".1"/>
-  //         <stop offset="35%" stopColor="#000000" stopOpacity=".3"/>
-  //         <stop offset="45%" stopColor="#000000" stopOpacity=".5"/>
-  //         <stop offset="50%" stopColor="#000000" stopOpacity="1"/>
-  //       </radialGradient>
-  //       <radialGradient id="bigknob-glare" cx="50%" cy="50%" r="100%" fx="0%" fy="0%" fr="10%" gradientUnits="objectBoundingBox">
-  //         <stop offset="0%" stopColor="#FFFFFF" stopOpacity="1"/>
-  //         <stop offset="5%" stopColor="#FFFFFF" stopOpacity=".5"/>
-  //         <stop offset="15%" stopColor="#FFFFFF" stopOpacity=".3"/>
-  //         <stop offset="25%" stopColor="#FFFFFF" stopOpacity=".2"/>
-  //         <stop offset="40%" stopColor="#FFFFFF" stopOpacity=".1"/>
-  //         <stop offset="65%" stopColor="#FFFFFF" stopOpacity="0"/>
-  //         <stop offset="70%" stopColor="#000000" stopOpacity="0"/>
-  //         <stop offset="80%" stopColor="#000000" stopOpacity="1"/>
-  //       </radialGradient>
-  //       <linearGradient id="bigknob-notch" x1="0%" y1="0%" x2="0%" y2="100%" gradientUnits="objectBoundingBox">
-  //         <stop offset="0%" stopColor="#000000" stopOpacity=".5"/>
-  //         <stop offset="10%" stopColor="#000000" stopOpacity=".6"/>
-  //         <stop offset="50%" stopColor="#000000" stopOpacity=".7"/>
-  //         <stop offset="90%" stopColor="#000000" stopOpacity=".6"/>
-  //         <stop offset="100%" stopColor="#000000" stopOpacity=".5"/>
-  //       </linearGradient>
-
+  export const MeterPanelShadow = () => {
+    return (
+      <g className="meter-panel-shadow" clipPath="url(#meter-inner-clip)" filter="url(#meter-gradient-blur)">
+        <rect x="4.75" y="4.75" width="90.5" height="50.5" rx="1" ry="1" fill="url(#meter-panel-horizontal)" />
+        <rect x="4.75" y="4.75" width="90.5" height="50.5" rx="1" ry="1" fill="url(#meter-panel-vertical)" />
+        <rect x="4.75" y="4.75" width="90.5" height="50.5" rx="1" ry="1" fill="url(#meter-panel-center)" />
+      </g>
+    );
+  };
 ///////////////////////////
-
-
-
-
-
-
-// export const SevenSegment = (props) => {
-//   const { value, digits, exact } = props;
-//   const width = digits * 6 + 2;
-//   const bg = '8.'.repeat(digits);
-//   const val = exact ? value : Math.round(value);
-//   const sevenFont = {
-//     fontFamily: 'DSEG7 Classic',
-//     fontSize: 7
-//   };
-//   return (
-//     <svg className="sevensegment" viewBox={`0 0 ${width} 10`}>
-//   {/* Backpane */}
-//       <rect
-//         x="0"
-//         y="0"
-//         width={width}
-//         height="10"
-//         rx="1"
-//         fill="#181818"
-//         stroke="#000000"
-//         strokeWidth=".5%"
-//       />
-//   {/* Inner Border */}
-//       <rect
-//         x="1"
-//         y="1"
-//         width={width - 2}
-//         height="8"
-//         rx=".5"
-//         fill="#000000"
-//         stroke="#111111"
-//         strokeWidth="1%"
-//       />
-//   {/* Text Backpane */}
-//       <text style={sevenFont} fill="#250000"
-//         x={width - 1.5} y="5.2" textAnchor="end" alignmentBaseline="middle"
-//       >{bg}</text>
-//   {/* Text Active */}
-//       <text style={sevenFont} fill="#E00000"
-//         x={width - 1.5} y="5.2" textAnchor="end" alignmentBaseline="middle"
-//       >{val}</text>
-//     </svg>
-//   );
-// };
-
-
-
-// //////////////////////////////////
-// // DEF-DEPENDENT SVG COMPONENTS //
-// //////////////////////////////////
-
-// export const BigKnob = (props) => {
-//   const { rotation, color, handleClick, handleScroll } = props;
-//   const colorKnob = color ? color : '#3A3125';
-//   return (
-//     <svg className="bigknob" viewBox="0 0 1000 1000" onClick={handleClick} onTouchStart={handleScroll}>
-//   {/* Base */}
-//       <circle cx="500" cy="500" r="480"
-//         fill={colorKnob}
-//         stroke="#000000"
-//         strokeWidth="1%"
-//       />
-//   {/* Contour + Glare */}
-//       <circle cx="500" cy="500" r="480" fill="url(#bigknob-contour)" />
-//       <circle cx="500" cy="500" r="480" fill="url(#bigknob-glare)" />
-//   {/* Notch */}
-//       <rect
-//         fill="url(#bigknob-notch)"
-//         transform={`rotate(${rotation * 3.2 - 160}, 500, 500)`}
-//         x="480"
-//         y="60"
-//         width="40"
-//         height="200"
-//         stroke="#000000"
-//         strokeWidth="1%"
-//       />
-//     </svg>
-//   );
-// };
-
-
-
-
-
-
-
-// export const MasterFader = (props) => {
-//   const { pct, handleClick } = props;
-//   const level = pct * .6;
-//   const colorRed = '#C12822';
-//   const ticks = [
-//     {y: 10, text: '+12', color: colorRed},
-//     {y: 18, text: '+6', color: colorRed},
-//     {y: 26, text: '0', color: '#FFFFFF'},
-//     {y: 33, text: '5', color: '#FFFFFF'},
-//     {y: 39.5, text: '10', color: '#FFFFFF'},
-//     {y: 45.5, text: '15', color: '#FFFFFF'},
-//     {y: 51, text: '20', color: '#FFFFFF'},
-//     {y: 56, text: '30', color: '#FFFFFF'},
-//     {y: 60.5, text: '40', color: '#FFFFFF'},
-//     {y: 64, text: '60', color: '#FFFFFF'},
-//     {y: 70, text: '∞', color: '#FFFFFF'}
-//   ];
-//   const masterFont = {
-//     fontFamily: 'Helvetica, sans-serif',
-//     fontSize: 3.5 + 'px',
-//     fontWeight: '600'
-//   };
-//   return (
-//     <svg className="masterfader" viewBox="0 0 40 80">
-//   {/* Panel */}
-//       <g className="masterfader-panel" opacity=".8">
-//     {/* Fader Slit */}
-//         <rect
-//           x="19"
-//           y="10"
-//           width="2"
-//           height="60"
-//           fill="#000000"
-//         />
-//     {/* Tick Marks + Text */}
-//         {ticks.map((d, i) => {
-//           return (
-//             <g key={i}>
-//               <rect x="12" y={d.y} width="2" height=".3" fill={d.color} />
-//               <rect x="26" y={d.y} width="1.5" height=".3" fill={d.color} />
-//               <text style={masterFont} textAnchor="start" alignmentBaseline="middle"
-//                 x="29" y={d.y} fill={d.color}
-//               >{d.text}</text>
-//             </g>
-//           );
-//         })}
-//       </g>
-//   {/* Slider
-//       <g className="masterfader-slider" transform={`translate(${15}, ${60 - level})`} onMouseDown={handleClick}> */}
-//       <g className="masterfader-slider" transform={`translate(${15}, ${60 - level})`} >
-//         {slider()}
-//       </g>
-//     </svg>
-//   );
-// };
-

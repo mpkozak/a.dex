@@ -192,7 +192,6 @@ export default class App extends PureComponent {
   };
 /////////////////////
 
-
   render() {
     const { pending, webAudioOk, cameraOk, initOk } = this.state;
     const { videoStream, audio } = this;

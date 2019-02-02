@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import './_css/Main.css';
 import { Logo } from './_svg.js';
-// import Instructions from './Instructions.js';
+import Instructions from './Instructions.js';
 import Tracker from './_tracker.js'
 import Placard from './Placard.js';
 import Screen from './Screen.js';
@@ -182,11 +182,6 @@ export default class Main extends PureComponent {
 ////////////////////////
 
 
-              // {showHelp &&
-              //   <Instructions show={showHelp} toggleHelp={this.handleToggleHelp} />
-              // }
-
-
   render() {
     const {
       orientationOk,
@@ -213,6 +208,9 @@ export default class Main extends PureComponent {
                   active={showHelp}
                   toggleHelp={this.handleToggleHelp}
                 />
+                {showHelp &&
+                  <Instructions show={showHelp} toggleHelp={this.handleToggleHelp} />
+                }
               </div>
               <div className="r r2">
                 {video &&
