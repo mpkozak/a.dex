@@ -397,17 +397,16 @@ import React from 'react';
 
 //////////////////////////////
 // Def-Dependent Components //
-  export const GlowButton = ({ id, icon = 'none', active = false, handleClick }) => {
+  export const GlowButton = ({ icon, active = false, handleClick }) => {
     const colorButton = '#AAAAAA';
     const icons = {
       sine: 'M 2 5 Q 3.5 0, 5 5 Q 6.5 10, 8 5',
       triangle: 'M 2 5 L 3.5 2.5 L 6.5 7.5 L 8 5',
       sawtooth: 'M 2 5 L 5 2.5 L 5 7.5 L 8 5',
-      square: 'M 2 5 L 2 2.5 L 5 2.5 L 5 7.5 L 8 7.5 L 8 5',
-      none: ''
+      square: 'M 2 5 L 2 2.5 L 5 2.5 L 5 7.5 L 8 7.5 L 8 5'
     };
     return (
-      <svg id={id} className="glowbutton" viewBox="0 0 100 100" onClick={handleClick}>
+      <svg className="glowbutton" viewBox="0 0 100 100" onClick={handleClick}>
     {/* Base Layer */}
         <rect x="0" y="0" rx="10" width="100" height="100"
           fill={colorButton}

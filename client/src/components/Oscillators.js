@@ -3,8 +3,7 @@ import './_css/Oscillators.css';
 import { GlowButton } from './_svg.js';
 
 export default class Oscillators extends PureComponent {
-
-  makeElement(osc) {
+  makeOscillator(osc) {
     const oscTypes = ['sine', 'triangle', 'sawtooth', 'square'];
     return (
       <div className="osc border">
@@ -29,8 +28,8 @@ export default class Oscillators extends PureComponent {
   render() {
     return (
       <div className="oscillators outer">
-        {this.makeElement('osc1')}
-        {this.makeElement('osc2')}
+        {this.makeOscillator('osc1')}
+        {this.makeOscillator('osc2')}
       </div>
     );
   };

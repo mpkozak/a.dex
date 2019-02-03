@@ -90,7 +90,6 @@ export default class App extends PureComponent {
 
   videoInit() {
     navigator.mediaDevices.getUserMedia({
-      // video: true
       video: {
         width: { ideal: 640 },
         height: { ideal: 480 }

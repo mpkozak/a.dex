@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import './_css/Main.css';
 import { Logo } from './_svg.js';
-import Instructions from './Instructions.js';
 import Tracker from './_tracker.js'
 import Placard from './Placard.js';
 import Screen from './Screen.js';
@@ -175,7 +174,7 @@ export default class Main extends PureComponent {
     } else if (pct < 0) {
       pct = 0;
     };
-    const sensitivity = pct * 150;
+    const sensitivity = pct * 120;
     this.tracker.sensitivity = sensitivity;
     this.setState(prevState => ({ sensitivity }));
   };
@@ -195,7 +194,7 @@ export default class Main extends PureComponent {
       sensitivity,
     } = this.state;
     return (
-      <div className="Main" ref="main">
+      <div className="Main">
         {!orientationOk
           ? <div className="splash">
               <div className="logo-box">
@@ -205,15 +204,12 @@ export default class Main extends PureComponent {
           : <React.Fragment>
               <div className="r r1">
                 <Placard
-                  active={showHelp}
+                  showHelp={showHelp}
                   toggleHelp={this.handleToggleHelp}
                 />
-                {showHelp &&
-                  <Instructions show={showHelp} toggleHelp={this.handleToggleHelp} />
-                }
               </div>
               <div className="r r2">
-                {video &&
+                {!!video &&
                   <Screen
                     video={video}
                     colorActive={colorActive}
@@ -232,7 +228,7 @@ export default class Main extends PureComponent {
                   color1={color1}
                   color2={color2}
                   active={colorActive}
-                  sensitivity={sensitivity / 150}
+                  sensitivity={sensitivity / 120}
                   getColor={this.handleGetColor}
                   setSensitivity={this.handleSetSensitivity}
                 />

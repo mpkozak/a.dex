@@ -1,12 +1,13 @@
 import React, { PureComponent } from 'react';
 import { MeterFrame, MeterPanelShadow } from './_svg.js';
 
+
 export default class MeterVU extends PureComponent {
-  constructor(props) {
-    super(props);
-    this.colorBg = '#BDA96D';
-    this.colorRed = '#C12822';
-    this.ticks = [
+  render() {
+    const { rotation = -48, peak = false } = this.props;
+    const colorBg = '#BDA96D';
+    const colorRed = '#C12822';
+    const ticks = [
       { vu: -20, strokeWidth: '1%', x2: 1.793722, x: 17.278543, y: 17.407848, textLength: 4.76 },
       { vu: -10, strokeWidth: '1%', x2: 21.074874, x: 28.594728, y: 14.957763, textLength: 4.76 },
       { vu: -7, strokeWidth: '1%', x2: 34.397461, x: 37.610970, y: 13.739022, textLength: 2.38 },
@@ -21,7 +22,7 @@ export default class MeterVU extends PureComponent {
       { vu: 2, strokeWidth: '.4%', x2: 84.228095 },
       { vu: 3, strokeWidth: '1%', x2: 91.123323, x: 78.704674, y: 16.420841, textLength: 2.38 }
     ];
-    this.vuFonts = {
+    const vuFonts = {
       main: {
         fontFamily: 'Helvetica, sans-serif',
         fontWeight: 200
@@ -50,16 +51,11 @@ export default class MeterVU extends PureComponent {
         fontStyle: 'italic'
       }
     };
-    this.rotator = {
+    const rotator = {
       transitionTimingFunction: 'ease',
       transitionDuration: '150ms'
     };
-  };
 
-
-  render() {
-    const { colorBg, colorRed, ticks, vuFonts, rotator } = this;
-    const { rotation = -48, peak = false } = this.props;
     return (
       <svg className="meter" viewBox="0 0 100 60">
         <MeterFrame />
