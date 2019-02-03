@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import { MeterFrame, MeterPanelShadow } from './_svg.js';
 
-
 export default class MeterVU extends PureComponent {
   render() {
     const { rotation = -48, peak = false } = this.props;
@@ -69,7 +68,10 @@ export default class MeterVU extends PureComponent {
               <text style={vuFonts.smallHeavy} x="88" y="30" textLength="8.33" lengthAdjust="spacingAndGlyphs">PEAK</text>
               <text style={vuFonts.large} x="12" y="14.4" textLength="4" lengthAdjust="spacingAndGlyphs">-</text>
               <text style={vuFonts.large} fill={colorRed} x="88" y="14.4">+</text>
-              {ticks.map(d => d.x ? <text style={vuFonts.medium} fill={d.vu >= 0 ? colorRed : '#000000'} key={'text' + d.vu} x={d.x} y={d.y} textLength={d.textLength} lengthAdjust="spacingAndGlyphs">{Math.abs(d.vu)}</text>: null)}
+              {ticks.map(d => d.x
+                ? <text style={vuFonts.medium} fill={d.vu >= 0 ? colorRed : '#000000'} key={'text' + d.vu} x={d.x} y={d.y} textLength={d.textLength} lengthAdjust="spacingAndGlyphs">{Math.abs(d.vu)}</text>
+                : null
+              )}
             </g>
             <g mask="url(#vu-scale-mask)" fill="none">
               <path d="M 12.5 18.75 Q 50 7.5, 87.5 18.75" transform="translate(0, 9)" stroke="#000000" strokeWidth=".8%" strokeDasharray="0, 6.089, 44.525, 25.497" />

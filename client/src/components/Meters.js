@@ -1,8 +1,9 @@
 import React, { PureComponent } from 'react';
 import './_css/Meters.css';
 import { d3 } from './_d3.js';
-import MeterVU from './MeterVU.js';
-import MeterWave from './MeterWave.js';
+import { MeterWave, MeterVU } from './_svg.js';
+// import MeterVU from './MeterVU.js';
+// import MeterWave from './MeterWave.js';
 
 export default class Meters extends PureComponent {
   constructor(props) {

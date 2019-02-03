@@ -5,10 +5,15 @@ import { ScreenFrame } from './_svg.js';
 
 export default class Screen extends PureComponent {
     constructor(props) {
-    super(props)
+    super(props);
     this.state = {
-      vCropW: 640,
-      vCropH: 480,
+     vCropW: 640,
+     vCropH: 480,
+     vDrawStartX: 0,
+     vDrawStartY: 0,
+     cW: 0,
+     cH: 0,
+     scalar: 0
     };
     this.canvasInit = this.canvasInit.bind(this);
     this.canvasDraw = this.canvasDraw.bind(this);
@@ -51,7 +56,7 @@ export default class Screen extends PureComponent {
     };
     const scalar = cW / vCropW;
     this.props.passback(this.drawScreen, vDrawStartX, vDrawStartY, cW, cH)
-    this.setState(prevState => ({ cW, cH, vCropW, vCropH, vDrawStartX, vDrawStartY, scalar }));
+    this.setState(prevState => ({ vCropW, vCropH, vDrawStartX, vDrawStartY, cW, cH, scalar }));
   };
 
   canvasDraw() {
@@ -114,14 +119,12 @@ export default class Screen extends PureComponent {
       <div className="screen outer">
         <div className="video-box">
           <ScreenFrame />
-          <canvas
-            ref="videoCanvas"
+          <canvas ref="videoCanvas"
             className="video-0 video-element"
             width={vCropW}
             height={vCropH}
           />
-          <svg
-            ref="videoSvg"
+          <svg ref="videoSvg"
             className="video-1 video-element"
             viewBox={`0 0 ${vCropW} ${vCropH}`}
           />
@@ -130,8 +133,7 @@ export default class Screen extends PureComponent {
               <h2 className="osd">Calibrating...</h2>
             }
           </div>
-          <div
-            ref="videoClickbox"
+          <div ref="videoClickbox"
             className="video-3 video-element"
             width={vCropW}
             height={vCropH}

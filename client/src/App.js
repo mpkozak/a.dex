@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
 import './App.css';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
-import { NoAudio, NoVideo, Init } from './_splash.js';
-import { Logo, SvgDefs } from './components/_svg.js';
+import { Splash } from './_splash.js';
+import { SvgDefs } from './components/_svg.js';
 import Main from './components/Main.js';
 
 export default class App extends PureComponent {
@@ -10,7 +10,7 @@ export default class App extends PureComponent {
     super(props);
     this.state = {
       pending: true,
-      webAudioOk: false,
+      audioOk: false,
       cameraOk: false,
       initOk: false
     };
@@ -29,9 +29,8 @@ export default class App extends PureComponent {
   componentDidMount() {
     disableBodyScroll(this.refs.app);
     if (!!global.AnalyserNode.prototype.getFloatTimeDomainData) {
-      this.setState(prevState => ({ webAudioOk: true }), () => {
-        this.audioInit() && this.videoInit();
-      });
+      this.setState(prevState => ({ audioOk: true }));
+      this.audioInit() && this.videoInit();
     };
   };
 
@@ -166,14 +165,13 @@ export default class App extends PureComponent {
   };
 
   handleLock() {
-    const { initOk } = this.state;
     if ((window.innerHeight + 2000) === this.refs.app.clientHeight) {
       window.removeEventListener('scroll', this.handleScrollEvent);
       this.refs.app.style.height = '100vh';
       disableBodyScroll(this.refs.app);
       window.scrollTo(0, 0);
       document.getElementById('shadow-mask').style.opacity = 0;
-      if (!initOk) {
+      if (!this.state.initOk) {
         this.setState(prevState => ({ initOk: true }));
         window.addEventListener('resize', this.handleResize);
       };
@@ -191,39 +189,21 @@ export default class App extends PureComponent {
   };
 /////////////////////
 
+
   render() {
-    const { pending, webAudioOk, cameraOk, initOk } = this.state;
+    const { pending, audioOk, cameraOk, initOk } = this.state;
     const { videoStream, audio } = this;
     const bgColor = {
       backgroundColor: !initOk ? 'rgba(0, 0, 0, .7)' : 'none'
     };
-    const message = (
-      cameraOk
-        ? <Init />
-        : pending
-          ? null
-          : webAudioOk
-            ? <NoVideo />
-            : <NoAudio />
-    );
-    const splash = (
-      <div id="app-splash" className="splash">
-        <div className="logo-box">
-          <Logo opacity={.6} />
-        </div>
-        <div className="message-box">
-          {message}
-        </div>
-      </div>
-    );
 
     return (
-      <div id="App" ref="app" style={bgColor}>
+      <div ref="app" id="App" style={bgColor}>
         <div id="shadow-mask" />
         <SvgDefs />
         {initOk
           ? <Main videoStream={videoStream} audio={audio} />
-          : splash
+          : <Splash pending={pending} cameraOk={cameraOk} audioOk={audioOk} />
         }
       </div>
     );

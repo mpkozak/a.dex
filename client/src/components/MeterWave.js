@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import { MeterFrame, MeterPanelShadow } from './_svg.js';
 
-
 export default class MeterWave extends PureComponent {
   render() {
     const colorBg = '#052205';

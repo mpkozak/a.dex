@@ -6,60 +6,8 @@ import React from 'react';
     return (
       <svg id="svg-defs" className="invisible" width="0" height="0">
         <defs>
-          <clipPath id="screenframe-outer-clip">
-            <rect x="0" y="0" rx="1" width="40" height="30" />
-          </clipPath>
-          <clipPath id="screenframe-middle-clip">
-            <rect x="1.2" y="1.2" rx="1" width="37.6" height="27.6"/>
-          </clipPath>
-          <clipPath id="screenframe-inner-clip">
-            <path d="M 3 2.5 Q 20 1.5, 37 2.5 Q 38 15, 37 27.5 Q 20 28.5, 3 27.5 Q 2 15, 3 2.5 Z" />
-          </clipPath>
-          <clipPath id="slider-clip">
-            <rect x="0" y="0" width="10" height="20" />
-          </clipPath>
-          <clipPath id="meter-outer-clip">
-            <rect x="0" y="0" width="100" height="60" rx="2" ry="2" />
-          </clipPath>
-          <clipPath id="meter-middle-clip">
-            <rect x="2.5" y="2.5" width="95" height="55" rx="2" ry="2" />
-          </clipPath>
-          <clipPath id="meter-inner-clip">
-            <rect x="5" y="5" width="90" height="50" rx="1" ry="1" />
-          </clipPath>
-          <mask id="screenframe-inner-mask">
-            <rect x="0" y="0" width="40" height="30" fill="#FFFFFF" />
-            <path d="M 3 2.5 Q 20 1.5, 37 2.5 Q 38 15, 37 27.5 Q 20 28.5, 3 27.5 Q 2 15, 3 2.5 Z" fill="#000000" />
-          </mask>
-          <mask id="vu-scale-mask">
-            <rect x="0" y="0" width="100" height="60" fill="#FFFFFF" />
-            <line x1="50" y1="57" x2="-13.7" y2="0" stroke="#000000" strokeWidth="4.9" />
-            <line x1="50" y1="57" x2="113.7" y2="0" stroke="#000000" strokeWidth="4.9" />
-            <path d="M 50 57 L -13.7 0 L -13.7 57 Z" stroke="none" fill="#000000" />
-            <path d="M 50 57 L 113.7 0 L 113.7 57 Z" stroke="none" fill="#000000" />
-            <path d="M 12.5 18.75 Q 50 7.5, 87.5 18.75" transform="translate(0, -1.5)" fill="none" stroke="#000000" strokeWidth="7.35" />
-            <path d="M 12.5 18.75 Q 50 7.5, 87.5 18.75" transform="translate(0, 9)" fill="#000000" stroke="none" />
-          </mask>
-          <filter id="screenframe-texture">
-            <feTurbulence type="fractalNoise" baseFrequency="30, 30" result="00noise" />
-            <feBlend in="SourceGraphic" in2="00noise" mode="multiply" />
-          </filter>
-          <filter id="screenframe-blur">
-            <feGaussianBlur stdDeviation=".18" />
-          </filter>
-          <filter id="screenframe-corner-blur">
-            <feGaussianBlur stdDeviation=".3" />
-          </filter>
-          <filter id="slider-blur">
-            <feGaussianBlur stdDeviation=".5" />
-          </filter>
-          <filter id="meter-frame-texture">
-            <feTurbulence type="fractalNoise" baseFrequency="5, 30" result="00noise" />
-            <feBlend in="SourceGraphic" in2="00noise" mode="multiply" />
-          </filter>
-          <filter id="meter-gradient-blur">
-            <feGaussianBlur stdDeviation=".25" />
-          </filter>
+    {/* glowButton */}
+      {/* Contour Gradients */}
           <linearGradient id="glowbutton-contour-horizontal" x1="0%" y1="0%" x2="0%" y2="100%" gradientUnits="objectBoundingBox">
             <stop offset="0%" stopColor="#000000" stopOpacity="1"/>
             <stop offset="8%" stopColor="#000000" stopOpacity="0"/>
@@ -72,133 +20,13 @@ import React from 'react';
             <stop offset="92%" stopColor="#000000" stopOpacity="0"/>
             <stop offset="100%" stopColor="#000000" stopOpacity="1"/>
           </linearGradient>
-          <linearGradient id="screenframe-outer-horizontal" x1="0%" y1="0%" x2="100%" y2="0%" gradientUnits="objectBoundingBox">
-            <stop offset="0%" stopColor="#000000" stopOpacity=".9"/>
-            <stop offset="5%" stopColor="#000000" stopOpacity="0"/>
-            <stop offset="95%" stopColor="#000000" stopOpacity="0"/>
-            <stop offset="100%" stopColor="#000000" stopOpacity=".9"/>
-          </linearGradient>
-          <linearGradient id="screenframe-outer-vertical" x1="0%" y1="0%" x2="0%" y2="100%" gradientUnits="objectBoundingBox">
-            <stop offset="0%" stopColor="#000000" stopOpacity=".9"/>
-            <stop offset="5%" stopColor="#000000" stopOpacity="0"/>
-            <stop offset="95%" stopColor="#000000" stopOpacity="0"/>
-            <stop offset="100%" stopColor="#000000" stopOpacity=".9"/>
-          </linearGradient>
-          <linearGradient id="screenframe-inner-horizontal" x1="0%" y1="0%" x2="100%" y2="0%" gradientUnits="objectBoundingBox">
-            <stop offset="0%" stopColor="#000000" stopOpacity=".9"/>
-            <stop offset="10%" stopColor="#000000" stopOpacity=".1"/>
-            <stop offset="90%" stopColor="#000000" stopOpacity=".1"/>
-            <stop offset="100%" stopColor="#000000" stopOpacity=".9"/>
-          </linearGradient>
-          <linearGradient id="screenframe-inner-vertical" x1="0%" y1="0%" x2="0%" y2="100%" gradientUnits="objectBoundingBox">
-            <stop offset="0%" stopColor="#000000" stopOpacity=".9"/>
-            <stop offset="10%" stopColor="#000000" stopOpacity=".1"/>
-            <stop offset="90%" stopColor="#000000" stopOpacity=".1"/>
-            <stop offset="100%" stopColor="#000000" stopOpacity=".9"/>
-          </linearGradient>
-          <linearGradient id="slider-ridges-top" x1="0%" y1="0%" x2="0%" y2="100%" gradientUnits="objectBoundingBox">
-            {new Array(6).fill('').map((d, i) => {
-              const unit = (100 / 6);
-              return (
-                <React.Fragment key={'slider-ridges-top-' + i}>
-                  <stop offset={(unit * i) + '%'} stopColor="#000000" stopOpacity="0"/>
-                  <stop offset={(unit * (i + .1)) + '%'} stopColor="#000000" stopOpacity=".3"/>
-                  <stop offset={(unit * (i + .5)) + '%'} stopColor="#000000" stopOpacity=".8"/>
-                </React.Fragment>
-              );
-            })}
-            <stop offset="100%" stopColor="#000000" stopOpacity="0"/>
-          </linearGradient>
-          <linearGradient id="slider-ridges-bottom" x1="0%" y1="0%" x2="0%" y2="100%" gradientUnits="objectBoundingBox">
-            {new Array(6).fill('').map((d, i) => {
-              const unit = (100 / 6);
-              return (
-                <React.Fragment key={'slider-ridges-bottom-' + i}>
-                  <stop offset={(unit * i) + '%'} stopColor="#000000" stopOpacity="0"/>
-                  <stop offset={(unit * (i + .5)) + '%'} stopColor="#000000" stopOpacity=".8"/>
-                  <stop offset={(unit * (i + .9)) + '%'} stopColor="#000000" stopOpacity=".3"/>
-                </React.Fragment>
-              );
-            })}
-            <stop offset="100%" stopColor="#000000" stopOpacity="0"/>
-          </linearGradient>
-          <linearGradient id="slider-contour-horizontal" x1="0%" y1="0%" x2="0%" y2="100%" gradientUnits="objectBoundingBox">
-            <stop offset="0%" stopColor="#000000" stopOpacity="1"/>
-            <stop offset="1.5%" stopColor="#000000" stopOpacity=".2"/>
-            <stop offset="5%" stopColor="#000000" stopOpacity=".4"/>
-            <stop offset="25%" stopColor="#000000" stopOpacity=".6"/>
-            <stop offset="50%" stopColor="#000000" stopOpacity=".8"/>
-            <stop offset="75%" stopColor="#000000" stopOpacity=".6"/>
-            <stop offset="95%" stopColor="#000000" stopOpacity=".4"/>
-            <stop offset="98.5%" stopColor="#000000" stopOpacity=".2"/>
-            <stop offset="0%" stopColor="#000000" stopOpacity="1"/>
-          </linearGradient>
-          <linearGradient id="slider-contour-vertical" x1="0%" y1="0%" x2="100%" y2="0%" gradientUnits="objectBoundingBox">
-            <stop offset="0%" stopColor="#000000" stopOpacity="1"/>
-            <stop offset="5%" stopColor="#000000" stopOpacity=".4"/>
-            <stop offset="10%" stopColor="#000000" stopOpacity=".1"/>
-            <stop offset="50%" stopColor="#000000" stopOpacity="0"/>
-            <stop offset="90%" stopColor="#000000" stopOpacity=".1"/>
-            <stop offset="95%" stopColor="#000000" stopOpacity=".4"/>
-            <stop offset="100%" stopColor="#000000" stopOpacity="1"/>
-          </linearGradient>
-          <linearGradient id="meter-frame-horizontal" x1="0%" y1="0%" x2="100%" y2="0%" gradientUnits="objectBoundingBox">
-            <stop offset="0%" stopColor="#000000" stopOpacity=".7"/>
-            <stop offset="3%" stopColor="#000000" stopOpacity="0"/>
-            <stop offset="97%" stopColor="#000000" stopOpacity="0"/>
-            <stop offset="100%" stopColor="#000000" stopOpacity=".7"/>
-          </linearGradient>
-          <linearGradient id="meter-frame-vertical" x1="0%" y1="0%" x2="0%" y2="100%" gradientUnits="objectBoundingBox">
-            <stop offset="0%" stopColor="#000000" stopOpacity=".7"/>
-            <stop offset="5%" stopColor="#000000" stopOpacity="0"/>
-            <stop offset="95%" stopColor="#000000" stopOpacity="0"/>
-            <stop offset="100%" stopColor="#000000" stopOpacity=".7"/>
-          </linearGradient>
-          <linearGradient id="meter-panel-horizontal" x1="0%" y1="0%" x2="100%" y2="0%" gradientUnits="objectBoundingBox">
-            <stop offset="0%" stopColor="#000000" stopOpacity=".9"/>
-            <stop offset="3%" stopColor="#000000" stopOpacity="0"/>
-            <stop offset="97%" stopColor="#000000" stopOpacity="0"/>
-            <stop offset="100%" stopColor="#000000" stopOpacity=".9"/>
-          </linearGradient>
-          <linearGradient id="meter-panel-vertical" x1="0%" y1="0%" x2="0%" y2="100%" gradientUnits="objectBoundingBox">
-            <stop offset="0%" stopColor="#000000" stopOpacity=".9"/>
-            <stop offset="5%" stopColor="#000000" stopOpacity="0"/>
-            <stop offset="95%" stopColor="#000000" stopOpacity="0"/>
-            <stop offset="100%" stopColor="#000000" stopOpacity=".9"/>
-          </linearGradient>
-          <linearGradient id="vu-needle-shadow" x1="0%" y1="0%" x2="100%" y2="0%" gradientUnits="objectBoundingBox">
-            <stop offset="0%" stopColor="#000000" stopOpacity="0"/>
-            <stop offset="25%" stopColor="#000000" stopOpacity=".1"/>
-            <stop offset="50%" stopColor="#000000" stopOpacity=".4"/>
-            <stop offset="75%" stopColor="#000000" stopOpacity=".1"/>
-            <stop offset="0%" stopColor="#000000" stopOpacity="0"/>
-          </linearGradient>
-          <linearGradient id="vu-coil-wire" x1="0%" y1="0%" x2="100%" y2="0%" gradientUnits="objectBoundingBox">
-            {new Array(33).fill('').map((d, i) => {
-              const unit = (100 / 33);
-              return (
-                <React.Fragment key={'vu-coil-wire-' + i}>
-                  <stop offset={(unit * i) + '%'} stopColor="#3A2411" stopOpacity=".5"/>
-                  <stop offset={(unit * (i + .01)) + '%'} stopColor="#68411E" stopOpacity="1"/>
-                  <stop offset={(unit * (i + .5)) + '%'} stopColor="#68411E" stopOpacity="1"/>
-                </React.Fragment>
-              );
-            })}
-            <stop offset="100%" stopColor="#3A2411" stopOpacity=".5"/>
-          </linearGradient>
-          <linearGradient id="vu-coil-shadow" x1="0%" y1="0%" x2="0%" y2="100%" gradientUnits="objectBoundingBox">
-            <stop offset="0%" stopColor="#000000" stopOpacity=".6"/>
-            <stop offset="20%" stopColor="#000000" stopOpacity=".2"/>
-            <stop offset="50%" stopColor="#000000" stopOpacity="0"/>
-            <stop offset="80%" stopColor="#000000" stopOpacity=".2"/>
-            <stop offset="100%" stopColor="#000000" stopOpacity=".6"/>
-          </linearGradient>
           <radialGradient id="glowbutton-contour-center" cx="50%" cy="50%" r="100%" gradientUnits="objectBoundingBox">
             <stop offset="0%" stopColor="#000000" stopOpacity=".4"/>
             <stop offset="40%" stopColor="#000000" stopOpacity=".2"/>
             <stop offset="50%" stopColor="#000000" stopOpacity="0"/>
             <stop offset="60%" stopColor="#000000" stopOpacity=".2"/>
           </radialGradient>
+      {/* Glow Gradients */}
           <radialGradient id="glowbutton-active-base" cx="50%" cy="50%" r="100%" gradientUnits="objectBoundingBox">
             <stop offset="0%" stopColor="#C12822" stopOpacity="1"/>
             <stop offset="20%" stopColor="#C12822" stopOpacity=".8"/>
@@ -211,6 +39,8 @@ import React from 'react';
             <stop offset="50%" stopColor="#000000" stopOpacity=".1"/>
             <stop offset="70%" stopColor="#000000" stopOpacity=".2"/>
           </radialGradient>
+    {/* colorSwatch */}
+      {/* Contour Gradients */}
           <radialGradient id="colorswatch-contour" cx="50%" cy="50%" r="50%" gradientUnits="objectBoundingBox">
             <stop offset="0%" stopColor="#000000" stopOpacity="0"/>
             <stop offset="50%" stopColor="#000000" stopOpacity=".1"/>
@@ -225,6 +55,7 @@ import React from 'react';
             <stop offset="20%" stopColor="#FFFFFF" stopOpacity=".2"/>
             <stop offset="50%" stopColor="#000000" stopOpacity=".1"/>
           </radialGradient>
+      {/* Glow Gradients */}
           <radialGradient id="colorswatch-glow" cx="50%" cy="50%" r="100%" gradientUnits="objectBoundingBox">
             <stop offset="0%" stopColor="#FFFFFF" stopOpacity=".2"/>
             <stop offset="26%" stopColor="#FFFFFF" stopOpacity=".17"/>
@@ -233,27 +64,135 @@ import React from 'react';
             <stop offset="38%" stopColor="#FFFFFF" stopOpacity=".05"/>
             <stop offset="50%" stopColor="#FFFFFF" stopOpacity="0"/>
           </radialGradient>
+    {/* screenFrame */}
+      {/* Clip Paths */}
+          <clipPath id="screenframe-outer-clip">
+            <rect x="0" y="0" rx="1" width="40" height="30" />
+          </clipPath>
+          <clipPath id="screenframe-middle-clip">
+            <rect x="1.2" y="1.2" rx="1" width="37.6" height="27.6"/>
+          </clipPath>
+          <clipPath id="screenframe-inner-clip">
+            <path d="M 3 2.5 Q 20 1.5, 37 2.5 Q 38 15, 37 27.5 Q 20 28.5, 3 27.5 Q 2 15, 3 2.5 Z" />
+          </clipPath>
+      {/* Masks */}
+          <mask id="screenframe-inner-mask">
+            <rect x="0" y="0" width="40" height="30" fill="#FFFFFF" />
+            <path d="M 3 2.5 Q 20 1.5, 37 2.5 Q 38 15, 37 27.5 Q 20 28.5, 3 27.5 Q 2 15, 3 2.5 Z" fill="#000000" />
+          </mask>
+      {/* Filters */}
+          <filter id="screenframe-texture">
+            <feTurbulence type="fractalNoise" baseFrequency="30, 30" result="00noise" />
+            <feBlend in="SourceGraphic" in2="00noise" mode="multiply" />
+          </filter>
+          <filter id="screenframe-blur">
+            <feGaussianBlur stdDeviation=".18" />
+          </filter>
+          <filter id="screenframe-corner-blur">
+            <feGaussianBlur stdDeviation=".3" />
+          </filter>
+      {/* Contour Gradients */}
+          <linearGradient id="screenframe-outer-horizontal" x1="0%" y1="0%" x2="100%" y2="0%" gradientUnits="objectBoundingBox">
+            <stop offset="0%" stopColor="#000000" stopOpacity=".9"/>
+            <stop offset="5%" stopColor="#000000" stopOpacity="0"/>
+            <stop offset="95%" stopColor="#000000" stopOpacity="0"/>
+            <stop offset="100%" stopColor="#000000" stopOpacity=".9"/>
+          </linearGradient>
+          <linearGradient id="screenframe-outer-vertical" x1="0%" y1="0%" x2="0%" y2="100%" gradientUnits="objectBoundingBox">
+            <stop offset="0%" stopColor="#000000" stopOpacity=".9"/>
+            <stop offset="5%" stopColor="#000000" stopOpacity="0"/>
+            <stop offset="95%" stopColor="#000000" stopOpacity="0"/>
+            <stop offset="100%" stopColor="#000000" stopOpacity=".9"/>
+          </linearGradient>
           <radialGradient id="screenframe-outer-corners" cx="50%" cy="50%" r="100%" gradientUnits="objectBoundingBox">
             <stop offset="0%" stopColor="#000000" stopOpacity="0"/>
             <stop offset="60%" stopColor="#000000" stopOpacity=".2"/>
             <stop offset="70%" stopColor="#000000" stopOpacity=".5"/>
           </radialGradient>
+          <linearGradient id="screenframe-inner-horizontal" x1="0%" y1="0%" x2="100%" y2="0%" gradientUnits="objectBoundingBox">
+            <stop offset="0%" stopColor="#000000" stopOpacity=".9"/>
+            <stop offset="10%" stopColor="#000000" stopOpacity=".1"/>
+            <stop offset="90%" stopColor="#000000" stopOpacity=".1"/>
+            <stop offset="100%" stopColor="#000000" stopOpacity=".9"/>
+          </linearGradient>
+          <linearGradient id="screenframe-inner-vertical" x1="0%" y1="0%" x2="0%" y2="100%" gradientUnits="objectBoundingBox">
+            <stop offset="0%" stopColor="#000000" stopOpacity=".9"/>
+            <stop offset="10%" stopColor="#000000" stopOpacity=".1"/>
+            <stop offset="90%" stopColor="#000000" stopOpacity=".1"/>
+            <stop offset="100%" stopColor="#000000" stopOpacity=".9"/>
+          </linearGradient>
           <radialGradient id="screenframe-overlay-contour" cx="50%" cy="50%" r="100%" gradientUnits="objectBoundingBox">
             <stop offset="0%" stopColor="#000000" stopOpacity="0"/>
             <stop offset="25%" stopColor="#000000" stopOpacity=".2"/>
             <stop offset="50%" stopColor="#000000" stopOpacity=".6"/>
             <stop offset="70%" stopColor="#000000" stopOpacity=".9"/>
           </radialGradient>
+    {/* Meter */}
+      {/* Clip Paths */}
+          <clipPath id="meter-outer-clip">
+            <rect x="0" y="0" width="100" height="60" rx="2" ry="2" />
+          </clipPath>
+          <clipPath id="meter-middle-clip">
+            <rect x="2.5" y="2.5" width="95" height="55" rx="2" ry="2" />
+          </clipPath>
+          <clipPath id="meter-inner-clip">
+            <rect x="5" y="5" width="90" height="50" rx="1" ry="1" />
+          </clipPath>
+      {/* Filters */}
+          <filter id="meter-frame-texture">
+            <feTurbulence type="fractalNoise" baseFrequency="5, 30" result="00noise" />
+            <feBlend in="SourceGraphic" in2="00noise" mode="multiply" />
+          </filter>
+          <filter id="meter-gradient-blur">
+            <feGaussianBlur stdDeviation=".25" />
+          </filter>
+      {/* Contour Gradients */}
+          <linearGradient id="meter-frame-horizontal" x1="0%" y1="0%" x2="100%" y2="0%" gradientUnits="objectBoundingBox">
+            <stop offset="0%" stopColor="#000000" stopOpacity=".7"/>
+            <stop offset="3%" stopColor="#000000" stopOpacity="0"/>
+            <stop offset="97%" stopColor="#000000" stopOpacity="0"/>
+            <stop offset="100%" stopColor="#000000" stopOpacity=".7"/>
+          </linearGradient>
+          <linearGradient id="meter-frame-vertical" x1="0%" y1="0%" x2="0%" y2="100%" gradientUnits="objectBoundingBox">
+            <stop offset="0%" stopColor="#000000" stopOpacity=".7"/>
+            <stop offset="5%" stopColor="#000000" stopOpacity="0"/>
+            <stop offset="95%" stopColor="#000000" stopOpacity="0"/>
+            <stop offset="100%" stopColor="#000000" stopOpacity=".7"/>
+          </linearGradient>
           <radialGradient id="meter-frame-corners" cx="50%" cy="50%" r="100%" gradientUnits="objectBoundingBox">
             <stop offset="64%" stopColor="#000000" stopOpacity="0"/>
             <stop offset="70%" stopColor="#000000" stopOpacity=".5"/>
           </radialGradient>
+          <linearGradient id="meter-panel-horizontal" x1="0%" y1="0%" x2="100%" y2="0%" gradientUnits="objectBoundingBox">
+            <stop offset="0%" stopColor="#000000" stopOpacity=".9"/>
+            <stop offset="3%" stopColor="#000000" stopOpacity="0"/>
+            <stop offset="97%" stopColor="#000000" stopOpacity="0"/>
+            <stop offset="100%" stopColor="#000000" stopOpacity=".9"/>
+          </linearGradient>
+          <linearGradient id="meter-panel-vertical" x1="0%" y1="0%" x2="0%" y2="100%" gradientUnits="objectBoundingBox">
+            <stop offset="0%" stopColor="#000000" stopOpacity=".9"/>
+            <stop offset="5%" stopColor="#000000" stopOpacity="0"/>
+            <stop offset="95%" stopColor="#000000" stopOpacity="0"/>
+            <stop offset="100%" stopColor="#000000" stopOpacity=".9"/>
+          </linearGradient>
           <radialGradient id="meter-panel-center" cx="50%" cy="50%" r="100%" gradientUnits="objectBoundingBox">
             <stop offset="0%" stopColor="#000000" stopOpacity="0"/>
             <stop offset="25%" stopColor="#000000" stopOpacity=".1"/>
             <stop offset="50%" stopColor="#000000" stopOpacity=".3"/>
             <stop offset="70%" stopColor="#000000" stopOpacity=".6"/>
           </radialGradient>
+    {/* MeterVU */}
+      {/* Masks */}
+          <mask id="vu-scale-mask">
+            <rect x="0" y="0" width="100" height="60" fill="#FFFFFF" />
+            <line x1="50" y1="57" x2="-13.7" y2="0" stroke="#000000" strokeWidth="4.9" />
+            <line x1="50" y1="57" x2="113.7" y2="0" stroke="#000000" strokeWidth="4.9" />
+            <path d="M 50 57 L -13.7 0 L -13.7 57 Z" stroke="none" fill="#000000" />
+            <path d="M 50 57 L 113.7 0 L 113.7 57 Z" stroke="none" fill="#000000" />
+            <path d="M 12.5 18.75 Q 50 7.5, 87.5 18.75" transform="translate(0, -1.5)" fill="none" stroke="#000000" strokeWidth="7.35" />
+            <path d="M 12.5 18.75 Q 50 7.5, 87.5 18.75" transform="translate(0, 9)" fill="#000000" stroke="none" />
+          </mask>
+      {/* LED Gradients */}
           <radialGradient id="vu-led-shadow" cx="50%" cy="50%" r="100%" fx="45%" fy="45%" fr="2%" gradientUnits="objectBoundingBox">
             <stop offset="0%" stopColor="#000000" stopOpacity="1"/>
             <stop offset="30%" stopColor="#000000" stopOpacity=".9"/>
@@ -286,6 +225,7 @@ import React from 'react';
             <stop offset="35%" stopColor="#FF352E" stopOpacity=".1"/>
             <stop offset="50%" stopColor="#FF352E" stopOpacity="0"/>
           </radialGradient>
+      {/* Needle Gradients */}
           <radialGradient id="vu-needle-cutout" cx="50%" cy="50%" r="100%" gradientUnits="objectBoundingBox">
             <stop offset="0%" stopColor="#000000"/>
             <stop offset="10%" stopColor="#202326"/>
@@ -294,6 +234,91 @@ import React from 'react';
             <stop offset="45%" stopColor="#202326"/>
             <stop offset="50%" stopColor="#000000"/>
           </radialGradient>
+          <linearGradient id="vu-needle-shadow" x1="0%" y1="0%" x2="100%" y2="0%" gradientUnits="objectBoundingBox">
+            <stop offset="0%" stopColor="#000000" stopOpacity="0"/>
+            <stop offset="25%" stopColor="#000000" stopOpacity=".1"/>
+            <stop offset="50%" stopColor="#000000" stopOpacity=".4"/>
+            <stop offset="75%" stopColor="#000000" stopOpacity=".1"/>
+            <stop offset="0%" stopColor="#000000" stopOpacity="0"/>
+          </linearGradient>
+      {/* Coil Gradients */}
+          <linearGradient id="vu-coil-wire" x1="0%" y1="0%" x2="100%" y2="0%" gradientUnits="objectBoundingBox">
+            {new Array(33).fill(1).map((d, i) => {
+              const unit = (100 / 33);
+              return (
+                <React.Fragment key={'vu-coil-wire-' + i}>
+                  <stop offset={(unit * i) + '%'} stopColor="#3A2411" stopOpacity=".5"/>
+                  <stop offset={(unit * (i + .01)) + '%'} stopColor="#68411E" stopOpacity="1"/>
+                  <stop offset={(unit * (i + .5)) + '%'} stopColor="#68411E" stopOpacity="1"/>
+                </React.Fragment>
+              );
+            })}
+            <stop offset="100%" stopColor="#3A2411" stopOpacity=".5"/>
+          </linearGradient>
+          <linearGradient id="vu-coil-shadow" x1="0%" y1="0%" x2="0%" y2="100%" gradientUnits="objectBoundingBox">
+            <stop offset="0%" stopColor="#000000" stopOpacity=".6"/>
+            <stop offset="20%" stopColor="#000000" stopOpacity=".2"/>
+            <stop offset="50%" stopColor="#000000" stopOpacity="0"/>
+            <stop offset="80%" stopColor="#000000" stopOpacity=".2"/>
+            <stop offset="100%" stopColor="#000000" stopOpacity=".6"/>
+          </linearGradient>
+    {/* Slider */}
+      {/* Clip Paths */}
+          <clipPath id="slider-clip">
+            <rect x="0" y="0" width="10" height="20" />
+          </clipPath>
+      {/* Filters */}
+          <filter id="slider-blur">
+            <feGaussianBlur stdDeviation=".5" />
+          </filter>
+      {/* Ridge Gradients */}
+          <linearGradient id="slider-ridges-top" x1="0%" y1="0%" x2="0%" y2="100%" gradientUnits="objectBoundingBox">
+            {new Array(6).fill(1).map((d, i) => {
+              const unit = (100 / 6);
+              return (
+                <React.Fragment key={'slider-ridges-top-' + i}>
+                  <stop offset={(unit * i) + '%'} stopColor="#000000" stopOpacity="0"/>
+                  <stop offset={(unit * (i + .1)) + '%'} stopColor="#000000" stopOpacity=".3"/>
+                  <stop offset={(unit * (i + .5)) + '%'} stopColor="#000000" stopOpacity=".8"/>
+                </React.Fragment>
+              );
+            })}
+            <stop offset="100%" stopColor="#000000" stopOpacity="0"/>
+          </linearGradient>
+          <linearGradient id="slider-ridges-bottom" x1="0%" y1="0%" x2="0%" y2="100%" gradientUnits="objectBoundingBox">
+            {new Array(6).fill(1).map((d, i) => {
+              const unit = (100 / 6);
+              return (
+                <React.Fragment key={'slider-ridges-bottom-' + i}>
+                  <stop offset={(unit * i) + '%'} stopColor="#000000" stopOpacity="0"/>
+                  <stop offset={(unit * (i + .5)) + '%'} stopColor="#000000" stopOpacity=".8"/>
+                  <stop offset={(unit * (i + .9)) + '%'} stopColor="#000000" stopOpacity=".3"/>
+                </React.Fragment>
+              );
+            })}
+            <stop offset="100%" stopColor="#000000" stopOpacity="0"/>
+          </linearGradient>
+      {/* Contour Gradients */}
+          <linearGradient id="slider-contour-horizontal" x1="0%" y1="0%" x2="0%" y2="100%" gradientUnits="objectBoundingBox">
+            <stop offset="0%" stopColor="#000000" stopOpacity="1"/>
+            <stop offset="1.5%" stopColor="#000000" stopOpacity=".2"/>
+            <stop offset="5%" stopColor="#000000" stopOpacity=".4"/>
+            <stop offset="25%" stopColor="#000000" stopOpacity=".6"/>
+            <stop offset="50%" stopColor="#000000" stopOpacity=".8"/>
+            <stop offset="75%" stopColor="#000000" stopOpacity=".6"/>
+            <stop offset="95%" stopColor="#000000" stopOpacity=".4"/>
+            <stop offset="98.5%" stopColor="#000000" stopOpacity=".2"/>
+            <stop offset="0%" stopColor="#000000" stopOpacity="1"/>
+          </linearGradient>
+          <linearGradient id="slider-contour-vertical" x1="0%" y1="0%" x2="100%" y2="0%" gradientUnits="objectBoundingBox">
+            <stop offset="0%" stopColor="#000000" stopOpacity="1"/>
+            <stop offset="5%" stopColor="#000000" stopOpacity=".4"/>
+            <stop offset="10%" stopColor="#000000" stopOpacity=".1"/>
+            <stop offset="50%" stopColor="#000000" stopOpacity="0"/>
+            <stop offset="90%" stopColor="#000000" stopOpacity=".1"/>
+            <stop offset="95%" stopColor="#000000" stopOpacity=".4"/>
+            <stop offset="100%" stopColor="#000000" stopOpacity="1"/>
+          </linearGradient>
         </defs>
       </svg>
     );
@@ -325,7 +350,7 @@ import React from 'react';
   };
 
   export const HelpButton = ({ active = false, handleClick }) => {
-    const styles = {
+    const helpFonts = {
       question: {
         fontFamily: 'Helvetica, Helvetica Neue, Arial, sans-serif',
         fontSize: 90,
@@ -340,20 +365,28 @@ import React from 'react';
     return (
       <svg className="helpbutton" viewBox="0 0 100 100" onClick={handleClick}>
         <defs>
+    {/* Masks */}
           <mask id="question-mask">
             <rect width="100" height="100" fill="#FFFFFF" />
-            <text style={styles.question} fill="#000000" x="50" y="57" textAnchor="middle" alignmentBaseline="middle">
-              ?
-            </text>
+            <text style={helpFonts.question} fill="#000000"
+              x="50" y="57" textAnchor="middle" alignmentBaseline="middle"
+            >?</text>
           </mask>
           <mask id="x-mask">
             <rect width="100" height="100" fill="#FFFFFF" />
-            <text style={styles.x} fill="#000000" x="50" y="57" textAnchor="middle" alignmentBaseline="middle">
-              X
-            </text>
+            <text style={helpFonts.x} fill="#000000"
+              x="50" y="57" textAnchor="middle" alignmentBaseline="middle"
+            >X</text>
           </mask>
         </defs>
-        <circle mask={active ? "url(#x-mask)" : "url(#question-mask)"} cx="50" cy="50" r="50" fill="#FFFFFF" opacity=".5" />
+    {/* Circle */}
+        <circle mask={active ? "url(#x-mask)" : "url(#question-mask)"}
+          cx="50"
+          cy="50"
+          r="50"
+          fill="#FFFFFF"
+          opacity=".5"
+        />
       </svg>
     );
   };
@@ -370,27 +403,70 @@ import React from 'react';
     };
     return (
       <svg className="glowbutton" viewBox="0 0 100 100" onClick={handleClick}>
-        <rect x="0" y="0" rx="10" width="100" height="100" fill="#AAAAAA" stroke="#000000" strokeWidth="1%" />
-        <rect x="0" y="0" rx="10" width="100" height="100" fill="url(#glowbutton-active-base)" opacity={active ? 1 : 0} />
-        <path d={icons[icon]} transform="scale(10)" fill="none" stroke="#000000" strokeWidth=".5%" />
+    {/* Base Layer */}
+        <rect x="0" y="0" rx="10" width="100" height="100"
+          fill="#AAAAAA"
+          stroke="#000000"
+          strokeWidth="1%"
+        />
+    {/* Button Base Active */}
+        <rect x="0" y="0" rx="10" width="100" height="100"
+          fill="url(#glowbutton-active-base)"
+          opacity={active ? 1 : 0}
+        />
+    {/* Logograph */}
+        <path
+          d={icons[icon]}
+          transform="scale(10)"
+          fill="none"
+          stroke="#000000"
+          strokeWidth=".5%"
+        />
+    {/* Contours */}
         <rect x="0" y="0" rx="10" width="100" height="100" fill="url(#glowbutton-contour-horizontal)" />
         <rect x="0" y="0" rx="10" width="100" height="100" fill="url(#glowbutton-contour-vertical)" />
         <rect x="0" y="0" rx="10" width="100" height="100" fill="url(#glowbutton-contour-center)" />
-        <rect x="0" y="0" rx="10" width="100" height="100" fill="url(#glowbutton-active-halo)" opacity={active ? 1 : 0} />
+    {/* Glow Layer*/}
+        <rect x="0" y="0" rx="10" width="100" height="100"
+          fill="url(#glowbutton-active-halo)"
+          opacity={active ? 1 : 0}
+        />
       </svg>
     );
   };
 
   export const ColorSwatch = ({ color = '#FFFFFF', active = false, handleClick }) => {
     const styles = {
-      pulse: { animation: 'pulsar 1s linear infinite' },
-      hide: { display: 'none' }
+      pulse: {
+        animation: 'pulsar 1s linear infinite'
+      },
+      hide: {
+        display: 'none'
+      }
     }
     return (
       <svg className="colorswatch" viewBox="0 0 100 100" onClick={handleClick}>
-        <circle cx="50" cy="50" r="47" fill="#FFFFFF" stroke="#000000" strokeWidth="6%" />
-        <circle cx="50" cy="50" r="47" style={active ? styles.pulse : null} fill={color} stroke="#222222" strokeWidth="2%" opacity=".9" />
-        <circle cx="50" cy="50" r="47" style={active ? styles.pulse : styles.hide} fill="url(#colorswatch-glow)" opacity={active ? .8 : 0} />
+    {/* Backpane */}
+        <circle cx="50" cy="50" r="47"
+          fill="#FFFFFF"
+          stroke="#000000"
+          strokeWidth="6%"
+        />
+    {/* Color Base */}
+        <circle cx="50" cy="50" r="47"
+          style={active ? styles.pulse : null}
+          fill={color}
+          stroke="#222222"
+          strokeWidth="2%"
+          opacity=".9"
+        />
+    {/* Active Halo Layer */}
+        <circle cx="50" cy="50" r="47"
+          style={active ? styles.pulse : styles.hide}
+          fill="url(#colorswatch-glow)"
+          opacity={active ? .8 : 0}
+        />
+    {/* Contour + Glare */}
         <circle cx="50" cy="50" r="49" fill="url(#colorswatch-contour)" />
         <circle cx="50" cy="50" r="49" fill="url(#colorswatch-glare)" />
       </svg>
@@ -400,20 +476,39 @@ import React from 'react';
   export const ScreenFrame = () => {
     return (
       <svg className="screenframe" viewBox="0 0 40 30">
+    {/* Outer Frame*/}
         <g className="screenframe-outer" clipPath="url(#screenframe-outer-clip)" mask="url(#screenframe-inner-mask)">
-          <rect x="0" y="0" rx="1" width="40" height="30" filter="url(#screenframe-texture)" fill="#6E7377" stroke="#000000" strokeWidth=".2%" />
+          <rect x="0" y="0" rx="1" width="40" height="30"
+            filter="url(#screenframe-texture)"
+            fill="#6E7377"
+            stroke="#000000"
+            strokeWidth=".2%"
+          />
+    {/* Contours */}
           <g className="screenframe-outer-contours" filter="url(#screenframe-blur)" transform="scale(1.025) translate(-.5, -.375)">
             <rect x="0" y="0" rx="1" width="40" height="30" fill="url(#screenframe-outer-corners)" />
             <rect x="0" y="0" rx="1" width="40" height="30" fill="url(#screenframe-outer-horizontal)" />
             <rect x="0" y="0" rx="1" width="40" height="30" fill="url(#screenframe-outer-vertical)" />
           </g>
         </g>
+    {/* Inner Frame */}
         <g className="screenframe-inner-contours" clipPath="url(#screenframe-middle-clip)" mask="url(#screenframe-inner-mask)" filter="url(#screenframe-blur)">
           <path fill="url(#screenframe-inner-horizontal)" d="M 20 15 L 1 1 L 1 29 L 20 15 L 39 29 L 39 1 L 20 15 Z" />
           <path fill="url(#screenframe-inner-vertical)" d="M 20 15 L 1 1 L 39 1 L 20 15 L 39 29 L 1 29 L 20 15 Z" />
-          <path filter="url(#screenframe-corner-blur)" d="M 1 1 L 39 29 Z M 1 29 L 39 1 Z" stroke="#000000" opacity=".5" strokeWidth="3%" />
+          <path filter="url(#screenframe-corner-blur)"
+            d="M 1 1 L 39 29 Z M 1 29 L 39 1 Z"
+            stroke="#000000"
+            opacity=".5"
+            strokeWidth="3%"
+          />
         </g>
-        <path d="M 3 2.5 Q 20 1.5, 37 2.5 Q 38 15, 37 27.5 Q 20 28.5, 3 27.5 Q 2 15, 3 2.5 Z" stroke="#101010" strokeWidth=".3%" fill="none" />
+    {/* Screen Border */}
+        <path d="M 3 2.5 Q 20 1.5, 37 2.5 Q 38 15, 37 27.5 Q 20 28.5, 3 27.5 Q 2 15, 3 2.5 Z"
+          stroke="#101010"
+          strokeWidth=".3%"
+          fill="none"
+        />
+    {/* Screen Contours */}
         <path d="M 3 2.5 Q 20 1.5, 37 2.5 Q 38 15, 37 27.5 Q 20 28.5, 3 27.5 Q 2 15, 3 2.5 Z" fill="url(#screenframe-overlay-contour)" />
       </svg>
     );
@@ -471,7 +566,7 @@ import React from 'react';
     );
   };
 
-  const MeterFrame = () => {
+  export const MeterFrame = () => {
     return (
       <g className="meter-frame" clipPath="url(#meter-outer-clip)">
         <rect x="0" y="0" width="100" height="60" rx="2" ry="2" filter="url(#meter-frame-texture)" fill="#3A3125" stroke="#000000" strokeWidth=".4%" />
@@ -486,7 +581,7 @@ import React from 'react';
     );
   };
 
-  const MeterPanelShadow = () => {
+  export const MeterPanelShadow = () => {
     return (
       <g className="meter-panel-shadow" clipPath="url(#meter-inner-clip)" filter="url(#meter-gradient-blur)">
         <rect x="4.75" y="4.75" width="90.5" height="50.5" rx="1" ry="1" fill="url(#meter-panel-horizontal)" />
@@ -503,9 +598,20 @@ import React from 'react';
     const level = 35 + (pct * 60);
     return (
       <svg className="fader" viewBox="0 0 100 20">
+    {/* Panel */}
         <g className="fader-panel" opacity=".8">
-          <rect x="15" y="8.5" width="70" height="3" fill="#000000" stroke="#151515" strokeWidth=".5%" />
+      {/* Fader Slit */}
+          <rect
+            x="15"
+            y="8.5"
+            width="70"
+            height="3"
+            fill="#000000"
+            stroke="#151515"
+            strokeWidth=".5%"
+          />
         </g>
+    {/* Slider */}
         <g className="fader-slider" transform={`translate(${level}, ${2.5})`} onTouchMove={handleTouchMove}>
           <Slider />
         </g>
@@ -522,11 +628,15 @@ import React from 'react';
             <rect x="5" y="5" width="90" height="50" rx="1" ry="1" fill="#052205" />
             {new Array(20).fill('').map((d, i) => {
               const n = 2.75 + (4.5 * i);
-              return <line key={'v' + n} x1={n} y1="0" x2={n} y2="60" stroke="#FFFFFF" strokeWidth={(i % 2 + 2) / 20} strokeOpacity=".3" />
+              return (
+                <line key={'v' + n} x1={n} y1="0" x2={n} y2="60" stroke="#FFFFFF" strokeWidth={(i % 2 + 2) / 20} strokeOpacity=".3" />
+              );
             })}
             {new Array(12).fill('').map((d, i) => {
               const n = 2.75 + (4.5 * i);
-              return <line key={'h' + n} x1="0" y1={n} x2="100" y2={n} stroke="#FFFFFF" strokeWidth={(i % 2 + 2) / 20} strokeOpacity=".3" />
+              return (
+                <line key={'h' + n} x1="0" y1={n} x2="100" y2={n} stroke="#FFFFFF" strokeWidth={(i % 2 + 2) / 20} strokeOpacity=".3" />
+              );
             })}
           </g>
           <path id="wave-path" d={wave} fill="none" stroke="#A0FFA0" strokeWidth=".15%" />
@@ -593,20 +703,38 @@ import React from 'react';
           <g className="vu-panel">
             <rect x="5" y="5" width="90" height="50" rx="1" ry="1" fill="#BDA96D" stroke="#222222" strokeWidth=".2%" />
             <g style={styles.fontMain} fill="#000000" opacity=".8" textAnchor="middle" alignmentBaseline="middle">
-              <text style={styles.fontLgBold} x="50" y="36" textLength="11.11" lengthAdjust="spacingAndGlyphs">VU</text>
-              <text style={styles.fontSmItalic} x="50" y="42">@ 0 VU = -20 dBFS</text>
-              <text style={styles.fontMdSerif} textAnchor="end" x="88" y="51" textLength="14.3" lengthAdjust="spacingAndGlyphs">KOZAK</text>
-              <text style={styles.fontSmBold} x="88" y="30" textLength="8.33" lengthAdjust="spacingAndGlyphs">PEAK</text>
-              <text style={styles.fontLg} x="12" y="14.4" textLength="4" lengthAdjust="spacingAndGlyphs">-</text>
-              <text style={styles.fontLg} fill={colorRed} x="88" y="14.4">+</text>
-              {ticks.filter(d => !!d.x).map(d => <text key={'text' + d.vu} style={styles.fontMd} fill={d.vu >= 0 ? colorRed : '#000000'} x={d.x} y={d.y} textLength={d.tL} lengthAdjust="spacingAndGlyphs">{Math.abs(d.vu)}</text>)}
+              <text style={styles.fontLgBold} x="50" y="36" textLength="11.11" lengthAdjust="spacingAndGlyphs">
+                VU
+              </text>
+              <text style={styles.fontSmItalic} x="50" y="42">
+                @ 0 VU = -20 dBFS
+              </text>
+              <text style={styles.fontMdSerif} textAnchor="end" x="88" y="51" textLength="14.3" lengthAdjust="spacingAndGlyphs">
+                KOZAK
+              </text>
+              <text style={styles.fontSmBold} x="88" y="30" textLength="8.33" lengthAdjust="spacingAndGlyphs">
+                PEAK
+              </text>
+              <text style={styles.fontLg} x="12" y="14.4" textLength="4" lengthAdjust="spacingAndGlyphs">
+                -
+              </text>
+              <text style={styles.fontLg} fill={colorRed} x="88" y="14.4">
+                +
+              </text>
+              {ticks.filter(d => !!d.x).map(d =>
+                <text key={'text' + d.vu} style={styles.fontMd} fill={d.vu >= 0 ? colorRed : '#000000'} x={d.x} y={d.y} textLength={d.tL} lengthAdjust="spacingAndGlyphs">
+                  {Math.abs(d.vu)}
+                </text>
+              )}
             </g>
             <g mask="url(#vu-scale-mask)" fill="none">
               <path d="M 12.5 18.75 Q 50 7.5, 87.5 18.75" transform="translate(0, 9)" stroke="#000000" strokeWidth=".8%" strokeDasharray="0, 6.089, 44.525, 25.497" />
               <path d="M 12.5 18.75 Q 50 7.5, 87.5 18.75" transform="translate(0, 9)" stroke={colorRed} strokeWidth="5%" strokeDasharray="0, 51.375, 19.408, 5.328" />
               {ticks.map(d => {
                 const l = Math.sqrt(((50 - d.x2) ** 2) + (57 ** 2));
-                return <line key={'tick' + d.vu} x1="50" y1="57" x2={d.x2} y2="0" stroke={d.vu >= 0 ? colorRed : "#000000"} strokeWidth={d.sW} strokeDasharray={`0, ${.545 * l}, ${.19 * l}, ${.265 * l}`} />
+                return (
+                  <line key={'tick' + d.vu} x1="50" y1="57" x2={d.x2} y2="0" stroke={d.vu >= 0 ? colorRed : "#000000"} strokeWidth={d.sW} strokeDasharray={`0, ${.545 * l}, ${.19 * l}, ${.265 * l}`} />
+                );
               })}
             </g>
           </g>
