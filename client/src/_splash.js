@@ -27,27 +27,23 @@ const Init = () => {
   );
 };
 
-export const Splash = ({ orientationOk, pending, cameraOk, audioOk, hideSplash }) => {
-  const style = {
-    opacity: hideSplash ? 0 : 1
-  };
-  const message = (
-    cameraOk
-      ? <Init />
-      : pending
-        ? null
-        : audioOk
-          ? <NoVideo />
-          : <NoAudio />
-  );
+export const Splash = ({ isVertical, cameraOk, audioOk, initOk }) => {
+  const splashClass = !isVertical ? 'active' : (initOk ? 'hidden' : 'active');
   return (
-    <div id="splash" style={style}>
+    <div id="splash" className={splashClass}>
       <div className="logo-box">
         <Logo opacity={.6} />
       </div>
-      {orientationOk &&
+      {isVertical && cameraOk !== null &&
         <div className="message-box">
-          {message}
+          {initOk
+            ? null
+            : !audioOk
+              ? <NoAudio />
+              : !cameraOk
+                ? <NoVideo />
+                : <Init />
+          }
         </div>
       }
     </div>

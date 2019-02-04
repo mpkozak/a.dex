@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import './_css/Main.css';
-import { Logo } from './_svg.js';
 import Tracker from './_tracker.js'
 import Placard from './Placard.js';
 import Screen from './Screen.js';
@@ -172,7 +171,6 @@ export default class Main extends PureComponent {
 
 
   render() {
-    console.log('main render')
     const {
       showHelp,
       video,
@@ -183,15 +181,19 @@ export default class Main extends PureComponent {
       colorActive,
       sensitivity,
     } = this.state;
+    const mainStyle = {
+      opacity: this.props.isVertical ? 1 : 0
+    };
+
     return (
-      <div className="Main">
-        <div className="r r1">
+      <div id="Main" style={mainStyle} >
+        <div className="r">
           <Placard
             showHelp={showHelp}
             toggleHelp={this.handleToggleHelp}
           />
         </div>
-        <div className="r r2">
+        <div className="r">
           {!!video &&
             <Screen
               video={video}
@@ -201,7 +203,7 @@ export default class Main extends PureComponent {
             />
           }
         </div>
-        <div className="r r3">
+        <div className="r">
           <Oscillators
             osc1={osc1}
             osc2={osc2}
@@ -216,7 +218,7 @@ export default class Main extends PureComponent {
             setSensitivity={this.handleSetSensitivity}
           />
         </div>
-        <div className="r r4">
+        <div className="r">
           <Meters
             analyser={this.props.audio.analyser}
             passback={this.passbackMeters}

@@ -32,13 +32,13 @@
   justify-content: space-around;
 }
 
-.osc .glowbutton {
+#Oscillators .glowbutton {
   width: 24%;
   height: auto;
   /*filter: drop-shadow(.02rem .02rem .025rem #000000);*/
 }
 
-.osc .glowbutton:active {
+#Oscillators .glowbutton:active {
   transform: scale(.96);
   /*filter: drop-shadow(.02rem .02rem .015rem #000000);*/
 }

@@ -1,14 +1,13 @@
-.Main {
+#Main {
   position: fixed;
-  /*left: 0;*/
-  /*top: 0;*/
   width: 100vw;
   height: 100vh;
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
   justify-content: center;
-  background-color: rgba(0,0,0,0);
+  background-color: rgba(0, 0, 0, 0);
+  /*transition: opacity 100ms;*/
   z-index: 100;
 }
 
@@ -20,7 +19,7 @@
 
 .border {
   border-radius: 1.5vmin;
-  border: 1px solid rgba(255,255,255,.5);
+  border: 1px solid rgba(255, 255, 255, .5);
 }
 
 .r {
@@ -31,6 +30,9 @@
   align-items: center;
   justify-content: center;
 }
+
+
+
 
 
 
@@ -63,8 +65,3 @@
   /*background-color: rgba(255,255,0,.3);*/
   /*border: 1px solid yellow;*/
 }
-
-/*.c {
-  height: 100%;
-}
-*/

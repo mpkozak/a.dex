@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
-import NoSleep from 'nosleep.js';
 import './App.css';
+import NoSleep from 'nosleep.js';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { Splash } from './_splash.js';
 import { SvgDefs } from './components/_svg.js';
@@ -10,21 +10,20 @@ export default class App extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      orientationOk: undefined,
-      pending: true,
-      audioOk: false,
-      cameraOk: false,
-      initOk: false,
-      hideSplash: false,
+      isVertical: !Math.abs(window.orientation),
+      isLocked: false,
+      audioOk: null,
+      cameraOk: null,
+      initOk: null,
     };
-    this.noSleep = undefined;
+    this.noSleep = new NoSleep();
     this.videoStream = undefined;
     this.audio = undefined;
-    this.handleOrientation = this.handleOrientation.bind(this);
-    this.handleSwipe = this.handleSwipe.bind(this);
+    this.handleTouchStart = this.handleTouchStart.bind(this);
     this.handleScroll = this.handleScroll.bind(this);
     this.handleLock = this.handleLock.bind(this);
     this.handleResize = this.handleResize.bind(this);
+    this.handleOrientation = this.handleOrientation.bind(this);
     this.audioMute = this.audioMute.bind(this);
     this.audioSetGain = this.audioSetGain.bind(this);
     this.audioSetFreq = this.audioSetFreq.bind(this);
@@ -34,12 +33,7 @@ export default class App extends PureComponent {
   componentDidMount() {
     window.addEventListener('orientationchange', this.handleOrientation);
     disableBodyScroll(this.refs.app);
-    this.noSleep = new NoSleep();
     if (!!global.AnalyserNode.prototype.getFloatTimeDomainData) {
-      this.setState(prevState => ({
-        orientationOk: !Math.abs(window.orientation),
-        audioOk: true
-      }));
       this.audioInit() && this.videoInit();
     };
   };
@@ -94,6 +88,8 @@ export default class App extends PureComponent {
       audioSetFreq: this.audioSetFreq,
       audioSetOsc: this.audioSetOsc
     };
+
+    this.setState(prevState => ({ audioOk: true }));
     return true;
   };
 
@@ -106,19 +102,20 @@ export default class App extends PureComponent {
     })
       .then(stream => {
         this.videoStream = stream;
-        this.setState(prevState => ({ cameraOk: true, pending: false }), () => {
-          window.addEventListener('touchstart', this.handleSwipe);
-          enableBodyScroll(this.refs.app);
-        });
+        this.setState(prevState => ({ cameraOk: true }));
+        window.addEventListener('touchstart', this.handleTouchStart);
+        enableBodyScroll(this.refs.app);
       })
       .catch(err => {
         console.log(err);
-        this.setState(prevState => ({ pending: false }));
+        this.setState(prevState => ({ initOk: false }));
       });
-        // this.setState(prevState => ({ cameraOk: true }), () => {
-        //   enableBodyScroll(this.refs.app);
-        //   window.addEventListener('touchstart', this.handleSwipe);
-        // });
+
+        this.setState(prevState => ({ cameraOk: true }), () => {
+          window.addEventListener('touchstart', this.handleTouchStart);
+          enableBodyScroll(this.refs.app);
+          window.scrollTo(0, 1000);
+        });
   };
 //////////////////////////
 
@@ -157,34 +154,19 @@ export default class App extends PureComponent {
 
 /////////////////////
 // Layout Handlers //
-  handleOrientation() {
-    const orientationOk = !Math.abs(window.orientation);
-    const hideSplash = orientationOk;
-    this.setState(prevState => ({
-       orientationOk, hideSplash
-    }));
-  };
-
-  handleSwipe() {
-    if (this.state.orientationOk) {
-      window.removeEventListener('touchstart', this.handleSwipe);
-      this.audio.ctx.resume();
-      this.noSleep.enable();
-      window.scrollY === 400 || window.scrollTo(0, 400);
+  handleTouchStart() {
+    if (this.state.isVertical) {
+      window.removeEventListener('touchstart', this.handleTouchStart);
       window.addEventListener('scroll', this.handleScroll);
+      window.addEventListener('resize', this.handleResize);
+      this.noSleep.enable();
+      this.audio.ctx.resume();
     };
   };
 
   handleScroll() {
     clearTimeout(this.scrollTimeout);
     this.scrollTimeout = setTimeout(this.handleLock, 20);
-    if (!this.state.initOk) {
-      window.scrollY > 400 || window.scrollTo(0, 400);
-      window.scrollY < 1500 || window.scrollTo(0, 1500);
-    };
-    if (!this.state.hideSplash) {
-      this.setState(prevState => ({ hideSplash: true }));
-    };
   };
 
   handleLock() {
@@ -195,51 +177,59 @@ export default class App extends PureComponent {
       app.style.height = '100vh';
       shadowMask.style.opacity = 0;
       window.scrollTo(0, 0);
-      if (!this.state.initOk) {
-        this.setState(prevState => ({ initOk: true }));
-        window.addEventListener('resize', this.handleResize);
-      };
+      this.setState(prevState => ({ isLocked: true, initOk: true }));
     };
   };
 
   handleResize() {
     const { app, shadowMask } = this.refs;
-    app.style.height = 'calc(100vh + 2000px)';
-    window.scrollY === 0 || window.scrollTo(0, 0);
-    if ((window.innerHeight + 2000) !== app.clientHeight) {
-      window.addEventListener('scroll', this.handleScroll);
-      enableBodyScroll(app);
+    const { isVertical, initOk } = this.state;
+    this.setState(prevState => ({ isLocked: false }));
+    if (isVertical) {
+      app.style.height = 'calc(100vh + 2000px)';
+      if (initOk && (window.innerHeight + 2000) === app.clientHeight) {
+        this.handleLock();
+      } else {
+        window.scrollY === 0 || window.scrollTo(0, 1000);
+        shadowMask.style.opacity = 1;
+        window.addEventListener('scroll', this.handleScroll);
+        enableBodyScroll(app);
+      };
+    } else {
       shadowMask.style.opacity = 1;
+      window.removeEventListener('scroll', this.handleScroll);
+      disableBodyScroll(app);
     };
+  };
+
+  handleOrientation() {
+    const isVertical = !Math.abs(window.orientation);
+    this.setState(prevState => ({ isVertical }), this.handleResize);
   };
 /////////////////////
 
 
   render() {
-    const { orientationOk, pending, audioOk, cameraOk, initOk, hideSplash } = this.state;
+    const { isVertical, audioOk, cameraOk, initOk } = this.state;
     const { videoStream, audio } = this;
-    const appStyle = {
-      backgroundColor: !initOk ? 'rgba(0, 0, 0, .7)' : 'none'
-    };
-
     return (
-      <div ref="app" id="App" style={appStyle}>
+      <div ref="app" id="App">
         <SvgDefs />
         <div id="bgi" className="fullscreen" />
         <div ref="shadowMask" id="shadow-mask" className="fullscreen" />
-          {initOk && orientationOk
-            ? <Main
-                videoStream={videoStream}
-                audio={audio}
-              />
-            : <Splash
-                orientationOk={orientationOk}
-                pending={pending}
-                cameraOk={cameraOk}
-                audioOk={audioOk}
-                hideSplash={hideSplash}
-              />
+          {false &&
+            <Main
+              isVertical={isVertical}
+              videoStream={videoStream}
+              audio={audio}
+            />
           }
+          <Splash
+            isVertical={isVertical}
+            cameraOk={cameraOk}
+            audioOk={audioOk}
+            initOk={initOk}
+          />
       </div>
     );
   };

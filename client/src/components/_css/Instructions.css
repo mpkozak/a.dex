@@ -1,6 +1,7 @@
 #Instructions {
   position: absolute;
   top: 100%;
+  height: 0;
   flex-flow: column nowrap;
   align-items: center;
   justify-content: center;
@@ -9,31 +10,35 @@
 
 #Instructions>.instructions-box {
   position: absolute;
-  top: 0%;
+  top: 0;
   width: 90%;
+  margin: 3% 0 0 0;
+  padding: 2%;
   overflow: hidden;
   border-radius: 1.5vmin;
-  transition: background-color 500ms ease-out, border 100ms ease-out, max-height 500ms ease-out;
+  transition: background-color 500ms ease-out, border 100ms ease-out, opacity 250ms, max-height 500ms ease-out;
 }
 
 #Instructions>.show {
   background-color: rgba(0, 0, 0, .9);
   border: 1px solid rgba(255, 255, 255, .5);
+  opacity: 1;
   max-height: 80vh;
 }
 
 #Instructions>.hide {
-  background-color: rgba(0, 0, 0, 0);
+  background-color: transparent;
   border: 1px solid rgba(255, 255, 255, 0);
+  opacity: 0;
   max-height: 0;
 }
 
 #Instructions .list {
-  padding: 4% 2% 0 12%;
+  margin: 2% 3% 0 6%;
 }
 
 #Instructions .step {
-  margin: 0 4% 4% 0;
+  margin: 0 0 4% 0;
   text-align: left;
   font-size: 4vmin;
   font-family: 'Montserrat Alternates', sans-serif;

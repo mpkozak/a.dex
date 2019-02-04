@@ -7,6 +7,23 @@
   justify-content: flex-start;
 }
 
+#App .fullscreen {
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+}
+
+#App .hidden {
+  opacity: 0;
+  z-index: 1;
+}
+
+#App .active {
+  opacity: 1;
+  z-index: 102;
+}
+
 #bgi {
   position: sticky;
   background-image: url('./_img/titanium.jpg');
@@ -17,10 +34,10 @@
 
 #shadow-mask {
   position: fixed;
-  background-color: rgba(0, 0, 0, .5);
   pointer-events: none;
+  background-color: rgba(0, 0, 0, .7);
   opacity: 1;
-  transition: opacity 500ms;
+  transition: opacity 200ms;
   z-index: 101;
 }
 
@@ -34,16 +51,8 @@
   flex-flow: column nowrap;
   align-items: center;
   justify-content: space-around;
-  opacity: 1;
-  transition: opacity 250ms;
+  transition: opacity 200ms;
   z-index: 102;
-}
-
-.fullscreen {
-  left: 0;
-  top: 0;
-  width: 100vw;
-  height: 100vh;
 }
 
 #splash>.logo-box {
