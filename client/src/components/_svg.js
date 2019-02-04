@@ -413,9 +413,9 @@ import React from 'react';
           </g>
         </g>
         <g className="screenframe-inner-contours" clipPath="url(#screenframe-middle-clip)" mask="url(#screenframe-inner-mask)" filter="url(#screenframe-blur)">
-          <path fill="url(#screenframe-inner-horizontal)" d="M 20 15 L 1 1 L 1 29 L 20 15 L 39 29 L 39 1 L 20 15 Z" />
-          <path fill="url(#screenframe-inner-vertical)" d="M 20 15 L 1 1 L 39 1 L 20 15 L 39 29 L 1 29 L 20 15 Z" />
-          <path filter="url(#screenframe-corner-blur)" d="M 1 1 L 39 29 Z M 1 29 L 39 1 Z" stroke="#000000" opacity=".5" strokeWidth="3%" />
+          <path d="M 20 15 L 1 1 L 1 29 L 20 15 L 39 29 L 39 1 L 20 15 Z" fill="url(#screenframe-inner-horizontal)" />
+          <path d="M 20 15 L 1 1 L 39 1 L 20 15 L 39 29 L 1 29 L 20 15 Z" fill="url(#screenframe-inner-vertical)" />
+          <path d="M 1 1 L 39 29 Z M 1 29 L 39 1 Z" filter="url(#screenframe-corner-blur)" stroke="#000000" opacity=".5" strokeWidth="3%" />
         </g>
         <path d="M 3 2.5 Q 20 1.5, 37 2.5 Q 38 15, 37 27.5 Q 20 28.5, 3 27.5 Q 2 15, 3 2.5 Z" stroke="#101010" strokeWidth=".3%" fill="none" />
         <path d="M 3 2.5 Q 20 1.5, 37 2.5 Q 38 15, 37 27.5 Q 20 28.5, 3 27.5 Q 2 15, 3 2.5 Z" fill="url(#screenframe-overlay-contour)" />
@@ -447,9 +447,9 @@ import React from 'react';
         <rect x="0" y="0" width="100" height="60" rx="2" ry="2" fill="url(#meter-frame-horizontal" />
         <rect x="0" y="0" width="100" height="60" rx="2" ry="2" fill="url(#meter-frame-vertical)" />
         <g clipPath="url(#meter-middle-clip)" filter="url(#meter-gradient-blur)">
-          <path fill="url(#meter-frame-vertical)" d="M 2.5 2.5 L 97.5 2.5 L 73.75 26.25 L 73.75 33.75 L 97.5 57.5 L 2.5 57.5 L 26.25 33.75 L 26.25 26.25 Z" />
-          <path fill="url(#meter-frame-horizontal)" d="M 2.5 2.5 L 30 30 L 70 30 L 97.5 2.5 L 97.5 57.5 L 70 30 L 30 30 L 2.5 57.5 Z" />
-          <rect fill="url(#meter-frame-corners)" x="2.5" y="2.5" width="95" height="55" rx="2" ry="2" />
+          <path d="M 2.5 2.5 L 97.5 2.5 L 73.75 26.25 L 73.75 33.75 L 97.5 57.5 L 2.5 57.5 L 26.25 33.75 L 26.25 26.25 Z" fill="url(#meter-frame-vertical)" />
+          <path d="M 2.5 2.5 L 30 30 L 70 30 L 97.5 2.5 L 97.5 57.5 L 70 30 L 30 30 L 2.5 57.5 Z" fill="url(#meter-frame-horizontal)" />
+          <rect x="2.5" y="2.5" width="95" height="55" rx="2" ry="2" fill="url(#meter-frame-corners)" />
         </g>
       </g>
     );
