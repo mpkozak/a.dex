@@ -22,7 +22,7 @@ export default class Settings extends PureComponent {
   render() {
     const { color1, color2, sensitivity, setSensitivity } = this.props;
     return (
-      <div className="settings outer">
+      <div id="Settings" className="outer">
         <div className="border">
           <div className="color-box">
             {this.makeColorBoxElement('Gain', color1, 1)}

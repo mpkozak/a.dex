@@ -1,4 +1,4 @@
-.placard {
+#Placard {
   width: 100%;
   min-width: 100vmin;
   flex-flow: row nowrap;
@@ -6,7 +6,7 @@
   justify-content: space-between;
 }
 
-.placard>.logo-box {
+#Placard>.logo-box {
   width: 45vmin;
   height: 15vmin;
   min-width: 45vmin;
@@ -17,7 +17,7 @@
   justify-content: center;
 }
 
-.placard>.help-box {
+#Placard>.help-box {
   width: 15vmin;
   height: 15vmin;
   display: flex;
@@ -26,12 +26,12 @@
   justify-content: center;
 }
 
-.placard .logo {
+#Placard .logo {
   width: 90%;
   height: auto;
 }
 
-.placard .helpbutton {
+#Placard .helpbutton {
   width: 60%;
   height: auto;
 }

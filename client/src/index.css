@@ -43,11 +43,6 @@
   color: rgba(255, 255, 255, .7);
 }
 
-body {
-  background: url('./_img/titanium.jpg') no-repeat center center fixed;
-  background-size: cover;
-}
-
 h1 {
   font-size: 100%;
 }

@@ -12,7 +12,6 @@ export default class Main extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      orientationOk: true,
       showHelp: false,
       video: false,
       trackerCtx: false,
@@ -32,7 +31,6 @@ export default class Main extends PureComponent {
     this.runtimeStack = this.runtimeStack.bind(this);
     this.passbackMeters = this.passbackMeters.bind(this)
     this.passbackScreen = this.passbackScreen.bind(this);
-    this.handleOrientationChange = this.handleOrientationChange.bind(this);
     this.handleToggleHelp = this.handleToggleHelp.bind(this);
     this.handleSetOsc = this.handleSetOsc.bind(this);
     this.handleGetColor = this.handleGetColor.bind(this);
@@ -44,8 +42,6 @@ export default class Main extends PureComponent {
     const color1 = localStorage.getItem('color1');
     const color2 = localStorage.getItem('color2');
     color1 && color2 && this.setState(prevState => ({ color1, color2 }));
-    this.handleOrientationChange();
-    window.addEventListener('orientationchange', this.handleOrientationChange);
     this.videoInit();
   };
 
@@ -105,7 +101,6 @@ export default class Main extends PureComponent {
   runtimeStack() {
     this.drawMeters();
     this.tracker.runtime();
-    // this.tracker.getData();
     this.rAF = requestAnimationFrame(this.runtimeStack);
   };
 ///////////////////
@@ -133,11 +128,6 @@ export default class Main extends PureComponent {
       (i < 3) && (color += ('0' + d.toString(16)).slice(-2));
     });
     return color;
-  };
-
-  handleOrientationChange() {
-    const orientation = Math.abs(window.orientation);
-    this.setState(prevState => ({ orientationOk: !orientation }));
   };
 
   handleToggleHelp() {
@@ -182,8 +172,8 @@ export default class Main extends PureComponent {
 
 
   render() {
+    console.log('main render')
     const {
-      orientationOk,
       showHelp,
       video,
       osc1,
@@ -195,52 +185,43 @@ export default class Main extends PureComponent {
     } = this.state;
     return (
       <div className="Main">
-        {!orientationOk
-          ? <div className="splash">
-              <div className="logo-box">
-                <Logo opacity={.6} />
-              </div>
-            </div>
-          : <React.Fragment>
-              <div className="r r1">
-                <Placard
-                  showHelp={showHelp}
-                  toggleHelp={this.handleToggleHelp}
-                />
-              </div>
-              <div className="r r2">
-                {!!video &&
-                  <Screen
-                    video={video}
-                    colorActive={colorActive}
-                    setColor={this.handleSetColor}
-                    passback={this.passbackScreen}
-                  />
-                }
-              </div>
-              <div className="r r3">
-                <Oscillators
-                  osc1={osc1}
-                  osc2={osc2}
-                  setOsc={this.handleSetOsc}
-                />
-                <Settings
-                  color1={color1}
-                  color2={color2}
-                  active={colorActive}
-                  sensitivity={sensitivity / 120}
-                  getColor={this.handleGetColor}
-                  setSensitivity={this.handleSetSensitivity}
-                />
-              </div>
-              <div className="r r4">
-                <Meters
-                  analyser={this.props.audio.analyser}
-                  passback={this.passbackMeters}
-                />
-              </div>
-            </React.Fragment>
-        }
+        <div className="r r1">
+          <Placard
+            showHelp={showHelp}
+            toggleHelp={this.handleToggleHelp}
+          />
+        </div>
+        <div className="r r2">
+          {!!video &&
+            <Screen
+              video={video}
+              colorActive={colorActive}
+              setColor={this.handleSetColor}
+              passback={this.passbackScreen}
+            />
+          }
+        </div>
+        <div className="r r3">
+          <Oscillators
+            osc1={osc1}
+            osc2={osc2}
+            setOsc={this.handleSetOsc}
+          />
+          <Settings
+            color1={color1}
+            color2={color2}
+            active={colorActive}
+            sensitivity={sensitivity / 120}
+            getColor={this.handleGetColor}
+            setSensitivity={this.handleSetSensitivity}
+          />
+        </div>
+        <div className="r r4">
+          <Meters
+            analyser={this.props.audio.analyser}
+            passback={this.passbackMeters}
+          />
+        </div>
       </div>
     );
   };

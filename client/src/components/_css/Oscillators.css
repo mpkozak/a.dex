@@ -1,4 +1,4 @@
-.oscillators {
+#Oscillators {
   width: 45%;
   min-width: 45vmin;
   flex-flow: column nowrap;
@@ -6,7 +6,7 @@
   justify-content: center;
 }
 
-.oscillators>.osc {
+#Oscillators>.osc {
   width: 43vmin;
   height: 15vmin;
   min-width: 43vmin;

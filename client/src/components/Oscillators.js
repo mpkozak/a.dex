@@ -27,7 +27,7 @@ export default class Oscillators extends PureComponent {
 
   render() {
     return (
-      <div className="oscillators outer">
+      <div id="Oscillators" className="outer">
         {this.makeOscillator('osc1')}
         {this.makeOscillator('osc2')}
       </div>

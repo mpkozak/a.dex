@@ -1,4 +1,4 @@
-.settings {
+#Settings {
   width: 55%;
   min-width: 55vmin;
   flex-flow: column nowrap;
@@ -6,7 +6,7 @@
   justify-content: center;
 }
 
-.settings>.border {
+#Settings>.border {
   width: 53vmin;
   height: 31.5vmin;
   min-width: 53vmin;
@@ -18,7 +18,7 @@
   justify-content: center;
 }
 
-.settings .color-box {
+#Settings>.border>.color-box {
   width: 100%;
   height: 50%;
   display: flex;
@@ -27,7 +27,12 @@
   justify-content: center;
 }
 
-.color-box>.element {
+#Settings>.border>.slider-box {
+  width: 100%;
+  height: 50%;
+}
+
+#Settings .color-box>.element {
   height: 100%;
   width: 48%;
   display: flex;
@@ -36,11 +41,11 @@
   justify-content: center;
 }
 
-.color-box .label-box {
+#Settings .color-box>.element>.label-box {
   margin: 0 3%;
 }
 
-.color-box .swatch-box {
+#Settings .color-box>.element>.swatch-box {
   width: 50%;
   height: 90%;
   display: flex;
@@ -49,21 +54,16 @@
   justify-content: center;
 }
 
-.color-box .colorswatch {
+#Settings .colorswatch {
   width: 95%;
   height: auto;
 }
 
-.settings .slider-box {
-  width: 100%;
-  height: 50%;
-}
-
-.slider-box .label-box {
+#Settings .slider-box>.label-box {
 
 }
 
-.slider-box .fader {
+#Settings .slider-box>.fader {
   width: 95%;
   height: auto;
   max-height: 100%;

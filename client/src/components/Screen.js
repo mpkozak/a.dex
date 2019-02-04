@@ -116,28 +116,31 @@ export default class Screen extends PureComponent {
   render() {
     const { vCropW, vCropH } = this.state;
     return (
-      <div className="screen outer">
+      <div id="Screen" className="outer">
         <div className="video-box">
-          <ScreenFrame />
           <canvas ref="videoCanvas"
-            className="video-0 video-element"
+            id="video-0"
+            className="element"
             width={vCropW}
             height={vCropH}
           />
           <svg ref="videoSvg"
-            className="video-1 video-element"
+            id="video-1"
+            className="element"
             viewBox={`0 0 ${vCropW} ${vCropH}`}
           />
-          <div className="video-2 video-element">
+          <div id="video-2" className="element">
             {this.props.colorActive &&
               <h2 className="osd">Calibrating...</h2>
             }
           </div>
           <div ref="videoClickbox"
-            className="video-3 video-element"
+            id="video-3"
+            className="element"
             width={vCropW}
             height={vCropH}
           />
+          <ScreenFrame />
         </div>
       </div>
     );

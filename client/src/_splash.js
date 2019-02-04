@@ -27,7 +27,10 @@ const Init = () => {
   );
 };
 
-export const Splash = ({ pending, cameraOk, audioOk }) => {
+export const Splash = ({ orientationOk, pending, cameraOk, audioOk, hideSplash }) => {
+  const style = {
+    opacity: hideSplash ? 0 : 1
+  };
   const message = (
     cameraOk
       ? <Init />
@@ -38,13 +41,15 @@ export const Splash = ({ pending, cameraOk, audioOk }) => {
           : <NoAudio />
   );
   return (
-    <div id="app-splash" className="splash">
+    <div id="splash" style={style}>
       <div className="logo-box">
         <Logo opacity={.6} />
       </div>
-      <div className="message-box">
-        {message}
-      </div>
+      {orientationOk &&
+        <div className="message-box">
+          {message}
+        </div>
+      }
     </div>
   );
 };
