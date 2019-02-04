@@ -88,7 +88,6 @@ export default class App extends PureComponent {
       audioSetFreq: this.audioSetFreq,
       audioSetOsc: this.audioSetOsc
     };
-
     this.setState(prevState => ({ audioOk: true }));
     return true;
   };
@@ -110,12 +109,6 @@ export default class App extends PureComponent {
         console.log(err);
         this.setState(prevState => ({ initOk: false }));
       });
-
-        this.setState(prevState => ({ cameraOk: true }), () => {
-          window.addEventListener('touchstart', this.handleTouchStart);
-          enableBodyScroll(this.refs.app);
-          window.scrollTo(0, 1000);
-        });
   };
 //////////////////////////
 
@@ -185,8 +178,8 @@ export default class App extends PureComponent {
     const { app, shadowMask } = this.refs;
     const { isVertical, initOk } = this.state;
     this.setState(prevState => ({ isLocked: false }));
+    app.style.height = 'calc(100vh + 2000px)';
     if (isVertical) {
-      app.style.height = 'calc(100vh + 2000px)';
       if (initOk && (window.innerHeight + 2000) === app.clientHeight) {
         this.handleLock();
       } else {
@@ -217,7 +210,7 @@ export default class App extends PureComponent {
         <SvgDefs />
         <div id="bgi" className="fullscreen" />
         <div ref="shadowMask" id="shadow-mask" className="fullscreen" />
-          {false &&
+          {initOk &&
             <Main
               isVertical={isVertical}
               videoStream={videoStream}

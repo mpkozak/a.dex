@@ -7,7 +7,6 @@
   align-items: center;
   justify-content: center;
   background-color: rgba(0, 0, 0, 0);
-  /*transition: opacity 100ms;*/
   z-index: 100;
 }
 
@@ -25,43 +24,9 @@
 .r {
   position: relative;
   width: 100%;
+  margin: 2% 0 0 0;
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
   justify-content: center;
-}
-
-
-
-
-
-
-
-.r1 {
-  /*height: 9%;*/
-  /*height: 12vmin;*/
-  /*background-color: rgba(255,0,0,.3);*/
-  /*border: 1px solid red;*/
-}
-
-.r2 {
-  /*height: 45%;*/
-  /*height: 75vmin;*/
-  /*width: 100vmin;*/
-  /*background-color: rgba(0,255,0,.3);*/
-  /*border: 1px solid green;*/
-}
-
-.r3 {
-  /*height: 25%;*/
-  /*height: 35vmin;*/
-  /*background-color: rgba(0,0,255,.3);*/
-  /*border: 1px solid blue;*/
-}
-
-.r4 {
-  /*height: 20%;*/
-  /*height: 32vmin;*/
-  /*background-color: rgba(255,255,0,.3);*/
-  /*border: 1px solid yellow;*/
 }

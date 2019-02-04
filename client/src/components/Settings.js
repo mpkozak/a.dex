@@ -32,9 +32,7 @@ export default class Settings extends PureComponent {
             {this.makeColor('Pitch', 2)}
           </div>
           <div className="slider-box">
-            <div className="label-box">
-              <h4>Sensitivity</h4>
-            </div>
+            <h4>Sensitivity</h4>
             <Fader
               pct={sensitivity}
               handleTouchMove={(e) => setSensitivity(e)}

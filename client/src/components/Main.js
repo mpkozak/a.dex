@@ -179,12 +179,11 @@ export default class Main extends PureComponent {
       color1,
       color2,
       colorActive,
-      sensitivity,
+      sensitivity
     } = this.state;
     const mainStyle = {
       opacity: this.props.isVertical ? 1 : 0
     };
-
     return (
       <div id="Main" style={mainStyle} >
         <div className="r">
