@@ -30,18 +30,11 @@ export default class App extends PureComponent {
     this.runtime = 0;
     this.rAF = 0;
 
-    // this.audioMute = this.audioMute.bind(this);
-    // this.audioToggleMic = this.audioToggleMic.bind(this);
-    // this.audioSetGain = this.audioSetGain.bind(this);
-    // this.audioSetFreq = this.audioSetFreq.bind(this);
-    // this.audioSetParam = this.audioSetParam.bind(this);
-    // this.audioSetOsc = this.audioSetOsc.bind(this);
   };
 
   componentDidMount() {
     if (!!global.AnalyserNode.prototype.getFloatTimeDomainData) {
       this.audioInit() && this.streamInit();
-      // window.addEventListener('click', () => this.audioInit())
     };
   };
 
@@ -116,8 +109,7 @@ export default class App extends PureComponent {
 
   passbackMeters(getData) {
     this.drawMeters = getData;
-    // this.audio.analyserSrc = 'mic'
-    // this.audio.fftBase = 8;
+    this.audio.analyserSrc = 'mic'
     // console.profile('meters')
     this.runtimeStack();
     // setTimeout(() => console.profileEnd('meters'), 5000);
@@ -125,36 +117,36 @@ export default class App extends PureComponent {
 
 
   runtimeStack() {
-    const freq = Math.random() * 1000;
-    this.audio.setRampBatch([
-      [['instGain', 'gain'], Math.random(), true],
-      [['osc1', 'frequency'], freq],
-      [['osc2', 'frequency'], freq]
-    ])
-    this.drawMeters();
     requestAnimationFrame(this.runtimeStack);
+    // const freq = Math.random() * 1000;
+    // this.audio.setRampBatch([
+    //   [['instGain', 'gain'], Math.random(), true],
+    //   [['osc1', 'frequency'], freq],
+    //   [['osc2', 'frequency'], freq]
+    // ])
+    this.drawMeters();
   };
 
 
   streamInit() {
-    // navigator.mediaDevices.getUserMedia({
-    //   video: {
-    //     width: { ideal: 640 },
-    //     height: { ideal: 480 }
-    //   },
-    //   audio: true
-    // })
-    //   .then(stream => {
-    //     this.audioStream = new MediaStream([stream.getAudioTracks()[0]]);
-    //     this.videoStream = new MediaStream([stream.getVideoTracks()[0]]);
-    //     this.audio.makeStream('mic', this.audioStream);
+    navigator.mediaDevices.getUserMedia({
+      video: {
+        width: { ideal: 640 },
+        height: { ideal: 480 }
+      },
+      audio: true
+    })
+      .then(stream => {
+        this.audioStream = new MediaStream([stream.getAudioTracks()[0]]);
+        this.videoStream = new MediaStream([stream.getVideoTracks()[0]]);
+        this.audio.makeStream('mic', this.audioStream);
         this.setState(prevState => ({ streamOk: true }));
         window.addEventListener('click', this.handleClick);
-      // })
-      // .catch(err => {
-      //   console.log(err);
-      //   this.setState(prevState => ({ streamOk: false }));
-      // });
+      })
+      .catch(err => {
+        console.log(err);
+        this.setState(prevState => ({ streamOk: false }));
+      });
   };
 
   handleClick() {
@@ -164,59 +156,6 @@ export default class App extends PureComponent {
     this.setState(prevState => ({ initOk: true }));
   };
 //////////////////////////
-
-///////////////////////////
-// Audio Handler Methods //
-  audioMute(t = this.audio.ctx.currentTime) {
-    this.audioSetGain(0, t);
-  };
-
-  audioToggleMic() {
-    const { micActive } = this.state;
-    const { masterGain, analyser, mic } = this.audio;
-    if (!micActive) {
-      masterGain.disconnect(analyser);
-      mic.connect(analyser);
-    } else {
-      mic.disconnect(analyser);
-      masterGain.connect(analyser);
-    };
-    this.setState(prevState => ({ micActive: !prevState.micActive }));
-  };
-
-  audioSetGain(val, t = this.audio.ctx.currentTime) {
-    const { instGain, latency } = this.audio;
-    const node = instGain.gain;
-    const prevVal = node.value;
-    node.cancelScheduledValues(t - 1);
-    node.setValueAtTime(prevVal, t);
-    node.linearRampToValueAtTime(val, t + latency);
-  };
-
-  audioSetFreq(val, t = this.audio.ctx.currentTime) {
-    const { osc1, osc2, latency } = this.audio;
-    [osc1.frequency, osc2.frequency].forEach(d => {
-      const prevVal = d.value;
-      d.cancelScheduledValues(t - 1);
-      d.setValueAtTime(prevVal, t);
-      d.exponentialRampToValueAtTime(val, t + latency);
-    });
-  };
-
-  audioSetParam(param, val, t = this.audio.ctx.currentTime) {
-    const prevVal = param.value;
-    param.cancelScheduledValues(t - 1);
-    param.setValueAtTime(prevVal, t);
-    param.linearRampToValueAtTime(val, t + .05);
-  };
-
-  audioSetOsc(osc, type) {
-    this.audioMute();
-    setTimeout(() => {
-      this.audio[osc].type = type;
-    }, 10);
-  };
-///////////////////////////
 
 
   render() {

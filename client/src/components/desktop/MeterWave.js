@@ -49,7 +49,7 @@ export default class MeterWave extends PureComponent {
               return <line key={'h' + n} x1="0" y1={n} x2="100" y2={n} stroke="#FFFFFF" strokeWidth={(i % 2 + 2) / 20} strokeOpacity=".3" />
             })}
           </g>
-          <path id="d3-meter-wave" d={null} fill="none" stroke="#A0FFA0" strokeWidth=".15%" />
+          <path id="wave-node" d={null} fill="none" stroke="#A0FFA0" strokeWidth=".15%" />
           <MeterPanelShadow />
         </g>
       </svg>

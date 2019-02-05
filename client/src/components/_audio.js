@@ -20,10 +20,10 @@ export default class Audio {
   get nodeNames() {
     return Object.keys(this.nodes);
   };
-  get freqData() {
-    this._analyser.getFloatFrequencyDomainData(this._freqData);
-    return this._freqData;
-  };
+  // get freqData() {
+  //   this._analyser.getFloatFrequencyDomainData(this._freqData);
+  //   return this._freqData;
+  // };
   // get waveData() {
   //   this._analyser.getFloatTimeDomainData(this._waveData);
   //   return this._waveData;
@@ -253,111 +253,3 @@ export default class Audio {
 
 
 };
-
-
-
-
-// audio.makeOsc('osc1', 'triangle', 110)
-// audio.makeOsc('osc2', 'sine', 110, -1200)
-// audio.makeGain('fmGain', 1500)
-// audio.makeGain('instGain', 0)
-// audio.makeEq('hfp', 'highpass', 0, 1)
-// audio.makeEq('lpf', 'lowpass', 2200, 1)
-// audio.makeDelay('delay', 0)
-// audio.makeGain('delayGain', 0)
-// audio.makeGain('masterGain', .73)
-// audio.makeAnalyser('analyser', 10)
-// audio.connect([
-//   ['osc1', 'fmGain'],
-//   ['fmGain', 'osc2.frequency'],
-//   ['osc2', 'instGain'],
-//   ['instGain', 'hpf'],
-//   ['hpf', 'lpf'],
-//   ['lpf', 'delay'],
-//   ['delay', 'delayGain'],
-//   ['delayGain', 'masterGain'],
-//   ['masterGain', 'analyser'],
-//   ['masterGain', 'output']
-// ]);
-
-
-
-    // const expected = ['string', 'string', 'number', 'number'];
-    // const defaults = [this.makeNodeName('osc'), 'sine', this.baseHz, 1200];
-    // console.log('before', arguments)
-    // Object.keys(arguments).forEach((d, i) => {
-    //   if (typeof arguments[d] !== expected [i]) {
-    //     arguments[d] = defaults[i];
-    //   };
-    // });
-
-
-
-  //     lpf.frequency.setValueAtTime(2200, ctx.currentTime);
-  //     lpf.Q.setValueAtTime(1, ctx.currentTime);
-
-// Audio.makeOsc('osc1', )
-
-  // audioInit() {
-  //   const fmGain = ctx.createGain();
-  //     fmGain.gain.setValueAtTime(1500, ctx.currentTime);
-  //   const instGain = ctx.createGain();
-  //     instGain.gain.setValueAtTime(0, ctx.currentTime);
-  //   const hpf = ctx.createBiquadFilter();
-  //     hpf.type = 'highpass';
-  //     hpf.frequency.setValueAtTime(0, ctx.currentTime);
-  //     hpf.Q.setValueAtTime(1, ctx.currentTime);
-  //   const lpf = ctx.createBiquadFilter();
-  //     lpf.type = 'lowpass';
-  //     lpf.frequency.setValueAtTime(2200, ctx.currentTime);
-  //     lpf.Q.setValueAtTime(1, ctx.currentTime);
-  //   const delay = ctx.createDelay();
-  //     delay.delayTime.setValueAtTime(0, ctx.currentTime);
-  //   const delayGain = ctx.createGain();
-  //     delayGain.gain.setValueAtTime(0, ctx.currentTime);
-  //   const masterGain = ctx.createGain();
-  //     masterGain.gain.setValueAtTime(.73, ctx.currentTime);
-  //   const analyser = ctx.createAnalyser();
-  //     analyser.fftSize = 2 ** 8;
-  //     analyser.minDecibels = -100;
-  //     analyser.maxDecibels = -30;
-  //     analyser.smoothingTimeConstant = 0;
-
-  //   osc1.connect(fmGain);
-  //   fmGain.connect(osc2.frequency);
-  //   osc2.connect(instGain);
-  //   instGain.connect(hpf);
-  //   hpf.connect(lpf);
-  //   lpf.connect(masterGain);
-  //   lpf.connect(delay);
-  //   delay.connect(delayGain);
-  //   delayGain.connect(masterGain);
-  //   masterGain.connect(analyser);
-  //   masterGain.connect(ctx.destination);
-  //   osc1.start();
-  //   osc2.start();
-
-  //   this.audio = {
-  //     ctx,
-  //     osc1,
-  //     osc2,
-  //     fmGain,
-  //     instGain,
-  //     hpf,
-  //     lpf,
-  //     delay,
-  //     delayGain,
-  //     masterGain,
-  //     analyser,
-  //     baseHz,
-  //     latency,
-  //     audioMute: this.audioMute,
-  //     audioToggleMic: this.audioToggleMic,
-  //     audioSetGain: this.audioSetGain,
-  //     audioSetFreq: this.audioSetFreq,
-  //     audioSetParam: this.audioSetParam,
-  //     audioSetOsc: this.audioSetOsc
-  //   };
-  //   this.setState(prevState => ({ audioOk: true }));
-  //   return true;
-  // };

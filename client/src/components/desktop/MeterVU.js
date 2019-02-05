@@ -110,6 +110,9 @@
 // };
 
 
+
+
+
 import React, { PureComponent } from 'react';
 import { MeterFrame, MeterPanelShadow } from '../_svg.js';
 
@@ -168,7 +171,6 @@ export default class MeterVU extends PureComponent {
 
   render() {
     const { ticks, styles } = this;
-    const peak = false;
     return (
       <svg className="meter" viewBox="0 0 100 60">
         <MeterFrame />
@@ -194,19 +196,19 @@ export default class MeterVU extends PureComponent {
             </g>
           </g>
           <g className="vu-led">
-            <circle fill="url(#vu-led-shadow)" opacity={peak ? .5 : 1} cx="88.5" cy="24.9" r="2.2" />
+            <circle id="peak-node1" fill="url(#vu-led-shadow)" cx="88.5" cy="24.9" r="2.2" />
             <circle fill="url(#vu-led-border)" cx="87.95" cy="24.57" r="2.1" />
-            <circle fill={peak ? '#FF452F' : '#AB2D1E'} cx="88" cy="24.6" r="1.875" />
+            <circle id="peak-node2" cx="88" cy="24.6" r="1.875" />
             <circle fill="url(#vu-led-contour)" cx="88" cy="24.6" r="1.875" />
             <circle fill="url(#vu-led-glare)" cx="88" cy="24.6" r="1.875" />
-            <circle fill="url(#vu-led-halo)" opacity={peak ? 1 : 0} cx="88" cy="24.6" r="4" />
+            <circle id="peak-node3" fill="url(#vu-led-halo)" cx="88" cy="24.6" r="4" />
           </g>
           <g className="vu-needle">
             <rect fill="url(#vu-needle-cutout)" x="45" y="52.2" rx="10" width="10" height="6" stroke="#000000" strokeWidth=".3%" />
-            <g id="#d3-meter-vu1" style={styles.rotator}>
+            <g id="rotator-node1" style={styles.rotator}>
               <rect fill="url(#vu-needle-shadow)" x="50" y="13.2" width="0.4" height="48.18" />
             </g>
-            <g id="#d3-meter-vu2" style={styles.rotator}>
+            <g id="rotator-node2" style={styles.rotator}>
               <rect x="50" y="12" width="0.2" height="45" fill="#000000" />
               <rect x="46.5" y="54.3" rx="0.2" width="7" height="1.8" fill="#333333" stroke="#000000" strokeWidth=".1%" />
               <rect fill="url(#vu-coil-shadow)" x="46.5" y="54.3" rx="0.2" width="7" height="1.8" />
