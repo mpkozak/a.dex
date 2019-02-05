@@ -1,4 +1,4 @@
-#Meters {
+#MetersMobile {
   width: 100%;
   min-width: 100vmin;
   flex-flow: row nowrap;
@@ -6,7 +6,7 @@
   justify-content: center;
 }
 
-#Meters>.meter {
+#MetersMobile>.meter {
   width: 49vmin;
   height: 29.4vmin;
   min-width: 49vmin;

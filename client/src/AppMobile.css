@@ -1,4 +1,4 @@
-#App {
+#AppMobile {
   width: 100vw;
   height: calc(100vh + 2000px);
   display: flex;
@@ -7,73 +7,29 @@
   justify-content: flex-start;
 }
 
-#App .fullscreen {
-  left: 0;
-  top: 0;
-  width: 100vw;
-  height: 100vh;
+#AppMobile>#bgi {
+  background-image: url('./_img/titanium.jpg');
 }
 
-#App .hidden {
+#AppMobile>#shadow-mask {
+  transition: opacity 200ms;
+}
+
+#AppMobile>#splash {
+  height: 90vh;
+  transition: opacity 200ms;
+}
+
+#AppMobile>#splash>.message-box {
+  width: 95%;
+}
+
+#AppMobile>.hidden {
   opacity: 0;
   z-index: 1;
 }
 
-#App .active {
+#AppMobile>.active {
   opacity: 1;
   z-index: 102;
-}
-
-#bgi {
-  position: sticky;
-  background-image: url('./_img/titanium.jpg');
-  background-repeat: no-repeat;
-  background-size: cover;
-  z-index: 1;
-}
-
-#shadow-mask {
-  position: fixed;
-  pointer-events: none;
-  background-color: rgba(0, 0, 0, .7);
-  opacity: 1;
-  transition: opacity 200ms;
-  z-index: 101;
-}
-
-#splash {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 90vh;
-  display: flex;
-  flex-flow: column nowrap;
-  align-items: center;
-  justify-content: space-around;
-  transition: opacity 200ms;
-  z-index: 102;
-}
-
-#splash>.logo-box {
-  width: 90vmin;
-  height: 40vmin;
-  display: flex;
-  flex-flow: column nowrap;
-  align-items: center;
-  justify-content: center;
-}
-
-#splash>.message-box {
-  width: 95%;
-  height: 40%;
-  display: flex;
-  flex-flow: column nowrap;
-  align-items: center;
-  justify-content: space-between;
-}
-
-#splash>.logo-box>.logo {
-  width: 100%;
-  height: 100%;
 }

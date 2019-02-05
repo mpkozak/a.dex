@@ -5,7 +5,7 @@ import Instructions from './Instructions.js';
 
 export default function Placard({showHelp, toggleHelp}) {
   return (
-    <div id="Placard" className="outer">
+    <div id="PlacardMobile" className="outer">
       <div className="logo-box">
         <Logo color={'#FFFFFF'} opacity={.7} />
       </div>

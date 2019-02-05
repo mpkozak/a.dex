@@ -1,48 +1,48 @@
 import React, { PureComponent } from 'react';
 import './_css/Main.css';
 import Tracker from '../_tracker.js'
-import Placard from './Placard.js';
-import Screen from './Screen.js';
-import Oscillators from './Oscillators.js';
-import Settings from './Settings.js';
-import Meters from './Meters.js';
+// import Placard from './Placard.js';
+// import Screen from './Screen.js';
+// import Oscillators from './Oscillators.js';
+// import Settings from './Settings.js';
+// import Meters from './Meters.js';
 
 export default class Main extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      showHelp: false,
-      video: false,
-      trackerCtx: false,
-      osc1: props.audio.osc1.type,
-      osc2: props.audio.osc2.type,
-      color1: '#00FF00',
-      color2: '#FF0000',
-      colorActive: false,
-      sensitivity: 30,
+      // showHelp: false,
+      // video: false,
+      // trackerCtx: false,
+      // osc1: props.audio.osc1.type,
+      // osc2: props.audio.osc2.type,
+      // color1: '#00FF00',
+      // color2: '#FF0000',
+      // colorActive: false,
+      // sensitivity: 30,
     };
-    this.rAF = undefined;
-    this.drawMeters = undefined;
-    this.drawScreen = undefined;
-    this.trackerInit = this.trackerInit.bind(this);
-    this.trackerSetColors = this.trackerSetColors.bind(this);
-    this.trackerRuntime = this.trackerRuntime.bind(this);
-    this.runtimeStack = this.runtimeStack.bind(this);
-    this.passbackMeters = this.passbackMeters.bind(this)
-    this.passbackScreen = this.passbackScreen.bind(this);
-    this.handleToggleHelp = this.handleToggleHelp.bind(this);
-    this.handleSetOsc = this.handleSetOsc.bind(this);
-    this.handleGetColor = this.handleGetColor.bind(this);
-    this.handleSetColor = this.handleSetColor.bind(this);
-    this.handleSetSensitivity = this.handleSetSensitivity.bind(this);
+    // this.rAF = undefined;
+    // this.drawMeters = undefined;
+    // this.drawScreen = undefined;
+    // this.trackerInit = this.trackerInit.bind(this);
+    // this.trackerSetColors = this.trackerSetColors.bind(this);
+    // this.trackerRuntime = this.trackerRuntime.bind(this);
+    // this.runtimeStack = this.runtimeStack.bind(this);
+    // this.passbackMeters = this.passbackMeters.bind(this)
+    // this.passbackScreen = this.passbackScreen.bind(this);
+    // this.handleToggleHelp = this.handleToggleHelp.bind(this);
+    // this.handleSetOsc = this.handleSetOsc.bind(this);
+    // this.handleGetColor = this.handleGetColor.bind(this);
+    // this.handleSetColor = this.handleSetColor.bind(this);
+    // this.handleSetSensitivity = this.handleSetSensitivity.bind(this);
   };
 
-  componentDidMount() {
-    const color1 = localStorage.getItem('color1');
-    const color2 = localStorage.getItem('color2');
-    color1 && color2 && this.setState(prevState => ({ color1, color2 }));
-    this.videoInit();
-  };
+  // componentDidMount() {
+  //   const color1 = localStorage.getItem('color1');
+  //   const color2 = localStorage.getItem('color2');
+  //   color1 && color2 && this.setState(prevState => ({ color1, color2 }));
+  //   this.videoInit();
+  // };
 
 //////////////////////////
 // Initialization Stack //
@@ -171,59 +171,63 @@ export default class Main extends PureComponent {
 
 
   render() {
-    const {
-      showHelp,
-      video,
-      osc1,
-      osc2,
-      color1,
-      color2,
-      colorActive,
-      sensitivity
-    } = this.state;
-    const mainStyle = {
-      opacity: this.props.isVertical ? 1 : 0
-    };
+    console.log('i am main', this.props)
+    // const {
+    //   showHelp,
+    //   video,
+    //   osc1,
+    //   osc2,
+    //   color1,
+    //   color2,
+    //   colorActive,
+    //   sensitivity
+    // } = this.state;
     return (
-      <div id="MainMobile" style={mainStyle}>
-        <div className="r">
-          <Placard
-            showHelp={showHelp}
-            toggleHelp={this.handleToggleHelp}
-          />
-        </div>
-        <div className="r">
-          {!!video &&
-            <Screen
-              video={video}
-              colorActive={colorActive}
-              setColor={this.handleSetColor}
-              passback={this.passbackScreen}
-            />
-          }
-        </div>
-        <div className="r">
-          <Oscillators
-            osc1={osc1}
-            osc2={osc2}
-            setOsc={this.handleSetOsc}
-          />
-          <Settings
-            color1={color1}
-            color2={color2}
-            active={colorActive}
-            sensitivity={sensitivity / 120}
-            getColor={this.handleGetColor}
-            setSensitivity={this.handleSetSensitivity}
-          />
-        </div>
-        <div className="r">
-          <Meters
-            analyser={this.props.audio.analyser}
-            passback={this.passbackMeters}
-          />
-        </div>
+      <div id="Main">
+        I am main.
       </div>
     );
   };
 };
+
+
+
+        // <div className="r">
+        //   <Placard
+        //     showHelp={showHelp}
+        //     toggleHelp={this.handleToggleHelp}
+        //   />
+        // </div>
+        // <div className="r">
+        //   {!!video &&
+        //     <Screen
+        //       video={video}
+        //       colorActive={colorActive}
+        //       setColor={this.handleSetColor}
+        //       passback={this.passbackScreen}
+        //     />
+        //   }
+        // </div>
+        // <div className="r">
+        //   <Oscillators
+        //     osc1={osc1}
+        //     osc2={osc2}
+        //     setOsc={this.handleSetOsc}
+        //   />
+        //   <Settings
+        //     color1={color1}
+        //     color2={color2}
+        //     active={colorActive}
+        //     sensitivity={sensitivity / 120}
+        //     getColor={this.handleGetColor}
+        //     setSensitivity={this.handleSetSensitivity}
+        //   />
+        // </div>
+        // <div className="r">
+        //   <Meters
+        //     analyser={this.props.audio.analyser}
+        //     passback={this.passbackMeters}
+        //   />
+        // </div>
+
+        //

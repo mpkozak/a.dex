@@ -1,38 +1,34 @@
 import React, { PureComponent } from 'react';
-import './AppMobile.css';
-import NoSleep from 'nosleep.js';
-import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
+import './App.css';
 import { Splash } from './components/_splash.js';
 import { SvgDefs } from './components/_svg.js';
-import Main from './components/mobile/Main.js';
+import Main from './components/desktop/Main.js';
 
-export default class AppMobile extends PureComponent {
+export default class App extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      isVertical: !Math.abs(window.orientation),
-      isLocked: false,
       audioOk: null,
       streamOk: null,
       initOk: null,
+
+      micActive: false,
     };
-    this.noSleep = new NoSleep();
     this.audio = undefined;
     this.videoStream = undefined;
-    this.handleTouchStart = this.handleTouchStart.bind(this);
-    this.handleScroll = this.handleScroll.bind(this);
-    this.handleLock = this.handleLock.bind(this);
-    this.handleResize = this.handleResize.bind(this);
-    this.handleOrientation = this.handleOrientation.bind(this);
+    this.audioStream = undefined;
+
+    this.handleClick = this.handleClick.bind(this);
+
     this.audioMute = this.audioMute.bind(this);
+    this.audioToggleMic = this.audioToggleMic.bind(this);
     this.audioSetGain = this.audioSetGain.bind(this);
     this.audioSetFreq = this.audioSetFreq.bind(this);
+    this.audioSetParam = this.audioSetParam.bind(this);
     this.audioSetOsc = this.audioSetOsc.bind(this);
   };
 
   componentDidMount() {
-    window.addEventListener('orientationchange', this.handleOrientation);
-    disableBodyScroll(this.refs.app);
     if (!!global.AnalyserNode.prototype.getFloatTimeDomainData) {
       this.audioInit() && this.streamInit();
     };
@@ -56,6 +52,18 @@ export default class AppMobile extends PureComponent {
       fmGain.gain.setValueAtTime(1500, ctx.currentTime);
     const instGain = ctx.createGain();
       instGain.gain.setValueAtTime(0, ctx.currentTime);
+    const hpf = ctx.createBiquadFilter();
+      hpf.type = 'highpass';
+      hpf.frequency.setValueAtTime(0, ctx.currentTime);
+      hpf.Q.setValueAtTime(1, ctx.currentTime);
+    const lpf = ctx.createBiquadFilter();
+      lpf.type = 'lowpass';
+      lpf.frequency.setValueAtTime(2200, ctx.currentTime);
+      lpf.Q.setValueAtTime(1, ctx.currentTime);
+    const delay = ctx.createDelay();
+      delay.delayTime.setValueAtTime(0, ctx.currentTime);
+    const delayGain = ctx.createGain();
+      delayGain.gain.setValueAtTime(0, ctx.currentTime);
     const masterGain = ctx.createGain();
       masterGain.gain.setValueAtTime(.73, ctx.currentTime);
     const analyser = ctx.createAnalyser();
@@ -67,7 +75,12 @@ export default class AppMobile extends PureComponent {
     osc1.connect(fmGain);
     fmGain.connect(osc2.frequency);
     osc2.connect(instGain);
-    instGain.connect(masterGain);
+    instGain.connect(hpf);
+    hpf.connect(lpf);
+    lpf.connect(masterGain);
+    lpf.connect(delay);
+    delay.connect(delayGain);
+    delayGain.connect(masterGain);
     masterGain.connect(analyser);
     masterGain.connect(ctx.destination);
     osc1.start();
@@ -79,13 +92,19 @@ export default class AppMobile extends PureComponent {
       osc2,
       fmGain,
       instGain,
+      hpf,
+      lpf,
+      delay,
+      delayGain,
       masterGain,
       analyser,
       baseHz,
       latency,
       audioMute: this.audioMute,
+      audioToggleMic: this.audioToggleMic,
       audioSetGain: this.audioSetGain,
       audioSetFreq: this.audioSetFreq,
+      audioSetParam: this.audioSetParam,
       audioSetOsc: this.audioSetOsc
     };
     this.setState(prevState => ({ audioOk: true }));
@@ -97,18 +116,29 @@ export default class AppMobile extends PureComponent {
       video: {
         width: { ideal: 640 },
         height: { ideal: 480 }
-      }
+      },
+      audio: true
     })
       .then(stream => {
-        this.videoStream = stream;
+        this.audioStream = new MediaStream([stream.getAudioTracks()[0]]);
+        this.videoStream = new MediaStream([stream.getVideoTracks()[0]]);
+        this.audio.mic = this.audio.ctx.createMediaStreamSource(this.audioStream);
         this.setState(prevState => ({ streamOk: true }));
-        window.addEventListener('touchstart', this.handleTouchStart);
-        enableBodyScroll(this.refs.app);
+        window.addEventListener('click', this.handleClick);
       })
       .catch(err => {
         console.log(err);
         this.setState(prevState => ({ streamOk: false }));
       });
+  };
+
+  handleClick() {
+    window.removeEventListener('click', this.handleClick);
+    this.audio.ctx.resume();
+    const { shadowMask } = this.refs;
+    shadowMask.style.opacity = 0;
+    // setTimeout(() => shadowMask.style.display = 'none', 100);
+    this.setState(prevState => ({ initOk: true }));
   };
 //////////////////////////
 
@@ -116,6 +146,19 @@ export default class AppMobile extends PureComponent {
 // Audio Handler Methods //
   audioMute(t = this.audio.ctx.currentTime) {
     this.audioSetGain(0, t);
+  };
+
+  audioToggleMic() {
+    const { micActive } = this.state;
+    const { masterGain, analyser, mic } = this.audio;
+    if (!micActive) {
+      masterGain.disconnect(analyser);
+      mic.connect(analyser);
+    } else {
+      mic.disconnect(analyser);
+      masterGain.connect(analyser);
+    };
+    this.setState(prevState => ({ micActive: !prevState.micActive }));
   };
 
   audioSetGain(val, t = this.audio.ctx.currentTime) {
@@ -137,6 +180,13 @@ export default class AppMobile extends PureComponent {
     });
   };
 
+  audioSetParam(param, val, t = this.audio.ctx.currentTime) {
+    const prevVal = param.value;
+    param.cancelScheduledValues(t - 1);
+    param.setValueAtTime(prevVal, t);
+    param.linearRampToValueAtTime(val, t + .05);
+  };
+
   audioSetOsc(osc, type) {
     this.audioMute();
     setTimeout(() => {
@@ -145,85 +195,26 @@ export default class AppMobile extends PureComponent {
   };
 ///////////////////////////
 
-/////////////////////
-// Layout Handlers //
-  handleTouchStart() {
-    if (this.state.isVertical) {
-      window.removeEventListener('touchstart', this.handleTouchStart);
-      window.addEventListener('scroll', this.handleScroll);
-      window.addEventListener('resize', this.handleResize);
-      this.noSleep.enable();
-      this.audio.ctx.resume();
-    };
-  };
-
-  handleScroll() {
-    clearTimeout(this.scrollTimeout);
-    this.scrollTimeout = setTimeout(this.handleLock, 20);
-  };
-
-  handleLock() {
-    const { app, shadowMask } = this.refs;
-    if ((window.innerHeight + 2000) === app.clientHeight) {
-      window.removeEventListener('scroll', this.handleScroll);
-      disableBodyScroll(app);
-      app.style.height = '100vh';
-      shadowMask.style.opacity = 0;
-      window.scrollTo(0, 0);
-      this.setState(prevState => ({ isLocked: true, initOk: true }));
-    };
-  };
-
-  handleResize() {
-    const { app, shadowMask } = this.refs;
-    const { isVertical, initOk } = this.state;
-    this.setState(prevState => ({ isLocked: false }));
-    app.style.height = 'calc(100vh + 2000px)';
-    if (isVertical) {
-      if (initOk && (window.innerHeight + 2000) === app.clientHeight) {
-        this.handleLock();
-      } else {
-        window.scrollY === 0 || window.scrollTo(0, 1000);
-        shadowMask.style.opacity = 1;
-        window.addEventListener('scroll', this.handleScroll);
-        enableBodyScroll(app);
-      };
-    } else {
-      shadowMask.style.opacity = 1;
-      window.removeEventListener('scroll', this.handleScroll);
-      disableBodyScroll(app);
-    };
-  };
-
-  handleOrientation() {
-    const isVertical = !Math.abs(window.orientation);
-    this.setState(prevState => ({ isVertical }), this.handleResize);
-  };
-/////////////////////
-
 
   render() {
-    const { isVertical, audioOk, streamOk, initOk } = this.state;
+    const { audioOk, streamOk, initOk } = this.state;
     const { audio, videoStream } = this;
     return (
-      <div ref="app" id="AppMobile">
+      <div ref="app" id="App">
         <SvgDefs />
         <div id="bgi" className="fullscreen" />
         <div ref="shadowMask" id="shadow-mask" className="fullscreen" />
-        {initOk &&
-          <Main
-            isVertical={isVertical}
-            videoStream={videoStream}
-            audio={audio}
-          />
+        {initOk
+          ? <Main
+              audio={audio}
+              videoStream={videoStream}
+            />
+          : <Splash
+              audioOk={audioOk}
+              streamOk={streamOk}
+              initOk={initOk}
+            />
         }
-        <Splash
-          isVertical={isVertical}
-          isMobile={true}
-          audioOk={audioOk}
-          streamOk={streamOk}
-          initOk={initOk}
-        />
       </div>
     );
   };

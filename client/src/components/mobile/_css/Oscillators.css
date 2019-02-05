@@ -1,4 +1,4 @@
-#Oscillators {
+#OscillatorsMobile {
   width: 45%;
   min-width: 45vmin;
   flex-flow: column nowrap;
@@ -6,7 +6,7 @@
   justify-content: center;
 }
 
-#Oscillators>.osc {
+#OscillatorsMobile>.osc {
   width: 43vmin;
   height: 15vmin;
   min-width: 43vmin;
@@ -18,12 +18,12 @@
   justify-content: center;
 }
 
-.osc>.label-box {
+#OscillatorsMobile>.osc>.label-box {
   width: 98%;
   height: 20%;
 }
 
-.osc>.button-box {
+#OscillatorsMobile>.osc>.button-box {
   width: 98%;
   height: 80%;
   display: flex;
@@ -32,11 +32,11 @@
   justify-content: space-around;
 }
 
-#Oscillators .glowbutton {
+#OscillatorsMobile .glowbutton {
   width: 24%;
   height: auto;
 }
 
-#Oscillators .glowbutton:active {
+#OscillatorsMobile .glowbutton:active {
   transform: scale(.96);
 }

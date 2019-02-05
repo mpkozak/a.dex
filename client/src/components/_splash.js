@@ -1,5 +1,5 @@
 import React from 'react';
-import { Logo } from './components/_svg.js';
+import { Logo } from './_svg.js';
 
 const NoAudio = () => {
   return (
@@ -22,27 +22,37 @@ const NoVideo = () => {
 const Init = () => {
   return (
     <React.Fragment>
+      <h1>Click Anywhere To Begin...</h1>
+    </React.Fragment>
+  );
+};
+
+const InitMobile = () => {
+  return (
+    <React.Fragment>
       <h1>Swipe Up To Begin...</h1>
     </React.Fragment>
   );
 };
 
-export const Splash = ({ isVertical, cameraOk, audioOk, initOk }) => {
+export const Splash = ({ isVertical = true, isMobile = false, audioOk, streamOk, initOk }) => {
   const splashClass = !isVertical ? 'active' : (initOk ? 'hidden' : 'active');
   return (
-    <div id="splash" className={splashClass}>
+    <div id="splash" className={isMobile ? splashClass : null}>
       <div className="logo-box">
         <Logo opacity={.6} />
       </div>
-      {isVertical && cameraOk !== null &&
+      {isVertical && streamOk !== null &&
         <div className="message-box">
           {initOk
             ? null
             : !audioOk
               ? <NoAudio />
-              : !cameraOk
+              : !streamOk
                 ? <NoVideo />
-                : <Init />
+                : isMobile
+                  ? <InitMobile />
+                  : <Init />
           }
         </div>
       }

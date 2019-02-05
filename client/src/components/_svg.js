@@ -72,6 +72,13 @@ import React from 'react';
             <stop offset="92%" stopColor="#000000" stopOpacity="0" />
             <stop offset="100%" stopColor="#000000" stopOpacity="1" />
           </linearGradient>
+    <linearGradient id="bigknob-notch" x1="0%" y1="0%" x2="0%" y2="100%" gradientUnits="objectBoundingBox">
+      <stop offset="0%" stopColor="#000000" stopOpacity=".5"/>
+      <stop offset="10%" stopColor="#000000" stopOpacity=".6"/>
+      <stop offset="50%" stopColor="#000000" stopOpacity=".7"/>
+      <stop offset="90%" stopColor="#000000" stopOpacity=".6"/>
+      <stop offset="100%" stopColor="#000000" stopOpacity=".5"/>
+    </linearGradient>
           <linearGradient id="screenframe-outer-horizontal" x1="0%" y1="0%" x2="100%" y2="0%" gradientUnits="objectBoundingBox">
             <stop offset="0%" stopColor="#000000" stopOpacity=".9" />
             <stop offset="5%" stopColor="#000000" stopOpacity="0" />
@@ -96,6 +103,11 @@ import React from 'react';
             <stop offset="90%" stopColor="#000000" stopOpacity=".1" />
             <stop offset="100%" stopColor="#000000" stopOpacity=".9" />
           </linearGradient>
+
+
+
+
+
           <linearGradient id="slider-ridges-left" x1="0%" y1="0%" x2="100%" y2="0%" gradientUnits="objectBoundingBox">
             <stop offset="0%" stopColor="#000000" stopOpacity="1" />
             <stop offset="8.3333%" stopColor="#000000" stopOpacity=".8" />
@@ -146,6 +158,11 @@ import React from 'react';
             <stop offset="95%" stopColor="#000000" stopOpacity=".4" />
             <stop offset="100%" stopColor="#000000" stopOpacity="1" />
           </linearGradient>
+
+
+
+
+
           <linearGradient id="meter-frame-horizontal" x1="0%" y1="0%" x2="100%" y2="0%" gradientUnits="objectBoundingBox">
             <stop offset="0%" stopColor="#000000" stopOpacity=".7" />
             <stop offset="3%" stopColor="#000000" stopOpacity="0" />
@@ -237,6 +254,23 @@ import React from 'react';
             <stop offset="38%" stopColor="#FFFFFF" stopOpacity=".05" />
             <stop offset="50%" stopColor="#FFFFFF" stopOpacity="0" />
           </radialGradient>
+    <radialGradient id="bigknob-contour" cx="50%" cy="50%" r="100%" gradientUnits="objectBoundingBox">
+      <stop offset="0%" stopColor="#000000" stopOpacity="0"/>
+      <stop offset="20%" stopColor="#000000" stopOpacity=".1"/>
+      <stop offset="35%" stopColor="#000000" stopOpacity=".3"/>
+      <stop offset="45%" stopColor="#000000" stopOpacity=".5"/>
+      <stop offset="50%" stopColor="#000000" stopOpacity="1"/>
+    </radialGradient>
+    <radialGradient id="bigknob-glare" cx="50%" cy="50%" r="100%" fx="0%" fy="0%" fr="10%" gradientUnits="objectBoundingBox">
+      <stop offset="0%" stopColor="#FFFFFF" stopOpacity="1"/>
+      <stop offset="5%" stopColor="#FFFFFF" stopOpacity=".5"/>
+      <stop offset="15%" stopColor="#FFFFFF" stopOpacity=".3"/>
+      <stop offset="25%" stopColor="#FFFFFF" stopOpacity=".2"/>
+      <stop offset="40%" stopColor="#FFFFFF" stopOpacity=".1"/>
+      <stop offset="65%" stopColor="#FFFFFF" stopOpacity="0"/>
+      <stop offset="70%" stopColor="#000000" stopOpacity="0"/>
+      <stop offset="80%" stopColor="#000000" stopOpacity="1"/>
+    </radialGradient>
           <radialGradient id="screenframe-outer-corners" cx="50%" cy="50%" r="100%" gradientUnits="objectBoundingBox">
             <stop offset="0%" stopColor="#000000" stopOpacity="0" />
             <stop offset="60%" stopColor="#000000" stopOpacity=".2" />
@@ -306,7 +340,7 @@ import React from 'react';
 
 ///////////////////////////////
 // Standalone SVG Components //
-  export const Logo = ({color = '#FFFFFF', opacity = .7}) => {
+  export const Logo = ({ color = '#FFFFFF', opacity = .7 }) => {
     return (
       <svg className="logo" viewBox="0 0 90 25">
         <g fill={color} opacity={opacity}>
@@ -361,12 +395,30 @@ import React from 'react';
       </svg>
     );
   };
+
+  export const SevenSegment = ({ value, digits, exact }) => {
+    const width = digits * 6 + 2;
+    const val = exact ? value : Math.round(value);
+    const style = {
+      fontFamily: 'DSEG7 Classic',
+      fontSize: 7
+    };
+    return (
+      <svg className="sevensegment" viewBox={`0 0 ${width} 10`}>
+        <rect x="0" y="0" width={width} height="10" rx="1" fill="#181818" stroke="#000000" strokeWidth=".5%" />
+        <rect x="1" y="1" width={width - 2} height="8" rx=".5" fill="#000000" stroke="#111111" strokeWidth="1%" />
+        <text style={style} fill="#250000" x={width - 1.5} y="5.2" textAnchor="end" alignmentBaseline="middle">{'8.'.repeat(digits)}</text>
+        <text style={style} fill="#E00000" x={width - 1.5} y="5.2" textAnchor="end" alignmentBaseline="middle">{val}</text>
+      </svg>
+    );
+  };
 ///////////////////////////////
 
 //////////////////////////////////
 // Def-Dependent SVG Components //
   export const GlowButton = ({ icon, active = false, handleClick }) => {
     const icons = {
+      mic: 'M 3.5 8 L 6.5 8 M 5 8 L 5 7 M 3 5 C 3 7.5, 7 7.5, 7 5 M 3.75 5 C 3.75 6.5, 6.25 6.5, 6.25 5 L 6.25 3 C 6.25 1.5, 3.75 1.5, 3.75 3 Z',
       sine: 'M 2 5 Q 3.5 0, 5 5 Q 6.5 10, 8 5',
       triangle: 'M 2 5 L 3.5 2.5 L 6.5 7.5 L 8 5',
       sawtooth: 'M 2 5 L 5 2.5 L 5 7.5 L 8 5',
@@ -401,6 +453,17 @@ import React from 'react';
     );
   };
 
+  export const BigKnob = ({ color = '#3A3125', rotation, handleClick, handleScroll }) => {
+    return (
+      <svg className="bigknob" viewBox="0 0 100 100" onMouseDown={handleClick} onWheel={handleScroll}>
+        <circle cx="50" cy="50" r="48" fill={color} stroke="#000000" strokeWidth="1%" />
+        <circle cx="50" cy="50" r="48" fill="url(#bigknob-contour)" />
+        <circle cx="50" cy="50" r="48" fill="url(#bigknob-glare)" />
+        <rect x="48" y="6" width="4" height="20" transform={`rotate(${rotation * 3.2 - 160}, 50, 50)`} fill="url(#bigknob-notch)" stroke="#000000" strokeWidth="1%" />
+      </svg>
+    );
+  };
+
   export const ScreenFrame = () => {
     return (
       <svg className="screenframe" viewBox="0 0 40 30">
@@ -426,9 +489,9 @@ import React from 'react';
 
 ///////////////////////
 // Child SVG Modules //
-  const Slider = () => {
+  const SliderH = () => {
     return (
-      <g className="slider" clipPath="url(#slider-clip)">
+      <g className="sliderH" clipPath="url(#slider-clip)">
         <rect x="0" y="0" width="30" height="15" ry="1" fill="#FFFFFF" />
         <rect x="0" y="0" width="11.25" height="15" fill="url(#slider-ridges-left)" />
         <rect x="18.75" y="0" width="11.25" height="15" fill="url(#slider-ridges-right)" />
@@ -438,6 +501,20 @@ import React from 'react';
         <rect x="0" y="0" width="30" height="15" ry="1" fill="none" stroke="#000000" strokeWidth=".4%" />
       </g>
     );
+  };
+
+  const SliderV = () => {
+    // return (
+    //   <g className="slider" clipPath="url(#slider-clip)">
+    //     <rect x="0" y="0" width="30" height="15" ry="1" fill="#FFFFFF" />
+    //     <rect x="0" y="0" width="11.25" height="15" fill="url(#slider-ridges-left)" />
+    //     <rect x="18.75" y="0" width="11.25" height="15" fill="url(#slider-ridges-right)" />
+    //     <rect x="0" y="0" width="30" height="15" fill="url(#slider-contour-vertical)" />
+    //     <rect x="14.25" y="0" width="1.5" height="15" fill="#FFFFFF" stroke="#000000" strokeWidth=".4%" opacity=".7" />
+    //     <rect x="0" y="0" width="30" height="15" fill="url(#slider-contour-horizontal)" />
+    //     <rect x="0" y="0" width="30" height="15" ry="1" fill="none" stroke="#000000" strokeWidth=".4%" />
+    //   </g>
+    // );
   };
 
   const MeterFrame = () => {
@@ -476,7 +553,47 @@ import React from 'react';
           <rect x="15" y="8.5" width="70" height="3" fill="#000000" stroke="#151515" strokeWidth=".5%" />
         </g>
         <g className="fader-slider" transform={`translate(${level}, ${2.5})`} onTouchMove={handleTouchMove}>
-          <Slider />
+          <SliderH />
+        </g>
+      </svg>
+    );
+  };
+
+  export const MasterFader = ({ pct, handleClick }) => {
+    const ticks = [
+      {y: 10, text: '+12', color: '#C12822'},
+      {y: 18, text: '+6', color: '#C12822'},
+      {y: 26, text: '0', color: '#FFFFFF'},
+      {y: 33, text: '5', color: '#FFFFFF'},
+      {y: 39.5, text: '10', color: '#FFFFFF'},
+      {y: 45.5, text: '15', color: '#FFFFFF'},
+      {y: 51, text: '20', color: '#FFFFFF'},
+      {y: 56, text: '30', color: '#FFFFFF'},
+      {y: 60.5, text: '40', color: '#FFFFFF'},
+      {y: 64, text: '60', color: '#FFFFFF'},
+      {y: 70, text: '∞', color: '#FFFFFF'}
+    ];
+    const style = {
+      fontFamily: 'Helvetica, sans-serif',
+      fontSize: 3.5 + 'px',
+      fontWeight: '600'
+    };
+    return (
+      <svg className="masterfader" viewBox="0 0 40 80">
+        <g className="masterfader-panel" opacity=".8">
+          <rect x="19" y="10" width="2" height="60" fill="#000000" />
+          {ticks.map((d, i) => {
+            return (
+              <React.Fragment key={'masterfader' + i}>
+                <rect x="12" y={d.y} width="2" height=".3" fill={d.color} />
+                <rect x="26" y={d.y} width="1.5" height=".3" fill={d.color} />
+                <text style={style} textAnchor="start" alignmentBaseline="middle" x="29" y={d.y} fill={d.color}>{d.text}</text>
+              </React.Fragment>
+            );
+          })}
+        </g>
+        <g className="masterfader-slider" transform={`translate(${15}, ${60 - (pct * .6)})`} onMouseDown={handleClick}>
+          <SliderH />
         </g>
       </svg>
     );

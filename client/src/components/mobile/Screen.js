@@ -116,7 +116,7 @@ export default class Screen extends PureComponent {
   render() {
     const { vCropW, vCropH } = this.state;
     return (
-      <div id="Screen" className="outer">
+      <div id="ScreenMobile" className="outer">
         <div className="video-box">
           <canvas ref="videoCanvas"
             id="video-0"

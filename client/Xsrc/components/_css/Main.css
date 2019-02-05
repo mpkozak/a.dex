@@ -1,41 +1,4 @@
-.Main {
-  --grid-width: 17;
-  --grid-height: 15;
-  --size-unit: calc(95vw / var(--grid-width));
-  --size-unit-max: calc(90vh / var(--grid-height));
-  /*--size-unit-min: 30px;*/
-  position: relative;
-  width: calc(var(--grid-width) * var(--size-unit));
-  height: calc(var(--grid-height) * var(--size-unit));
-  max-width: calc(var(--grid-width) * var(--size-unit-max));
-  max-height: calc(var(--grid-height) * var(--size-unit-max));
-  /*min-width: calc(var(--grid-width) * var(--size-unit-min));*/
-  /*min-height: calc(var(--grid-height) * var(--size-unit-min));*/
-  background: url('../_img/titanium.jpg') no-repeat center center fixed;
-  background-size: cover;
-  border-radius: 1vmin;
-  box-shadow: 0 0 .5vmin .1vmin #000000;
-}
 
-.init {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  border-radius: 1vmin;
-  display: flex;
-  flex-flow: column nowrap;
-  align-items: center;
-  justify-content: center;
-  z-index: 50;
-  background-color: rgba(0,0,0,.8);
-}
-
-.init>.message {
-  width: 90%;
-  margin: 20% 0;
-}
 
 .theremin {
   position: absolute;

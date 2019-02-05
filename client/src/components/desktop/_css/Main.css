@@ -1,0 +1,16 @@
+#Main {
+  --grid-width: 17;
+  --grid-height: 15;
+  --size-unit: calc(95vw / var(--grid-width));
+  --size-unit-max: calc(95vh / var(--grid-height));
+  position: fixed;
+  width: calc(var(--grid-width) * var(--size-unit));
+  height: calc(var(--grid-height) * var(--size-unit));
+  max-width: calc(var(--grid-width) * var(--size-unit-max));
+  max-height: calc(var(--grid-height) * var(--size-unit-max));
+  background: url('../../../_img/titanium.jpg') no-repeat center center fixed;
+  background-size: cover;
+  border-radius: 1vmin;
+  box-shadow: 0 0 .5vmin .1vmin #000000;
+  z-index: 100;
+}

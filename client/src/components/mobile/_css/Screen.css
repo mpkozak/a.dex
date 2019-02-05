@@ -1,4 +1,4 @@
-#Screen {
+#ScreenMobile {
   width: 100%;
   min-width: 100vmin;
   flex-flow: column nowrap;
@@ -6,7 +6,7 @@
   justify-content: center;
 }
 
-#Screen>.video-box {
+#ScreenMobile>.video-box {
   position: relative;
   width: 99vmin;
   height: 74.25vmin;
@@ -19,7 +19,7 @@
   justify-content: center;
 }
 
-.video-box>.element {
+#ScreenMobile>.video-box>.element {
   position: absolute;
   left: 5%;
   top: 5%;
@@ -28,7 +28,7 @@
   transform: scaleX(-1);
 }
 
-.video-box>.screenframe {
+#ScreenMobile>.video-box>.screenframe {
   position: absolute;
   top: 0;
   left: 0;
@@ -37,15 +37,15 @@
   z-index: 104;
 }
 
-#video-0 {
+#ScreenMobile>.video-box>#video-0 {
   z-index: 101;
 }
 
-#video-1 {
+#ScreenMobile>.video-box>#video-1 {
   z-index: 102;
 }
 
-#video-2 {
+#ScreenMobile>.video-box>#video-2 {
   z-index: 103;
   display: flex;
   flex-flow: column nowrap;
@@ -54,10 +54,10 @@
   transform: none;
 }
 
-#video-3 {
+#ScreenMobile>.video-box>#video-3 {
   z-index: 150;
 }
 
-#video-2>.osd {
+#ScreenMobile>.video-box>#video-2>.osd {
   animation: pulsar 1s linear infinite;
 }

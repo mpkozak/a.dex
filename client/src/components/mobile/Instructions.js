@@ -3,7 +3,7 @@ import './_css/Instructions.css';
 
 export default function Instructions({active}) {
   return (
-    <div id="Instructions" className="outer">
+    <div id="InstructionsMobile" className="outer">
       <div className={`instructions-box ${active ? 'show' : 'hide'}`}>
         <h2>Instructions:</h2>
         <ul className="list">

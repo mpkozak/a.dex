@@ -1,4 +1,4 @@
-#Settings {
+#SettingsMobile {
   width: 55%;
   min-width: 55vmin;
   flex-flow: column nowrap;
@@ -6,7 +6,7 @@
   justify-content: center;
 }
 
-#Settings>.border {
+#SettingsMobile>.border {
   width: 53vmin;
   height: 31.5vmin;
   min-width: 53vmin;
@@ -18,7 +18,7 @@
   justify-content: center;
 }
 
-#Settings>.border>.color-box {
+#SettingsMobile>.border>.color-box {
   width: 100%;
   height: 50%;
   display: flex;
@@ -27,12 +27,12 @@
   justify-content: center;
 }
 
-#Settings>.border>.slider-box {
+#SettingsMobile>.border>.slider-box {
   width: 100%;
   height: 50%;
 }
 
-#Settings .color-box>.element {
+#SettingsMobile .color-box>.element {
   height: 100%;
   width: 48%;
   display: flex;
@@ -41,11 +41,11 @@
   justify-content: center;
 }
 
-#Settings .color-box>.element>.label-box {
+#SettingsMobile .color-box>.element>.label-box {
   margin: 0 3%;
 }
 
-#Settings .color-box>.element>.swatch-box {
+#SettingsMobile .color-box>.element>.swatch-box {
   width: 50%;
   height: 90%;
   display: flex;
@@ -54,12 +54,12 @@
   justify-content: center;
 }
 
-#Settings .colorswatch {
+#SettingsMobile .colorswatch {
   width: 95%;
   height: auto;
 }
 
-#Settings .slider-box>.fader {
+#SettingsMobile .slider-box>.fader {
   width: 95%;
   height: auto;
   max-height: 100%;

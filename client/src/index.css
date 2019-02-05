@@ -31,6 +31,15 @@
 }
 /*^^^FROM GOOGLE FONTS^^^*/
 
+@font-face {
+  font-family: 'DSEG7 Classic';
+  font-style: italic;
+  font-weight: 800;
+  src: url('./_fonts/DSEG7Classic-BoldItalic.woff2') format('woff2');
+}
+/*^^^Copyright (c) 2017, keshikan (http://www.keshikan.net), with Reserved Font Name "DSEG".
+Font Software is licensed under the SIL Open Font License, Version 1.1.^^^*/
+
 * {
   margin: 0;
   padding: 0;
@@ -82,4 +91,60 @@ p {
   50% {
     opacity: .1;
   }
+}
+
+#bgi {
+  position: sticky;
+  background-repeat: no-repeat;
+  background-size: cover;
+  z-index: 1;
+}
+
+#shadow-mask {
+  position: fixed;
+  pointer-events: none;
+  background-color: rgba(0, 0, 0, .7);
+  opacity: 1;
+  z-index: 101;
+}
+
+#splash {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: space-around;
+  z-index: 102;
+}
+
+#splash>.logo-box {
+  width: 90vmin;
+  height: 40vmin;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+}
+
+#splash>.message-box {
+  height: 40%;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#splash>.logo-box>.logo {
+  width: 100%;
+  height: 100%;
+}
+
+.fullscreen {
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
 }

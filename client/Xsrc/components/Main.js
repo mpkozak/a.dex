@@ -29,20 +29,6 @@ export default class Main extends PureComponent {
   };
 
   audioInit() {
-    const baseHz = 110;
-    const latency = 0.05;
-    const fftSizeBase = 8;
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
-    const ctx = new AudioContext();
-    const osc1 = new OscillatorNode(ctx, { type: 'triangle', frequency: baseHz });
-    const osc2 = new OscillatorNode(ctx, { type: 'sine', frequency: baseHz, detune: -1200 });
-    const fmGain = new GainNode(ctx, { gain: 1500 });
-    const instGain = new GainNode(ctx, { gain: 0 });
-    const hpf = new BiquadFilterNode(ctx, { type: 'highpass', frequency: 0, q: 1 });
-    const lpf = new BiquadFilterNode(ctx, { type: 'lowpass', frequency: 22000, q: 1 });
-    const delay = new DelayNode(ctx, { delayTime: 0 });
-    const delayGain = new GainNode(ctx, { gain: 0 });
-    const masterGain = new GainNode(ctx, { gain: .73 });
     const analyser = new AnalyserNode(ctx, { fftSize: Math.pow(2, fftSizeBase), minDecibels: -100, maxDecibels: -30, smoothingTimeConstant: 0 });
     const mic = new MediaStreamAudioSourceNode(ctx, { mediaStream: this.props.audioStream });
     osc1.connect(fmGain);
