@@ -6,6 +6,7 @@ import Tracker from '../_tracker.js'
 // import Oscillators from './Oscillators.js';
 // import Settings from './Settings.js';
 // import Meters from './Meters.js';
+import Audio from '../_audio.js'
 
 export default class Main extends PureComponent {
   constructor(props) {
@@ -43,6 +44,72 @@ export default class Main extends PureComponent {
   //   color1 && color2 && this.setState(prevState => ({ color1, color2 }));
   //   this.videoInit();
   // };
+
+
+  componentDidMount() {
+    // const audio = new Audio({ latency: .05, baseHz: 110 });
+    // audio.makeOsc('osc1', 'triangle', 110);
+    // audio.makeOsc('osc2', 'sine', 110, -1200);
+    // audio.makeGain('fmGain', 1500);
+    // audio.makeGain('instGain', 0);
+    // audio.makeEq('hpf', 'highpass', 0, 1);
+    // audio.makeEq('lpf', 'lowpass', 2200, 1);
+    // audio.makeDelay('delay', 0);
+    // audio.makeGain('delayGain', 0);
+    // audio.makeGain('masterGain', .73);
+    // audio.makeAnalyser('analyser', 10);
+    // audio.connect(
+    //   ['osc1', 'fmGain'],
+    //   ['fmGain', ['osc2', 'frequency']],
+    //   ['osc2', 'instGain'],
+    //   ['instGain', 'hpf'],
+    //   ['hpf', 'lpf'],
+    //   ['lpf', 'delay'],
+    //   ['delay', 'delayGain'],
+    //   ['delayGain', 'masterGain'],
+    //   ['masterGain', 'analyser'],
+    //   ['masterGain', 'output']
+    // );
+
+    // audio.setRamp('masterGain', 'fake', 20)
+
+    // audio.setParam(audio.nodes.masterGain)
+    // audio.setParam(audio.nodes.masterGain.gain)
+
+// setTimeout(() => audio.ramp('masterGain', 'gain', 0, 0), 500)
+
+
+
+    // this.setState(prevState => ({ audio }))
+    // console.log(audio)
+  };
+
+
+  componentDidUpdate() {
+    // const { audio } = this.state;
+
+
+
+
+    // const a1 = audio.makeOsc()
+    // const a2 = audio.makeOsc()
+    // const a3 = audio.makeGain()
+    // const a4 = audio.makeGain()
+    // const a5 = audio.makeEq()
+    // const a6 = audio.makeEq()
+    // const a7 = audio.makeDelay()
+    // const a8 = audio.makeGain()
+    // const a9 = audio.makeGain()
+    // const a10 = audio.makeAnalyser()
+
+
+    // console.log(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10)
+    // console.log(audio.nodes)
+  }
+
+
+
+
 
 //////////////////////////
 // Initialization Stack //
