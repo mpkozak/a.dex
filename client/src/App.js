@@ -27,6 +27,8 @@ export default class App extends PureComponent {
     this.passbackMeters = this.passbackMeters.bind(this);
     this.drawMeters = undefined;
     this.runtimeStack = this.runtimeStack.bind(this);
+    this.runtime = 0;
+    this.rAF = 0;
 
     // this.audioMute = this.audioMute.bind(this);
     // this.audioToggleMic = this.audioToggleMic.bind(this);
@@ -94,7 +96,7 @@ export default class App extends PureComponent {
 
     // console.log(audio)
 
-    // audio.setRamp(['instGain', 'gain'], 1)
+    audio.setRamp(['instGain', 'gain'], .5)
     // this.rand = () => {
     //   const freq = Math.random() * 1000;
     //   audio.setRampBatch([
@@ -114,37 +116,45 @@ export default class App extends PureComponent {
 
   passbackMeters(getData) {
     this.drawMeters = getData;
-    this.audio.analyserSrc = 'mic'
+    // this.audio.analyserSrc = 'mic'
     // this.audio.fftBase = 8;
+    // console.profile('meters')
     this.runtimeStack();
+    // setTimeout(() => console.profileEnd('meters'), 5000);
   };
 
 
   runtimeStack() {
+    const freq = Math.random() * 1000;
+    this.audio.setRampBatch([
+      [['instGain', 'gain'], Math.random(), true],
+      [['osc1', 'frequency'], freq],
+      [['osc2', 'frequency'], freq]
+    ])
     this.drawMeters();
-    this.rAF = requestAnimationFrame(this.runtimeStack);
+    requestAnimationFrame(this.runtimeStack);
   };
 
 
   streamInit() {
-    navigator.mediaDevices.getUserMedia({
-      video: {
-        width: { ideal: 640 },
-        height: { ideal: 480 }
-      },
-      audio: true
-    })
-      .then(stream => {
-        this.audioStream = new MediaStream([stream.getAudioTracks()[0]]);
-        this.videoStream = new MediaStream([stream.getVideoTracks()[0]]);
-        this.audio.makeStream('mic', this.audioStream);
+    // navigator.mediaDevices.getUserMedia({
+    //   video: {
+    //     width: { ideal: 640 },
+    //     height: { ideal: 480 }
+    //   },
+    //   audio: true
+    // })
+    //   .then(stream => {
+    //     this.audioStream = new MediaStream([stream.getAudioTracks()[0]]);
+    //     this.videoStream = new MediaStream([stream.getVideoTracks()[0]]);
+    //     this.audio.makeStream('mic', this.audioStream);
         this.setState(prevState => ({ streamOk: true }));
         window.addEventListener('click', this.handleClick);
-      })
-      .catch(err => {
-        console.log(err);
-        this.setState(prevState => ({ streamOk: false }));
-      });
+      // })
+      // .catch(err => {
+      //   console.log(err);
+      //   this.setState(prevState => ({ streamOk: false }));
+      // });
   };
 
   handleClick() {
@@ -210,9 +220,10 @@ export default class App extends PureComponent {
 
 
   render() {
-    console.log(this.audio)
+    // console.log(this.audio)
     const { audioOk, streamOk, initOk } = this.state;
-    const { audio, videoStream } = this;
+    // const { audio, videoStream } = this;
+    const { audio, passbackMeters } = this;
     return (
       <div ref="app" id="App">
         <SvgDefs />
@@ -220,8 +231,8 @@ export default class App extends PureComponent {
         <div ref="shadowMask" id="shadow-mask" className="fullscreen" />
         {initOk
           ? <Meters
-              audio={this.audio}
-              passback={this.passbackMeters}
+              audio={audio}
+              passback={passbackMeters}
             />
           : <Splash
               audioOk={audioOk}

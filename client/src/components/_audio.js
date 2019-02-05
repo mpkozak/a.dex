@@ -21,13 +21,20 @@ export default class Audio {
     return Object.keys(this.nodes);
   };
   get freqData() {
-    this._analyser.getFloatTimeDomainData(this._freqData);
+    this._analyser.getFloatFrequencyDomainData(this._freqData);
     return this._freqData;
   };
-  get waveData() {
-    this._analyser.getFloatTimeDomainData(this._freqData);
-    return this._freqData;
+  // get waveData() {
+  //   this._analyser.getFloatTimeDomainData(this._waveData);
+  //   return this._waveData;
+  // };
+
+
+  waveData() {
+    this._analyser.getFloatTimeDomainData(this._waveData);
   };
+
+
   set fftBase(n) {
     if (n < 5) {
       n = 5;

@@ -623,7 +623,6 @@ import React from 'react';
   };
 
   export const MeterVU = ({ rotation = -48, peak = false }) => {
-    const colorRed = '#C12822';
     const ticks = [
       { vu: -20, sW: '1%', x2: 1.793722, x: 17.278543, y: 17.407848, tL: 4.76 },
       { vu: -10, sW: '1%', x2: 21.074874, x: 28.594728, y: 14.957763, tL: 4.76 },
@@ -684,15 +683,15 @@ import React from 'react';
               <text style={styles.fontMdSerif} textAnchor="end" x="88" y="51" textLength="14.3" lengthAdjust="spacingAndGlyphs">KOZAK</text>
               <text style={styles.fontSmBold} x="88" y="30" textLength="8.33" lengthAdjust="spacingAndGlyphs">PEAK</text>
               <text style={styles.fontLg} x="12" y="14.4" textLength="4" lengthAdjust="spacingAndGlyphs">-</text>
-              <text style={styles.fontLg} fill={colorRed} x="88" y="14.4">+</text>
-              {ticks.filter(d => !!d.x).map(d => <text key={'text' + d.vu} style={styles.fontMd} fill={d.vu >= 0 ? colorRed : '#000000'} x={d.x} y={d.y} textLength={d.tL} lengthAdjust="spacingAndGlyphs">{Math.abs(d.vu)}</text>)}
+              <text style={styles.fontLg} fill="#C12822" x="88" y="14.4">+</text>
+              {ticks.filter(d => !!d.x).map(d => <text key={'text' + d.vu} style={styles.fontMd} fill={d.vu >= 0 ? "#C12822" : "#000000"} x={d.x} y={d.y} textLength={d.tL} lengthAdjust="spacingAndGlyphs">{Math.abs(d.vu)}</text>)}
             </g>
             <g mask="url(#vu-scale-mask)" fill="none">
               <path d="M 12.5 18.75 Q 50 7.5, 87.5 18.75" transform="translate(0, 9)" stroke="#000000" strokeWidth=".8%" strokeDasharray="0, 6.089, 44.525, 25.497" />
-              <path d="M 12.5 18.75 Q 50 7.5, 87.5 18.75" transform="translate(0, 9)" stroke={colorRed} strokeWidth="5%" strokeDasharray="0, 51.375, 19.408, 5.328" />
+              <path d="M 12.5 18.75 Q 50 7.5, 87.5 18.75" transform="translate(0, 9)" stroke={"#C12822"} strokeWidth="5%" strokeDasharray="0, 51.375, 19.408, 5.328" />
               {ticks.map(d => {
                 const l = Math.sqrt(((50 - d.x2) ** 2) + (57 ** 2));
-                return <line key={'tick' + d.vu} x1="50" y1="57" x2={d.x2} y2="0" stroke={d.vu >= 0 ? colorRed : "#000000"} strokeWidth={d.sW} strokeDasharray={`0, ${.545 * l}, ${.19 * l}, ${.265 * l}`} />
+                return <line key={'tick' + d.vu} x1="50" y1="57" x2={d.x2} y2="0" stroke={d.vu >= 0 ? "#C12822" : "#000000"} strokeWidth={d.sW} strokeDasharray={`0, ${.545 * l}, ${.19 * l}, ${.265 * l}`} />
               })}
             </g>
           </g>
