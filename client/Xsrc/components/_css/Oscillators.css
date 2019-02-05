@@ -1,0 +1,31 @@
+.oscillators {
+  flex-flow: column nowrap;
+  justify-content: space-around;
+}
+
+.oscillators>.inner {
+  width: calc(100% - 2vmin);
+  height: calc(50% - 2vmin);
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.oscillators .button-box {
+  width: 95%;
+  height: 100%;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.oscillators .glowbutton {
+  width: 20%;
+  filter: drop-shadow(.02rem .02rem .025rem #000000);
+}
+
+.oscillators .glowbutton:active {
+  transform: scale(.96);
+  filter: drop-shadow(.02rem .02rem .015rem #000000);
+}

@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import './_css/Settings.css';
-import { ColorSwatch, Fader } from './_svg.js';
+import { ColorSwatch, Fader } from '../_svg.js';
 
 export default class Settings extends PureComponent {
   makeColor(label, num) {

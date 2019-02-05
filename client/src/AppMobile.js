@@ -1,12 +1,12 @@
 import React, { PureComponent } from 'react';
-import './App.css';
+import './AppMobile.css';
 import NoSleep from 'nosleep.js';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { Splash } from './_splash.js';
 import { SvgDefs } from './components/_svg.js';
-import Main from './components/Main.js';
+import Main from './components/mobile/Main.js';
 
-export default class App extends PureComponent {
+export default class AppMobile extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {

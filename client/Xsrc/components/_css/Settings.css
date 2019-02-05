@@ -1,0 +1,39 @@
+.settings {
+  flex-flow: row nowrap;
+  justify-content: flex-end;
+}
+
+.settings>.element {
+  height: 100%;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.settings>.latency {
+  width: 58%;
+}
+
+.settings>.monitor {
+  width: 38%;
+}
+
+.settings .label-small {
+  text-align: left;
+  margin: 0 1vmin;
+}
+
+.settings .sevensegment {
+  height: 100%;
+}
+
+.settings .glowbutton {
+  height: 100%;
+  filter: drop-shadow(.02rem .02rem .025rem #000000);
+}
+
+.settings .glowbutton:active {
+  transform: scale(.96);
+  filter: drop-shadow(.02rem .02rem .015rem #000000);
+}

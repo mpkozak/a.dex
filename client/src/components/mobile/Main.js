@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import './_css/Main.css';
-import Tracker from './_tracker.js'
+import Tracker from '../_tracker.js'
 import Placard from './Placard.js';
 import Screen from './Screen.js';
 import Oscillators from './Oscillators.js';

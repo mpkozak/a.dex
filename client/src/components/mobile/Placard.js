@@ -1,6 +1,6 @@
 import React from 'react';
 import './_css/Placard.css';
-import { Logo, HelpButton } from './_svg.js';
+import { Logo, HelpButton } from '../_svg.js';
 import Instructions from './Instructions.js';
 
 export default function Placard({showHelp, toggleHelp}) {

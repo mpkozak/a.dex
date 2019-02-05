@@ -1,0 +1,38 @@
+.eq {
+  flex-flow: row nowrap;
+  justify-content: space-around;
+}
+
+.eq>.inner{
+  width: calc(50% - 2vmin);
+  height: calc(100% - 2vmin);
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.eq .knob-box {
+  width: 95%;
+  height: 75%;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.eq .display {
+  width: 70%;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.eq .bigknob {
+  width: 50%;
+  filter: drop-shadow(.02rem .02rem .025rem #000000);
+}
+
+.eq .sevensegment {
+  width: 100%;
+}

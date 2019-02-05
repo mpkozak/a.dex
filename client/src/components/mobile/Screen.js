@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import './_css/Screen.css';
-import { d3 } from './_d3.js';
-import { ScreenFrame } from './_svg.js';
+import { d3 } from '../_d3.js';
+import { ScreenFrame } from '../_svg.js';
 
 export default class Screen extends PureComponent {
     constructor(props) {

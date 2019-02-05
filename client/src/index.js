@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App.js';
+import AppMobile from './AppMobile.js';
 
 //////////////////////////////
 // AnalyserNode Polyfill From:
@@ -18,4 +18,5 @@ import App from './App.js';
 //////////////////////////////
 
 
-ReactDOM.render(<App />, document.getElementById('root'));
+
+ReactDOM.render(<AppMobile />, document.getElementById('root'));

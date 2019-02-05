@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import './_css/Oscillators.css';
-import { GlowButton } from './_svg.js';
+import { GlowButton } from '../_svg.js';
 
 export default class Oscillators extends PureComponent {
   makeOscillator(osc) {

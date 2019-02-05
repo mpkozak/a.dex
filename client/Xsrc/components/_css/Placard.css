@@ -1,0 +1,18 @@
+.placard {
+  flex-flow: row nowrap;
+}
+
+.placard>.inner {
+  flex-flow: row nowrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  border: none;
+}
+
+.placard .logo {
+  height: 100%;
+}
+
+.placard .helpbutton {
+  height: 40%;
+}
