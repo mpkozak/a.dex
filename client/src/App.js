@@ -5,6 +5,9 @@ import { SvgDefs } from './components/_svg.js';
 import Audio from './components/_audio.js';
 import Main from './components/desktop/Main.js';
 
+import Meters from './components/desktop/Meters.js';
+
+
 export default class App extends PureComponent {
   constructor(props) {
     super(props);
@@ -21,17 +24,22 @@ export default class App extends PureComponent {
 
     this.handleClick = this.handleClick.bind(this);
 
-    this.audioMute = this.audioMute.bind(this);
-    this.audioToggleMic = this.audioToggleMic.bind(this);
-    this.audioSetGain = this.audioSetGain.bind(this);
-    this.audioSetFreq = this.audioSetFreq.bind(this);
-    this.audioSetParam = this.audioSetParam.bind(this);
-    this.audioSetOsc = this.audioSetOsc.bind(this);
+    this.passbackMeters = this.passbackMeters.bind(this);
+    this.drawMeters = undefined;
+    this.runtimeStack = this.runtimeStack.bind(this);
+
+    // this.audioMute = this.audioMute.bind(this);
+    // this.audioToggleMic = this.audioToggleMic.bind(this);
+    // this.audioSetGain = this.audioSetGain.bind(this);
+    // this.audioSetFreq = this.audioSetFreq.bind(this);
+    // this.audioSetParam = this.audioSetParam.bind(this);
+    // this.audioSetOsc = this.audioSetOsc.bind(this);
   };
 
   componentDidMount() {
     if (!!global.AnalyserNode.prototype.getFloatTimeDomainData) {
       this.audioInit() && this.streamInit();
+      // window.addEventListener('click', () => this.audioInit())
     };
   };
 
@@ -39,34 +47,84 @@ export default class App extends PureComponent {
 // Initialization Stack //
   audioInit() {
     const audio = new Audio({ latency: .05, baseHz: 110 });
-    audio.makeOsc('osc1', 'triangle', 110);
-    audio.makeOsc('osc2', 'sine', 110, -1200);
+    audio.makeOsc('osc1', 'triangle');
+    audio.makeOsc('osc2', 'sine', { detune: -1200 });
     audio.makeGain('fmGain', 1500);
     audio.makeGain('instGain', 0);
-    audio.makeEq('hpf', 'highpass', 0, 1);
-    audio.makeEq('lpf', 'lowpass', 2200, 1);
+    audio.makeEq('hpf', 'highpass', { Hz: 0 });
+    audio.makeEq('lpf', 'lowpass', { Hz: 2200 });
     audio.makeDelay('delay', 0);
     audio.makeGain('delayGain', 0);
     audio.makeGain('masterGain', .73);
-    audio.makeAnalyser('analyser', 10);
-    audio.connect(
+    audio.makeAnalyser('analyser', { fftBase: 8 });
+    audio.connectBatch(
       ['osc1', 'fmGain'],
       ['fmGain', ['osc2', 'frequency']],
       ['osc2', 'instGain'],
       ['instGain', 'hpf'],
       ['hpf', 'lpf'],
+      ['lpf', 'masterGain'],
       ['lpf', 'delay'],
       ['delay', 'delayGain'],
       ['delayGain', 'masterGain'],
       ['masterGain', 'analyser'],
-      ['masterGain', 'output']
+      ['masterGain', 'output'],
     );
     this.audio = audio;
 
-    this.audio.makeStream(false)
+    // audio.analyserSrc = 'masterGain';
+
+
+    // setTimeout(() => {
+    //   audio.analyserSrc = 'osc1'
+    //   console.log('osc1', audio._analyser, audio._analyserSrc, audio)
+    // }, 1000)
+    // setTimeout(() => {
+    //   audio.analyserSrc = 'osc2'
+    //   console.log('osc2', audio._analyser, audio._analyserSrc, audio)
+    // }, 2000)
+    // setTimeout(() => {
+    //   audio.analyserSrc = 'masterGain'
+    //   console.log('masterGain', audio._analyser, audio._analyserSrc, audio)
+    // }, 3000)
+    // setTimeout(() => {
+    //   audio.analyserSrc = 'instGain'
+    //   console.log('instGain', audio._analyser, audio._analyserSrc, audio)
+    // }, 4000)
+
+    // console.log(audio)
+
+    // audio.setRamp(['instGain', 'gain'], 1)
+    // this.rand = () => {
+    //   const freq = Math.random() * 1000;
+    //   audio.setRampBatch([
+    //     [['masterGain', 'gain'], Math.random(), true],
+    //     [['osc1', 'frequency'], freq],
+    //     [['osc2', 'frequency'], freq]
+    //   ])
+    //   console.log(audio.waveData)
+    //   requestAnimationFrame(this.rand)
+    // }
+    // this.rand();
+
     this.setState(prevState => ({ audioOk: true }));
     return true;
   };
+
+
+  passbackMeters(getData) {
+    this.drawMeters = getData;
+    this.audio.analyserSrc = 'mic'
+    // this.audio.fftBase = 8;
+    this.runtimeStack();
+  };
+
+
+  runtimeStack() {
+    this.drawMeters();
+    this.rAF = requestAnimationFrame(this.runtimeStack);
+  };
+
 
   streamInit() {
     navigator.mediaDevices.getUserMedia({
@@ -79,7 +137,6 @@ export default class App extends PureComponent {
       .then(stream => {
         this.audioStream = new MediaStream([stream.getAudioTracks()[0]]);
         this.videoStream = new MediaStream([stream.getVideoTracks()[0]]);
-        // this.audio.mic = this.audio.ctx.createMediaStreamSource(this.audioStream);
         this.audio.makeStream('mic', this.audioStream);
         this.setState(prevState => ({ streamOk: true }));
         window.addEventListener('click', this.handleClick);
@@ -92,10 +149,8 @@ export default class App extends PureComponent {
 
   handleClick() {
     window.removeEventListener('click', this.handleClick);
-    this.audio.ctx.resume();
     const { shadowMask } = this.refs;
     shadowMask.style.opacity = 0;
-    // setTimeout(() => shadowMask.style.display = 'none', 100);
     this.setState(prevState => ({ initOk: true }));
   };
 //////////////////////////
@@ -155,7 +210,7 @@ export default class App extends PureComponent {
 
 
   render() {
-    // console.log(this.audio)
+    console.log(this.audio)
     const { audioOk, streamOk, initOk } = this.state;
     const { audio, videoStream } = this;
     return (
@@ -164,9 +219,9 @@ export default class App extends PureComponent {
         <div id="bgi" className="fullscreen" />
         <div ref="shadowMask" id="shadow-mask" className="fullscreen" />
         {initOk
-          ? <Main
-              audio={audio}
-              videoStream={videoStream}
+          ? <Meters
+              audio={this.audio}
+              passback={this.passbackMeters}
             />
           : <Splash
               audioOk={audioOk}
@@ -180,6 +235,15 @@ export default class App extends PureComponent {
 };
 
 
+          // ? <Main
+          //     audio={audio}
+          //     videoStream={videoStream}
+          //   />
+
+        // <Meters
+        //   audio={this.props.audio}
+        //   passback={this.passbackMeters}
+        // />
 
 
 

@@ -517,7 +517,7 @@ import React from 'react';
     // );
   };
 
-  const MeterFrame = () => {
+  export const MeterFrame = () => {
     return (
       <g className="meter-frame" clipPath="url(#meter-outer-clip)">
         <rect x="0" y="0" width="100" height="60" rx="2" ry="2" filter="url(#meter-frame-texture)" fill="#3A3125" stroke="#000000" strokeWidth=".4%" />
@@ -532,7 +532,7 @@ import React from 'react';
     );
   };
 
-  const MeterPanelShadow = () => {
+  export const MeterPanelShadow = () => {
     return (
       <g className="meter-panel-shadow" clipPath="url(#meter-inner-clip)" filter="url(#meter-gradient-blur)">
         <rect x="4.75" y="4.75" width="90.5" height="50.5" rx="1" ry="1" fill="url(#meter-panel-horizontal)" />
