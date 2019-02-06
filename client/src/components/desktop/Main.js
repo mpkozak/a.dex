@@ -13,6 +13,7 @@ import Tracker from '../_tracker2.js'
 // import Master from './Master.js';
 
 import Screen from './Screen.js';
+import Colors from './Colors.js';
 import Oscillator from './Oscillator.js';
 import FmSynth from './FmSynth.js';
 
@@ -69,18 +70,18 @@ export default class Main extends PureComponent {
         toVal: (pct) => (pct),
       },
     };
-
-
-
-
+    this._audioTrackParams = {
+      vol: props.audio.nodes.instGain.gain,
+      osc1: props.audio.nodes.osc1.frequency,
+      osc2: props.audio.nodes.osc2.frequency
+    }
     this.state = {
       // showHelp: false,
       // video: false,
-      // trackerCtx: false,
-      color1: '#00FF00',
-      color2: '#FF0000',
-      // colorActive: false,
-      sensitivity: 20,
+      color1: '',
+      color2: '',
+      colorActive: false,
+      sensitivity: 50,
       range: 5,
       osc1: props.audio.nodes.osc1.type,
       osc2: props.audio.nodes.osc2.type,
@@ -90,133 +91,121 @@ export default class Main extends PureComponent {
       lpf: this._params.lpf.toPct(this._params.lpf.param.value),
       delayTime: this._params.delayTime.toPct(this._params.delayTime.param.value),
       delayWet: this._params.delayWet.toPct(this._params.delayWet.param.value),
-
-
     };
-
-    this.passbackScreen = this.passbackScreen.bind(this);
-    this.trackerCallback = this.trackerCallback.bind(this);
-
-    this.handleSetOsc = this.handleSetOsc.bind(this);
-    this.handleSetParam = this.handleSetParam.bind(this);
+    // this.video = undefined;
+    this.tracker = undefined;
+    this.trackerCtx = {};
+    this.rAF = 0;
     this.paramInterval = 0;
 
+    this.passbackScreen = this.passbackScreen.bind(this);
+    this.passbackMeters = this.passbackMeters.bind(this);
 
-    this.runTrack = this.runTrack.bind(this)
+    this.trackerSetColors = this.trackerSetColors.bind(this);
+    this.trackerCallback = this.trackerCallback.bind(this);
+
+    this.rAFStack = this.rAFStack.bind(this);
+
+    this.handleColorClick = this.handleColorClick.bind(this);
+    this.handleColorCallback = this.handleColorCallback.bind(this);
+    this.handleSetOsc = this.handleSetOsc.bind(this);
+    this.handleSetParam = this.handleSetParam.bind(this);
   };
 
   componentDidMount() {
-    // const color1 = localStorage.getItem('color1');
-    // const color2 = localStorage.getItem('color2');
-    // color1 && color2 && this.setState(prevState => ({ color1, color2 }));
+    const color1 = localStorage.getItem('color1') || '#00FF00';
+    const color2 = localStorage.getItem('color2') || '#FF0000';
+    this.setState(prevState => ({ color1, color2 }));
   };
 
   passbackScreen(video, drawScreen) {
-    this.video = video;
+    this.vW = video.clientWidth;
+    this.vH = video.clientHeight;
     this.drawScreen = drawScreen;
     this.trackerInit(video);
   };
 
-
-  trackerInit(video) {
-    const { color1, color2, sensitivity } = this.state;
-    this.tracker = new Tracker(video, [color1, color2], this.trackerCallback, 5, sensitivity);
-    this.trackerCanvas = this.tracker.init();
-    // setInterval(this.runTrack, 100)
-    this.runTrack();
-  };
-
-
-  runTrack() {
-    // console.log('raf')
-    this.tracker.runtime()
-    requestAnimationFrame(this.runTrack)
-  }
-
-
-  trackerCallback(data) {
-    this.drawScreen(data)
-    // console.log(data)
-  }
-
-
-//////////////////////////
-// Initialization Stack //
-  // videoInit() {
-  //   const { videoStream } = this.props;
-  //   const { width, height } = videoStream.getVideoTracks()[0].getSettings();
-  //   const video = document.createElement('video');
-  //   video.srcObject = videoStream;
-  //   video.width = width;
-  //   video.height = height;
-  //   video.preload = true;
-  //   video.loop = true;
-  //   video.playsInline = true;
-  //   video.play();
-  //   this.setState(prevState => ({ video }), this.trackerInit);
-  // };
-
-  // trackerInit() {
-  //   const { video, color1, color2, sensitivity } = this.state;
-  //   this.tracker = new Tracker(video, [color1, color2], this.trackerRuntime, sensitivity);
-  //   this.tracker.cropX = this.cropX;
-  //   this.tracker.cropY = this.cropY;
-  //   const trackerCtx = this.tracker.init();
-  //   this.setState(prevState => ({ trackerCtx }), this.runtimeStack);
-  // };
-
-  // trackerSetColors() {
-  //   const { color1, color2 } = this.state;
-  //   this.tracker.setColors([color1, color2]);
-  // };
-//////////////////////////
-
-///////////////////
-// Runtime Stack //
-  audioRuntime(posX, posY) {
-    const { ctx, baseHz, audioMute, audioSetGain, audioSetFreq } = this.props.audio;
-    if (!posX || !posY) {
-      audioMute();
-    } else {
-      const { cW, cH } = this;
-      const x = (cW - posX) * (5 / cW);
-      const y = 1 - ((posY / cH) / 2);
-      const gain = (y ** 2);
-      const freq = (2 ** x) * baseHz;
-      audioSetGain(gain, ctx.currentTime);
-      audioSetFreq(freq, ctx.currentTime);
-    };
-  };
-
-  trackerRuntime(data) {
-    this.audioRuntime(data[1].x, data[0].y);
-    this.drawScreen(data)
-  };
-
-  runtimeStack() {
-    this.drawMeters();
-    this.tracker.runtime();
-    this.rAF = requestAnimationFrame(this.runtimeStack);
-  };
-///////////////////
-
-////////////////////////////
-// Child Passback Capture //
   passbackMeters(getData) {
     this.drawMeters = getData;
   };
 
-  // passbackScreen(drawScreen, cropX, cropY, cW, cH) {
-  //   this.drawScreen = drawScreen;
-  //   this.cropX = cropX;
-  //   this.cropY = cropY;
-  //   this.cW = cW;
-  //   this.cH = cH;
-  // };
-////////////////////////////
+  trackerInit(video) {
+    const { color1, color2, sensitivity } = this.state;
+    this.tracker = new Tracker(video, [color1, color2], this.trackerCallback, 5, sensitivity);
+    this.trackerCtx = this.tracker.init();
+    this.rAFStack();
+  };
+
+  trackerSetColors() {
+    const { color1, color2 } = this.state;
+    this.tracker.colors = [color1, color2];
+  };
+
+
+///////////////////
+// Runtime Stack //
+  trackerCallback(data) {
+    this.audioRuntime(data[1].x, data[0].y);
+    this.drawScreen(data);
+  };
+
+  audioRuntime(posX, posY) {
+    const { audio } = this.props;
+    const { range } = this.state;
+    const { vol, osc1, osc2 } = this._audioTrackParams;
+    if (!posX || !posY) {
+      return audio.setRampExp(vol, 0, .1);
+    };
+    const x = (this.vW - posX) / this.vW;
+    const y = (this.vH - posY) / this.vH;
+    const frequency = (2 ** (x * range)) * audio.baseHz;
+    const gain = (y ** 2);
+    audio.setRampBatch([
+      [vol, gain, true],
+      [osc1, frequency, false],
+      [osc2, frequency, false],
+    ]);
+  };
+
+  rAFStack() {
+    // this.drawMeters();
+    this.tracker.runtime();
+    this.rAF = requestAnimationFrame(this.rAFStack);
+  };
+///////////////////
+
+
+
 
 ////////////////////////
 // Handlers + Helpers //
+  rgbaToHex(rgba) {
+    let color = '#';
+    rgba.forEach((d, i) => {
+      (i < 3) && (color += ('0' + d.toString(16)).slice(-2));
+    });
+    return color;
+  };
+
+  handleColorClick(id) {
+    const { colorActive } = this.state;
+    this.setState(prevState => ({
+      colorActive: (id === colorActive ? false : id)
+    }));
+  };
+
+  handleColorCallback(e) {
+    const { colorActive } = this.state;
+    const { ctx, scalar } = this.trackerCtx;
+    const rgba = ctx.getImageData(e.offsetX / scalar, e.offsetY / scalar, 1, 1).data;
+    const color = this.rgbaToHex(rgba);
+    localStorage.setItem(colorActive, color);
+    this.setState(prevState => ({
+      [colorActive]: color,
+      colorActive: false
+    }), this.trackerSetColors);
+  };
+
   handleSetOsc(id, delta) {
     const { osc, type } = this.props.audio.setOsc(id, delta);
     this.setState(prevState => ({ [osc]: type }));
@@ -233,11 +222,6 @@ export default class Main extends PureComponent {
       this.props.audio.setParam(param, toVal(newPct), .1);
     };
   };
-
-
-
-
-
 ////////////////////////
 
 
@@ -265,7 +249,14 @@ export default class Main extends PureComponent {
           color2={color2}
           colorActive={colorActive}
           videoStream={this.props.videoStream}
+          colorCallback={this.handleColorCallback}
           passback={this.passbackScreen}
+        />
+        <Colors
+          color1={color1}
+          color2={color2}
+          colorActive={colorActive}
+          colorClick={this.handleColorClick}
         />
         <Oscillator
           osc={1}
@@ -286,7 +277,7 @@ export default class Main extends PureComponent {
 
 
 
-        <div id="Colors" className="outer">
+        <div id="" className="outer">
           <div className="inner border"/>
         </div>
         <div id="Sensitivity" className="outer">

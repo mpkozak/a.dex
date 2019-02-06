@@ -11,12 +11,19 @@ export default class Screen extends PureComponent {
       vH: 0,
     };
     this.svgDraw = this.svgDraw.bind(this);
-
-    // this.handleClickbox = this.handleClickbox.bind(this);
   };
 
   componentDidMount() {
     this.videoInit()
+  };
+
+  componentDidUpdate() {
+    const { colorActive, colorCallback } = this.props;
+    if (colorActive) {
+      this.refs.videoClickbox.addEventListener('click', colorCallback);
+    } else {
+      this.refs.videoClickbox.removeEventListener('click', colorCallback);
+    };
   };
 
   videoInit() {
@@ -29,15 +36,6 @@ export default class Screen extends PureComponent {
       this.props.passback(video, this.svgDraw);
     });
   };
-
-
-// componentDidUpdate() {
-//   if (this.props.colorActive) {
-//     this.refs.videoClickbox.addEventListener('touchstart', this.handleClickbox);
-//   } else {
-//     this.refs.videoClickbox.removeEventListener('touchstart', this.handleClickbox);
-//   };
-// };
 
 ///////////////////////
 // Screen Draw Stack //
@@ -61,27 +59,13 @@ export default class Screen extends PureComponent {
   };
 ///////////////////////
 
-//////////////////////
-// Clickbox Handler //
-  // handleClickbox(e) {
-  //   this.refs.videoClickbox.removeEventListener('touchstart', this.handleClickbox);
-  //   const { cW, scalar } = this.state;
-  //   const { clientX, clientY, target } = e.targetTouches[0];
-  //   const { offsetTop, offsetLeft, offsetParent } = target;
-  //   const top = (clientY - (offsetTop + offsetParent.offsetTop)) / scalar;
-  //   const left = (cW - (clientX - (offsetLeft + offsetParent.offsetLeft))) / scalar;
-  //   const drawCtx = this.refs.videoCanvas.getContext('2d');
-  //   const data = drawCtx.getImageData(left, top, 1, 1).data;
-  //   this.props.setColor(data)
-  // };
-//////////////////////
-
 
   render() {
     const { vW, vH } = this.state;
     return (
       <div id="Screen" className="outer">
         <div className="video-box inner">
+          <ScreenFrame />
           <video ref="video"
             id="video-0"
             className="element"
@@ -110,7 +94,6 @@ export default class Screen extends PureComponent {
             width={vW}
             height={vH}
           />
-          <ScreenFrame />
         </div>
       </div>
     );

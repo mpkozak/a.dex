@@ -1,13 +1,8 @@
 import React, { PureComponent } from 'react';
 import './_css/FmSynth.css';
-// import help from './_help.js';
 import { BigKnob } from '../_svg.js';
 
 export default class FmSynth extends PureComponent {
-  constructor(props) {
-    super(props);
-    this.scrollTime = 0;
-  }
 
   handleScroll(e, id) {
     e.preventDefault();
@@ -33,7 +28,6 @@ export default class FmSynth extends PureComponent {
         <BigKnob
           color={'#313638'}
           rotation={pct}
-          // handleClick={(e) => help.handleClick(e, this.setValue, changeScalar, param)}
           handleClick={(e) => this.handleClick(e, id)}
           handleScroll={(e) => this.handleScroll(e, id)}
         />
@@ -44,7 +38,7 @@ export default class FmSynth extends PureComponent {
 
 
   render() {
-    const { fmDepth, fmWidth } = this.props
+    const { fmDepth, fmWidth } = this.props;
     return (
       <div id="FmSynth" className="outer">
         <div className="inner border">

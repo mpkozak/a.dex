@@ -468,7 +468,7 @@ import React from 'react';
     return (
       <svg className="screenframe" viewBox="0 0 40 30">
         <g className="screenframe-outer" clipPath="url(#screenframe-outer-clip)" mask="url(#screenframe-inner-mask)">
-          <rect x="0" y="0" rx="1" width="40" height="30" filter="url(#screenframe-texture)" fill="#6E7377" stroke="#000000" strokeWidth=".2%" />
+          <rect x="0" y="0" rx="1" width="40" height="30" filter="url(#screenframe-texture)" fill="#6E7377" stroke="#000000" strokeWidth=".5%" />
           <g className="screenframe-outer-contours" filter="url(#screenframe-blur)" transform="scale(1.025) translate(-.5, -.375)">
             <rect x="0" y="0" rx="1" width="40" height="30" fill="url(#screenframe-outer-corners)" />
             <rect x="0" y="0" rx="1" width="40" height="30" fill="url(#screenframe-outer-horizontal)" />

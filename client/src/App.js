@@ -32,7 +32,7 @@ export default class App extends PureComponent {
     audio.makeOsc('osc1', 'triangle');
     audio.makeOsc('osc2', 'sine', { detune: -1200 });
     audio.makeGain('fmGain', 1500);
-    audio.makeGain('instGain', 0);
+    audio.makeGain('instGain', .0001);
     audio.makeEq('hpf', 'highpass', { Hz: 0 });
     audio.makeEq('lpf', 'lowpass', { Hz: 2200 });
     audio.makeDelay('delay', 0);
@@ -53,7 +53,7 @@ export default class App extends PureComponent {
       ['masterGain', 'output'],
     );
 
-    audio.setRamp(['instGain', 'gain'], 1)
+    // audio.setRamp(['instGain', 'gain'], 1)
     this.audio = audio;
     this.setState(prevState => ({ audioOk: true }));
     return true;

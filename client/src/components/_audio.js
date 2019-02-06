@@ -5,14 +5,15 @@ export default class Audio {
     this.baseHz = baseHz;
     this.nodes = { output: this.ctx.destination };
     this.muted = false;
-    this._outputSrc = [];
-    this._muteCache = [];
     this._defs = {
       _oscTypes: ['sine', 'square', 'sawtooth', 'triangle'],
       _eqTypes: ['lowpass', 'highpass', 'bandpass', 'lowshelf', 'highshelf', 'peaking', 'notch', 'allpass'],
     };
-
+    this._outputSrc = [];
+    this._muteCache = [];
     this.setOsc = this.setOsc.bind(this);
+    // this.setRamp = this.setRamp.bind(this);
+    // this.setRampBatch = this.setRampBatch.bind(this);
   };
   set reset(confirm) {
     if (typeof confirm !== 'boolean' || !confirm) {

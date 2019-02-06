@@ -1,0 +1,30 @@
+#Colors>.inner {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-around;
+}
+
+#Colors>.inner>.label {
+  position: relative;
+  height: 75%;
+  width: 30%;
+  margin: 0;
+  padding: 0 2%;
+  text-align: right;
+}
+
+#Colors>.inner>.element {
+  width: 30%;
+  height: 90%;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: space-around;
+}
+
+#Colors>.inner>.element>.colorswatch {
+  width: 42%;
+  height: auto;
+  filter: drop-shadow(.02rem .02rem .025rem #000000);
+}
