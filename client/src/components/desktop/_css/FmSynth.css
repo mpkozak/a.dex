@@ -1,0 +1,31 @@
+
+
+#FmSynth>.inner>.knob-box {
+  position: absolute;
+  left: 2%;
+  bottom: 0%;
+  width: 96%;
+  height: 80%;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-around;
+  background-color: blue;
+}
+
+
+#FmSynth>.inner>.knob-box>.element {
+  width: 40%;
+  height: 90%;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: space-around;
+  border: 1px solid green;
+}
+
+
+#FmSynth .bigknob {
+  width: 90%;
+  height: auto;
+}

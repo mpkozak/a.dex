@@ -28,9 +28,7 @@ import AppMobile from './AppMobile.js';
     navigator.userAgent.match(/BlackBerry/i) ||
     navigator.userAgent.match(/Windows Phone/i)
   ) {
-    console.log('is mobile')
     return ReactDOM.render(<AppMobile />, document.getElementById('root'));
   };
-  console.log('is not mobile')
   return ReactDOM.render(<App />, document.getElementById('root'));
 })();

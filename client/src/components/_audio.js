@@ -1,8 +1,6 @@
-
 export default class Audio {
   constructor({ latency = .05, baseHz = 440 } = {}) {
-    this.AudioContext = window.AudioContext || window.webkitAudioContext;
-    this.ctx = new this.AudioContext();
+    this.context = true;
     this.latency = latency;
     this.baseHz = baseHz;
     this.nodes = { output: this.ctx.destination };
@@ -13,28 +11,24 @@ export default class Audio {
       _oscTypes: ['sine', 'square', 'sawtooth', 'triangle'],
       _eqTypes: ['lowpass', 'highpass', 'bandpass', 'lowshelf', 'highshelf', 'peaking', 'notch', 'allpass'],
     };
-  };
-  get now() {
-    return this.ctx.currentTime;
-  };
-  get nodeNames() {
-    return Object.keys(this.nodes);
-  };
-  // get freqData() {
-  //   this._analyser.getFloatFrequencyDomainData(this._freqData);
-  //   return this._freqData;
-  // };
-  // get waveData() {
-  //   this._analyser.getFloatTimeDomainData(this._waveData);
-  //   return this._waveData;
-  // };
 
-
-  waveData() {
-    this._analyser.getFloatTimeDomainData(this._waveData);
+    this.setOsc = this.setOsc.bind(this);
   };
-
-
+  set reset(confirm) {
+    if (typeof confirm !== 'boolean' || !confirm) {
+      console.error('Reset Failure: Expected Boolean "true".');
+    };
+    this.ctx && this.ctx.close();
+    Object.keys(this).forEach(d => delete this[d])
+    this.constructor();
+  };
+  set context(confirm) {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    if (!confirm || this.ctx) {
+      return console.error('Audio Context Has Already Been Instantiated.');
+    };
+    return this.ctx = new AudioContext();
+  };
   set fftBase(n) {
     if (n < 5) {
       n = 5;
@@ -49,15 +43,45 @@ export default class Audio {
     };
   };
   set analyserSrc(src) {
-    const node = this._parseNode(src);
-    if (this._analyser && node) {
-      if (this._analyserSrc) {
-        this.disconnect(this._analyserSrc, this._analyser);
-      };
-      this._analyserSrc = node;
-      this.connect(node, this._analyser);
+    if (!this._analyser) {
+      return console.error('No Analyser Node Has Been Created.');
     };
+    const node = this._parseNode(src);
+    if (!node) {
+      return console.error(`Invalid Audio Node "${src}"`);
+    };
+    if (this._analyserSrc) {
+      this.disconnect(this._analyserSrc, this._analyser);
+    };
+    this._analyserSrc = node;
+    this.connect(node, this._analyser);
   };
+  get now() {
+    return this.ctx.currentTime;
+  };
+  get nodeNames() {
+    return Object.keys(this.nodes);
+  };
+
+
+
+  // get freqData() {
+  //   this._analyser.getFloatFrequencyDomainData(this._freqData);
+  //   return this._freqData;
+  // };
+  // get waveData() {
+  //   this._analyser.getFloatTimeDomainData(this._waveData);
+  //   return this._waveData;
+  // };
+  waveData() {
+    this._analyser.getFloatTimeDomainData(this._waveData);
+  };
+  freqData() {
+    this._analyser.getFloatFrequencyDomainData(this._freqData);
+  };
+
+
+
 
 
 /////////////////////////
@@ -241,14 +265,23 @@ export default class Audio {
       return console.error(`Invalid Oscillator Type: "${type}"`);
     };
     const o = this._parseNode(osc);
-    if (o) {
-      this.mute(undefined, d);
-      setTimeout(() => {
-        o.type = type;
-        this.unmute(undefined, d);
-      }, d * 1000);
+    if (!o) {
+      return console.error(`Invalid Oscillator Node: "${osc}"`);
     };
+    this.mute(undefined, d);
+    setTimeout(() => {
+      o.type = type;
+      this.unmute(undefined, d);
+    }, d * 1000);
+    return { osc, type };
   };
+
+  setParam(param, val, latency) {
+    const p = this._parseParam(param);
+    this.setRamp(p, val, latency);
+    return p.value;
+  };
+
 ///////////////////////////////
 
 

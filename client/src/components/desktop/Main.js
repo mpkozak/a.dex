@@ -1,145 +1,174 @@
 import React, { PureComponent } from 'react';
 import './_css/Main.css';
-import Tracker from '../_tracker.js'
+import Tracker from '../_tracker2.js'
+// import Init from './Init.js'
+// import AnimationStack from './AnimationStack.js';
 // import Placard from './Placard.js';
-// import Screen from './Screen.js';
-// import Oscillators from './Oscillators.js';
+// import Instructions from './Instructions.js';
 // import Settings from './Settings.js';
-// import Meters from './Meters.js';
-// import Audio from '../_audio.js'
+// import Delay from './Delay.js';
+// import Oscillators from './Oscillators.js';
+// import FmSynth from './FmSynth.js';
+// import Eq from './Eq.js';
+// import Master from './Master.js';
+
+import Screen from './Screen.js';
+import Oscillator from './Oscillator.js';
+import FmSynth from './FmSynth.js';
 
 export default class Main extends PureComponent {
   constructor(props) {
     super(props);
+    this._params = {
+      fmDepth: {
+        param: props.audio.nodes.fmGain.gain,
+        min: 0,
+        max: 3000,
+        // range: 3000,
+        toPct: (val) => (val / 3000),
+        toVal: (pct) => (pct * 3000),
+      },
+      fmWidth: {
+        param: props.audio.nodes.osc2.detune,
+        min: -1200,
+        max: 1200,
+        // range: 2400,
+        toPct: (val) => ((val + 1200) / 2400),
+        toVal: (pct) => ((pct * 2400) - 1200),
+      },
+      hpf: {
+        param: props.audio.nodes.hpf.frequency,
+        min: 0,
+        max: 2200,
+        // range: 2200,
+        toPct: (val) => (val / 2200),
+        toVal: (pct) => (pct * 2200),
+      },
+      lpf: {
+        param: props.audio.nodes.lpf.frequency,
+        min: 2200,
+        max: 22000,
+        // range: 19800,
+        toPct: (val) => ((val - 2200) / 19800),
+        toVal: (pct) => ((pct * 19800) + 2200),
+      },
+      delayTime: {
+        param: props.audio.nodes.delay.delayTime,
+        min: 0,
+        max: .999,
+        // range: .999,
+        toPct: (val) => (val / .999),
+        toVal: (pct) => (pct * .999),
+      },
+      delayWet: {
+        param: props.audio.nodes.delayGain.gain,
+        min: 0,
+        max: 1,
+        // range: 1,
+        toPct: (val) => (val),
+        toVal: (pct) => (pct),
+      },
+    };
+
+
+
+
     this.state = {
       // showHelp: false,
       // video: false,
       // trackerCtx: false,
-      // osc1: props.audio.osc1.type,
-      // osc2: props.audio.osc2.type,
-      // color1: '#00FF00',
-      // color2: '#FF0000',
+      color1: '#00FF00',
+      color2: '#FF0000',
       // colorActive: false,
-      // sensitivity: 30,
+      sensitivity: 20,
+      range: 5,
+      osc1: props.audio.nodes.osc1.type,
+      osc2: props.audio.nodes.osc2.type,
+      fmDepth: this._params.fmDepth.toPct(this._params.fmDepth.param.value),
+      fmWidth: this._params.fmWidth.toPct(this._params.fmWidth.param.value),
+      hpf: this._params.hpf.toPct(this._params.hpf.param.value),
+      lpf: this._params.lpf.toPct(this._params.lpf.param.value),
+      delayTime: this._params.delayTime.toPct(this._params.delayTime.param.value),
+      delayWet: this._params.delayWet.toPct(this._params.delayWet.param.value),
+
+
     };
-    // this.rAF = undefined;
-    // this.drawMeters = undefined;
-    // this.drawScreen = undefined;
-    // this.trackerInit = this.trackerInit.bind(this);
-    // this.trackerSetColors = this.trackerSetColors.bind(this);
-    // this.trackerRuntime = this.trackerRuntime.bind(this);
-    // this.runtimeStack = this.runtimeStack.bind(this);
-    // this.passbackMeters = this.passbackMeters.bind(this)
-    // this.passbackScreen = this.passbackScreen.bind(this);
-    // this.handleToggleHelp = this.handleToggleHelp.bind(this);
-    // this.handleSetOsc = this.handleSetOsc.bind(this);
-    // this.handleGetColor = this.handleGetColor.bind(this);
-    // this.handleSetColor = this.handleSetColor.bind(this);
-    // this.handleSetSensitivity = this.handleSetSensitivity.bind(this);
+
+    this.passbackScreen = this.passbackScreen.bind(this);
+    this.trackerCallback = this.trackerCallback.bind(this);
+
+    this.handleSetOsc = this.handleSetOsc.bind(this);
+    this.handleSetParam = this.handleSetParam.bind(this);
+    this.paramInterval = 0;
+
+
+    this.runTrack = this.runTrack.bind(this)
   };
-
-  // componentDidMount() {
-  //   const color1 = localStorage.getItem('color1');
-  //   const color2 = localStorage.getItem('color2');
-  //   color1 && color2 && this.setState(prevState => ({ color1, color2 }));
-  //   this.videoInit();
-  // };
-
 
   componentDidMount() {
-    // const audio = new Audio({ latency: .05, baseHz: 110 });
-    // audio.makeOsc('osc1', 'triangle', 110);
-    // audio.makeOsc('osc2', 'sine', 110, -1200);
-    // audio.makeGain('fmGain', 1500);
-    // audio.makeGain('instGain', 0);
-    // audio.makeEq('hpf', 'highpass', 0, 1);
-    // audio.makeEq('lpf', 'lowpass', 2200, 1);
-    // audio.makeDelay('delay', 0);
-    // audio.makeGain('delayGain', 0);
-    // audio.makeGain('masterGain', .73);
-    // audio.makeAnalyser('analyser', 10);
-    // audio.connect(
-    //   ['osc1', 'fmGain'],
-    //   ['fmGain', ['osc2', 'frequency']],
-    //   ['osc2', 'instGain'],
-    //   ['instGain', 'hpf'],
-    //   ['hpf', 'lpf'],
-    //   ['lpf', 'delay'],
-    //   ['delay', 'delayGain'],
-    //   ['delayGain', 'masterGain'],
-    //   ['masterGain', 'analyser'],
-    //   ['masterGain', 'output']
-    // );
+    // const color1 = localStorage.getItem('color1');
+    // const color2 = localStorage.getItem('color2');
+    // color1 && color2 && this.setState(prevState => ({ color1, color2 }));
+  };
 
-    // audio.setRamp('masterGain', 'fake', 20)
-
-    // audio.setParam(audio.nodes.masterGain)
-    // audio.setParam(audio.nodes.masterGain.gain)
-
-// setTimeout(() => audio.ramp('masterGain', 'gain', 0, 0), 500)
-
-
-
-    // this.setState(prevState => ({ audio }))
-    // console.log(audio)
+  passbackScreen(video, drawScreen) {
+    this.video = video;
+    this.drawScreen = drawScreen;
+    this.trackerInit(video);
   };
 
 
-  componentDidUpdate() {
-    // const { audio } = this.state;
+  trackerInit(video) {
+    const { color1, color2, sensitivity } = this.state;
+    this.tracker = new Tracker(video, [color1, color2], this.trackerCallback, 5, sensitivity);
+    this.trackerCanvas = this.tracker.init();
+    // setInterval(this.runTrack, 100)
+    this.runTrack();
+  };
 
 
-
-
-    // const a1 = audio.makeOsc()
-    // const a2 = audio.makeOsc()
-    // const a3 = audio.makeGain()
-    // const a4 = audio.makeGain()
-    // const a5 = audio.makeEq()
-    // const a6 = audio.makeEq()
-    // const a7 = audio.makeDelay()
-    // const a8 = audio.makeGain()
-    // const a9 = audio.makeGain()
-    // const a10 = audio.makeAnalyser()
-
-
-    // console.log(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10)
-    // console.log(audio.nodes)
+  runTrack() {
+    // console.log('raf')
+    this.tracker.runtime()
+    requestAnimationFrame(this.runTrack)
   }
 
 
-
+  trackerCallback(data) {
+    this.drawScreen(data)
+    // console.log(data)
+  }
 
 
 //////////////////////////
 // Initialization Stack //
-  videoInit() {
-    const { videoStream } = this.props;
-    const { width, height } = videoStream.getVideoTracks()[0].getSettings();
-    const video = document.createElement('video');
-    video.srcObject = videoStream;
-    video.width = width;
-    video.height = height;
-    video.preload = true;
-    video.loop = true;
-    video.playsInline = true;
-    video.play();
-    this.setState(prevState => ({ video }), this.trackerInit);
-  };
+  // videoInit() {
+  //   const { videoStream } = this.props;
+  //   const { width, height } = videoStream.getVideoTracks()[0].getSettings();
+  //   const video = document.createElement('video');
+  //   video.srcObject = videoStream;
+  //   video.width = width;
+  //   video.height = height;
+  //   video.preload = true;
+  //   video.loop = true;
+  //   video.playsInline = true;
+  //   video.play();
+  //   this.setState(prevState => ({ video }), this.trackerInit);
+  // };
 
-  trackerInit() {
-    const { video, color1, color2, sensitivity } = this.state;
-    this.tracker = new Tracker(video, [color1, color2], this.trackerRuntime, sensitivity);
-    this.tracker.cropX = this.cropX;
-    this.tracker.cropY = this.cropY;
-    const trackerCtx = this.tracker.init();
-    this.setState(prevState => ({ trackerCtx }), this.runtimeStack);
-  };
+  // trackerInit() {
+  //   const { video, color1, color2, sensitivity } = this.state;
+  //   this.tracker = new Tracker(video, [color1, color2], this.trackerRuntime, sensitivity);
+  //   this.tracker.cropX = this.cropX;
+  //   this.tracker.cropY = this.cropY;
+  //   const trackerCtx = this.tracker.init();
+  //   this.setState(prevState => ({ trackerCtx }), this.runtimeStack);
+  // };
 
-  trackerSetColors() {
-    const { color1, color2 } = this.state;
-    this.tracker.setColors([color1, color2]);
-  };
+  // trackerSetColors() {
+  //   const { color1, color2 } = this.state;
+  //   this.tracker.setColors([color1, color2]);
+  // };
 //////////////////////////
 
 ///////////////////
@@ -177,80 +206,98 @@ export default class Main extends PureComponent {
     this.drawMeters = getData;
   };
 
-  passbackScreen(drawScreen, cropX, cropY, cW, cH) {
-    this.drawScreen = drawScreen;
-    this.cropX = cropX;
-    this.cropY = cropY;
-    this.cW = cW;
-    this.cH = cH;
-  };
+  // passbackScreen(drawScreen, cropX, cropY, cW, cH) {
+  //   this.drawScreen = drawScreen;
+  //   this.cropX = cropX;
+  //   this.cropY = cropY;
+  //   this.cW = cW;
+  //   this.cH = cH;
+  // };
 ////////////////////////////
 
 ////////////////////////
 // Handlers + Helpers //
-  rgbaToHex(rgba) {
-    let color = '#';
-    rgba.forEach((d, i) => {
-      (i < 3) && (color += ('0' + d.toString(16)).slice(-2));
-    });
-    return color;
-  };
-
-  handleToggleHelp() {
-    this.setState(prevState => ({ showHelp: !prevState.showHelp }));
-  };
-
-  handleSetOsc(osc, type) {
-    this.props.audio.audioSetOsc(osc, type);
+  handleSetOsc(id, delta) {
+    const { osc, type } = this.props.audio.setOsc(id, delta);
     this.setState(prevState => ({ [osc]: type }));
   };
 
-  handleGetColor(colorSet) {
-    const colorActive = (this.state.colorActive !== colorSet) && colorSet;
-    this.setState(prevState => ({ colorActive }));
-  };
-
-  handleSetColor(rgba) {
-    const setTarget = 'color' + this.state.colorActive;
-    const color = this.rgbaToHex(rgba);
-    localStorage.setItem(setTarget, color);
-    this.setState(prevState => ({
-      [setTarget]: color,
-      colorActive: false
-    }), this.trackerSetColors);
-  };
-
-  handleSetSensitivity(e) {
-    const parent = e.target.parentNode.parentNode.parentNode.parentNode;
-    const { offsetLeft, offsetWidth } = parent;
-    const { clientX } = e.targetTouches[0];
-    let pct = (clientX - offsetLeft) / offsetWidth;
-    if (pct > 1) {
-      pct = 1;
-    } else if (pct < 0) {
-      pct = 0;
+  handleSetParam(id, delta, t) {
+    const { param, toVal } = this._params[id];
+    const pct = this.state[id];
+    let newPct = pct + (delta * .0004) * (20 ** (pct < .5 ? pct : 1 - pct));
+    newPct = newPct > 1 ? 1 : newPct < 0 ? 0 : newPct;
+    this.setState(prevState => ({ [id]: newPct }));
+    if (this.paramInterval < t) {
+      this.paramInterval = t + 100;
+      this.props.audio.setParam(param, toVal(newPct), .1);
     };
-    const sensitivity = pct * 120;
-    this.tracker.sensitivity = sensitivity;
-    this.setState(prevState => ({ sensitivity }));
   };
+
+
+
+
+
 ////////////////////////
 
 
   render() {
-    // console.log('i am main', this.props)
-    // const {
-    //   showHelp,
-    //   video,
-    //   osc1,
-    //   osc2,
-    //   color1,
-    //   color2,
-    //   colorActive,
-    //   sensitivity
-    // } = this.state;
+    const {
+      color1,
+      color2,
+      colorActive,
+      sensitivity,
+      range,
+      osc1,
+      osc2,
+      fmDepth,
+      fmWidth,
+      hpf,
+      lpf,
+      delayTime,
+      delayWet,
+    } = this.state;
+
     return (
       <div id="Main">
+        <Screen
+          color1={color1}
+          color2={color2}
+          colorActive={colorActive}
+          videoStream={this.props.videoStream}
+          passback={this.passbackScreen}
+        />
+        <Oscillator
+          osc={1}
+          current={osc1}
+          setOsc={this.handleSetOsc}
+          />
+        <Oscillator
+          osc={2}
+          current={osc2}
+          setOsc={this.handleSetOsc}
+        />
+        <FmSynth
+          fmDepth={fmDepth}
+          fmWidth={fmWidth}
+          setFm={this.handleSetParam}
+        />
+
+
+
+
+        <div id="Colors" className="outer">
+          <div className="inner border"/>
+        </div>
+        <div id="Sensitivity" className="outer">
+          <div className="inner border"/>
+        </div>
+        <div id="" className="outer">
+          <div className="inner border"/>
+        </div>
+        <div id="Placard" className="outer">
+          <div className="inner border"/>
+        </div>
       </div>
     );
   };

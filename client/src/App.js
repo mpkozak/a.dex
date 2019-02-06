@@ -1,12 +1,9 @@
 import React, { PureComponent } from 'react';
 import './App.css';
-import { Splash } from './components/_splash.js';
 import { SvgDefs } from './components/_svg.js';
 import Audio from './components/_audio.js';
+import Splash from './components/_splash.js';
 import Main from './components/desktop/Main.js';
-
-import Meters from './components/desktop/Meters.js';
-
 
 export default class App extends PureComponent {
   constructor(props) {
@@ -15,21 +12,11 @@ export default class App extends PureComponent {
       audioOk: null,
       streamOk: null,
       initOk: null,
-
-      micActive: false,
     };
     this.audio = undefined;
     this.videoStream = undefined;
     this.audioStream = undefined;
-
-    this.handleClick = this.handleClick.bind(this);
-
-    this.passbackMeters = this.passbackMeters.bind(this);
-    this.drawMeters = undefined;
-    this.runtimeStack = this.runtimeStack.bind(this);
-    this.runtime = 0;
-    this.rAF = 0;
-
+    this.handleClickInit = this.handleClickInit.bind(this);
   };
 
   componentDidMount() {
@@ -65,7 +52,108 @@ export default class App extends PureComponent {
       ['masterGain', 'analyser'],
       ['masterGain', 'output'],
     );
+
+    audio.setRamp(['instGain', 'gain'], 1)
     this.audio = audio;
+    this.setState(prevState => ({ audioOk: true }));
+    return true;
+  };
+
+  streamInit() {
+    navigator.mediaDevices.getUserMedia({
+      video: {
+        width: { ideal: 640 },
+        height: { ideal: 480 }
+      },
+      audio: true
+    })
+      .then(stream => {
+        this.audioStream = new MediaStream([stream.getAudioTracks()[0]]);
+        this.videoStream = new MediaStream([stream.getVideoTracks()[0]]);
+        this.audio.makeStream('mic', this.audioStream);
+        this.setState(prevState => ({ streamOk: true }));
+        window.addEventListener('click', this.handleClickInit);
+      })
+      .catch(err => {
+        console.log(err);
+        this.setState(prevState => ({ streamOk: false }));
+      });
+  };
+
+  handleClickInit() {
+    window.removeEventListener('click', this.handleClick);
+    this.refs.shadowMask.style.opacity = 0;
+    this.setState(prevState => ({ initOk: true }));
+  };
+//////////////////////////
+
+
+  render() {
+    const { audioOk, streamOk, initOk } = this.state;
+    const { audio, videoStream } = this;
+    return (
+      <div ref="app" id="App">
+        <SvgDefs />
+        <div id="bgi" className="fullscreen" />
+        <div ref="shadowMask" id="shadow-mask" className="fullscreen" />
+        {initOk
+          ? <Main
+              audio={audio}
+              videoStream={videoStream}
+            />
+          : <Splash
+              audioOk={audioOk}
+              streamOk={streamOk}
+              initOk={initOk}
+            />
+        }
+      </div>
+    );
+  };
+};
+
+
+
+
+
+
+
+
+    // this.passbackMeters = this.passbackMeters.bind(this);
+    // this.drawMeters = undefined;
+    // this.runtimeStack = this.runtimeStack.bind(this);
+    // this.runtime = 0;
+    // this.rAF = 0;
+
+
+
+  // passbackMeters(getData) {
+  //   this.drawMeters = getData;
+  //   this.audio.analyserSrc = 'mic'
+  //   // console.profile('meters')
+  //   this.runtimeStack();
+  //   // setTimeout(() => console.profileEnd('meters'), 5000);
+  // };
+
+
+  // runtimeStack() {
+  //   requestAnimationFrame(this.runtimeStack);
+  //   // const freq = Math.random() * 1000;
+  //   // this.audio.setRampBatch([
+  //   //   [['instGain', 'gain'], Math.random(), true],
+  //   //   [['osc1', 'frequency'], freq],
+  //   //   [['osc2', 'frequency'], freq]
+  //   // ])
+  //   this.drawMeters();
+  // };
+
+
+        // <Meters
+        //   audio={this.props.audio}
+        //   passback={this.passbackMeters}
+        // />
+
+
 
     // audio.analyserSrc = 'masterGain';
 
@@ -89,7 +177,7 @@ export default class App extends PureComponent {
 
     // console.log(audio)
 
-    audio.setRamp(['instGain', 'gain'], .5)
+    // audio.setRamp(['instGain', 'gain'], .5)
     // this.rand = () => {
     //   const freq = Math.random() * 1000;
     //   audio.setRampBatch([
@@ -101,100 +189,6 @@ export default class App extends PureComponent {
     //   requestAnimationFrame(this.rand)
     // }
     // this.rand();
-
-    this.setState(prevState => ({ audioOk: true }));
-    return true;
-  };
-
-
-  passbackMeters(getData) {
-    this.drawMeters = getData;
-    this.audio.analyserSrc = 'mic'
-    // console.profile('meters')
-    this.runtimeStack();
-    // setTimeout(() => console.profileEnd('meters'), 5000);
-  };
-
-
-  runtimeStack() {
-    requestAnimationFrame(this.runtimeStack);
-    // const freq = Math.random() * 1000;
-    // this.audio.setRampBatch([
-    //   [['instGain', 'gain'], Math.random(), true],
-    //   [['osc1', 'frequency'], freq],
-    //   [['osc2', 'frequency'], freq]
-    // ])
-    this.drawMeters();
-  };
-
-
-  streamInit() {
-    navigator.mediaDevices.getUserMedia({
-      video: {
-        width: { ideal: 640 },
-        height: { ideal: 480 }
-      },
-      audio: true
-    })
-      .then(stream => {
-        this.audioStream = new MediaStream([stream.getAudioTracks()[0]]);
-        this.videoStream = new MediaStream([stream.getVideoTracks()[0]]);
-        this.audio.makeStream('mic', this.audioStream);
-        this.setState(prevState => ({ streamOk: true }));
-        window.addEventListener('click', this.handleClick);
-      })
-      .catch(err => {
-        console.log(err);
-        this.setState(prevState => ({ streamOk: false }));
-      });
-  };
-
-  handleClick() {
-    window.removeEventListener('click', this.handleClick);
-    const { shadowMask } = this.refs;
-    shadowMask.style.opacity = 0;
-    this.setState(prevState => ({ initOk: true }));
-  };
-//////////////////////////
-
-
-  render() {
-    // console.log(this.audio)
-    const { audioOk, streamOk, initOk } = this.state;
-    // const { audio, videoStream } = this;
-    const { audio, passbackMeters } = this;
-    return (
-      <div ref="app" id="App">
-        <SvgDefs />
-        <div id="bgi" className="fullscreen" />
-        <div ref="shadowMask" id="shadow-mask" className="fullscreen" />
-        {initOk
-          ? <Meters
-              audio={audio}
-              passback={passbackMeters}
-            />
-          : <Splash
-              audioOk={audioOk}
-              streamOk={streamOk}
-              initOk={initOk}
-            />
-        }
-      </div>
-    );
-  };
-};
-
-
-          // ? <Main
-          //     audio={audio}
-          //     videoStream={videoStream}
-          //   />
-
-        // <Meters
-        //   audio={this.props.audio}
-        //   passback={this.passbackMeters}
-        // />
-
 
 
     // const AudioContext = window.AudioContext || window.webkitAudioContext;

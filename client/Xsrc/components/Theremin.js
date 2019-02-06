@@ -51,6 +51,7 @@ export default class Theremin extends PureComponent {
     video.srcObject = this.props.videoStream;
     const vW = video.clientWidth;
     const vH = video.clientHeight;
+    console.log('in video init', vW, vH)
     this.setState(prevState => ({ vW, vH }));
     this.trackerInit();
   };

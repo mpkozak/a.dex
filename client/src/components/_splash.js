@@ -35,7 +35,7 @@ const InitMobile = () => {
   );
 };
 
-export const Splash = ({ isVertical = true, isMobile = false, audioOk, streamOk, initOk }) => {
+export default function Splash({ isVertical = true, isMobile = false, audioOk, streamOk, initOk }) {
   const splashClass = !isVertical ? 'active' : (initOk ? 'hidden' : 'active');
   return (
     <div id="splash" className={isMobile ? splashClass : null}>

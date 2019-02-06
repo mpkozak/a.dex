@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react';
-import './AppMobile.css';
 import NoSleep from 'nosleep.js';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
-import { Splash } from './components/_splash.js';
+import './AppMobile.css';
 import { SvgDefs } from './components/_svg.js';
+import Splash from './components/_splash.js';
 import Main from './components/mobile/Main.js';
 
 export default class AppMobile extends PureComponent {

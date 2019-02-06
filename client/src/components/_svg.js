@@ -459,7 +459,7 @@ import React from 'react';
         <circle cx="50" cy="50" r="48" fill={color} stroke="#000000" strokeWidth="1%" />
         <circle cx="50" cy="50" r="48" fill="url(#bigknob-contour)" />
         <circle cx="50" cy="50" r="48" fill="url(#bigknob-glare)" />
-        <rect x="48" y="6" width="4" height="20" transform={`rotate(${rotation * 3.2 - 160}, 50, 50)`} fill="url(#bigknob-notch)" stroke="#000000" strokeWidth="1%" />
+        <rect x="48" y="6" width="4" height="20" transform={`rotate(${rotation * 320 - 160}, 50, 50)`} fill="url(#bigknob-notch)" stroke="#000000" strokeWidth="1%" />
       </svg>
     );
   };

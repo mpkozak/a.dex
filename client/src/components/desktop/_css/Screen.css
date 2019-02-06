@@ -1,0 +1,45 @@
+#Screen>.video-box {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+}
+
+#Screen>.video-box>.element {
+  position: absolute;
+  width: 90%;
+  height: 90%;
+  transform: scaleX(-1);
+}
+
+#Screen>.video-box>#video-0 {
+  z-index: 101;
+}
+
+#Screen>.video-box>#video-1 {
+  z-index: 102;
+}
+
+#Screen>.video-box>#video-2 {
+  z-index: 103;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+  transform: none;
+}
+
+#Screen>.video-box>#video-3 {
+  z-index: 150;
+}
+
+#Screen>.video-box>.screenframe {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 104;
+}
+
+#Screen>.video-box>#video-2>.osd {
+  animation: pulsar 1s linear infinite;
+}
