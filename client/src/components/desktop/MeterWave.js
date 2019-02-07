@@ -35,7 +35,7 @@ import { MeterFrame, MeterPanelShadow } from '../_svg.js';
 export default class MeterWave extends PureComponent {
   render() {
     return (
-      <svg className="meter" viewBox="0 0 100 60">
+      <svg className="meter inner" viewBox="0 0 100 60">
         <MeterFrame />
         <g className="wave-interior" clipPath="url(#meter-inner-clip)">
           <g className="wave-panel">

@@ -732,7 +732,7 @@ import React from 'react';
 
   export const MeterWave = () => {
     return (
-      <svg className="meter" viewBox="0 0 100 60">
+      <svg className="meter inner" viewBox="0 0 100 60">
         <MeterFrame />
         <g className="wave-interior" clipPath="url(#meter-inner-clip)">
           <g className="wave-panel">
@@ -803,7 +803,7 @@ import React from 'react';
       }
     };
     return (
-      <svg className="meter" viewBox="0 0 100 60">
+      <svg className="meter inner" viewBox="0 0 100 60">
         <MeterFrame />
         <g className="vu-interior" clipPath="url(#meter-inner-clip)">
           <g className="vu-panel">

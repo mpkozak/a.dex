@@ -10,11 +10,12 @@ export default class Screen extends PureComponent {
       vW: 0,
       vH: 0,
     };
+    this.videoInit = this.videoInit.bind(this);
     this.svgDraw = this.svgDraw.bind(this);
   };
 
   componentDidMount() {
-    this.videoInit()
+    this.videoInit();
   };
 
   componentDidUpdate() {
@@ -29,16 +30,13 @@ export default class Screen extends PureComponent {
   videoInit() {
     const { video } = this.refs;
     video.srcObject = this.props.videoStream;
-    this.setState({
-      vW: video.clientWidth,
-      vH: video.clientHeight
-    }, () => {
-      this.props.passback(video, this.svgDraw);
+    const vW = video.clientWidth;
+    const vH = video.clientHeight;
+    this.setState({ vW, vH }, () => {
+      this.props.passback(this.svgDraw, video, vW, vH);
     });
   };
 
-///////////////////////
-// Screen Draw Stack //
   svgDraw(data) {
     const circles = d3.select(this.refs.videoSvg).selectAll('circle')
       .data(data);
@@ -57,7 +55,6 @@ export default class Screen extends PureComponent {
       .exit()
       .remove();
   };
-///////////////////////
 
 
   render() {

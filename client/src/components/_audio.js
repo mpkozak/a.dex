@@ -5,22 +5,19 @@ export default class Audio {
     this.baseHz = baseHz;
     this.nodes = { output: this.ctx.destination };
     this.muted = false;
+    this._muteCache = [];
+    this._outputSrc = [];
     this._defs = {
       _oscTypes: ['sine', 'square', 'sawtooth', 'triangle'],
       _eqTypes: ['lowpass', 'highpass', 'bandpass', 'lowshelf', 'highshelf', 'peaking', 'notch', 'allpass'],
     };
-    this._outputSrc = [];
-    this._muteCache = [];
-    this.setOsc = this.setOsc.bind(this);
-    // this.setRamp = this.setRamp.bind(this);
-    // this.setRampBatch = this.setRampBatch.bind(this);
   };
   set reset(confirm) {
     if (typeof confirm !== 'boolean' || !confirm) {
-      console.error('Reset Failure: Expected Boolean "true".');
+      return console.error('Reset Failure: Expected Boolean "true".');
     };
     this.ctx && this.ctx.close();
-    Object.keys(this).forEach(d => delete this[d])
+    Object.keys(this).forEach(d => delete this[d]);
     this.constructor();
   };
   set context(confirm) {
@@ -31,11 +28,7 @@ export default class Audio {
     return this.ctx = new AudioContext();
   };
   set fftBase(n) {
-    if (n < 5) {
-      n = 5;
-    } else if (n > 15) {
-      n = 15;
-    };
+    n = n > 15 ? 15 : n < 5 ? 5 : n;
     this.fftSize = 2 ** n;
     if (this._analyser) {
       this._analyser.fftSize = this.fftSize;
@@ -64,6 +57,28 @@ export default class Audio {
     return Object.keys(this.nodes);
   };
 
+
+
+  params() {
+    const _params = [];
+    const params = {};
+    Object.keys(this.nodes).forEach(n => {
+      params[n] = {};
+      const node = this.nodes[n];
+      const props = Object.getOwnPropertyDescriptors(node)
+      console.log(props)
+      for (let p in node) {
+        const param = node[p];
+        if (param && typeof param === 'object' && param.constructor.name === 'AudioParam') {
+          _params.push(param);
+          params[n][p] = _params.indexOf(param);
+        };
+      };
+      // lookup[n] = params
+    });
+    console.log(params, _params)
+    // return lookup;
+  };
 
 
   // get freqData() {
@@ -145,6 +160,19 @@ export default class Audio {
     this.nodes[name].delayTime.value = time || 0;
     return this.nodes[name];
   };
+  // makeAnalyser(name = this._nameNode('analyser'), { fftBase = 8, minDb = -100, maxDb = -30, smooth = 1 } = {}) {
+  //   if (this.nodeNames.filter(d => this.nodes[d].constructor.name === 'AnalyserNode').length) {
+  //     return console.error('Cannot Create Multiple Analysers');
+  //   };
+  //   this.nodes[name] = this.ctx.createAnalyser();
+  //   this._analyser = this.nodes[name];
+  //   this.fftBase = fftBase;
+  //   this.nodes[name].fftSize = this.fftSize;
+  //   this.nodes[name].minDecibels = minDb || -100;
+  //   this.nodes[name].maxDecibels = maxDb || -30;
+  //   this.nodes[name].smoothingTimeConstant = smooth || 1;
+  //   return this.nodes[name];
+  // };
   makeAnalyser(name = this._nameNode('analyser'), { fftBase = 8, minDb = -100, maxDb = -30, smooth = 1 } = {}) {
     if (this.nodeNames.filter(d => this.nodes[d].constructor.name === 'AnalyserNode').length) {
       return console.error('Cannot Create Multiple Analysers');
@@ -287,3 +315,39 @@ export default class Audio {
 
 
 };
+
+
+// //
+// create audio node
+//   =>
+
+
+// // audio.create('nodeType', { name: 'name', param1: 'value', param2: 'value' })
+
+
+
+// // if passed name, used as reference. else name by default.
+
+// for each param (either AudioParam or 'set' type value), create reference entry,
+// osc1: {
+//   osc1Freq,
+//   osc1Detune,
+
+// }
+
+
+
+//
+
+
+
+
+
+
+
+
+
+
+
+
+

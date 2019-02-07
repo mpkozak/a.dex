@@ -1,5 +1,5 @@
 export default class Tracker {
-  constructor(video, colors, callback, reducer = 5, sensitivity = 50) {
+  constructor(video, colors, callback, reducer = 10, sensitivity = 50) {
     this.callback = callback;
     this.sensitivity = sensitivity;
     this.cropX = 0;

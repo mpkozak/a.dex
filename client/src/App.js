@@ -53,6 +53,12 @@ export default class App extends PureComponent {
       ['masterGain', 'output'],
     );
 
+    const test = Object.getOwnPropertyDescriptors(audio.nodes.osc1)
+    console.log(test)
+    console.log(audio.params(), audio)
+    // audio.params()
+
+    // console.log(audio, audio.params())
     // audio.setRamp(['instGain', 'gain'], 1)
     this.audio = audio;
     this.setState(prevState => ({ audioOk: true }));
@@ -60,6 +66,17 @@ export default class App extends PureComponent {
   };
 
   streamInit() {
+
+    const test = Object.getOwnPropertyDescriptors(window.OscillatorNode.prototype)
+
+    for (let key in test) {
+      const val = test[key];
+      const get = val.get;
+      const set = val.set;
+      console.log(key, get, set)
+    }
+    // console.log(window.OscillatorNode.prototype.toString())
+    console.log(test)
     navigator.mediaDevices.getUserMedia({
       video: {
         width: { ideal: 640 },
@@ -86,7 +103,6 @@ export default class App extends PureComponent {
     this.setState(prevState => ({ initOk: true }));
   };
 //////////////////////////
-
 
   render() {
     const { audioOk, streamOk, initOk } = this.state;

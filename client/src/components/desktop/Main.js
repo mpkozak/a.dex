@@ -16,6 +16,7 @@ import Screen from './Screen.js';
 import Colors from './Colors.js';
 import Oscillator from './Oscillator.js';
 import FmSynth from './FmSynth.js';
+import Meters from './Meters.js';
 
 export default class Main extends PureComponent {
   constructor(props) {
@@ -92,7 +93,6 @@ export default class Main extends PureComponent {
       delayTime: this._params.delayTime.toPct(this._params.delayTime.param.value),
       delayWet: this._params.delayWet.toPct(this._params.delayWet.param.value),
     };
-    // this.video = undefined;
     this.tracker = undefined;
     this.trackerCtx = {};
     this.rAF = 0;
@@ -118,7 +118,7 @@ export default class Main extends PureComponent {
     this.setState(prevState => ({ color1, color2 }));
   };
 
-  passbackScreen(video, drawScreen) {
+  passbackScreen(drawScreen, video, vW, vH) {
     this.vW = video.clientWidth;
     this.vH = video.clientHeight;
     this.drawScreen = drawScreen;
@@ -168,7 +168,7 @@ export default class Main extends PureComponent {
   };
 
   rAFStack() {
-    // this.drawMeters();
+    this.drawMeters();
     this.tracker.runtime();
     this.rAF = requestAnimationFrame(this.rAFStack);
   };
@@ -273,7 +273,10 @@ export default class Main extends PureComponent {
           fmWidth={fmWidth}
           setFm={this.handleSetParam}
         />
-
+        <Meters
+          audio={this.props.audio}
+          passback={this.passbackMeters}
+        />
 
 
 

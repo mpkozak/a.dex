@@ -93,6 +93,29 @@
   height: calc(1.5 * (100% / var(--grid-height)));
 }
 
+#Settings {
+  left: calc(12 * (100% / var(--grid-width)));
+  top: calc(1.5 * (100% / var(--grid-height)));
+  width: calc(5 * (100% / var(--grid-width)));
+  height: calc(1 * (100% / var(--grid-height)));
+}
+
+#MeterWave {
+  left: calc(12 * (100% / var(--grid-width)));
+  top: calc(2.5 * (100% / var(--grid-height)));
+  width: calc(5 * (100% / var(--grid-width)));
+  height: calc(3 * (100% / var(--grid-height)));
+}
+
+#MeterVU {
+  left: calc(12 * (100% / var(--grid-width)));
+  top: calc(5.5 * (100% / var(--grid-height)));
+  width: calc(5 * (100% / var(--grid-width)));
+  height: calc(3 * (100% / var(--grid-height)));
+}
+
+
+
 
 /*
   background-color: rgba(255, 0, 0, .3);
