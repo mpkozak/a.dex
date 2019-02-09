@@ -67,16 +67,19 @@ export default class App extends PureComponent {
 
   streamInit() {
 
-    const test = Object.getOwnPropertyDescriptors(window.OscillatorNode.prototype)
+    console.dir(Audio.prototype)
+    // const test = Object.getOwnPropertyDescriptors(window.OscillatorNode.prototype)
 
-    for (let key in test) {
-      const val = test[key];
-      const get = val.get;
-      const set = val.set;
-      console.log(key, get, set)
-    }
-    // console.log(window.OscillatorNode.prototype.toString())
-    console.log(test)
+    // for (let key in test) {
+    //   const val = test[key];
+    //   const get = val.get;
+    //   const set = val.set;
+    //   console.log(key, get, set)
+    // }
+    // // console.log(window.OscillatorNode.prototype.toString())
+    // console.log(test)
+
+
     navigator.mediaDevices.getUserMedia({
       video: {
         width: { ideal: 640 },
