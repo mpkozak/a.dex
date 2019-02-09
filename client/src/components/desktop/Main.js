@@ -131,7 +131,7 @@ export default class Main extends PureComponent {
 
   trackerInit(video) {
     const { color1, color2, sensitivity } = this.state;
-    this.tracker = new Tracker(video, [color1, color2], this.trackerCallback, 5, sensitivity);
+    this.tracker = new Tracker(video, [color1, color2], this.trackerCallback, 10, sensitivity);
     this.trackerCtx = this.tracker.init();
     this.rAFStack();
   };
@@ -153,9 +153,16 @@ export default class Main extends PureComponent {
     const { audio } = this.props;
     const { range } = this.state;
     const { vol, osc1, osc2 } = this._audioTrackParams;
+
     if (!posX || !posY) {
-      return audio.setRampExp(vol, 0, .1);
+      if (!this.muted) {
+        console.log('ran mute')
+        this.muted = true;
+        return audio.setRampExp(vol, 0, .1);
+      } else return null;
     };
+    console.log('past mute stack')
+    this.muted = false;
     const x = (this.vW - posX) / this.vW;
     const y = (this.vH - posY) / this.vH;
     const frequency = (2 ** (x * range)) * audio.baseHz;
@@ -168,9 +175,10 @@ export default class Main extends PureComponent {
   };
 
   rAFStack() {
+    requestAnimationFrame(this.rAFStack);
     this.drawMeters();
     this.tracker.runtime();
-    this.rAF = requestAnimationFrame(this.rAFStack);
+    // this.rAF = requestAnimationFrame(this.rAFStack);
   };
 ///////////////////
 

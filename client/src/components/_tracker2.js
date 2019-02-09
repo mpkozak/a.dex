@@ -110,20 +110,13 @@ export default class Tracker {
     ];
   };
   getColorDist(r, g, b, r1, g1, b1) {
-    // console.log('r', (r - r1) ** 2)
     return ((r - r1) ** 2 + (g - g1) ** 2 + (b - b1) ** 2) ** .5
-
-    // return Math.sqrt(
-    //   Math.pow((r - c[0]), 2) +
-    //   Math.pow((g - c[1]), 2) +
-    //   Math.pow((b - c[2]), 2)
-    // );
   };
   // getColorDist(r, g, b, c) {
-    // return Math.sqrt(
-    //   Math.pow((r - c[0]), 2) +
-    //   Math.pow((g - c[1]), 2) +
-    //   Math.pow((b - c[2]), 2)
-    // );
+  //   return Math.sqrt(
+  //     Math.pow((r - c[0]), 2) +
+  //     Math.pow((g - c[1]), 2) +
+  //     Math.pow((b - c[2]), 2)
+  //   );
   // };
 };

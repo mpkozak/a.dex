@@ -5,6 +5,8 @@ import Audio from './components/_audio.js';
 import Splash from './components/_splash.js';
 import Main from './components/desktop/Main.js';
 
+// import Audio from './components/_audio2.js';
+
 export default class App extends PureComponent {
   constructor(props) {
     super(props);
@@ -52,34 +54,53 @@ export default class App extends PureComponent {
       ['masterGain', 'analyser'],
       ['masterGain', 'output'],
     );
-
-    const test = Object.getOwnPropertyDescriptors(audio.nodes.osc1)
-    console.log(test)
-    console.log(audio.params(), audio)
-    // audio.params()
-
-    // console.log(audio, audio.params())
-    // audio.setRamp(['instGain', 'gain'], 1)
     this.audio = audio;
     this.setState(prevState => ({ audioOk: true }));
     return true;
   };
 
+
+  // audioInit() {
+  //   const audio = Audio();
+  //   audio.osc = audio.create('osc', { type: 'sine', frequency: 5000, detune: -12, exponential: false });
+  //   // audio.gain = audio.create('gain');
+  //   // audio.eq = audio.create('eq');
+  //   // audio.delay = audio.create('delay');
+  //   // audio.analyser = audio.create('analyser');
+  //   // audio.stream = audio.create('stream');
+  //   // console.log('user-facing', audio)
+
+  //   console.log(audio.osc)
+  //   // console.log(audio.osc.frequency)
+  //   audio.osc.type = 'sawtooth'
+  //   setTimeout(() => console.log(audio.osc.frequency), 1000)
+  //   setTimeout(() => {
+  //     audio.osc.frequency = 22000
+  //   }, 2000)
+  //   // setTimeout(() => console.log(audio.osc.frequency), 3000)
+  //   // setTimeout(() => audio.osc.frequency = 2000, 4000)
+  //   setTimeout(() => console.log(audio.osc), 5000)
+
+  //   console.log(audio)
+
+  //   // console.log(audio.nodes)
+  //   // console.log(audio.osc)
+  //   // setTimeout(() => console.log(audio.osc), 1000)
+  //   // console.log(audio)
+  //   // console.log(Audio.prototype)
+  //   // console.log('now', audio.now)
+  //   // setInterval(() => console.log('now', audio.now, 1000)
+  //   // const test = Object.getOwnPropertyDescriptors(audio.nodes.osc1)
+  //   // console.log(test)
+  //   // console.log(audio.params(), audio)
+  //   // audio.params()
+
+  //   // console.log(audio, audio.params())
+  //   // audio.setRamp(['instGain', 'gain'], 1)
+  // }
+
+
   streamInit() {
-
-    console.dir(Audio.prototype)
-    // const test = Object.getOwnPropertyDescriptors(window.OscillatorNode.prototype)
-
-    // for (let key in test) {
-    //   const val = test[key];
-    //   const get = val.get;
-    //   const set = val.set;
-    //   console.log(key, get, set)
-    // }
-    // // console.log(window.OscillatorNode.prototype.toString())
-    // console.log(test)
-
-
     navigator.mediaDevices.getUserMedia({
       video: {
         width: { ideal: 640 },
@@ -134,6 +155,20 @@ export default class App extends PureComponent {
 
 
 
+        // <SvgDefs />
+        // <div id="bgi" className="fullscreen" />
+        // <div ref="shadowMask" id="shadow-mask" className="fullscreen" />
+        // {initOk
+        //   ? <Main
+        //       audio={audio}
+        //       videoStream={videoStream}
+        //     />
+        //   : <Splash
+        //       audioOk={audioOk}
+        //       streamOk={streamOk}
+        //       initOk={initOk}
+        //     />
+        // }
 
 
 
