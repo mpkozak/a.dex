@@ -288,13 +288,7 @@ export default class Main extends PureComponent {
 
 
 
-        <div id="" className="outer">
-          <div className="inner border"/>
-        </div>
         <div id="Sensitivity" className="outer">
-          <div className="inner border"/>
-        </div>
-        <div id="" className="outer">
           <div className="inner border"/>
         </div>
         <div id="Placard" className="outer">

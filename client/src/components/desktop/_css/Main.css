@@ -21,7 +21,7 @@
 #Main .outer {
   position: absolute;
   box-sizing: border-box;
-  padding: .6vmin;
+  padding: .75vmin;
 }
 
 #Main .inner {
@@ -33,7 +33,9 @@
 #Main .border {
   box-sizing: border-box;
   border-radius: 1vmin;
-  border: .5px solid rgba(255, 255, 255, .5);
+  border: 1px solid rgba(255, 255, 255, .5);
+  /*border: .5px solid rgba(255, 255, 255, .5);*/
+  /*border: calc(var(--size-unit-max) / 50) solid rgba(255, 255, 255, .5);*/
 }
 
 #Main .label {
