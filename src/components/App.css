@@ -1,142 +1,233 @@
 #App {
-  width: 100vw;
-  height: 100vh;
+  position: absolute;
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
   justify-content: center;
   background-image: url('/_img/steel.jpg');
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-size: cover;
 }
 
 
-.App-grid {
+#UI {
   --size-unit: calc(95vw / 17);
   --size-unit-max: calc(95vh / 15);
-  position: fixed;
+  position: absolute;
   width: calc(17 * var(--size-unit));
   height: calc(15 * var(--size-unit));
   max-width: calc(17 * var(--size-unit-max));
   max-height: calc(15 * var(--size-unit-max));
-
-  /*padding: calc(.1 * var(--size-unit));*/
-  padding: .5vmin;
-
   background-image: url('/_img/titanium.jpg');
   background-repeat: no-repeat;
   background-position: 50% 50%;
   background-size: cover;
-
-  border-radius: 1%;
+  border-radius: .5vmin;
   box-shadow: 0 0 .5vmin .1vmin #000000;
+}
 
 
+.Grid {
+  position: absolute;
+  width: 100%;
+  height: 100%;
   display: grid;
   grid-template-columns: repeat(170, [col-start] 1fr [col-end]);
   grid-template-rows: repeat(150, [row-start] 1fr [row-end]);
-  /*grid-template-columns: repeat(170, 1fr);*/
-  /*grid-template-rows: repeat(150, 1fr);*/
   align-items: stretch;
   justify-items: stretch;
-  grid-gap: .5vmin;
-  /*grid-gap: calc(.1 * var(--size-unit));*/
-}
-
-
-.App-grid--item {
-  /*opacity: .5;*/
-}
-
-
-.App-grid--item.screen {
-  grid-column: 1 / span 120;
-  grid-row: 1 / span 90;
-  background-color: red;
-}
-
-.App-grid--item.colors {
-  grid-column: 1 / span 72;
-  grid-row: 91 / span 20;
-  background-color: orange;
-}
-
-.App-grid--item.sensitivity {
-  grid-column: 73 / span 48;
-  grid-row: 91 / span 20;
-  background-color: yellow;
+  align-content: space-around;
+  justify-content: space-around;
 }
 
 
 
-.App-grid--item.placard {
-  grid-column: 121 / span 50;
-  grid-row: 1 / span 15;
-  background-color: pink;
+
+
+
+.Grid--item {
+  position: relative;
+  padding: 1vmin;
+
+  /*border: 1px dashed red;*/
 }
 
-.App-grid--item.latency {
-  grid-column: 121 / span 28;
-  grid-row: 16 / span 10;
-  background-color: darkred;
-}
+.inner {
+  width: 100%;
+  height: 100%;
+  border-radius: 1vmin;
+  margin: 0 auto;
+  border: 1px solid rgba(255, 255, 255, .5);
 
-.App-grid--item.mic {
-  grid-column: 149 / span 22;
-  grid-row: 16 / span 10;
-  background-color: darkgreen;
-}
-
-
-.App-grid--item.meter-scope {
-  grid-column: 121 / span 50;
-  grid-row: 26 / span 30;
-  background-color: aqua;
-}
-
-.App-grid--item.meter-vu {
-  grid-column: 121 / span 50;
-  grid-row: 56 / span 30;
-  background-color: brown;
-}
-
-.App-grid--item.delay {
-  grid-column: 121 / span 50;
-  grid-row: 86 / span 25;
-  background-color: lightgreen;
+  /*background-color: blue;*/
 }
 
 
 
-.App-grid--item.osc-1 {
-  grid-column: 1 / span 40;
-  grid-row: 111 / span 20;
-  background-color: green;
+
+.screen {
+
 }
 
-.App-grid--item.osc-2 {
-  grid-column: 1 / span 40;
-  grid-row: 131 / span 20;
+.screen>.inner {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-top: 75%;
+  border: 0px;
+}
+
+.screen>.inner>.wrap {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 1.85vmin;
+  box-shadow: .05vmin .1vmin .6vmin .3vmin rgba(0, 0, 0, .9);
+
+}
+
+.screen-frame {
+  width: calc(100% + 1px);
+  height: auto;
+}
+
+
+
+.meter {
+  /*padding: 0 1vmin;*/
+  padding: 0 1vmin;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.meter>.inner {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-top: 60%;
+  border: 0px;
   background-color: blue;
 }
-.App-grid--item.fmsynth {
+
+.meter>.inner>.wrap {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: .6vmin;
+  box-shadow: .05vmin .1vmin .6vmin .3vmin rgba(0, 0, 0, .9);
+}
+
+.meter>.inner>.wrap>.meter-panel {
+  width: calc(100% + 1px);
+  height: auto;
+}
+
+
+
+
+
+
+
+
+.placard>.inner {
+  border-radius: 0;
+  border: none;
+}
+
+.placard-logo {
+  width: 90%;
+  height: auto;
+}
+
+
+
+
+
+
+
+.Grid--item.screen {
+  grid-column: 1 / span 120;
+  grid-row: 1 / span 90;
+}
+
+.Grid--item.colors {
+  grid-column: 1 / span 72;
+  grid-row: 91 / span 20;
+}
+
+.Grid--item.sensitivity {
+  grid-column: 73 / span 48;
+  grid-row: 91 / span 20;
+}
+
+
+
+.Grid--item.placard {
+  grid-column: 121 / span 50;
+  grid-row: 1 / span 15;
+}
+
+.Grid--item.latency {
+  grid-column: 121 / span 28;
+  grid-row: 16 / span 10;
+}
+
+.Grid--item.mic {
+  grid-column: 149 / span 22;
+  grid-row: 16 / span 10;
+}
+
+.Grid--item.meter-scope {
+  grid-column: 121 / span 50;
+  grid-row: 26 / span 30;
+}
+
+.Grid--item.meter-vu {
+  grid-column: 121 / span 50;
+  grid-row: 56 / span 30;
+}
+
+.Grid--item.delay {
+  grid-column: 121 / span 50;
+  grid-row: 86 / span 25;
+}
+
+
+
+.Grid--item.osc-1 {
+  grid-column: 1 / span 40;
+  grid-row: 111 / span 20;
+}
+
+.Grid--item.osc-2 {
+  grid-column: 1 / span 40;
+  grid-row: 131 / span 20;
+}
+.Grid--item.fmsynth {
   grid-column: 41 / span 55;
   grid-row: 111 / span 40;
-  background-color: purple;
 }
 
-.App-grid--item.eq-hpf {
+.Grid--item.eq-hpf {
   grid-column: 96 / span 27;
   grid-row: 111 / span 40;
-  background-color: teal;
 }
 
-.App-grid--item.eq-lpf {
+.Grid--item.eq-lpf {
   grid-column: 123 / span 27;
   grid-row: 111 / span 40;
-  background-color: gold;
 }
 
-.App-grid--item.master {
+.Grid--item.master {
   grid-column: 150 / span 21;
   grid-row: 111 / span 40;
-  background-color: gray;
 }
