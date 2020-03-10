@@ -1,0 +1,142 @@
+#App {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+  background-image: url('/_img/steel.jpg');
+}
+
+
+.App-grid {
+  --size-unit: calc(95vw / 17);
+  --size-unit-max: calc(95vh / 15);
+  position: fixed;
+  width: calc(17 * var(--size-unit));
+  height: calc(15 * var(--size-unit));
+  max-width: calc(17 * var(--size-unit-max));
+  max-height: calc(15 * var(--size-unit-max));
+
+  /*padding: calc(.1 * var(--size-unit));*/
+  padding: .5vmin;
+
+  background-image: url('/_img/titanium.jpg');
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-size: cover;
+
+  border-radius: 1%;
+  box-shadow: 0 0 .5vmin .1vmin #000000;
+
+
+  display: grid;
+  grid-template-columns: repeat(170, [col-start] 1fr [col-end]);
+  grid-template-rows: repeat(150, [row-start] 1fr [row-end]);
+  /*grid-template-columns: repeat(170, 1fr);*/
+  /*grid-template-rows: repeat(150, 1fr);*/
+  align-items: stretch;
+  justify-items: stretch;
+  grid-gap: .5vmin;
+  /*grid-gap: calc(.1 * var(--size-unit));*/
+}
+
+
+.App-grid--item {
+  /*opacity: .5;*/
+}
+
+
+.App-grid--item.screen {
+  grid-column: 1 / span 120;
+  grid-row: 1 / span 90;
+  background-color: red;
+}
+
+.App-grid--item.colors {
+  grid-column: 1 / span 72;
+  grid-row: 91 / span 20;
+  background-color: orange;
+}
+
+.App-grid--item.sensitivity {
+  grid-column: 73 / span 48;
+  grid-row: 91 / span 20;
+  background-color: yellow;
+}
+
+
+
+.App-grid--item.placard {
+  grid-column: 121 / span 50;
+  grid-row: 1 / span 15;
+  background-color: pink;
+}
+
+.App-grid--item.latency {
+  grid-column: 121 / span 28;
+  grid-row: 16 / span 10;
+  background-color: darkred;
+}
+
+.App-grid--item.mic {
+  grid-column: 149 / span 22;
+  grid-row: 16 / span 10;
+  background-color: darkgreen;
+}
+
+
+.App-grid--item.meter-scope {
+  grid-column: 121 / span 50;
+  grid-row: 26 / span 30;
+  background-color: aqua;
+}
+
+.App-grid--item.meter-vu {
+  grid-column: 121 / span 50;
+  grid-row: 56 / span 30;
+  background-color: brown;
+}
+
+.App-grid--item.delay {
+  grid-column: 121 / span 50;
+  grid-row: 86 / span 25;
+  background-color: lightgreen;
+}
+
+
+
+.App-grid--item.osc-1 {
+  grid-column: 1 / span 40;
+  grid-row: 111 / span 20;
+  background-color: green;
+}
+
+.App-grid--item.osc-2 {
+  grid-column: 1 / span 40;
+  grid-row: 131 / span 20;
+  background-color: blue;
+}
+.App-grid--item.fmsynth {
+  grid-column: 41 / span 55;
+  grid-row: 111 / span 40;
+  background-color: purple;
+}
+
+.App-grid--item.eq-hpf {
+  grid-column: 96 / span 27;
+  grid-row: 111 / span 40;
+  background-color: teal;
+}
+
+.App-grid--item.eq-lpf {
+  grid-column: 123 / span 27;
+  grid-row: 111 / span 40;
+  background-color: gold;
+}
+
+.App-grid--item.master {
+  grid-column: 150 / span 21;
+  grid-row: 111 / span 40;
+  background-color: gray;
+}
