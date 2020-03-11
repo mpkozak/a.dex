@@ -68,3 +68,15 @@ body {
   overflow: hidden;
   /*font-size: 10vmin;*/
 }
+
+
+
+@keyframes pulsar {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: .1;
+  }
+}
+

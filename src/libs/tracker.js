@@ -6,22 +6,23 @@ export default class Tracker {
   constructor({
     video,
     svg,
-    scalar = 10,
     sensitivity = 5,
+    colors = [],
   } = {}) {
-    this.videoElement = video;
-    this.scalar = scalar;
-    this.sensitivity = sensitivity;
+    this._videoElement = video;
+    this._svgElement = svg;
+    this._sensitivity = sensitivity;
+    this._colors = colors;
+    this._colorsRGB = [];
+    this.scalar = 5;
     this.canvasWidth = 0;
     this.canvasHeight = 0;
     this.canvasElement = undefined;
     this.canvasCtx = undefined;
     this.imageData = undefined;
-    this.colors = [];
+    this.overlay = undefined;
     this.queue = [];
     this.rAF = undefined;
-    this.svgElement = svg;
-    this.overlay = undefined;
     // if (video) {
     //   this.initCanvas();
     //   if (svg) {
@@ -40,18 +41,38 @@ export default class Tracker {
       console.error('TRACKER --- no video element');
       return null;
     };
-    this.initCanvas(video);
+    this._videoElement = video;
+    this.initCanvas();
   };
 
   set svg(svg) {
-    if (!this.videoElement) {
+    if (!svg) {
+      console.error('TRACKER --- no svg element')
+    };
+    if (!this._videoElement) {
       console.error('TRACKER --- cannot set svg until video is set');
       return null;
     };
-    this.initOverlay(svg);
+    this._svgElement = svg;
+    this.initOverlay();
   };
 
-  set color(hex) {
+  set sensitivity(val) {
+    let num = parseInt(val, 10);
+    if (isNaN(num)) {
+      console.error('TRACKER --- sensitivity value must be a number');
+      return null;
+    };
+    if (num > 221) {
+      num = 221;
+    };
+    if (num < 0) {
+      num = 0;
+    };
+    this._sensitivity = Math.round(num);
+  };
+
+  set colors(hex) {
     const colors = [];
     if (typeof hex === 'string') {
       colors.push(hex);
@@ -65,11 +86,9 @@ export default class Tracker {
       console.error('TRACKER --- invalid color format');
       return null;
     };
-    this.colors = validHex;
-    this.colorsRGB = this.colors.map(d => {
-      return this.hexToRgb(d);
-    });
-    this.queue = new Array(this.colors.length).fill([]);
+    this._colors = validHex;
+    this._colorsRGB = this._colors.map(d => this.hexToRgb(d));
+    this.queue = new Array(this._colors.length).fill([]);
   };
 
 
@@ -77,23 +96,52 @@ export default class Tracker {
     Getters
 */
 
-  get viewBox() {
-    if (!this.videoElement) {
+  get video() {
+    if (!this._videoElement) {
       return null;
     };
-    return `0 0 ${this.canvasWidth} ${this.canvasHeight}`;
+    return this._videoElement;
   };
+
+  get svg() {
+    if (!this._svgElement) {
+      return null;
+    };
+    return this._svgElement;
+  };
+
+  get sensitivity() {
+    return this._sensitivity;
+  };
+
+  get colors() {
+    return this._colors;
+  };
+
+
+  get ready() {
+    if (this._svgElement && this._videoElement) {
+      return true;
+    };
+    return false;
+  };
+
+  get active() {
+    if (this.rAF) {
+      return true;
+    };
+    return false;
+  };
+
 
 
 /*
     Initializers
 */
 
-  initCanvas(video = this.videoElement, scalar = this.scalar) {
-    this.videoElement = video;
-    this.scalar = scalar;
-    this.canvasWidth = this.scaleDown(this.videoElement.clientWidth);
-    this.canvasHeight = this.scaleDown(this.videoElement.clientHeight);
+  initCanvas() {
+    this.canvasWidth = this.scaleDown(this._videoElement.clientWidth);
+    this.canvasHeight = this.scaleDown(this._videoElement.clientHeight);
     // this.canvasElement = document.createElement('canvas');
     // this.canvasElement.width = this.canvasWidth;
     // this.canvasElement.height = this.canvasHeight;
@@ -103,23 +151,18 @@ export default class Tracker {
     return;
   };
 
-  initOverlay(svg = this.svgElement) {
-    if (!svg) {
-      console.error('TRACKER --- no svg element');
-      return null;
-    };
-    this.svgElement = svg;
-    this.overlay = d3.select(this.svgElement)
+  initOverlay() {
+    this.overlay = d3.select(this._svgElement)
       .attr('width', this.canvasWidth)
       .attr('height', this.canvasHeight)
-      .attr('viewBox', this.viewBox);
+      .attr('viewBox', `0 0 ${this.canvasWidth} ${this.canvasHeight}`);
     return;
   };
 
 
 
   getPointColor(x, y) {
-    this.canvasCtx.drawImage(this.videoElement, 0, 0, this.canvasWidth, this.canvasHeight);
+    this.canvasCtx.drawImage(this._videoElement, 0, 0, this.canvasWidth, this.canvasHeight);
     const { data } = this.canvasCtx.getImageData(this.scaleDown(x), this.scaleDown(y), 1, 1);
     const [r, g, b] = data;
     return this.rgbToHex({ r, g, b });
@@ -127,7 +170,7 @@ export default class Tracker {
 
 
   getData() {
-    this.canvasCtx.drawImage(this.videoElement, 0, 0, this.canvasWidth, this.canvasHeight);
+    this.canvasCtx.drawImage(this._videoElement, 0, 0, this.canvasWidth, this.canvasHeight);
     this.imageData = this.canvasCtx.getImageData(0, 0, this.canvasWidth, this.canvasHeight);
     return;
   };
@@ -140,9 +183,9 @@ export default class Tracker {
         const r = data[p];
         const g = data[++p];
         const b = data[++p];
-        this.colorsRGB.forEach((d, i) => {
+        this._colorsRGB.forEach((d, i) => {
           const dist = this.getColorDist(r, g, b, d);
-          if (dist <= this.sensitivity) {
+          if (dist <= this._sensitivity) {
             this.queue[i].push({ x, y, dist });
           };
         });
@@ -157,9 +200,9 @@ export default class Tracker {
         return null;
       };
       const r = Math.sqrt(data.length);
-      let sumX = 0;
-      let sumY = 0;
-      let denom = 0;
+      let sumX = 0,
+          sumY = 0,
+          denom = 0;
       while (data.length) {
         const { x, y, dist } = data.pop();
         const multi = 1 / (dist + 1);
@@ -174,13 +217,14 @@ export default class Tracker {
       //   sumY += data[i].y * multi;
       // };
       return {
-        color: this.colors[i],
+        color: this._colors[i],
         x: (sumX / denom),
         y: (sumY / denom),
         r,
       };
     });
   };
+
 
   drawOverlay(data) {
     const circles = this.overlay
@@ -213,7 +257,6 @@ export default class Tracker {
   };
 
   start() {
-    console.log('Starting tracker with:', this.colors)
     this.rAF = requestAnimationFrame(this.runtime.bind(this));
   };
 

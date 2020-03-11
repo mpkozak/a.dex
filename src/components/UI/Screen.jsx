@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 
 
 
-export default memo(function({ cl = '', color = "#6E7377" } = {}) {
+export default memo(function({ cl = '', color = '#6E7377' } = {}) {
   return (
     <svg
       className={cl}

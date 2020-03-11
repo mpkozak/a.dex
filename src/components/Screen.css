@@ -3,7 +3,7 @@
 }
 
 
-.Screen--aspect {
+.Screen--inner {
   position: relative;
   width: 100%;
   height: 0;
@@ -14,7 +14,7 @@
   z-index: 10;
 }
 
-.Screen--aspect>* {
+.Screen--inner>* {
   position: absolute;
 }
 
@@ -53,30 +53,34 @@
 }
 
 
-.Videobox--backpane {
-}
-
 .Videobox--video {
   z-index: 1;
   background-color: #131415;
 }
 
+
 .Videobox--overlay {
   z-index: 2;
-  /*background-color: pink;*/
 }
+
 
 .Videobox--messagebox {
   z-index: 3;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  animation: pulsar 1.5s ease-in-out infinite;
 }
+
+.Videobox--messagebox>* {
+
+}
+
 
 .Videobox--clickbox {
   z-index: 4;
-  border: 1px dashed green;
 }
-
-
-
 
 
 

@@ -1,98 +1,87 @@
-import React from 'react';
+import React, { memo } from 'react';
 import './App.css';
 import { GlobalStateProvider } from './GlobalState.jsx';
 import { useMediaStream } from '../libs/hooks.js';
-import { Logo, Meter } from './UI'
+import { MeterFrame } from './UI'
 
-import Screen from './Screen.jsx'
-import Tracker from '../libs/tracker.js';
+import Screen from './Screen.jsx';
+import Colors from './Colors.jsx';
+import Placard from './Placard.jsx';
 
 
 
-// , { useEffect, useState, useReducer, useCallback }
+
 
 function Interface({ children } = {}) {
   return (
     <div className="Interface">
-      {children}
+      {children.map(d => d)}
 
       <div className="meter meter-scope">
         <div className="inner">
           <div className="wrap">
-            <Meter cl="meter-panel" />
+            <MeterFrame cl="meter-panel" />
           </div>
         </div>
       </div>
       <div className="meter meter-vu">
         <div className="inner">
           <div className="wrap">
-            <Meter cl="meter-panel" />
+            <MeterFrame cl="meter-panel" />
           </div>
         </div>
       </div>
 
-
-
-      <div className="colors">
-        <div className="border">
-          colors
-        </div>
-      </div>
-      <div className="sensitivity">
-        <div className="border">
+      <div className="sensitivity outer">
+        <div className="inner border">
           sensitivity
         </div>
       </div>
 
-      <div className="placard">
-        <div className="border">
-          <Logo cl="placard-logo" />
-        </div>
-      </div>
-      <div className="latency">
-        <div className="border">
+      <div className="latency outer">
+        <div className="inner border">
           latency
         </div>
       </div>
-      <div className="mic">
-        <div className="border">
+      <div className="mic outer">
+        <div className="inner border">
           mic
         </div>
       </div>
 
-      <div className="delay">
-        <div className="border">
+      <div className="delay outer">
+        <div className="inner border">
           delay
         </div>
       </div>
 
-      <div className="osc-1">
-        <div className="border">
+      <div className="osc-1 outer">
+        <div className="inner border">
           osc-1
         </div>
       </div>
-      <div className="osc-2">
-        <div className="border">
+      <div className="osc-2 outer">
+        <div className="inner border">
           osc-2
         </div>
       </div>
-      <div className="fmsynth">
-        <div className="border">
+      <div className="fmsynth outer">
+        <div className="inner border">
           fmsynth
         </div>
       </div>
-      <div className="eq-hpf">
-        <div className="border">
+      <div className="eq-hpf outer">
+        <div className="inner border">
           eq-hpf
         </div>
       </div>
-      <div className="eq-lpf">
-        <div className="border">
+      <div className="eq-lpf outer">
+        <div className="inner border">
           eq-lpf
         </div>
       </div>
-      <div className="master">
-        <div className="border">
+      <div className="master outer">
+        <div className="inner border">
           master
         </div>
       </div>
@@ -104,23 +93,21 @@ function Interface({ children } = {}) {
 
 
 
-export default function App() {
+
+export default memo(() => {
   const streams = useMediaStream();
-  const { audio, video } = streams || {};
-
-  const tracker = new Tracker();
-
+  const { video } = streams || {};
+  // const video = null;
 
   return (
     <GlobalStateProvider>
       <div id="App">
         <Interface>
-          <Screen
-            videoStream={video}
-            tracker={tracker}
-          />
+          <Screen videoStream={video} />
+          <Colors />
+          <Placard />
         </Interface>
       </div>
     </GlobalStateProvider>
   );
-};
+});

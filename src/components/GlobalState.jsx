@@ -1,5 +1,6 @@
 import React, { createContext, useReducer, useContext } from 'react';
 
+import Tracker from '../libs/tracker.js';
 
 
 
@@ -15,41 +16,88 @@ import React, { createContext, useReducer, useContext } from 'react';
 
 
 
+// const st = {
+//   streams: {
+//     audio: {},
+//     video: {},
+//   },
 
 
 
 
+//   audio: {
+
+//   },
 
 
 
-const setColorFreq = 'setColorFreq';
-const setColorGain = 'setColorGain';
+// };
+
+
+
+// const screenStates = {
+//   initial: '',
+//   tutorial: '',
+
+// }
+
+
+
+// const setColorFreq = 'setColorFreq';
+// const setColorGain = 'setColorGain';
+// const setRange = 'setRange';
+// const setSensitivity = 'setSensitivity';
 
 
 
 const initialState = {
-  colorFreq: '#FFFFFF',
-  colorGain: '#444444',
+  tracker: new Tracker(),
+  colorFreq: '#FF0000',
+  colorGain: '#00FF00',
+  sensitivity: 30,
+  range: 4,
+  colorSet: false,
+  message: 'welcome',
 };
+
+
+const updateState = (state, key, val) =>
+  key in initialState
+    ? ({ ...state, [key]: val })
+    : state;
 
 
 
 const globalStateReducer = (state, action) => {
-  switch (action.type) {
-    case setColorFreq:
-      return {
-        ...state,
-        colorFreq: action.payload,
-      };
-    case setColorGain:
-      return {
-        ...state,
-        colorGain: action.payload,
-      };
-    default:
-      return state;
-  };
+  return updateState(state, action.type, action.payload);
+
+
+  // switch (action.type) {
+  //   case setColorFreq:
+  //     return {
+  //       ...state,
+  //       colorFreq: action.payload,
+  //     };
+  //   case setColorGain:
+  //     return {
+  //       ...state,
+  //       colorGain: action.payload,
+  //     };
+  //   case setSensitivity:
+  //     return {
+  //       ...state,
+  //       sensitivity: action.payload,
+  //     };
+  //   case setRange:
+  //     return {
+  //       ...state,
+  //       range: action.payload,
+  //     };
+  //   default:
+  //     return state;
+  // };
 };
+
 
 
 
@@ -74,17 +122,26 @@ export const GlobalStateProvider = ({ children }) => {
 const useGlobalState = () => {
   const [state, dispatch] = useContext(GlobalStateContext);
 
-  const setColorFreq = color => dispatch({ type: 'setColorFreq', payload: color });
-  const setColorGain = color => dispatch({ type: 'setColorGain', payload: color });
+  // const setTracker = instance => dispatch({ type: 'tracker', payload: instance });
+  const setColorFreq = color => dispatch({ type: 'colorFreq', payload: color });
+  const setColorGain = color => dispatch({ type: 'colorGain', payload: color });
+  const setSensitivity = val => dispatch({ type: 'sensitivity', payload: val });
+  const setRange = val => dispatch({ type: 'range', payload: val });
+  const setColorSet = colorKey => dispatch({ type: 'colorSet', payload: colorKey });
+  const setMessage = text => dispatch({ type: 'message', payload: text });
+
 
   return {
-    set: {
+    state: { ...state },
+    setState: {
+      // tracker: setTracker,
       colorFreq: setColorFreq,
       colorGain: setColorGain,
+      range: setRange,
+      sensitivity: setSensitivity,
+      colorSet: setColorSet,
+      message: setMessage,
     },
-    // setColorFreq,
-    // setColorGain,
-    state: { ...state },
   };
 };
 

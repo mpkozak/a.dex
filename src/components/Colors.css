@@ -1,0 +1,45 @@
+.Colors {
+
+}
+
+
+.Colors--inner {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-around;
+  padding: 0 2%;
+}
+
+
+.Colors--label {
+  width: 35%;
+  padding-right: 1%;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.Colors--label>* {
+  text-align: right;
+}
+
+
+
+
+
+.ColorsSwatch {
+  width: 20%;
+  height: 80%;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+
+.ColorsSwatch--gem {
+  width: 65%;
+  height: auto;
+}
