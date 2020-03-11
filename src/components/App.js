@@ -1,29 +1,50 @@
-import React from 'react';
+import React, { useEffect, useState, useReducer, useCallback } from 'react';
 import './App.css';
-import { Logo, Screen, Meter } from './UI'
+import { Logo, Meter } from './UI'
+
+import Screen from './Screen.jsx'
+import { useMediaStream } from '../libs/hooks.js';
+import Tracker from '../libs/tracker.js';
 
 
 
-function Grid() {
+// async function streamInit() {
+//   try {
+//     const options = {
+//       video: {
+//         width: { ideal: 640 },
+//         height: { ideal: 480 },
+//       },
+//       audio: true,
+//     };
+//     const stream = await navigator.mediaDevices.getUserMedia(options);
+//     const audio = new MediaStream([stream.getAudioTracks()[0]]);
+//     const video = new MediaStream([stream.getVideoTracks()[0]]);
+//     setStreams({
+//       audio,
+//       video,
+//     });
+//   } catch (err) {
+//     console.error('streamInit', err);
+//     return {};
+//   };
+// };
+
+
+
+function Interface({ children } = {}) {
   return (
-    <div className="Grid">
+    <div className="Interface">
+      {children}
 
-      <div className="Grid--item screen">
-        <div className="inner">
-          <div className="wrap">
-            <Screen cl="screen-frame" />
-          </div>
-        </div>
-      </div>
-
-      <div className="Grid--item meter meter-scope">
+      <div className="meter meter-scope">
         <div className="inner">
           <div className="wrap">
             <Meter cl="meter-panel" />
           </div>
         </div>
       </div>
-      <div className="Grid--item meter meter-vu">
+      <div className="meter meter-vu">
         <div className="inner">
           <div className="wrap">
             <Meter cl="meter-panel" />
@@ -33,66 +54,66 @@ function Grid() {
 
 
 
-      <div className="Grid--item colors">
-        <div className="inner">
+      <div className="colors">
+        <div className="border">
           colors
         </div>
       </div>
-      <div className="Grid--item sensitivity">
-        <div className="inner">
+      <div className="sensitivity">
+        <div className="border">
           sensitivity
         </div>
       </div>
 
-      <div className="Grid--item placard">
-        <div className="inner">
+      <div className="placard">
+        <div className="border">
           <Logo cl="placard-logo" />
         </div>
       </div>
-      <div className="Grid--item latency">
-        <div className="inner">
+      <div className="latency">
+        <div className="border">
           latency
         </div>
       </div>
-      <div className="Grid--item mic">
-        <div className="inner">
+      <div className="mic">
+        <div className="border">
           mic
         </div>
       </div>
 
-      <div className="Grid--item delay">
-        <div className="inner">
+      <div className="delay">
+        <div className="border">
           delay
         </div>
       </div>
 
-      <div className="Grid--item osc-1">
-        <div className="inner">
+      <div className="osc-1">
+        <div className="border">
           osc-1
         </div>
       </div>
-      <div className="Grid--item osc-2">
-        <div className="inner">
+      <div className="osc-2">
+        <div className="border">
           osc-2
         </div>
       </div>
-      <div className="Grid--item fmsynth">
-        <div className="inner">
+      <div className="fmsynth">
+        <div className="border">
           fmsynth
         </div>
       </div>
-      <div className="Grid--item eq-hpf">
-        <div className="inner">
+      <div className="eq-hpf">
+        <div className="border">
           eq-hpf
         </div>
       </div>
-      <div className="Grid--item eq-lpf">
-        <div className="inner">
+      <div className="eq-lpf">
+        <div className="border">
           eq-lpf
         </div>
       </div>
-      <div className="Grid--item master">
-        <div className="inner">
+      <div className="master">
+        <div className="border">
           master
         </div>
       </div>
@@ -103,15 +124,53 @@ function Grid() {
 
 
 
+
+  const initialState = {
+    colorFreq: '#555555',
+    colorGain: '#225522',
+  };
+
+  function reducer(state, action) {
+    switch (action.type) {
+      case 'set':
+        return Object.assign(state, action.payload);
+      default:
+        throw new Error();
+    };
+  };
+
+
+
+
 export default function App() {
 
-  console.log('app is mounted')
+  const streams = useMediaStream();
+  const { audio, video } = streams || {};
+
+
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  const setState = useCallback((payload) => {
+    dispatch({ type: 'set', payload });
+    return state;
+  }, [state, dispatch]);
+
+  const tracker = new Tracker();
+
+  const { colorFreq, colorGain } = state;
+  // console.log()
 
   return (
     <div id="App">
-      <div id="UI">
-          <Grid />
-      </div>
+      <Interface>
+        <Screen
+          videoStream={video}
+          tracker={tracker}
+          setState={(payload) => dispatch({ type: 'set', payload })}
+          colorFreq={colorFreq}
+          colorGain={colorGain}
+        />
+      </Interface>
     </div>
   );
 };
