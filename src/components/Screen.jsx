@@ -1,12 +1,24 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 import './Screen.css';
 import { ScreenFrame } from './UI'
+import useGlobalState from './GlobalState.jsx';
 
 
 
 
 
-function Videobox({ videoStream, tracker, setState, colorFreq, colorGain } = {}) {
+function Videobox({ videoStream, tracker } = {}) {
+  const { set, state } = useGlobalState();
+
+  const updateTracker = useCallback(() => {
+    const { colorFreq, colorGain } = state;
+    tracker.color = [
+      colorFreq,
+      colorGain,
+    ];
+  }, [state, tracker]);
+
+  updateTracker();
 
   const videoRef = useRef(null);
   const svgRef = useRef(null);
@@ -25,31 +37,29 @@ function Videobox({ videoStream, tracker, setState, colorFreq, colorGain } = {})
     const el = svgRef.current;
     if (el && tracker.viewBox) {
       tracker.svg = el;
+      tracker.toggle();
     };
   }, [svgRef, tracker]);
 
 
+
   const handleClick = useCallback((e) => {
     const { offsetX, offsetY } = e.nativeEvent;
-
     const color = tracker.getPointColor(offsetX, offsetY);
-
-    setState({ colorFreq: color });
-    console.log(color)
-
-
-    // console.log('got licked', offsetX, offsetY)
-    tracker.toggle();
-  }, [tracker, setState, colorFreq, colorGain]);
+    set.colorFreq(color);
+    updateTracker();
+  }, [set, tracker, updateTracker]);
 
 
-  console.log('in videobox', colorFreq, colorGain)
 
 
-    tracker.color = [
-      colorFreq,
-      colorGain,
-    ];
+    // tracker.toggle();
+
+
+
+
+  // console.log('in videobox', colorFreq, colorGain)
+
 
 
   return (
@@ -82,16 +92,13 @@ function Videobox({ videoStream, tracker, setState, colorFreq, colorGain } = {})
 
 
 
-export default function({ videoStream, tracker, setState, colorFreq, colorGain } = {}) {
+export default function({ videoStream, tracker } = {}) {
   return (
     <div className="Screen">
       <div className="Screen--aspect">
         <Videobox
           videoStream={videoStream}
           tracker={tracker}
-          setState={setState}
-          colorFreq={colorFreq}
-          colorGain={colorGain}
         />
         <ScreenFrame cl="Screen--frame" />
       </div>

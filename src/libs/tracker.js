@@ -7,33 +7,33 @@ export default class Tracker {
     video,
     svg,
     scalar = 10,
-    sensitivity = 15,
+    sensitivity = 5,
   } = {}) {
     this.videoElement = video;
-    this.scalar = 10;
+    this.scalar = scalar;
     this.sensitivity = sensitivity;
-
     this.canvasWidth = 0;
     this.canvasHeight = 0;
     this.canvasElement = undefined;
     this.canvasCtx = undefined;
     this.imageData = undefined;
-
     this.colors = [];
     this.queue = [];
-
+    this.rAF = undefined;
     this.svgElement = svg;
     this.overlay = undefined;
-
-    this.rAF = undefined;
-
-    if (video) {
-      this.initCanvas();
-      if (svg) {
-        this.initOverlay();
-      };
-    };
+    // if (video) {
+    //   this.initCanvas();
+    //   if (svg) {
+    //     this.initOverlay();
+    //   };
+    // };
   };
+
+
+/*
+    Setters
+*/
 
   set video(video) {
     if (!video) {
@@ -66,12 +66,16 @@ export default class Tracker {
       return null;
     };
     this.colors = validHex;
-    console.log('set colors', validHex)
     this.colorsRGB = this.colors.map(d => {
       return this.hexToRgb(d);
     });
     this.queue = new Array(this.colors.length).fill([]);
   };
+
+
+/*
+    Getters
+*/
 
   get viewBox() {
     if (!this.videoElement) {
@@ -80,35 +84,26 @@ export default class Tracker {
     return `0 0 ${this.canvasWidth} ${this.canvasHeight}`;
   };
 
-  scaleDown(val) {
-    return Math.floor(val / this.scalar);
-  };
 
-  scaleUp(val) {
-    return Math.floor(val * this.scalar);
-  };
-
+/*
+    Initializers
+*/
 
   initCanvas(video = this.videoElement, scalar = this.scalar) {
     this.videoElement = video;
     this.scalar = scalar;
     this.canvasWidth = this.scaleDown(this.videoElement.clientWidth);
     this.canvasHeight = this.scaleDown(this.videoElement.clientHeight);
-
-    this.canvasElement = document.createElement('canvas');
-    this.canvasElement.width = this.canvasWidth;
-    this.canvasElement.height = this.canvasHeight;
-    this.canvasCtx = this.canvasElement.getContext('2d');
-
-    // this.canvasElement = new OffscreenCanvas(this.canvasWidth, this.canvasHeight);
-    // this.canvasCtx = this.canvasElement.getContext('2d', { alpha: false });
-
+    // this.canvasElement = document.createElement('canvas');
+    // this.canvasElement.width = this.canvasWidth;
+    // this.canvasElement.height = this.canvasHeight;
+    // this.canvasCtx = this.canvasElement.getContext('2d');
+    this.canvasElement = new OffscreenCanvas(this.canvasWidth, this.canvasHeight);
+    this.canvasCtx = this.canvasElement.getContext('2d', { alpha: false });
     return;
   };
 
-
   initOverlay(svg = this.svgElement) {
-    console.log('initOverlay RAN ---', svg)
     if (!svg) {
       console.error('TRACKER --- no svg element');
       return null;
@@ -120,6 +115,7 @@ export default class Tracker {
       .attr('viewBox', this.viewBox);
     return;
   };
+
 
 
   getPointColor(x, y) {
@@ -155,7 +151,6 @@ export default class Tracker {
     return;
   };
 
-
   reduceData() {
     return this.queue.map((data, i) => {
       if (!data.length) {
@@ -187,7 +182,6 @@ export default class Tracker {
     });
   };
 
-
   drawOverlay(data) {
     const circles = this.overlay
       .selectAll('circle')
@@ -200,7 +194,7 @@ export default class Tracker {
       .attr('cy', d => d.y)
       .attr('r', d => d.r)
       .style('fill', d => d.color)
-      .style('opacity', .5)
+      // .style('opacity', .5)
       .style('stroke', '#FFFFFF')
       .style('stroke-width', '.3%');
     circles
@@ -219,6 +213,7 @@ export default class Tracker {
   };
 
   start() {
+    console.log('Starting tracker with:', this.colors)
     this.rAF = requestAnimationFrame(this.runtime.bind(this));
   };
 
@@ -241,7 +236,25 @@ export default class Tracker {
 
 
 
+
+/*
+    Parsers + Helpers
+*/
+
+  scaleDown(val) {
+    return Math.floor(val / this.scalar);
+  };
+
+  scaleUp(val) {
+    return Math.floor(val * this.scalar);
+  };
+
   hexToRgb(hex) {
+    // return {
+    //   b: parseInt(hex.slice(-2), 16),
+    //   g: parseInt(hex.slice(-2), 16),
+    //   r: parseInt(hex.slice(-2), 16)
+    // };
     const r = parseInt(hex.substr(1, 2), 16);
     const g = parseInt(hex.substr(3, 2), 16);
     const b = parseInt(hex.substr(5, 2), 16);
@@ -250,7 +263,7 @@ export default class Tracker {
 
   rgbToHex({r, g, b} = {}) {
     const toDec = hex => (`00${hex.toString(16)}`).slice(-2);
-    return `#${toDec(r)}${toDec(g)}${toDec(g)}`;
+    return `#${toDec(r)}${toDec(g)}${toDec(b)}`;
   };
 
   getColorDist(r, g, b, c2) {
@@ -260,6 +273,15 @@ export default class Tracker {
       Math.pow((b - c2.b), 2)
     );
   };
+
+
+
+
+
+
+
+
+
 
 
   // async getData() {
