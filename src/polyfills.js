@@ -1,6 +1,10 @@
-export default function() {
+
+
+
 // AnalyserNode Polyfill From:
 // https://github.com/mohayonao/get-float-time-domain-data/blob/master/lib/get-float-time-domain-data.js
+
+export default function() {
   if (global.AnalyserNode && !global.AnalyserNode.prototype.getFloatTimeDomainData) {
     var uint8 = new Uint8Array(2048);
     global.AnalyserNode.prototype.getFloatTimeDomainData = function(array) {

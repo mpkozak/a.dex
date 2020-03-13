@@ -73,11 +73,10 @@
   grid-row: 1 / span 15;
 }
 
-
-
-
-
-
+.Interface>.Settings {
+  grid-column: 73 / span 48;
+  grid-row: 91 / span 20;
+}
 
 
 
@@ -126,12 +125,6 @@
 
 
 
-
-
-.sensitivity {
-  grid-column: 73 / span 48;
-  grid-row: 91 / span 20;
-}
 
 
 

@@ -1,21 +1,20 @@
 import React, { memo, useEffect, useRef, useCallback } from 'react';
 import './Screen.css';
+import { useGlobalState } from '../libs/hooks';
 import { ScreenFrame } from './UI'
-import useGlobalState from './GlobalState.jsx';
 
 
 
 
 
-const Videobox = memo(({ videoStream } = {}) => {
+const ScreenVideobox = memo(({ videoStream } = {}) => {
   const { state, setState } = useGlobalState();
   const {
     tracker,
-    colorFreq,
     colorGain,
+    colorFreq,
     colorSet,
   } = state;
-
 
   const videoRef = useRef(null);
   const svgRef = useRef(null);
@@ -24,7 +23,6 @@ const Videobox = memo(({ videoStream } = {}) => {
   useEffect(() => {   // set video stream
     const el = videoRef.current;
     if (el && videoStream) {
-      console.log('setting video stream')
       el.srcObject = videoStream;
     };
   }, [videoStream, videoRef]);
@@ -43,13 +41,13 @@ const Videobox = memo(({ videoStream } = {}) => {
 
 
   useEffect(() => {   // update tracker colors
-    if (tracker.ready) {
+    if (tracker.ready && !colorSet) {
       tracker.colors = [
-        colorFreq,
         colorGain,
+        colorFreq,
       ];
     };
-  }, [tracker, colorFreq, colorGain]);
+  }, [tracker, colorSet, colorFreq, colorGain]);
 
 
   const handleClick = useCallback((e) => {
@@ -64,20 +62,20 @@ const Videobox = memo(({ videoStream } = {}) => {
 
 
   return (
-    <div className="Videobox">
+    <div className="ScreenVideobox">
       <video
-        className="Videobox--video flip-h"
+        className="ScreenVideobox--video flip-h"
         ref={videoRef}
         preload="true"
         autoPlay
         loop
         muted
       />
-      <svg className="Videobox--overlay flip-h" ref={svgRef} />
-      <div className="Videobox--messagebox">
-        <h1>{state.message}</h1>
+      <svg className="ScreenVideobox--overlay flip-h" ref={svgRef} />
+      <div className="ScreenVideobox--messagebox">
+        <h3>{state.message}</h3>
       </div>
-      <div className="Videobox--clickbox flip-h" onClick={handleClick} />
+      <div className="ScreenVideobox--clickbox flip-h" onClick={handleClick} />
     </div>
   );
 });
@@ -90,7 +88,7 @@ export default memo(({ videoStream } = {}) => {
   return (
     <div className="Screen outer">
       <div className="Screen--inner">
-        <Videobox videoStream={videoStream} />
+        <ScreenVideobox videoStream={videoStream} />
         <ScreenFrame cl="Screen--frame" />
       </div>
     </div>

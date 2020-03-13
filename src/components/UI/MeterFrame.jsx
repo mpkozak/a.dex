@@ -12,7 +12,7 @@ export default memo(function({ cl = '', color = '#3A3125' } = {}) {
     >
       <defs>
         <rect
-          id="meter--rect-outer"
+          id="meterframe--rect-outer"
           x="0"
           y="0"
           width="100"
@@ -21,7 +21,7 @@ export default memo(function({ cl = '', color = '#3A3125' } = {}) {
           ry="2"
         />
         <rect
-          id="meter--rect-middle"
+          id="meterframe--rect-middle"
           x="2.5"
           y="2.5"
           width="95"
@@ -30,7 +30,7 @@ export default memo(function({ cl = '', color = '#3A3125' } = {}) {
           ry="2"
         />
         <rect
-          id="meter--rect-inner"
+          id="meterframe--rect-inner"
           x="5"
           y="5"
           width="90"
@@ -39,7 +39,7 @@ export default memo(function({ cl = '', color = '#3A3125' } = {}) {
           ry="1"
         />
         <rect
-          id="meter--rect-panel"
+          id="meterframe--rect-panel"
           x="4.75"
           y="4.75"
           width="90.5"
@@ -47,26 +47,26 @@ export default memo(function({ cl = '', color = '#3A3125' } = {}) {
           rx="1"
           ry="1"
         />
-        <clipPath id="meter--clip-outer">
-          <use xlinkHref="#meter--rect-outer" />
+        <clipPath id="meterframe--clip-outer">
+          <use xlinkHref="#meterframe--rect-outer" />
         </clipPath>
-        <clipPath id="meter--clip-middle">
-          <use xlinkHref="#meter--rect-middle" />
+        <clipPath id="meterframe--clip-middle">
+          <use xlinkHref="#meterframe--rect-middle" />
         </clipPath>
-        <clipPath id="meter--clip-inner">
-          <use xlinkHref="#meter--rect-inner" />
+        <clipPath id="meterframe--clip-inner">
+          <use xlinkHref="#meterframe--rect-inner" />
         </clipPath>
-        <mask id="meter--mask-inner">
+        <mask id="meterframe--mask-inner">
           <use
-            xlinkHref="#meter--rect-outer"
+            xlinkHref="#meterframe--rect-outer"
             fill="#FFFFFF"
           />
           <use
-            xlinkHref="#meter--rect-inner"
+            xlinkHref="#meterframe--rect-inner"
             fill="#000000"
           />
         </mask>
-        <filter id="meter--filter-texture">
+        <filter id="meterframe--filter-texture">
           <feTurbulence
             type="fractalNoise"
             baseFrequency="5, 30"
@@ -78,13 +78,13 @@ export default memo(function({ cl = '', color = '#3A3125' } = {}) {
             mode="multiply"
           />
         </filter>
-        <filter id="meter--filter-blur">
+        <filter id="meterframe--filter-blur">
           <feGaussianBlur
             stdDeviation=".25"
           />
         </filter>
         <linearGradient
-          id="meter--grad-outer-horiz"
+          id="meterframe--grad-outer-horiz"
           x1="0%"
           y1="0%"
           x2="100%"
@@ -97,7 +97,7 @@ export default memo(function({ cl = '', color = '#3A3125' } = {}) {
           <stop offset="100%" stopColor="#000000" stopOpacity=".7" />
         </linearGradient>
         <linearGradient
-          id="meter--grad-outer-vert"
+          id="meterframe--grad-outer-vert"
           x1="0%"
           y1="0%"
           x2="0%"
@@ -110,7 +110,7 @@ export default memo(function({ cl = '', color = '#3A3125' } = {}) {
           <stop offset="100%" stopColor="#000000" stopOpacity=".7" />
         </linearGradient>
         <linearGradient
-          id="meter--grad-inner-horiz"
+          id="meterframe--grad-inner-horiz"
           x1="0%"
           y1="0%"
           x2="100%"
@@ -123,7 +123,7 @@ export default memo(function({ cl = '', color = '#3A3125' } = {}) {
           <stop offset="100%" stopColor="#000000" stopOpacity=".9" />
         </linearGradient>
         <linearGradient
-          id="meter--grad-inner-vert"
+          id="meterframe--grad-inner-vert"
           x1="0%"
           y1="0%"
           x2="0%"
@@ -136,7 +136,7 @@ export default memo(function({ cl = '', color = '#3A3125' } = {}) {
           <stop offset="100%" stopColor="#000000" stopOpacity=".9" />
         </linearGradient>
         <radialGradient
-          id="meter--grad-corners"
+          id="meterframe--grad-corners"
           cx="50%"
           cy="50%"
           r="100%"
@@ -146,7 +146,7 @@ export default memo(function({ cl = '', color = '#3A3125' } = {}) {
           <stop offset="70%" stopColor="#000000" stopOpacity=".5" />
         </radialGradient>
         <radialGradient
-          id="meter--grad-center"
+          id="meterframe--grad-center"
           cx="50%"
           cy="50%"
           r="100%"
@@ -159,58 +159,58 @@ export default memo(function({ cl = '', color = '#3A3125' } = {}) {
         </radialGradient>
       </defs>
       <g
-        clipPath="url(#meter--clip-outer)"
-        mask="url(#meter--mask-inner)"
+        clipPath="url(#meterframe--clip-outer)"
+        mask="url(#meterframe--mask-inner)"
       >
         <use
-          xlinkHref="#meter--rect-outer"
-          filter="url(#meter--filter-texture)"
+          xlinkHref="#meterframe--rect-outer"
+          filter="url(#meterframe--filter-texture)"
           fill={color}
           stroke="#000000"
           strokeWidth=".4%"
         />
         <use
-          xlinkHref="#meter--rect-outer"
-          fill="url(#meter--grad-outer-horiz)"
+          xlinkHref="#meterframe--rect-outer"
+          fill="url(#meterframe--grad-outer-horiz)"
         />
         <use
-          xlinkHref="#meter--rect-outer"
-          fill="url(#meter--grad-outer-vert)"
+          xlinkHref="#meterframe--rect-outer"
+          fill="url(#meterframe--grad-outer-vert)"
         />
 
         <g
-          clipPath="url(#meter--clip-middle)"
-          filter="url(#meter--filter-blur)"
+          clipPath="url(#meterframe--clip-middle)"
+          filter="url(#meterframe--filter-blur)"
         >
           <path
             d="M 2.5 2.5 L 97.5 2.5 L 73.75 26.25 L 73.75 33.75 L 97.5 57.5 L 2.5 57.5 L 26.25 33.75 L 26.25 26.25 Z"
-            fill="url(#meter--grad-outer-vert)"
+            fill="url(#meterframe--grad-outer-vert)"
           />
           <path
             d="M 2.5 2.5 L 30 30 L 70 30 L 97.5 2.5 L 97.5 57.5 L 70 30 L 30 30 L 2.5 57.5 Z"
-            fill="url(#meter--grad-outer-horiz)"
+            fill="url(#meterframe--grad-outer-horiz)"
           />
           <use
-            xlinkHref="#meter--rect-middle"
-            fill="url(#meter--grad-corners)"
+            xlinkHref="#meterframe--rect-middle"
+            fill="url(#meterframe--grad-corners)"
           />
         </g>
       </g>
       <g
-        clipPath="url(#meter--clip-inner)"
-        filter="url(#meter--filter-blur)"
+        clipPath="url(#meterframe--clip-inner)"
+        filter="url(#meterframe--filter-blur)"
       >
         <use
-          xlinkHref="#meter--rect-panel"
-          fill="url(#meter--grad-inner-horiz)"
+          xlinkHref="#meterframe--rect-panel"
+          fill="url(#meterframe--grad-inner-horiz)"
         />
         <use
-          xlinkHref="#meter--rect-panel"
-          fill="url(#meter--grad-inner-vert)"
+          xlinkHref="#meterframe--rect-panel"
+          fill="url(#meterframe--grad-inner-vert)"
         />
         <use
-          xlinkHref="#meter--rect-panel"
-          fill="url(#meter--grad-center)"
+          xlinkHref="#meterframe--rect-panel"
+          fill="url(#meterframe--grad-center)"
         />
       </g>
     </svg>

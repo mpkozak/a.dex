@@ -1,20 +1,21 @@
-import React, { memo } from 'react';
-import './App.css';
-import { GlobalStateProvider } from './GlobalState.jsx';
-import { useMediaStream } from '../libs/hooks.js';
+import React, { memo, useRef } from 'react';
+import './Interface.css';
+import { useSizeUnit } from '../libs/hooks';
 import { MeterFrame } from './UI'
 
-import Screen from './Screen.jsx';
-import Colors from './Colors.jsx';
-import Placard from './Placard.jsx';
+// import Screen from './Screen.jsx';
+// import Colors from './Colors.jsx';
+// import Placard from './Placard.jsx';
 
 
 
+export default memo(({ children } = {}) => {
+  const interfaceRef = useRef(null);
+  useSizeUnit(interfaceRef);
 
 
-function Interface({ children } = {}) {
   return (
-    <div className="Interface">
+    <div className="Interface" ref={interfaceRef}>
       {children.map(d => d)}
 
       <div className="meter meter-scope">
@@ -32,11 +33,7 @@ function Interface({ children } = {}) {
         </div>
       </div>
 
-      <div className="sensitivity outer">
-        <div className="inner border">
-          sensitivity
-        </div>
-      </div>
+
 
       <div className="latency outer">
         <div className="inner border">
@@ -87,27 +84,5 @@ function Interface({ children } = {}) {
       </div>
 
     </div>
-  );
-};
-
-
-
-
-
-export default memo(() => {
-  const streams = useMediaStream();
-  const { video } = streams || {};
-  // const video = null;
-
-  return (
-    <GlobalStateProvider>
-      <div id="App">
-        <Interface>
-          <Screen videoStream={video} />
-          <Colors />
-          <Placard />
-        </Interface>
-      </div>
-    </GlobalStateProvider>
   );
 });

@@ -21,7 +21,7 @@
   justify-content: center;
 }
 
-.Colors--label>* {
+.Colors--label>h3 {
   text-align: right;
 }
 
@@ -29,7 +29,7 @@
 
 
 
-.ColorsSwatch {
+.ColorsElement {
   width: 20%;
   height: 80%;
   display: flex;
@@ -39,7 +39,8 @@
 }
 
 
-.ColorsSwatch--gem {
-  width: 65%;
-  height: auto;
+.ColorsElement--gem {
+  width: auto;
+  height: 65%;
+  cursor: pointer;
 }

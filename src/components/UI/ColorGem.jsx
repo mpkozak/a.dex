@@ -21,19 +21,19 @@ export default memo(function({ cl = '', color = '#FFFFFF', active = false, handl
     >
       <defs>
         <circle
-          id="colorswatch--circle-big"
+          id="colorgem--circle-big"
           cx="50"
           cy="50"
           r="49"
         />
         <circle
-          id="colorswatch--circle-small"
+          id="colorgem--circle-small"
           cx="50"
           cy="50"
           r="47"
         />
         <radialGradient
-          id="colorswatch--grad-glow"
+          id="colorgem--grad-glow"
           cx="50%"
           cy="50%"
           r="100%"
@@ -47,7 +47,7 @@ export default memo(function({ cl = '', color = '#FFFFFF', active = false, handl
           <stop offset="50%" stopColor="#FFFFFF" stopOpacity="0" />
         </radialGradient>
         <radialGradient
-          id="colorswatch--grad-contour"
+          id="colorgem--grad-contour"
           cx="50%"
           cy="50%"
           r="50%"
@@ -60,7 +60,7 @@ export default memo(function({ cl = '', color = '#FFFFFF', active = false, handl
           <stop offset="100%" stopColor="#000000" stopOpacity="1" />
         </radialGradient>
         <radialGradient
-          id="colorswatch--grad-glare"
+          id="colorgem--grad-glare"
           cx="50%"
           cy="50%"
           r="50%"
@@ -77,13 +77,13 @@ export default memo(function({ cl = '', color = '#FFFFFF', active = false, handl
         </radialGradient>
       </defs>
       <use
-        xlinkHref="#colorswatch--circle-small"
+        xlinkHref="#colorgem--circle-small"
         fill="#FFFFFF"
         stroke="#000000"
         strokeWidth="6%"
       />
       <use
-        xlinkHref="#colorswatch--circle-small"
+        xlinkHref="#colorgem--circle-small"
         style={active ? styles.pulse : null}
         fill={active ? '#000000' : color}
         stroke="#222222"
@@ -91,18 +91,18 @@ export default memo(function({ cl = '', color = '#FFFFFF', active = false, handl
         opacity=".9"
       />
       <use
-        xlinkHref="#colorswatch--circle-small"
+        xlinkHref="#colorgem--circle-small"
         style={active ? styles.pulse : styles.hide}
-        fill="url(#colorswatch--grad-glow)"
+        fill="url(#colorgem--grad-glow)"
         opacity={active ? .8 : 0}
       />
       <use
-        xlinkHref="#colorswatch--circle-big"
-        fill="url(#colorswatch--grad-contour)"
+        xlinkHref="#colorgem--circle-big"
+        fill="url(#colorgem--grad-contour)"
       />
       <use
-        xlinkHref="#colorswatch--circle-big"
-        fill="url(#colorswatch--grad-glare)"
+        xlinkHref="#colorgem--circle-big"
+        fill="url(#colorgem--grad-glare)"
       />
     </svg>
   );

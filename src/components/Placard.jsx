@@ -1,8 +1,7 @@
 import React, { memo, useCallback } from 'react';
 import './Placard.css';
-import useGlobalState from './GlobalState.jsx';
+import { useGlobalState } from '../libs/hooks';
 import { Logo } from './UI'
-
 
 
 
@@ -12,13 +11,10 @@ export default memo(() => {
     tracker,
   } = state;
 
-
-
   const handleClick = useCallback(() => {
     tracker.toggle();
     setState.message(tracker.active ? 'tracking...' : '');
-  }, [setState, tracker])
-
+  }, [setState, tracker]);
 
 
   return (

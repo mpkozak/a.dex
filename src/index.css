@@ -49,6 +49,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  user-select: none;
 }
 
 *:not(svg):not(g):not(text) {
@@ -58,7 +59,8 @@
 }
 
 html {
-
+  --size-unit: 0px;
+  font-size: calc(var(--size-unit) / 11);
 }
 
 body {
@@ -66,7 +68,34 @@ body {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  /*font-size: 10vmin;*/
+}
+
+h1 {
+  font-size: 10rem;
+}
+
+h2 {
+  font-size: 8rem;
+}
+
+h3 {
+  font-size: 6rem;
+}
+
+h4 {
+  font-size: 4.5rem;
+}
+
+h5 {
+  font-size: 3rem;
+}
+
+h6 {
+  font-size: 2rem;
+}
+
+p {
+  font-size: 1.5rem;
 }
 
 
@@ -79,4 +108,3 @@ body {
     opacity: .1;
   }
 }
-

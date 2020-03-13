@@ -1,23 +1,16 @@
-import React, { useCallback, memo } from 'react';
+import React, { memo, useCallback } from 'react';
 import './Colors.css';
-import useGlobalState from './GlobalState.jsx';
+import { useGlobalState } from '../libs/hooks';
 import { ColorGem } from './UI';
 
 
 
 
 
-
-const ColorsSwatch = memo(({ colorKey, label } = {}) => {
+const ColorsElement = memo(({ colorKey = '', label = '' } = {}) => {
   const { state, setState } = useGlobalState();
-  const {
-    colorSet,
-  } = state;
-
-
+  const { colorSet } = state;
   const color = state[colorKey];
-  const active = colorSet === colorKey;
-
 
   const handleClick = useCallback(() => {
     let nextColorSet = colorKey;
@@ -25,15 +18,15 @@ const ColorsSwatch = memo(({ colorKey, label } = {}) => {
       nextColorSet = false;
     };
     return setState.colorSet(nextColorSet);
-  }, [colorKey, setState, colorSet]);
+  }, [colorKey, colorSet, setState]);
 
 
   return (
-    <div className="ColorsSwatch">
+    <div className="ColorsElement">
       <ColorGem
-        cl="ColorsSwatch--gem"
+        cl="ColorsElement--gem"
         color={color}
-        active={active}
+        active={colorSet === colorKey}
         handleClick={handleClick}
       />
       <h5>{label}</h5>
@@ -48,13 +41,13 @@ export default memo(() =>
   <div className="Colors outer">
     <div className="Colors--inner inner border">
       <div className="Colors--label">
-        <h1>Set Colors</h1>
+        <h3>Set Colors</h3>
       </div>
-      <ColorsSwatch
+      <ColorsElement
         label="GAIN"
         colorKey="colorGain"
       />
-      <ColorsSwatch
+      <ColorsElement
         label="PITCH"
         colorKey="colorFreq"
       />

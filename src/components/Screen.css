@@ -32,7 +32,7 @@
 
 
 
-.Videobox {
+.ScreenVideobox {
   left: 5%;
   top: 5%;
   width: 90%;
@@ -40,7 +40,7 @@
   z-index: 9;
 }
 
-.Videobox>* {
+.ScreenVideobox>* {
   position: absolute;
   left: 0;
   top: 0;
@@ -48,23 +48,23 @@
   height: 100%;
 }
 
-.Videobox>.flip-h {
+.ScreenVideobox>.flip-h {
   transform: scaleX(-1);
 }
 
 
-.Videobox--video {
+.ScreenVideobox--video {
   z-index: 1;
   background-color: #131415;
 }
 
 
-.Videobox--overlay {
+.ScreenVideobox--overlay {
   z-index: 2;
 }
 
 
-.Videobox--messagebox {
+.ScreenVideobox--messagebox {
   z-index: 3;
   display: flex;
   flex-flow: column nowrap;
@@ -73,12 +73,12 @@
   animation: pulsar 1.5s ease-in-out infinite;
 }
 
-.Videobox--messagebox>* {
+.ScreenVideobox--messagebox>* {
 
 }
 
 
-.Videobox--clickbox {
+.ScreenVideobox--clickbox {
   z-index: 4;
 }
 

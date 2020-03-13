@@ -1,0 +1,32 @@
+.Settings {
+
+}
+
+
+.Settings--inner {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-around;
+  padding: 0 2%;
+}
+
+
+
+
+
+.SettingsElement {
+  width: 45%;
+  height: 80%;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+
+.SettingsElement--knob {
+  width: auto;
+  height: 65%;
+  cursor: grab;
+}
