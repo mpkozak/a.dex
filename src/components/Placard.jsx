@@ -6,10 +6,7 @@ import { Logo } from './UI'
 
 
 export default memo(() => {
-  const { state, setState } = useGlobalState();
-  const {
-    tracker,
-  } = state;
+  const { tracker, setState } = useGlobalState();
 
   const handleClick = useCallback(() => {
     tracker.toggle();

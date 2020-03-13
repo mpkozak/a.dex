@@ -6,20 +6,25 @@ import Tracker from './libs/tracker.js';
     // this.sensitivity = { min: 0, max: 221 };
     // this.range = { min: 2, max: 6 };
 
+const tracker = new Tracker();
+
+
 const params = {
-  sensitivityRange: [
-    0,
-    221,
-  ],
-  octavesRange: [
-    2,
-    6,
-  ],
+  range: {
+    sensitivity: [
+      0,
+      221,
+    ],
+    octaves: [
+      2,
+      6,
+    ],
+  },
 };
 
 
 const initialState = {
-  tracker: new Tracker(),
+  // tracker: new Tracker(),
   colorGain: '#00FF00',
   colorFreq: '#FF0000',
   sensitivity: 30,
@@ -65,7 +70,6 @@ export const GlobalStateProvider = ({ children } = {}) => {
 export default function useGlobalState() {
   const [state, dispatch] = useContext(GlobalStateContext);
 
-  // const setTracker = instance => dispatch({ type: 'tracker', payload: instance });
   const setColorGain = color => dispatch({ type: 'colorGain', payload: color });
   const setColorFreq = color => dispatch({ type: 'colorFreq', payload: color });
   const setSensitivity = val => dispatch({ type: 'sensitivity', payload: val });
@@ -75,10 +79,10 @@ export default function useGlobalState() {
 
 
   return {
+    tracker: tracker,
     params: { ...params },
     state: { ...state },
     setState: {
-      // tracker: setTracker,
       colorGain: setColorGain,
       colorFreq: setColorFreq,
       octaves: setOctaves,

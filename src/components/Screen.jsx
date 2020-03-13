@@ -8,9 +8,8 @@ import { ScreenFrame } from './UI'
 
 
 const ScreenVideobox = memo(({ videoStream } = {}) => {
-  const { state, setState } = useGlobalState();
+  const { tracker, state, setState } = useGlobalState();
   const {
-    tracker,
     colorGain,
     colorFreq,
     colorSet,
@@ -47,7 +46,7 @@ const ScreenVideobox = memo(({ videoStream } = {}) => {
         colorFreq,
       ];
     };
-  }, [tracker, colorSet, colorFreq, colorGain]);
+  }, [tracker, colorFreq, colorGain, colorSet]);
 
 
   const handleClick = useCallback((e) => {
@@ -58,7 +57,7 @@ const ScreenVideobox = memo(({ videoStream } = {}) => {
     const color = tracker.getPointColor(offsetX, offsetY);
     setState.colorSet(false);
     setState[colorSet](color);
-  }, [setState, tracker, colorSet]);
+  }, [tracker, setState, colorSet]);
 
 
   return (
