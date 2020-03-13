@@ -113,9 +113,7 @@ export default class Tracker {
   };
 
   set sensitivity(val) {
-    this._sensitivity = clampRange(val, this._sensitivityRange);
-    // this._sensitivity = Math.round(clampRange(val, this._sensitivityRange));
-    console.log('in tracker', this._sensitivity)
+    this._sensitivity = Math.round(clampRange(val, this._sensitivityRange));
   };
 
   set colors(hex) {

@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 
 
 
-export default memo(function({ cl, knobRef = null, color = '#3A3125', rotation = 0, handlePointerDown, handleScroll } = {}) {
+export default memo(function({ cl, knobRef = null, color = '#3A3125', rotation = 0, handlePointerDown = null, handlePointerUp = null } = {}) {
   // console.log('knob rotation', rotation)
   return (
     <svg
@@ -12,7 +12,8 @@ export default memo(function({ cl, knobRef = null, color = '#3A3125', rotation =
       width="100"
       height="100"
       onPointerDown={handlePointerDown}
-      onWheel={handleScroll}
+      onPointerUp={handlePointerUp}
+      // onWheel={handleScroll}
     >
       <defs>
         <circle

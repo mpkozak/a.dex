@@ -30,7 +30,7 @@ const initialState = {
 
 
 function updateState(state, key, val) {
-  console.log('updating state', key, val)
+  // console.log('updating state', key, val)
   return key in initialState
     ? ({ ...state, [key]: val })
     : state;
@@ -73,7 +73,6 @@ export default function useGlobalState() {
   const setColorSet = colorKey => dispatch({ type: 'colorSet', payload: colorKey });
   const setMessage = text => dispatch({ type: 'message', payload: text });
 
-  const modSensitivity = delta => dispatch({ type: 'sensitivity', payload: state.sensitivity + delta })
 
   return {
     params: { ...params },
@@ -86,9 +85,6 @@ export default function useGlobalState() {
       sensitivity: setSensitivity,
       colorSet: setColorSet,
       message: setMessage,
-    },
-    modState: {
-      sensitivity: modSensitivity,
     }
   };
 };
