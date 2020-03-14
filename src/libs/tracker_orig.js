@@ -1,7 +1,5 @@
 import d3 from './d3.js';
 import { clampRange } from './parse.js'
-import worker from './worker/worker.js';
-import WebWorker from './worker/workerSetup.js';
 
 
 
@@ -30,12 +28,6 @@ export default class Tracker {
     this.overlay = undefined;
     this.queue = [];
     this.rAF = undefined;
-    this.worker = new WebWorker(worker);
-    this.worker.onmessage = this.handleWorkerMessage.bind(this);
-    // console.log('this.worker', this.worker);
-
-
-    this.imageCapture = null;
     // if (video) {
     //   this.initCanvas();
     //   if (svg) {
@@ -73,7 +65,7 @@ export default class Tracker {
   };
 
   get ready() {
-    if (this._svgElement && this._videoElement && this.imageCapture) {
+    if (this._svgElement && this._videoElement) {
       return true;
     };
     return false;
@@ -125,7 +117,6 @@ export default class Tracker {
 
   set sensitivity(val) {
     this._sensitivity = Math.round(clampRange(val, this._sensitivityRange));
-    this.configWorker();
   };
 
   set colors(hex) {
@@ -144,7 +135,6 @@ export default class Tracker {
     };
     this._colors = validHex;
     this._colorsRGB = this._colors.map(d => this.hexToRgb(d));
-    this.configWorker();
     this.queue = this._colors.map(() => []);
   };
 
@@ -161,7 +151,6 @@ export default class Tracker {
     // this.canvasElement.width = this.canvasWidth;
     // this.canvasElement.height = this.canvasHeight;
     // this.canvasCtx = this.canvasElement.getContext('2d');
-
     this.canvasElement = new OffscreenCanvas(this.canvasWidth, this.canvasHeight);
     this.canvasCtx = this.canvasElement.getContext('2d', { alpha: false });
     return;
@@ -176,43 +165,19 @@ export default class Tracker {
   };
 
 
-  configWorker() {
-    const init = {
-      canvasWidth: this.canvasWidth,
-      canvasHeight: this.canvasHeight,
-      colors: this._colors,
-      colorsRGB: this._colorsRGB,
-      sensitivity: this._sensitivity,
-    };
-    this.worker.postMessage({ init });
-  };
-
-
-
-
-/*
-  Worker
-*/
-
-  handleWorkerMessage(msg) {
-    this.runtimeIn(msg.data);
-  };
-
-
 
 /*
   Runtime invocation
 */
 
   runtime() {
-    this.imageCapture.grabFrame().then(imageBitmap => {
-      this.worker.postMessage({ imageBitmap }, [imageBitmap]);
-    });
-  };
-
-  runtimeIn(data) {
+    this.queue.forEach(d => d = []);
+    this.getData();
+    this.parseData();
+    const data = this.reduceData();
     this.drawOverlay(data);
     this.rAF = requestAnimationFrame(this.runtime.bind(this));
+    // this.rAF = setTimeout(this.runtime.bind(this), 1000);
   };
 
   start() {
@@ -242,6 +207,62 @@ export default class Tracker {
 /*
   Runtime methods
 */
+
+  getData() {
+    this.canvasCtx.drawImage(this._videoElement, 0, 0, this.canvasWidth, this.canvasHeight);
+    this.imageData = this.canvasCtx.getImageData(0, 0, this.canvasWidth, this.canvasHeight);
+    return;
+  };
+
+  parseData() {
+    const { data } = this.imageData;
+    for (let y = 0; y < this.canvasHeight; ++y) {
+      for (let x = 0; x < this.canvasWidth; ++x) {
+        let p = (y * this.canvasWidth + x) * 4;
+        const r = data[p];
+        const g = data[++p];
+        const b = data[++p];
+        this._colorsRGB.forEach((d, i) => {
+          const dist = this.getColorDist(r, g, b, d);
+          if (dist <= this._sensitivity) {
+            this.queue[i].push({ x, y, dist });
+          };
+        });
+      };
+    };
+    return;
+  };
+
+  reduceData() {
+    return this.queue.map((data, i) => {
+      if (!data.length) {
+        return null;
+      };
+      const r = Math.sqrt(data.length);
+      let sumX = 0,
+          sumY = 0,
+          denom = 0;
+      while (data.length) {
+        const { x, y, dist } = data.pop();
+        const multi = 1 / (dist + 1);
+        denom += multi;
+        sumX += x * multi;
+        sumY += y * multi;
+      };
+      // for (let i = 0; i < data.length; i++) {
+      //   const multi = 1 / (data[i].dist + 1);
+      //   denom += multi;
+      //   sumX += data[i].x * multi;
+      //   sumY += data[i].y * multi;
+      // };
+      return {
+        color: this._colors[i],
+        x: (sumX / denom),
+        y: (sumY / denom),
+        r,
+      };
+    });
+  };
 
   drawOverlay(data) {
     const circles = this.overlay

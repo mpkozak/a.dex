@@ -60,12 +60,24 @@ const ScreenVideobox = memo(({ videoStream } = {}) => {
   }, [tracker, setState, colorSet]);
 
 
+
+  const handlePlay = useCallback((e) => {
+    const el = videoRef.current;
+    if (el && !tracker.imageCapture) {
+      const stream = el.captureStream();
+      const [track] = stream.getVideoTracks();
+      tracker.imageCapture = new ImageCapture(track);
+    };
+  }, [tracker, videoRef]);
+
+
   return (
     <div className="ScreenVideobox">
       <video
         className="ScreenVideobox--video flip-h"
         ref={videoRef}
         preload="true"
+        onPlay={handlePlay}
         autoPlay
         loop
         muted

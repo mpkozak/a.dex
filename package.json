@@ -30,7 +30,8 @@
     ">0.2%",
     "not dead",
     "not ie <= 11",
-    "not op_mini all"
+    "not op_mini all",
+    "safari 11"
   ],
   "keywords": [
     "WebAudio",
@@ -40,5 +41,5 @@
     "motion",
     "tracking"
   ],
-  "homepage": "https://adex2.surge.sh"
+  "homepage": "/"
 }
