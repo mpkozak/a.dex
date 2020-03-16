@@ -1,13 +1,13 @@
-import React, { memo } from 'react';
+import React, { memo, useRef } from 'react';
 import './App.css';
 import { GlobalStateProvider } from './GlobalState.jsx';
-import { useMediaStream } from './libs/hooks';
+import { useSizeUnit, useMediaStream } from './libs/hooks';
 import {
-  Interface,
+  Placard,
   Screen,
   Colors,
   Settings,
-  Placard,
+  Osc,
 } from './components';
 
 
@@ -15,21 +15,24 @@ import {
 
 
 export default memo(() => {
+  const interfaceRef = useRef(null);
+  useSizeUnit(interfaceRef);
+
   const streams = useMediaStream();
   const { video } = streams || {};
-  // const video = null;
 
 
-  // return null;
   return (
     <GlobalStateProvider>
       <div id="App">
-        <Interface>
-         <Screen videoStream={video} />
+        <div className="Interface" ref={interfaceRef}>
+          <Screen videoStream={video} />
+          <Placard />
           <Colors />
           <Settings />
-          <Placard />
-        </Interface>
+          <Osc cl="Osc1" oscKey="osc1" label="Osc 1" />
+          <Osc cl="Osc2" oscKey="osc2" label="Osc 2" />
+        </div>
       </div>
     </GlobalStateProvider>
   );

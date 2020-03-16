@@ -30,3 +30,7 @@
   height: 65%;
   cursor: grab;
 }
+
+.SettingsElement--knob:active {
+  cursor: ns-resize;
+}

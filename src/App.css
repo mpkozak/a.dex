@@ -63,20 +63,31 @@
   grid-row: 1 / span 90;
 }
 
-.Interface>.Colors {
-  grid-column: 1 / span 72;
-  grid-row: 91 / span 20;
-}
-
 .Interface>.Placard {
   grid-column: 121 / span 50;
   grid-row: 1 / span 15;
+}
+
+.Interface>.Colors {
+  grid-column: 1 / span 72;
+  grid-row: 91 / span 20;
 }
 
 .Interface>.Settings {
   grid-column: 73 / span 48;
   grid-row: 91 / span 20;
 }
+
+.Interface>.Osc1 {
+  grid-column: 1 / span 40;
+  grid-row: 111 / span 20;
+}
+
+.Interface>.Osc2 {
+  grid-column: 1 / span 40;
+  grid-row: 131 / span 20;
+}
+
 
 
 
@@ -155,15 +166,6 @@
 
 
 
-.osc-1 {
-  grid-column: 1 / span 40;
-  grid-row: 111 / span 20;
-}
-
-.osc-2 {
-  grid-column: 1 / span 40;
-  grid-row: 131 / span 20;
-}
 .fmsynth {
   grid-column: 41 / span 55;
   grid-row: 111 / span 40;

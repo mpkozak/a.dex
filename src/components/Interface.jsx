@@ -1,21 +1,13 @@
-import React, { memo, useRef } from 'react';
-import './Interface.css';
-import { useSizeUnit } from '../libs/hooks';
-import { MeterFrame, Button } from './_shared'
-
-// import Screen from './Screen.jsx';
-// import Colors from './Colors.jsx';
-// import Placard from './Placard.jsx';
+import React, { memo } from 'react';
+import { MeterFrame } from './_shared'
 
 
 
 export default memo(({ children } = {}) => {
-  const interfaceRef = useRef(null);
-  useSizeUnit(interfaceRef);
 
 
   return (
-    <div className="Interface" ref={interfaceRef}>
+    <div className="Interface">
       {children.map(d => d)}
 
       <div className="meter meter-scope">
@@ -52,21 +44,6 @@ export default memo(({ children } = {}) => {
         </div>
       </div>
 
-      <div className="osc-1 outer">
-        <div className="inner border">
-          <Button icon="sine" />
-          <Button icon="square" />
-          <Button icon="sawtooth" />
-          <Button icon="triange" />
-
-          osc-1
-        </div>
-      </div>
-      <div className="osc-2 outer">
-        <div className="inner border">
-          osc-2
-        </div>
-      </div>
       <div className="fmsynth outer">
         <div className="inner border">
           fmsynth

@@ -4,7 +4,7 @@ import React, { memo } from 'react';
 
 
 
-export default memo(({ cl = '', icon = '', active = true, handleClick = null } = {}) => {
+export default memo(({ cl = '', icon = '', active = false, handleClick = null } = {}) => {
   const icons = {
     mic: 'M 3.5 8 L 6.5 8 M 5 8 L 5 7 M 3 5 C 3 7.5, 7 7.5, 7 5 M 3.75 5 C 3.75 6.5, 6.25 6.5, 6.25 5 L 6.25 3 C 6.25 1.5, 3.75 1.5, 3.75 3 Z',
     sine: 'M 2 5 Q 3.5 0, 5 5 Q 6.5 10, 8 5',

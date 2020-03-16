@@ -9,6 +9,14 @@ const tracker = new Tracker();
 
 
 const params = {
+  types: {
+    osc: [
+      'sine',
+      'triangle',
+      'sawtooth',
+      'square',
+    ],
+  },
   range: {
     sensitivity: [
       0,
@@ -28,6 +36,8 @@ const initialState = {
   sensitivity: 30,
   octaves: 4,
   colorSet: false,
+  osc1: 'triangle',
+  osc2: 'sine',
   message: null,
 };
 
@@ -73,6 +83,8 @@ export default function useGlobalState() {
   const setSensitivity = val => dispatch({ type: 'sensitivity', payload: val });
   const setOctaves = val => dispatch({ type: 'octaves', payload: val });
   const setColorSet = colorKey => dispatch({ type: 'colorSet', payload: colorKey });
+  const setOsc1 = wave => dispatch({ type: 'osc1', payload: wave });
+  const setOsc2 = wave => dispatch({ type: 'osc2', payload: wave });
   const setMessage = text => dispatch({ type: 'message', payload: text });
 
 
@@ -86,6 +98,8 @@ export default function useGlobalState() {
       octaves: setOctaves,
       sensitivity: setSensitivity,
       colorSet: setColorSet,
+      osc1: setOsc1,
+      osc2: setOsc2,
       message: setMessage,
     }
   };

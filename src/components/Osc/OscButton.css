@@ -1,0 +1,9 @@
+.OscButton {
+  width: 22%;
+  height: auto;
+  cursor: pointer;
+}
+
+.OscButton:active {
+  transform: scale(.96);
+}

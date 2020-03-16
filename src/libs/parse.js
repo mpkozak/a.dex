@@ -18,6 +18,10 @@ export const parseCl = (...args) => {
 
 
 
+export const getPct = (val, [min, max]) => ((val - min) / (max - min));
+
+
+
 export const clampRange = (val, [min, max]) => {
   if (val >= max) {
     return max;
