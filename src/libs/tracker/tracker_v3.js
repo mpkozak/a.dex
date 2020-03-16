@@ -27,10 +27,10 @@ export default class Tracker {
     this.canvasCtx = undefined;
     this.imageData = undefined;
     this.overlay = undefined;
-    this.rAF = undefined;
     this.worker = new WebWorker(worker);
     this.worker.onmessage = this.handleWorkerMessage.bind(this);
     this.imageCapture = null;
+    this.rAF = undefined;
   };
 
 

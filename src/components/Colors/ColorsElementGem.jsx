@@ -1,8 +1,11 @@
 import React, { memo } from 'react';
+import './ColorsElementGem.css';
 
 
 
-export default memo(function({ cl = '', color = '#FFFFFF', active = false, handleClick } = {}) {
+
+
+export default memo(({ color = '#FFFFFF', active = false, handleClick } = {}) => {
   const styles = {
     pulse: {
       animation: 'pulsar 1.5s ease-in-out infinite',
@@ -13,7 +16,7 @@ export default memo(function({ cl = '', color = '#FFFFFF', active = false, handl
   };
   return (
     <svg
-      className={cl}
+      className="ColorsElementGem"
       viewBox="0 0 100 100"
       width="100"
       height="100"

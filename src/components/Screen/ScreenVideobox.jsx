@@ -1,13 +1,12 @@
 import React, { memo, useEffect, useRef, useCallback } from 'react';
-import './Screen.css';
-import { useGlobalState } from '../libs/hooks';
-import { ScreenFrame } from './UI'
+import './ScreenVideobox.css';
+import { useGlobalState } from '../../libs/hooks';
 
 
 
 
 
-const ScreenVideobox = memo(({ videoStream } = {}) => {
+export default memo(({ videoStream } = {}) => {
   const { tracker, state, setState } = useGlobalState();
   const {
     colorGain,
@@ -75,21 +74,6 @@ const ScreenVideobox = memo(({ videoStream } = {}) => {
         <h3>{state.message}</h3>
       </div>
       <div className="ScreenVideobox--clickbox flip-h" onClick={handleClick} />
-    </div>
-  );
-});
-
-
-
-
-
-export default memo(({ videoStream } = {}) => {
-  return (
-    <div className="Screen outer">
-      <div className="Screen--inner">
-        <ScreenVideobox videoStream={videoStream} />
-        <ScreenFrame cl="Screen--frame" />
-      </div>
     </div>
   );
 });

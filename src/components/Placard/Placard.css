@@ -1,5 +1,5 @@
 .Placard {
-  /*background-color: pink;*/
+
 }
 
 
@@ -8,17 +8,6 @@
   flex-flow: row nowrap;
   align-items: center;
   justify-content: space-between;
-}
-
-
-.Placard--logo {
-/*  position: absolute;
-  left: 0;
-  top: 0;
-*/
-  width: 80%;
-  height: auto;
-
 }
 
 

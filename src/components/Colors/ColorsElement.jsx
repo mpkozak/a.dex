@@ -1,0 +1,34 @@
+import React, { memo, useCallback } from 'react';
+import './ColorsElement.css';
+import { useGlobalState } from '../../libs/hooks';
+import ColorsElementGem from './ColorsElementGem.jsx';
+
+
+
+
+
+export default memo(({ colorKey = '', label = '' } = {}) => {
+  const { state, setState } = useGlobalState();
+  const { colorSet } = state;
+  const color = state[colorKey];
+
+  const handleClick = useCallback(() => {
+    let nextColorSet = colorKey;
+    if (colorSet === colorKey) {
+      nextColorSet = false;
+    };
+    return setState.colorSet(nextColorSet);
+  }, [colorKey, colorSet, setState]);
+
+
+  return (
+    <div className="ColorsElement">
+      <ColorsElementGem
+        color={color}
+        active={colorSet === colorKey}
+        handleClick={handleClick}
+      />
+      <h5>{label}</h5>
+    </div>
+  );
+});

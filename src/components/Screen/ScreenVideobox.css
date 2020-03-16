@@ -1,37 +1,3 @@
-.Screen {
-
-}
-
-
-.Screen--inner {
-  position: relative;
-  width: 100%;
-  height: 0;
-  padding-top: 75%;
-  border-radius: 1.85vmin;
-  overflow: hidden;
-  box-shadow: .05vmin .1vmin .6vmin .3vmin rgba(0, 0, 0, .9);
-  z-index: 10;
-}
-
-.Screen--inner>* {
-  position: absolute;
-}
-
-
-.Screen--frame {
-  left: 0;
-  top: 0;
-  width: calc(100% + 1px);
-  height: auto;
-  pointer-events: none;
-  z-index: 11;
-}
-
-
-
-
-
 .ScreenVideobox {
   left: 5%;
   top: 5%;
@@ -81,8 +47,3 @@
 .ScreenVideobox--clickbox {
   z-index: 4;
 }
-
-
-
-
-
