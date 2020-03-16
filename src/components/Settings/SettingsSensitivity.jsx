@@ -13,7 +13,7 @@ export default memo(({ label = '' } = {}) => {
   } = state;
 
 
-  useEffect(() => {
+  useEffect(() => {   // update tracker sensitivity based on state change
     if (sensitivity !== tracker.sensitivity) {
       tracker.sensitivity = sensitivity;
     };

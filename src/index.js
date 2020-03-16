@@ -8,4 +8,6 @@ import App from './App.jsx';
 
 polyfills();
 
+
+
 ReactDOM.render(<App />, document.getElementById('root'));

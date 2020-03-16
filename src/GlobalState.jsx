@@ -17,15 +17,23 @@ const params = {
       'square',
     ],
   },
+  units: {
+    hpf: {
+      unit: 'Hz',
+      scalar: 1,
+    },
+    lpf: {
+      unit: 'kHz',
+      scalar: 1e-3,
+    },
+  },
   range: {
-    sensitivity: [
-      0,
-      221,
-    ],
-    octaves: [
-      2,
-      6,
-    ],
+    sensitivity: [0, 221],
+    octaves: [2, 6],
+    depth: [0, 3000],
+    width: [-1200, 1200],
+    hpf: [0, 2200],
+    lpf: [2200, 22000],
   },
 };
 
@@ -33,11 +41,17 @@ const params = {
 const initialState = {
   colorGain: '#00FF00',
   colorFreq: '#FF0000',
-  sensitivity: 30,
-  octaves: 4,
   colorSet: false,
+  sensitivity: 30,
+
+  octaves: 4,
   osc1: 'triangle',
   osc2: 'sine',
+  depth: 1500,
+  width: -1200,
+  hpf: 0,
+  lpf: 22000,
+
   message: null,
 };
 
@@ -85,6 +99,11 @@ export default function useGlobalState() {
   const setColorSet = colorKey => dispatch({ type: 'colorSet', payload: colorKey });
   const setOsc1 = wave => dispatch({ type: 'osc1', payload: wave });
   const setOsc2 = wave => dispatch({ type: 'osc2', payload: wave });
+  const setDepth = val => dispatch({ type: 'depth', payload: val });
+  const setWidth = val => dispatch({ type: 'width', payload: val });
+  const setHpf = val => dispatch({ type: 'hpf', payload: val });
+  const setLpf = val => dispatch({ type: 'lpf', payload: val });
+
   const setMessage = text => dispatch({ type: 'message', payload: text });
 
 
@@ -100,6 +119,10 @@ export default function useGlobalState() {
       colorSet: setColorSet,
       osc1: setOsc1,
       osc2: setOsc2,
+      depth: setDepth,
+      width: setWidth,
+      hpf: setHpf,
+      lpf: setLpf,
       message: setMessage,
     }
   };

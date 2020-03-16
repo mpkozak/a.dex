@@ -8,6 +8,8 @@ import {
   Colors,
   Settings,
   Osc,
+  FmSynth,
+  Eq,
 } from './components';
 
 
@@ -30,8 +32,11 @@ export default memo(() => {
           <Placard />
           <Colors />
           <Settings />
-          <Osc cl="Osc1" oscKey="osc1" label="Osc 1" />
-          <Osc cl="Osc2" oscKey="osc2" label="Osc 2" />
+          <Osc cl="Osc-1" oscKey="osc1" label="Osc 1" />
+          <Osc cl="Osc-2" oscKey="osc2" label="Osc 2" />
+          <FmSynth />
+          <Eq cl="Eq-hpf" eqKey="hpf" label="HPF" />
+          <Eq cl="Eq-lpf" eqKey="lpf" label="LPF" />
         </div>
       </div>
     </GlobalStateProvider>

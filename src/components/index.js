@@ -1,4 +1,6 @@
 export { default as Colors } from './Colors';
+export { default as Eq } from './Eq';
+export { default as FmSynth } from './FmSynth';
 export { default as Osc } from './Osc';
 export { default as Placard } from './Placard';
 export { default as Screen } from './Screen';

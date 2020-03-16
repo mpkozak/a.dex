@@ -4,11 +4,22 @@
 
 
 .FmSynth--inner {
+
+}
+
+
+.FmSynth--label {
+
+}
+
+
+.FmSynth--knobbox {
+  width: 100%;
+  height: calc(100% - 6rem);
   display: flex;
   flex-flow: row nowrap;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-around;
-  padding: 0 2%;
 }
 
 
@@ -17,7 +28,7 @@
 
 .FmSynthElement {
   width: 45%;
-  height: 80%;
+  height: 85%;
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
@@ -27,7 +38,7 @@
 
 .FmSynthElement--knob {
   width: auto;
-  height: 65%;
+  height: 70%;
   cursor: grab;
 }
 

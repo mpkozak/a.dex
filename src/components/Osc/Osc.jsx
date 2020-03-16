@@ -15,8 +15,8 @@ export default memo(({ cl = '', oscKey = '', label = '' } = {}) => {
 
   return (
     <div className={parseCl(['Osc', cl, 'outer'])}>
-      <div className="Osc--inner inner border">
-        <div className="Osc--label">
+      <div className="Osc--inner inner border vert">
+        <div className="Osc--label label">
           <h3>{label}</h3>
         </div>
         <div className="Osc--buttonbox">
