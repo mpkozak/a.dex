@@ -1,7 +1,7 @@
 import React, { memo, useState, useEffect, useRef, useCallback } from 'react';
 import './Settings.css';
 import { useGlobalState } from '../libs/hooks';
-import { Knob } from './UI';
+import { Knob } from './_shared';
 import { clampRange } from '../libs/parse.js';
 
 

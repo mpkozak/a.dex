@@ -1,7 +1,7 @@
 import React, { memo, useRef } from 'react';
 import './Interface.css';
 import { useSizeUnit } from '../libs/hooks';
-import { MeterFrame } from './UI'
+import { MeterFrame, Button } from './_shared'
 
 // import Screen from './Screen.jsx';
 // import Colors from './Colors.jsx';
@@ -54,6 +54,11 @@ export default memo(({ children } = {}) => {
 
       <div className="osc-1 outer">
         <div className="inner border">
+          <Button icon="sine" />
+          <Button icon="square" />
+          <Button icon="sawtooth" />
+          <Button icon="triange" />
+
           osc-1
         </div>
       </div>
