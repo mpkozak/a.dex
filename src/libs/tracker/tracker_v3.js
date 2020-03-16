@@ -1,8 +1,7 @@
-import d3 from './d3.js';
-import { clampRange } from './parse.js'
-import worker from './worker/worker.js';
-import WebWorker from './worker/workerSetup.js';
-
+import d3 from '../d3.js';
+import { clampRange } from '../parse.js';
+import WebWorker from '../WebWorker.js';
+import worker from './worker_v3.js';
 
 
 
@@ -28,20 +27,10 @@ export default class Tracker {
     this.canvasCtx = undefined;
     this.imageData = undefined;
     this.overlay = undefined;
-    this.queue = [];
     this.rAF = undefined;
     this.worker = new WebWorker(worker);
     this.worker.onmessage = this.handleWorkerMessage.bind(this);
-    // console.log('this.worker', this.worker);
-
-
     this.imageCapture = null;
-    // if (video) {
-    //   this.initCanvas();
-    //   if (svg) {
-    //     this.initOverlay();
-    //   };
-    // };
   };
 
 
@@ -88,12 +77,12 @@ export default class Tracker {
 
 
 
-
 /*
     Setters
 */
 
   set video(video) {
+    this.imageCapture = null;
     if (!video) {
       console.error('TRACKER --- no video element specified');
       return null;
@@ -103,6 +92,11 @@ export default class Tracker {
       return null;
     };
     this._videoElement = video;
+    this._videoElement.onplay = () => {
+      const stream = this._videoElement.captureStream();
+      const [track] = stream.getVideoTracks();
+      this.imageCapture = new ImageCapture(track);
+    };
     this.initCanvas();
   };
 
@@ -145,7 +139,6 @@ export default class Tracker {
     this._colors = validHex;
     this._colorsRGB = this._colors.map(d => this.hexToRgb(d));
     this.configWorker();
-    this.queue = this._colors.map(() => []);
   };
 
 
@@ -157,11 +150,6 @@ export default class Tracker {
   initCanvas() {
     this.canvasWidth = this.scaleDown(this._videoElement.clientWidth);
     this.canvasHeight = this.scaleDown(this._videoElement.clientHeight);
-    // this.canvasElement = document.createElement('canvas');
-    // this.canvasElement.width = this.canvasWidth;
-    // this.canvasElement.height = this.canvasHeight;
-    // this.canvasCtx = this.canvasElement.getContext('2d');
-
     this.canvasElement = new OffscreenCanvas(this.canvasWidth, this.canvasHeight);
     this.canvasCtx = this.canvasElement.getContext('2d', { alpha: false });
     return;
@@ -176,6 +164,11 @@ export default class Tracker {
   };
 
 
+
+/*
+  Worker
+*/
+
   configWorker() {
     const init = {
       canvasWidth: this.canvasWidth,
@@ -187,14 +180,10 @@ export default class Tracker {
     this.worker.postMessage({ init });
   };
 
-
-
-
-/*
-  Worker
-*/
-
   handleWorkerMessage(msg) {
+    if (!this.active) {
+      return null;
+    };
     this.runtimeIn(msg.data);
   };
 
@@ -204,10 +193,9 @@ export default class Tracker {
   Runtime invocation
 */
 
-  runtime() {
-    this.imageCapture.grabFrame().then(imageBitmap => {
-      this.worker.postMessage({ imageBitmap }, [imageBitmap]);
-    });
+  async runtime() {
+    const imageBitmap = await this.imageCapture.grabFrame();
+    this.worker.postMessage({ imageBitmap }, [imageBitmap]);
   };
 
   runtimeIn(data) {
@@ -221,13 +209,12 @@ export default class Tracker {
       return null;
     };
     this.rAF = requestAnimationFrame(this.runtime.bind(this));
-    // this.rAF = setTimeout(this.runtime.bind(this), 1000);
   };
 
   stop() {
     cancelAnimationFrame(this.rAF);
-    // clearTimeout(this.rAF);
     this.rAF = undefined;
+    this.clearOverlay();
   };
 
   toggle() {
@@ -260,6 +247,12 @@ export default class Tracker {
       .style('stroke-width', '.3%');
     circles
       .exit()
+      .remove();
+  };
+
+  clearOverlay() {
+    this.overlay
+      .selectAll('circle')
       .remove();
   };
 
@@ -301,14 +294,6 @@ export default class Tracker {
   rgbToHex({r, g, b} = {}) {
     const toDec = hex => (`00${hex.toString(16)}`).slice(-2);
     return `#${toDec(r)}${toDec(g)}${toDec(b)}`;
-  };
-
-  getColorDist(r, g, b, c2) {
-    return Math.sqrt(
-      Math.pow((r - c2.r), 2) +
-      Math.pow((g - c2.g), 2) +
-      Math.pow((b - c2.b), 2)
-    );
   };
 
 

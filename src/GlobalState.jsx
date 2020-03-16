@@ -1,10 +1,9 @@
 import React, { createContext, useReducer, useContext } from 'react';
-import Tracker from './libs/tracker.js';
+import Tracker from './libs/tracker/';
 
 
 
-    // this.sensitivity = { min: 0, max: 221 };
-    // this.range = { min: 2, max: 6 };
+
 
 const tracker = new Tracker();
 
@@ -24,7 +23,6 @@ const params = {
 
 
 const initialState = {
-  // tracker: new Tracker(),
   colorGain: '#00FF00',
   colorFreq: '#FF0000',
   sensitivity: 30,

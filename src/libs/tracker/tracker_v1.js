@@ -1,6 +1,5 @@
-import d3 from './d3.js';
-import { clampRange } from './parse.js'
-
+import d3 from '../d3.js';
+import { clampRange } from '../parse.js';
 
 
 
@@ -28,12 +27,6 @@ export default class Tracker {
     this.overlay = undefined;
     this.queue = [];
     this.rAF = undefined;
-    // if (video) {
-    //   this.initCanvas();
-    //   if (svg) {
-    //     this.initOverlay();
-    //   };
-    // };
   };
 
 
@@ -77,7 +70,6 @@ export default class Tracker {
     };
     return false;
   };
-
 
 
 
@@ -147,12 +139,10 @@ export default class Tracker {
   initCanvas() {
     this.canvasWidth = this.scaleDown(this._videoElement.clientWidth);
     this.canvasHeight = this.scaleDown(this._videoElement.clientHeight);
-    // this.canvasElement = document.createElement('canvas');
-    // this.canvasElement.width = this.canvasWidth;
-    // this.canvasElement.height = this.canvasHeight;
-    // this.canvasCtx = this.canvasElement.getContext('2d');
-    this.canvasElement = new OffscreenCanvas(this.canvasWidth, this.canvasHeight);
-    this.canvasCtx = this.canvasElement.getContext('2d', { alpha: false });
+    this.canvasElement = document.createElement('canvas');
+    this.canvasElement.width = this.canvasWidth;
+    this.canvasElement.height = this.canvasHeight;
+    this.canvasCtx = this.canvasElement.getContext('2d');
     return;
   };
 
@@ -177,7 +167,6 @@ export default class Tracker {
     const data = this.reduceData();
     this.drawOverlay(data);
     this.rAF = requestAnimationFrame(this.runtime.bind(this));
-    // this.rAF = setTimeout(this.runtime.bind(this), 1000);
   };
 
   start() {
@@ -186,12 +175,10 @@ export default class Tracker {
       return null;
     };
     this.rAF = requestAnimationFrame(this.runtime.bind(this));
-    // this.rAF = setTimeout(this.runtime.bind(this), 1000);
   };
 
   stop() {
     cancelAnimationFrame(this.rAF);
-    // clearTimeout(this.rAF);
     this.rAF = undefined;
   };
 
@@ -249,12 +236,6 @@ export default class Tracker {
         sumX += x * multi;
         sumY += y * multi;
       };
-      // for (let i = 0; i < data.length; i++) {
-      //   const multi = 1 / (data[i].dist + 1);
-      //   denom += multi;
-      //   sumX += data[i].x * multi;
-      //   sumY += data[i].y * multi;
-      // };
       return {
         color: this._colors[i],
         x: (sumX / denom),

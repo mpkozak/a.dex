@@ -9,8 +9,6 @@ export default function() {
     colorsRGB: [],
     sensitivity: 0,
   };
-  self.canvas = null;
-  self.ctx = null;
   self.queue = [];
 
 
@@ -19,8 +17,8 @@ export default function() {
       handleInit(msg.data.init);
       return;
     };
-    if (msg.data.imageBitmap) {
-      runtime(msg.data.imageBitmap);
+    if (msg.data.imageData) {
+      runtime(msg.data.imageData);
       return;
     };
   };
@@ -29,29 +27,18 @@ export default function() {
   function handleInit(payload) {
     self.params = payload;
     self.queue = self.params.colors.map(() => []);
-    if (!self.canvas || !self.ctx) {
-      self.canvas = new OffscreenCanvas(self.params.canvasWidth, self.params.canvasHeight);
-      self.ctx = self.canvas.getContext('2d', { alpha: false });
-    };
     return;
   };
 
 
-  function runtime(imageBitmap) {
+  function runtime(imageData) {
     self.queue.forEach(d => d = []);
-    const imageData = getData(imageBitmap);
     parseData(imageData);
     const data = reduceData();
     postMessage(data);
     return;
   };
 
-
-
-  function getData(imageBitmap) {
-    self.ctx.drawImage(imageBitmap, 0, 0, self.params.canvasWidth, self.params.canvasHeight);
-    return self.ctx.getImageData(0, 0, self.params.canvasWidth, self.params.canvasHeight);
-  };
 
 
   function parseData(imageData) {
