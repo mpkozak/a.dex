@@ -1,8 +1,0 @@
-.ScreenFrame {
-  left: 0;
-  top: 0;
-  width: calc(100% + 1px);
-  height: auto;
-  pointer-events: none;
-  z-index: 11;
-}

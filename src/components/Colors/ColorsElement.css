@@ -1,8 +1,0 @@
-.ColorsElement {
-  width: 20%;
-  height: 80%;
-  display: flex;
-  flex-flow: column nowrap;
-  align-items: center;
-  justify-content: space-between;
-}

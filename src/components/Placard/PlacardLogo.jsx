@@ -1,11 +1,12 @@
 import React, { memo } from 'react';
-import './PlacardLogo.css';
 
 
 
 
 
-export default memo(({ color = 'rgba(255, 255, 255, .7)' } = {}) =>
+export default memo(({
+  color = 'rgba(255, 255, 255, .7)'
+} = {}) =>
   <svg
     className="PlacardLogo"
     viewBox="0 0 90 25"

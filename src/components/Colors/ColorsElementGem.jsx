@@ -1,11 +1,14 @@
 import React, { memo } from 'react';
-import './ColorsElementGem.css';
 
 
 
 
 
-export default memo(({ color = '#FFFFFF', active = false, handleClick } = {}) => {
+export default memo(({
+  color = '#FFFFFF',
+  active = false,
+  handleClick = null,
+} = {}) => {
   const styles = {
     pulse: {
       animation: 'pulsar 1.5s ease-in-out infinite',

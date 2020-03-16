@@ -1,9 +1,0 @@
-.ColorsElementGem {
-  width: auto;
-  height: 65%;
-  cursor: pointer;
-}
-
-.ColorsElementGem:active {
-  transform: scale(.96);
-}

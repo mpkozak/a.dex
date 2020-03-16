@@ -1,5 +1,4 @@
 import React, { memo, useEffect, useRef, useCallback } from 'react';
-import './ScreenVideobox.css';
 import { useGlobalState } from '../../libs/hooks';
 
 

@@ -1,5 +1,4 @@
 import React, { memo, useCallback } from 'react';
-import './ColorsElement.css';
 import { useGlobalState } from '../../libs/hooks';
 import ColorsElementGem from './ColorsElementGem.jsx';
 

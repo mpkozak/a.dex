@@ -24,3 +24,30 @@
 .Colors--label>h3 {
   text-align: right;
 }
+
+
+
+
+
+.ColorsElement {
+  width: 20%;
+  height: 80%;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+
+
+
+
+.ColorsElementGem {
+  width: auto;
+  height: 65%;
+  cursor: pointer;
+}
+
+.ColorsElementGem:active {
+  transform: scale(.96);
+}
