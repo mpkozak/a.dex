@@ -15,4 +15,3 @@ export default memo(({ settingsKey = '', label = '' } = {}) =>
     <h5>{label}</h5>
   </div>
 );
-

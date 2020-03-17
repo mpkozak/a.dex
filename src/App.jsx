@@ -10,6 +10,7 @@ import {
   Osc,
   FmSynth,
   Eq,
+  Delay,
 } from './components';
 
 
@@ -37,6 +38,7 @@ export default memo(() => {
           <FmSynth />
           <Eq cl="Eq-hpf" eqKey="hpf" label="HPF" />
           <Eq cl="Eq-lpf" eqKey="lpf" label="LPF" />
+          <Delay />
         </div>
       </div>
     </GlobalStateProvider>

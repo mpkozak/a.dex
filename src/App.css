@@ -123,9 +123,23 @@
   grid-row: 111 / span 40;
 }
 
+.Interface>.Delay {
+  grid-column: 121 / span 50;
+  grid-row: 86 / span 25;
+}
 
 
 
+
+.meter-scope {
+  grid-column: 121 / span 50;
+  grid-row: 26 / span 30;
+}
+
+.meter-vu {
+  grid-column: 121 / span 50;
+  grid-row: 56 / span 30;
+}
 
 
 
@@ -186,21 +200,6 @@
 .mic {
   grid-column: 149 / span 22;
   grid-row: 16 / span 10;
-}
-
-.meter-scope {
-  grid-column: 121 / span 50;
-  grid-row: 26 / span 30;
-}
-
-.meter-vu {
-  grid-column: 121 / span 50;
-  grid-row: 56 / span 30;
-}
-
-.delay {
-  grid-column: 121 / span 50;
-  grid-row: 86 / span 25;
 }
 
 

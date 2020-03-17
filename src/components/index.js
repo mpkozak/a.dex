@@ -1,4 +1,5 @@
 export { default as Colors } from './Colors';
+export { default as Delay } from './Delay';
 export { default as Eq } from './Eq';
 export { default as FmSynth } from './FmSynth';
 export { default as Osc } from './Osc';
