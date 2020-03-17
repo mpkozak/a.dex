@@ -1,5 +1,4 @@
 import d3 from '../d3.js';
-import { clampRange } from '../parse.js';
 import WebWorker from '../WebWorker.js';
 import worker from './worker_v3.js';
 
@@ -9,28 +8,27 @@ import worker from './worker_v3.js';
 
 export default class Tracker {
   constructor({
+    scalar = 10,
     callback = null,
     sensitivity = 0,
-    sensitivityRange = [],
+    colors = [],
   } = {}) {
+    this._scalar = scalar;
     this._cb = callback;
     this._sensitivity = sensitivity;
-    this._sensitivityRange = sensitivityRange;
+    this._colors = colors.map(d => this.validateHex(d)).filter(a => !!a);
     this._videoElement = undefined;
+    this._imageCapture = null;
     this._svgElement = undefined;
-    this._colors = [];
-    this._colorsRGB = [];
-    this.scalar = 10;
-    this.canvasWidth = 0;
-    this.canvasHeight = 0;
-    this.canvasElement = undefined;
-    this.canvasCtx = undefined;
-    this.imageData = undefined;
-    this.overlay = undefined;
+    this._width = 0;
+    this._height = 0;
+    this._canvas = undefined;
+    this._ctx = undefined;
+    this._overlay = undefined;
+    this._rAF = undefined;
+    this.runtime = this.runtime.bind(this);
     this.worker = new WebWorker(worker);
     this.worker.onmessage = this.handleWorkerMessage.bind(this);
-    this.imageCapture = null;
-    this.rAF = undefined;
   };
 
 
@@ -38,6 +36,14 @@ export default class Tracker {
 /*
     Getters
 */
+
+  get sensitivity() {
+    return this._sensitivity;
+  };
+
+  get colors() {
+    return this._colors;
+  };
 
   get video() {
     if (!this._videoElement) {
@@ -53,23 +59,15 @@ export default class Tracker {
     return this._svgElement;
   };
 
-  get sensitivity() {
-    return this._sensitivity;
-  };
-
-  get colors() {
-    return this._colors;
-  };
-
   get ready() {
-    if (this._svgElement && this._videoElement && this.imageCapture) {
-      return true;
+    if (!this._svgElement || !this._videoElement || !this._imageCapture) {
+      return false;
     };
-    return false;
+    return true;
   };
 
   get active() {
-    if (this.rAF) {
+    if (this._rAF) {
       return true;
     };
     return false;
@@ -81,8 +79,24 @@ export default class Tracker {
     Setters
 */
 
+  set sensitivity(val) {
+    const newVal = Math.round(val);
+    if (newVal === this._sensitivity) {
+      return null;
+    };
+    this._sensitivity = newVal;
+    this.workerSetSensitivity();
+  };
+
+  set colors(hexColors) {
+    this._colors = hexColors
+      .map(d => this.validateHex(d))
+      .filter(a => !!a);
+    this.workerSetColors();
+  };
+
   set video(video) {
-    this.imageCapture = null;
+    this._imageCapture = null;
     if (!video) {
       console.error('TRACKER --- no video element specified');
       return null;
@@ -95,17 +109,12 @@ export default class Tracker {
     this._videoElement.onplay = () => {
       const stream = this._videoElement.captureStream();
       const [track] = stream.getVideoTracks();
-      this.imageCapture = new ImageCapture(track);
+      this._imageCapture = new ImageCapture(track);
     };
-    this.initCanvas();
-    this.configWorker();
+    this.initialize();
   };
 
   set svg(svg) {
-    if (!this._videoElement) {
-      console.error('TRACKER --- cannot set svg until video is set');
-      return null;
-    };
     if (!svg) {
       console.error('TRACKER --- no svg element specified');
       return null;
@@ -115,31 +124,7 @@ export default class Tracker {
       return null;
     };
     this._svgElement = svg;
-    this.initOverlay();
-  };
-
-  set sensitivity(val) {
-    this._sensitivity = Math.round(clampRange(val, this._sensitivityRange));
-    this.configWorker();
-  };
-
-  set colors(hex) {
-    const colors = [];
-    if (typeof hex === 'string') {
-      colors.push(hex);
-    };
-    if (Array.isArray(hex)) {
-      colors.push(...hex);
-    };
-    const hexValidator = new RegExp(/^#([A-Fa-f0-9]{6})$/g);
-    const validHex = colors.filter(a => a.match(hexValidator));
-    if (!validHex.length) {
-      console.error('TRACKER --- invalid hex color format');
-      return null;
-    };
-    this._colors = validHex;
-    this._colorsRGB = this._colors.map(d => this.hexToRgb(d));
-    this.configWorker();
+    this.initialize();
   };
 
 
@@ -148,19 +133,36 @@ export default class Tracker {
     Initializers
 */
 
+  initialize() {
+    if (!this._videoElement || !this._svgElement) {
+      return null;
+    };
+    this._width = this.scaleDown(this._videoElement.clientWidth);
+    this._height = this.scaleDown(this._videoElement.clientHeight);
+    this.initCanvas();
+    this.initOverlay();
+    this.initWorker();
+    return;
+  };
+
   initCanvas() {
-    this.canvasWidth = this.scaleDown(this._videoElement.clientWidth);
-    this.canvasHeight = this.scaleDown(this._videoElement.clientHeight);
-    this.canvasElement = new OffscreenCanvas(this.canvasWidth, this.canvasHeight);
-    this.canvasCtx = this.canvasElement.getContext('2d', { alpha: false });
+    this._canvas = new OffscreenCanvas(this._width, this._height);
+    this._ctx = this._canvas.getContext('2d', { alpha: false });
     return;
   };
 
   initOverlay() {
-    this.overlay = d3.select(this._svgElement)
-      .attr('width', this.canvasWidth)
-      .attr('height', this.canvasHeight)
-      .attr('viewBox', `0 0 ${this.canvasWidth} ${this.canvasHeight}`);
+    this._overlay = d3.select(this._svgElement)
+      .attr('width', this._width)
+      .attr('height', this._height)
+      .attr('viewBox', `0 0 ${this._width} ${this._height}`);
+    return;
+  };
+
+  initWorker() {
+    this.workerSetCanvas();
+    this.workerSetColors();
+    this.workerSetSensitivity();
     return;
   };
 
@@ -170,22 +172,28 @@ export default class Tracker {
   Worker
 */
 
-  configWorker() {
-    const init = {
-      canvasWidth: this.canvasWidth,
-      canvasHeight: this.canvasHeight,
-      colors: this._colors,
-      colorsRGB: this._colorsRGB,
-      sensitivity: this._sensitivity,
-    };
-    this.worker.postMessage({ init });
+  workerSetCanvas() {
+    return this.worker.postMessage({
+      canvas: {
+        width: this._width,
+        height: this._height,
+      },
+    });
+  };
+
+  workerSetColors() {
+    return this.worker.postMessage({ colors: [...this._colors] });
+  };
+
+  workerSetSensitivity() {
+    return this.worker.postMessage({ sensitivity: this._sensitivity });
   };
 
   handleWorkerMessage(msg) {
     if (!this.active) {
       return null;
     };
-    this.runtimeIn(msg.data);
+    return this.runtimeIn(msg.data);
   };
 
 
@@ -195,14 +203,15 @@ export default class Tracker {
 */
 
   async runtime() {
-    const imageBitmap = await this.imageCapture.grabFrame();
+    const imageBitmap = await this._imageCapture.grabFrame();
     this.worker.postMessage({ imageBitmap }, [imageBitmap]);
   };
 
   runtimeIn(data) {
-    this.renderAudio(data)
-    this.drawOverlay(data);
-    this.rAF = requestAnimationFrame(this.runtime.bind(this));
+    const { draw, audio } = data;
+    this.drawOverlay(draw);
+    this._cb(audio);
+    this._rAF = requestAnimationFrame(this.runtime);
   };
 
   start() {
@@ -210,19 +219,18 @@ export default class Tracker {
       console.error('TRACKER --- cannot start before initialization');
       return null;
     };
-    this.rAF = requestAnimationFrame(this.runtime.bind(this));
+    this._rAF = requestAnimationFrame(this.runtime);
   };
 
   stop() {
-    cancelAnimationFrame(this.rAF);
-    console.log('stop ran')
-    this.rAF = undefined;
+    cancelAnimationFrame(this._rAF);
+    this._rAF = undefined;
     this._cb(null);
     this.clearOverlay();
   };
 
   toggle() {
-    if (!this.rAF) {
+    if (!this._rAF) {
       return this.start();
     };
     return this.stop();
@@ -231,20 +239,11 @@ export default class Tracker {
 
 
 /*
-  Runtime methods
+    Draw stack
 */
 
-  renderAudio(data) {
-    if (data.length < 2) {
-      return this._cb(null);
-    };
-    const x = (this.canvasWidth - data[1].x) / this.canvasWidth;
-    const y = (this.canvasHeight - data[0].y) / this.canvasHeight;
-    return this._cb({ x, y });
-  };
-
   drawOverlay(data) {
-    const circles = this.overlay
+    const circles = this._overlay
       .selectAll('circle')
       .data(data);
     circles
@@ -264,7 +263,7 @@ export default class Tracker {
   };
 
   clearOverlay() {
-    this.overlay
+    this._overlay
       .selectAll('circle')
       .remove();
   };
@@ -272,12 +271,12 @@ export default class Tracker {
 
 
 /*
-    Calibration Helpers
+    Color calibration
 */
 
   getPointColor(x, y) {
-    this.canvasCtx.drawImage(this._videoElement, 0, 0, this.canvasWidth, this.canvasHeight);
-    const { data } = this.canvasCtx.getImageData(this.scaleDown(x), this.scaleDown(y), 1, 1);
+    this._ctx.drawImage(this._videoElement, 0, 0, this._width, this._height);
+    const { data } = this._ctx.getImageData(this.scaleDown(x), this.scaleDown(y), 1, 1);
     const [r, g, b] = data;
     return this.rgbToHex({ r, g, b });
   };
@@ -285,30 +284,23 @@ export default class Tracker {
 
 
 /*
-    Parsers + Helpers
+    Scalars + Parsers
 */
 
-  scaleDown(val) {
-    return Math.floor(val / this.scalar);
+  scaleDown(val = 0) {
+    return Math.floor(val / this._scalar);
   };
 
-  scaleUp(val) {
-    return Math.floor(val * this.scalar);
-  };
-
-  hexToRgb(hex) {
-    return {
-      r: parseInt(hex.substr(1, 2), 16),
-      g: parseInt(hex.substr(3, 2), 16),
-      b: parseInt(hex.substr(5, 2), 16),
+  validateHex(hex = '') {
+    const hexValidator = new RegExp(/^#([A-Fa-f0-9]{6})$/g);
+    if (!hex.match(hexValidator)) {
+      return null;
     };
+    return hex;
   };
 
   rgbToHex({r, g, b} = {}) {
     const toDec = hex => (`00${hex.toString(16)}`).slice(-2);
     return `#${toDec(r)}${toDec(g)}${toDec(b)}`;
   };
-
-
-
 };

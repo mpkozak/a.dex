@@ -8,8 +8,6 @@ import { useGlobalState } from '../../libs/hooks';
 export default memo(({ videoStream } = {}) => {
   const { tracker, state, setState } = useGlobalState();
   const {
-    colorGain,
-    colorFreq,
     colorSet,
   } = state;
 
@@ -35,16 +33,6 @@ export default memo(({ videoStream } = {}) => {
       tracker.svg = elSvg;
     };
   }, [tracker, videoRef, svgRef]);
-
-
-  useEffect(() => {   // update tracker colors
-    if (tracker.ready && !colorSet) {
-      tracker.colors = [
-        colorGain,
-        colorFreq,
-      ];
-    };
-  }, [tracker, colorFreq, colorGain, colorSet]);
 
 
   const handleClick = useCallback((e) => {

@@ -49,7 +49,6 @@ const initialState = {
   colorFreq: '#FF0000',
   colorSet: false,
   sensitivity: 30,
-
   octaves: 4,
   osc1: 'triangle',
   osc2: 'sine',
@@ -68,7 +67,6 @@ const initialState = {
 
 const audio = new Audio({
   octaves: initialState.octaves,
-  octavesRange: params.range.octaves,
   osc1Type: initialState.osc1,
   osc2Type: initialState.osc2,
   osc2Detune: initialState.width,
@@ -83,27 +81,36 @@ const audio = new Audio({
 audio.init();
 
 const tracker = new Tracker({
+  scalar: 10,
   callback: audio.handleTrackerData,
   sensitivity: initialState.sensitivity,
-  sensitivityRange: params.range.sensitivity,
+  colors: [
+    initialState.colorGain,
+    initialState.colorFreq,
+  ],
 });
 
 
 
 
-  // depth: 1500,
-  // width: -1200,
-  // hpf: 0,
-  // lpf: 22000,
-  // delay: 0,
-  // wet: 0,
-  // master: .73,
-
 
 function updateState(state, key, val) {
-  // console.log('updating state', key, val)
-
   switch (key) {
+    case 'colorGain':
+      tracker.colors = [
+        val,
+        state.colorFreq,
+      ];
+      break;
+    case 'colorFreq':
+      tracker.colors = [
+        state.colorGain,
+        val,
+      ];
+      break;
+    case 'sensitivity':
+      tracker.sensitivity = val;
+      break;
     case 'octaves':
       audio.octaves = val;
       break;
@@ -125,10 +132,18 @@ function updateState(state, key, val) {
     case 'lpf':
       audio.setParam(audio.lpf.frequency, val, audio.now);
       break;
+    case 'delay':
+      audio.setParam(audio.delay.delayTime, val, audio.now);
+      break;
+    case 'wet':
+      audio.setParam(audio.delayGain.gain, val, audio.now);
+      break;
+    case 'master':
+      audio.setParam(audio.masterGain.gain, val, audio.now);
+      break;
     default:
       break;
   };
-
 
   return key in initialState
     ? ({ ...state, [key]: val })
@@ -139,6 +154,9 @@ function updateState(state, key, val) {
 function globalStateReducer(state, action) {
   return updateState(state, action.type, action.payload);
 };
+
+
+
 
 
 const GlobalStateContext = createContext();
@@ -203,6 +221,6 @@ export default function useGlobalState() {
       master: setMaster,
 
       message: setMessage,
-    }
+    },
   };
 };

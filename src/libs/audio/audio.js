@@ -1,4 +1,3 @@
-import { clampRange } from '../parse.js';
 
 
 
@@ -7,7 +6,6 @@ import { clampRange } from '../parse.js';
 export default class Audio {
   constructor({
     octaves = 0,
-    octavesRange = [],
     osc1Type,
     osc2Type,
     osc2Detune,
@@ -19,7 +17,6 @@ export default class Audio {
     masterGain,
   } = {}) {
     this._octaves = octaves;
-    this._octavesRange = octavesRange;
     this.baseHz = 110;
     this.latency = .05;
     this.ctx = new AudioContext();
@@ -87,7 +84,7 @@ export default class Audio {
 */
 
   set octaves(val) {
-    this._octaves = clampRange(val, this._octavesRange);
+    this._octaves = val;
   };
 
 
@@ -108,16 +105,19 @@ export default class Audio {
     this.delayGain.connect(this.masterGain);
     this.masterGain.connect(this.analyser);
     this.masterGain.connect(this.ctx.destination);
+    return;
   };
 
   start() {
     this.osc1.start();
     this.osc2.start();
+    return;
   };
 
   init() {
     this.connect();
     this.start();
+    return;
   };
 
 
@@ -177,7 +177,3 @@ export default class Audio {
 
 
 };
-
-
-
-

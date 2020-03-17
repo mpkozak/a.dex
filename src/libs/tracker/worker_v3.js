@@ -2,70 +2,84 @@
 /* eslint no-restricted-globals: off */
 
 export default function() {
-  self.params = {
-    canvasWidth: 0,
-    canvasHeight: 0,
-    colors: [],
-    colorsRGB: [],
-    sensitivity: 0,
-  };
-  self.canvas = null;
-  self.ctx = null;
-  self.queue = [];
+  this.width = 0;
+  this.height = 0;
+  this.canvas = null;
+  this.ctx = null;
+  this.colors = [];
+  this.colorsRGB = [];
+  this.sensitivity = 0;
+  this.queue = [];
 
 
   self.onmessage = function(msg) {
-    if (msg.data.init) {
-      handleInit(msg.data.init);
-      return;
+    const { data } = msg;
+    if (data.imageBitmap) {
+      return runtime(data.imageBitmap);
     };
-    if (msg.data.imageBitmap) {
-      runtime(msg.data.imageBitmap);
-      return;
+    this.queue.forEach(d => d = []);
+    if (data.canvas) {
+      return setCanvas(data.canvas);
+    };
+    if (data.colors) {
+      return setColors(data.colors);
+    };
+    if ('sensitivity' in data) {
+      return setSensitivity(data.sensitivity);
     };
   };
 
 
-  function handleInit(payload) {
-    self.params = payload;
-    self.queue = self.params.colors.map(() => []);
-    if (!self.canvas || !self.ctx) {
-      self.canvas = new OffscreenCanvas(self.params.canvasWidth, self.params.canvasHeight);
-      self.ctx = self.canvas.getContext('2d', { alpha: false });
-    };
+  function setCanvas(payload) {
+    const { width, height } = payload;
+    this.width = width;
+    this.height = height;
+    this.canvas = new OffscreenCanvas(this.width, this.height);
+    this.ctx = this.canvas.getContext('2d', { alpha: false });
     return;
   };
+
+  function setColors(payload) {
+    this.colors = payload;
+    this.colorsRGB = payload.map(d => hexToRgb(d));
+    this.queue = payload.map(() => []);
+    return;
+  };
+
+  function setSensitivity(payload) {
+    this.sensitivity = payload;
+    return;
+  };
+
 
 
   function runtime(imageBitmap) {
-    self.queue.forEach(d => d = []);
+    this.queue.forEach(d => d = []);
     const imageData = getData(imageBitmap);
     parseData(imageData);
-    const data = reduceData().filter(a => !!a);
-    postMessage(data);
-    return;
+    const rawData = reduceData();
+    const output = formatData(rawData);
+    return postMessage(output);
   };
-
 
 
   function getData(imageBitmap) {
-    self.ctx.drawImage(imageBitmap, 0, 0, self.params.canvasWidth, self.params.canvasHeight);
-    return self.ctx.getImageData(0, 0, self.params.canvasWidth, self.params.canvasHeight);
+    this.ctx.drawImage(imageBitmap, 0, 0, this.width, this.height);
+    return this.ctx.getImageData(0, 0, this.width, this.height);
   };
-
 
   function parseData(imageData) {
     const { data } = imageData;
-    for (let y = 0; y < self.params.canvasHeight; ++y) {
-      for (let x = 0; x < self.params.canvasWidth; ++x) {
-        let p = (y * self.params.canvasWidth + x) * 4;
+    for (let y = 0; y < this.height; ++y) {
+      for (let x = 0; x < this.width; ++x) {
+        let p = (y * this.width + x) * 4;
         const r = data[p];
         const g = data[++p];
         const b = data[++p];
-        self.params.colorsRGB.forEach((d, i) => {
+        this.colorsRGB.forEach((d, i) => {
           const dist = getColorDist(r, g, b, d);
-          if (dist <= self.params.sensitivity) {
-            self.queue[i].push({ x, y, dist });
+          if (dist <= this.sensitivity) {
+            this.queue[i].push({ x, y, dist });
           };
         });
       };
@@ -73,9 +87,8 @@ export default function() {
     return;
   };
 
-
   function reduceData() {
-    return self.queue.map((data, i) => {
+    return this.queue.map((data, i) => {
       if (!data.length) {
         return null;
       };
@@ -91,7 +104,7 @@ export default function() {
         sumY += y * multi;
       };
       return {
-        color: self.params.colors[i],
+        color: this.colors[i],
         x: (sumX / denom),
         y: (sumY / denom),
         r,
@@ -99,6 +112,29 @@ export default function() {
     });
   };
 
+  function formatData(rawData) {
+    const data = rawData.filter(a => !!a);
+    const output = {
+      draw: data,
+      audio: null,
+    };
+    if (data.length === 2) {
+      output.audio = {
+        x: (this.width - data[1].x) / this.width,
+        y: (this.height - data[0].y) / this.height,
+      };
+    };
+    return output;
+  };
+
+
+  function hexToRgb(hex) {
+    return {
+      r: parseInt(hex.substr(1, 2), 16),
+      g: parseInt(hex.substr(3, 2), 16),
+      b: parseInt(hex.substr(5, 2), 16),
+    };
+  };
 
   function getColorDist(r, g, b, c2) {
     return Math.sqrt(
@@ -107,12 +143,6 @@ export default function() {
       Math.pow((b - c2.b), 2)
     );
   };
-
-
-
 };
-
-
-
 
 // eslint no-restricted-globals: on
