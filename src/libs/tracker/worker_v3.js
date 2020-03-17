@@ -41,7 +41,7 @@ export default function() {
     self.queue.forEach(d => d = []);
     const imageData = getData(imageBitmap);
     parseData(imageData);
-    const data = reduceData();
+    const data = reduceData().filter(a => !!a);
     postMessage(data);
     return;
   };

@@ -1,11 +1,9 @@
 import React, { createContext, useReducer, useContext } from 'react';
 import Tracker from './libs/tracker/';
+import Audio from './libs/audio/';
 
 
 
-
-
-const tracker = new Tracker();
 
 
 const params = {
@@ -26,6 +24,10 @@ const params = {
       unit: 'kHz',
       scalar: 1e-3,
     },
+    delay: {
+      unit: 'ms',
+      scalar: 1e3,
+    },
   },
   range: {
     sensitivity: [0, 221],
@@ -34,8 +36,12 @@ const params = {
     width: [-1200, 1200],
     hpf: [0, 2200],
     lpf: [2200, 22000],
+    delay: [0, .999],
+    wet: [0, 1],
+    master: [0, 1],
   },
 };
+
 
 
 const initialState = {
@@ -51,13 +57,79 @@ const initialState = {
   width: -1200,
   hpf: 0,
   lpf: 22000,
+  delay: 0,
+  wet: 0,
+  master: .73,
 
   message: null,
 };
 
 
+
+const audio = new Audio({
+  octaves: initialState.octaves,
+  octavesRange: params.range.octaves,
+  osc1Type: initialState.osc1,
+  osc2Type: initialState.osc2,
+  osc2Detune: initialState.width,
+  fmGainGain: initialState.depth,
+  hpfFreq: initialState.hpf,
+  lpfFreq: initialState.lpf,
+  delayTime: initialState.delay,
+  delayGain: initialState.wet,
+  masterGain: initialState.master,
+});
+
+audio.init();
+
+const tracker = new Tracker({
+  callback: audio.handleTrackerData,
+  sensitivity: initialState.sensitivity,
+  sensitivityRange: params.range.sensitivity,
+});
+
+
+
+
+  // depth: 1500,
+  // width: -1200,
+  // hpf: 0,
+  // lpf: 22000,
+  // delay: 0,
+  // wet: 0,
+  // master: .73,
+
+
 function updateState(state, key, val) {
   // console.log('updating state', key, val)
+
+  switch (key) {
+    case 'octaves':
+      audio.octaves = val;
+      break;
+    case 'osc1':
+      audio.osc1.type = val;
+      break;
+    case 'osc2':
+      audio.osc2.type = val;
+      break;
+    case 'depth':
+      audio.setParam(audio.fmGain.gain, val, audio.now);
+      break;
+    case 'width':
+      audio.setParam(audio.osc2.detune, val, audio.now);
+      break;
+    case 'hpf':
+      audio.setParam(audio.hpf.frequency, val, audio.now);
+      break;
+    case 'lpf':
+      audio.setParam(audio.lpf.frequency, val, audio.now);
+      break;
+    default:
+      break;
+  };
+
+
   return key in initialState
     ? ({ ...state, [key]: val })
     : state;
@@ -103,6 +175,9 @@ export default function useGlobalState() {
   const setWidth = val => dispatch({ type: 'width', payload: val });
   const setHpf = val => dispatch({ type: 'hpf', payload: val });
   const setLpf = val => dispatch({ type: 'lpf', payload: val });
+  const setDelay = val => dispatch({ type: 'delay', payload: val });
+  const setWet = val => dispatch({ type: 'wet', payload: val });
+  const setMaster = val => dispatch({ type: 'master', paylaod: val });
 
   const setMessage = text => dispatch({ type: 'message', payload: text });
 
@@ -123,6 +198,10 @@ export default function useGlobalState() {
       width: setWidth,
       hpf: setHpf,
       lpf: setLpf,
+      delay: setDelay,
+      wet: setWet,
+      master: setMaster,
+
       message: setMessage,
     }
   };

@@ -34,7 +34,7 @@ export default function() {
   function runtime(imageData) {
     self.queue.forEach(d => d = []);
     parseData(imageData);
-    const data = reduceData();
+    const data = reduceData().filter(a => !!a);
     postMessage(data);
     return;
   };

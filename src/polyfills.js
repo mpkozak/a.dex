@@ -3,9 +3,12 @@
 
 export default function() {
 
-  if (!global.AudioContext && global.webkitAudioContext) {
-    global.AudioContext = global.webkitAudioContext;
-  };
+  // if (!global.AudioContext && global.webkitAudioContext) {
+  //   global.AudioContext = global.webkitAudioContext;
+  // };
+
+  window.AudioContext = window.AudioContext || window.webkitAudioContext;
+
 
 
 // AnalyserNode Polyfill From:

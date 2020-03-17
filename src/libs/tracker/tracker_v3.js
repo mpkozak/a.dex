@@ -9,16 +9,16 @@ import worker from './worker_v3.js';
 
 export default class Tracker {
   constructor({
-    video,
-    svg,
-    sensitivity = 50,
-    colors = [],
+    callback = null,
+    sensitivity = 0,
+    sensitivityRange = [],
   } = {}) {
-    this._videoElement = video;
-    this._svgElement = svg;
+    this._cb = callback;
     this._sensitivity = sensitivity;
-    this._sensitivityRange = [0, 221];
-    this._colors = colors;
+    this._sensitivityRange = sensitivityRange;
+    this._videoElement = undefined;
+    this._svgElement = undefined;
+    this._colors = [];
     this._colorsRGB = [];
     this.scalar = 10;
     this.canvasWidth = 0;
@@ -98,6 +98,7 @@ export default class Tracker {
       this.imageCapture = new ImageCapture(track);
     };
     this.initCanvas();
+    this.configWorker();
   };
 
   set svg(svg) {
@@ -199,6 +200,7 @@ export default class Tracker {
   };
 
   runtimeIn(data) {
+    this.renderAudio(data)
     this.drawOverlay(data);
     this.rAF = requestAnimationFrame(this.runtime.bind(this));
   };
@@ -213,7 +215,9 @@ export default class Tracker {
 
   stop() {
     cancelAnimationFrame(this.rAF);
+    console.log('stop ran')
     this.rAF = undefined;
+    this._cb(null);
     this.clearOverlay();
   };
 
@@ -230,10 +234,19 @@ export default class Tracker {
   Runtime methods
 */
 
+  renderAudio(data) {
+    if (data.length < 2) {
+      return this._cb(null);
+    };
+    const x = (this.canvasWidth - data[1].x) / this.canvasWidth;
+    const y = (this.canvasHeight - data[0].y) / this.canvasHeight;
+    return this._cb({ x, y });
+  };
+
   drawOverlay(data) {
     const circles = this.overlay
       .selectAll('circle')
-      .data(data.filter(a => !!a));
+      .data(data);
     circles
       .enter()
       .append('circle');
