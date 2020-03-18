@@ -11,9 +11,8 @@ import {
   FmSynth,
   Eq,
   Delay,
+  MeterVU
 } from './components';
-
-
 
 
 
@@ -39,6 +38,15 @@ export default memo(() => {
           <Eq cl="Eq-hpf" eqKey="hpf" label="HPF" />
           <Eq cl="Eq-lpf" eqKey="lpf" label="LPF" />
           <Delay />
+
+          <div className="meter Meter-vu">
+            <div className="inner">
+              <div className="wrap">
+                <MeterVU cl="meter-panel" />
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </GlobalStateProvider>

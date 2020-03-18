@@ -1,6 +1,6 @@
 import React, { createContext, useReducer, useContext } from 'react';
 import Tracker from './libs/tracker/';
-import Audio from './libs/audio/';
+import { Audio, Analyser } from './libs/audio/';
 
 
 
@@ -90,6 +90,9 @@ const tracker = new Tracker({
   ],
 });
 
+const analyser = new Analyser(audio.analyser);
+
+audio.cb = analyser.runtime;
 
 
 
@@ -202,6 +205,8 @@ export default function useGlobalState() {
 
   return {
     tracker: tracker,
+    audio: audio,
+    analyser: analyser,
     params: { ...params },
     state: { ...state },
     setState: {

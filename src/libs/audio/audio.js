@@ -54,12 +54,16 @@ export default class Audio {
     this.masterGain = new GainNode(this.ctx, {
       gain: masterGain,
     });
-    this.analyser = new AnalyserNode(this.ctx, {
+    this._analyser = new AnalyserNode(this.ctx, {
       fftSize: 2 ** 8,
       minDecibels: -100,
       maxDecibels: -30,
       smoothingTimeConstant: 0,
     });
+
+
+    this._cb = null;
+
     this.handleTrackerData = this.handleTrackerData.bind(this);
   };
 
@@ -77,6 +81,14 @@ export default class Audio {
     return this._octaves;
   };
 
+  get analyser() {
+    return this._analyser;
+  };
+
+  get cb() {
+    return this._cb;
+  };
+
 
 
 /*
@@ -85,6 +97,10 @@ export default class Audio {
 
   set octaves(val) {
     this._octaves = val;
+  };
+
+  set cb(fn) {
+    this._cb = fn;
   };
 
 
@@ -103,7 +119,7 @@ export default class Audio {
     this.lpf.connect(this.delay);
     this.delay.connect(this.delayGain);
     this.delayGain.connect(this.masterGain);
-    this.masterGain.connect(this.analyser);
+    this.masterGain.connect(this._analyser);
     this.masterGain.connect(this.ctx.destination);
     return;
   };
@@ -117,6 +133,7 @@ export default class Audio {
   init() {
     this.connect();
     this.start();
+    console.log(this)
     return;
   };
 
@@ -137,8 +154,15 @@ export default class Audio {
     this.setGain(this.instGain.gain, nextLevel, now);
     this.setFreq(this.osc1.frequency, nextFreq, now);
     this.setFreq(this.osc2.frequency, nextFreq, now);
+
+    if (this._cb) {
+      this._cb();
+    };
     return;
   };
+
+
+
 
 
 
