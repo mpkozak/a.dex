@@ -28,6 +28,10 @@ export default class Analyser {
     this._ledHalo = undefined;
 
     this.runtime = this.runtime.bind(this);
+
+
+    // this._rAF = undefined;
+    // this.drawReset = this.drawReset.bind(this);
   };
 
 
@@ -78,6 +82,7 @@ export default class Analyser {
     this.drawWave();
     this.drawNeedle();
     this.drawLED();
+    return;
   };
 
   drawWave() {
@@ -104,10 +109,20 @@ export default class Analyser {
     return;
   };
 
-  drawReset() {
-    this.reset();
-    this.draw();
-  };
+  // drawReset() {
+  //   if (this.rotation > -48) {
+  //     // this.reset();
+  //     this.analyse();
+  //     this.draw();
+  //     console.log('draw another frame', this.rotation)
+  //     this._rAF = requestAnimationFrame(this.drawReset);
+  //     return;
+  //   };
+
+  //   console.log('done drawing')
+  //   cancelAnimationFrame(this._rAF);
+  //   this._rAF = undefined;
+  // };
 
 
 
@@ -116,18 +131,29 @@ export default class Analyser {
 */
 
   runtime(reset = false) {
-    if (reset) {
-      return this.drawReset();
-    };
+    // if (reset) {
+    //   this._rAF = requestAnimationFrame(this.drawReset);
+    //   // return this.drawReset();
+    //   return;
+    // };
+    // if (this._rAF) {
+    //   cancelAnimationFrame(this._rAF);
+    //   this._rAF = undefined;
+    // };
     this.analyse();
     this.draw();
+    return;
   };
 
-  reset() {
-    this.path = 'M 0 30 L 100 30';
-    this.rotation = -48;
-    this._peak = Date.now() - 1001;
-  };
+  // reset() {
+  //   this.path = 'M 0 30 L 100 30';
+  //   // this.rotation = -48;
+  //   this.rotation = this.rotation > -47
+  //     ? this.rotation * (5 / 6) + (-48 / 6)
+  //     : -48;
+  //   this._peak = Date.now() - 1001;
+  //   return;
+  // };
 
 
 
