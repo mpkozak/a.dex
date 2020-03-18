@@ -28,10 +28,6 @@ export default class Analyser {
     this._ledHalo = undefined;
 
     this.runtime = this.runtime.bind(this);
-
-
-    // this._rAF = undefined;
-    // this.drawReset = this.drawReset.bind(this);
   };
 
 
@@ -109,51 +105,17 @@ export default class Analyser {
     return;
   };
 
-  // drawReset() {
-  //   if (this.rotation > -48) {
-  //     // this.reset();
-  //     this.analyse();
-  //     this.draw();
-  //     console.log('draw another frame', this.rotation)
-  //     this._rAF = requestAnimationFrame(this.drawReset);
-  //     return;
-  //   };
-
-  //   console.log('done drawing')
-  //   cancelAnimationFrame(this._rAF);
-  //   this._rAF = undefined;
-  // };
-
 
 
 /*
     Runtime
 */
 
-  runtime(reset = false) {
-    // if (reset) {
-    //   this._rAF = requestAnimationFrame(this.drawReset);
-    //   // return this.drawReset();
-    //   return;
-    // };
-    // if (this._rAF) {
-    //   cancelAnimationFrame(this._rAF);
-    //   this._rAF = undefined;
-    // };
+  runtime() {
     this.analyse();
     this.draw();
     return;
   };
-
-  // reset() {
-  //   this.path = 'M 0 30 L 100 30';
-  //   // this.rotation = -48;
-  //   this.rotation = this.rotation > -47
-  //     ? this.rotation * (5 / 6) + (-48 / 6)
-  //     : -48;
-  //   this._peak = Date.now() - 1001;
-  //   return;
-  // };
 
 
 
@@ -176,12 +138,6 @@ export default class Analyser {
     this._peak = dataRms > 15 ? Date.now() : this._peak;
     return;
   };
-
-
-
-
-
-
 
 
 };
