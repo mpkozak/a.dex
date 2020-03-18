@@ -16,7 +16,7 @@ export default class Analyser {
       .range([-48, -40, -26, -15, -10.5, -5, -0.5, 5, 10, 15, 20, 25, 30, 35, 48]);
     this.waveScaleCurve = d3.line().curve(d3.curveLinear);
 
-    this.path = undefined;
+    this.path = 'M 0 30 L 100 30';
     this.rotation = -48;
     this._peak = Date.now();
 
@@ -104,6 +104,11 @@ export default class Analyser {
     return;
   };
 
+  drawReset() {
+    this.reset();
+    this.draw();
+  };
+
 
 
 /*
@@ -112,13 +117,14 @@ export default class Analyser {
 
   runtime(reset = false) {
     if (reset) {
-
-    }
+      return this.drawReset();
+    };
     this.analyse();
     this.draw();
   };
 
   reset() {
+    this.path = 'M 0 30 L 100 30';
     this.rotation = -48;
     this._peak = Date.now() - 1001;
   };

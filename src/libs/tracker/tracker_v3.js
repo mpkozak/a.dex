@@ -37,28 +37,6 @@ export default class Tracker {
     Getters
 */
 
-  get sensitivity() {
-    return this._sensitivity;
-  };
-
-  get colors() {
-    return this._colors;
-  };
-
-  get video() {
-    if (!this._videoElement) {
-      return null;
-    };
-    return this._videoElement;
-  };
-
-  get svg() {
-    if (!this._svgElement) {
-      return null;
-    };
-    return this._svgElement;
-  };
-
   get ready() {
     if (!this._svgElement || !this._videoElement || !this._imageCapture) {
       return false;

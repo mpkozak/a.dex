@@ -18,28 +18,3 @@ export default memo(({ cl = '' } ={}) => {
     </Fragment>
   );
 });
-
-
-
-
-
-// import React, { Fragment, memo } from 'react';
-// import { ReactComponent as MeterFrame } from './meter--frame.svg';
-// import { ReactComponent as MeterWaveBackpane } from './meterwave--0.svg';
-// import MeterWavePath from './MeterWavePath.jsx';
-// import { ReactComponent as MeterWaveOverlay } from './meterwave--2.svg';
-
-
-
-
-
-// export default memo(({ cl = '' } ={}) => {
-//   return (
-//     <Fragment>
-//       <MeterWaveBackpane className={cl} />
-//       <MeterWavePath cl={cl} />
-//       <MeterWaveOverlay className={cl} />
-//       <MeterFrame className={cl} />
-//     </Fragment>
-//   );
-// });

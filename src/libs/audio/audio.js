@@ -138,7 +138,7 @@ export default class Audio {
   handleTrackerData(data) {
     const now = this.now;
     if (!data) {
-      this._cb();
+      this._cb(true);
       return this.mute();
     };
     const { x, y } = data;
@@ -147,9 +147,7 @@ export default class Audio {
     this.setGain(this.instGain.gain, nextLevel, now);
     this.setFreq(this.osc1.frequency, nextFreq, now);
     this.setFreq(this.osc2.frequency, nextFreq, now);
-    if (this._cb) {
-      this._cb();
-    };
+    this._cb();
     return;
   };
 
