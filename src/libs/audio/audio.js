@@ -6,6 +6,8 @@
 export default class Audio {
   constructor({
     octaves = 0,
+    baseHz = 110,
+    latency = .05,
     osc1Type,
     osc2Type,
     osc2Detune,
@@ -17,44 +19,47 @@ export default class Audio {
     masterGain,
   } = {}) {
     this._octaves = octaves;
-    this.baseHz = 110;
-    this.latency = .05;
-    this.ctx = new AudioContext();
-    this.osc1 = new OscillatorNode(this.ctx, {
+    this._baseHz = baseHz;
+    this._latency = .05;
+
+    this._ctx = new AudioContext();
+
+    this.osc1 = new OscillatorNode(this._ctx, {
       type: osc1Type,
-      frequency: this.baseHz,
+      frequency: this._baseHz,
     });
-    this.osc2 = new OscillatorNode(this.ctx, {
+    this.osc2 = new OscillatorNode(this._ctx, {
       type: osc2Type,
-      frequency: this.baseHz,
+      frequency: this._baseHz,
       detune: osc2Detune,
     });
-    this.fmGain = new GainNode(this.ctx, {
+    this.fmGain = new GainNode(this._ctx, {
       gain: fmGainGain,
     });
-    this.instGain = new GainNode(this.ctx, {
+    this.instGain = new GainNode(this._ctx, {
       gain: 0,
     });
-    this.hpf = new BiquadFilterNode(this.ctx, {
+    this.hpf = new BiquadFilterNode(this._ctx, {
       type: 'highpass',
       frequency: hpfFreq,
       Q: 1,
     });
-    this.lpf = new BiquadFilterNode(this.ctx, {
+    this.lpf = new BiquadFilterNode(this._ctx, {
       type: 'lowpass',
       frequency: lpfFreq,
       Q: 1,
     });
-    this.delay = new DelayNode(this.ctx, {
+    this.delay = new DelayNode(this._ctx, {
       delayTime: delayTime,
     });
-    this.delayGain = new GainNode(this.ctx, {
+    this.delayGain = new GainNode(this._ctx, {
       gain: delayGain,
     });
-    this.masterGain = new GainNode(this.ctx, {
+    this.masterGain = new GainNode(this._ctx, {
       gain: masterGain,
     });
-    this._analyser = new AnalyserNode(this.ctx, {
+
+    this._analyser = new AnalyserNode(this._ctx, {
       fftSize: 2 ** 8,
       minDecibels: -100,
       maxDecibels: -30,
@@ -65,6 +70,8 @@ export default class Audio {
     this._cb = null;
 
     this.handleTrackerData = this.handleTrackerData.bind(this);
+
+    this.connect();
   };
 
 
@@ -74,19 +81,11 @@ export default class Audio {
 */
 
   get now() {
-    return this.ctx.currentTime;
-  };
-
-  get octaves() {
-    return this._octaves;
+    return this._ctx.currentTime;
   };
 
   get analyser() {
     return this._analyser;
-  };
-
-  get cb() {
-    return this._cb;
   };
 
 
@@ -99,7 +98,7 @@ export default class Audio {
     this._octaves = val;
   };
 
-  set cb(fn) {
+  set callback(fn) {
     this._cb = fn;
   };
 
@@ -120,20 +119,13 @@ export default class Audio {
     this.delay.connect(this.delayGain);
     this.delayGain.connect(this.masterGain);
     this.masterGain.connect(this._analyser);
-    this.masterGain.connect(this.ctx.destination);
-    return;
-  };
-
-  start() {
-    this.osc1.start();
-    this.osc2.start();
+    this.masterGain.connect(this._ctx.destination);
     return;
   };
 
   init() {
-    this.connect();
-    this.start();
-    console.log(this)
+    this.osc1.start();
+    this.osc2.start();
     return;
   };
 
@@ -144,17 +136,17 @@ export default class Audio {
 */
 
   handleTrackerData(data) {
-    const now = this.ctx.currentTime;
+    const now = this.now;
     if (!data) {
+      this._cb();
       return this.mute();
     };
     const { x, y } = data;
     const nextLevel = Math.pow(y, 2);
-    const nextFreq = Math.pow(2, x * this.octaves) * this.baseHz;
+    const nextFreq = Math.pow(2, x * this._octaves) * this._baseHz;
     this.setGain(this.instGain.gain, nextLevel, now);
     this.setFreq(this.osc1.frequency, nextFreq, now);
     this.setFreq(this.osc2.frequency, nextFreq, now);
-
     if (this._cb) {
       this._cb();
     };
@@ -171,14 +163,14 @@ export default class Audio {
 */
 
   mute() {
-    return this.setGain(this.instGain.gain, 0, this.ctx.currentTime);
+    return this.setGain(this.instGain.gain, 0, this._ctx.currentTime);
   };
 
   setGain(gainNode, val, t) {
     const prevVal = gainNode.value;
     gainNode.cancelScheduledValues(t - 1);
     gainNode.setValueAtTime(prevVal, t);
-    gainNode.linearRampToValueAtTime(val, t + this.latency);
+    gainNode.linearRampToValueAtTime(val, t + this._latency);
     return;
   };
 
@@ -186,7 +178,7 @@ export default class Audio {
     const prevVal = oscNode.value;
     oscNode.cancelScheduledValues(t - 1);
     oscNode.setValueAtTime(prevVal, t);
-    oscNode.exponentialRampToValueAtTime(val, t + this.latency);
+    oscNode.exponentialRampToValueAtTime(val, t + this._latency);
     return;
   };
 
@@ -194,7 +186,7 @@ export default class Audio {
     const prevVal = param.value;
     param.cancelScheduledValues(t - 1);
     param.setValueAtTime(prevVal, t);
-    param.linearRampToValueAtTime(val, t + this.latency);
+    param.linearRampToValueAtTime(val, t + this._latency);
   };
 
 

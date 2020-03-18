@@ -7,11 +7,14 @@ import {
   Screen,
   Colors,
   Settings,
-  Osc,
+  Osc1,
+  Osc2,
   FmSynth,
-  Eq,
+  EqHpf,
+  EqLpf,
   Delay,
-  MeterVU
+  MeterVu,
+  MeterWave,
 } from './components';
 
 
@@ -32,17 +35,24 @@ export default memo(() => {
           <Placard />
           <Colors />
           <Settings />
-          <Osc cl="Osc-1" oscKey="osc1" label="Osc 1" />
-          <Osc cl="Osc-2" oscKey="osc2" label="Osc 2" />
+          <Osc1 />
+          <Osc2 />
           <FmSynth />
-          <Eq cl="Eq-hpf" eqKey="hpf" label="HPF" />
-          <Eq cl="Eq-lpf" eqKey="lpf" label="LPF" />
+          <EqHpf />
+          <EqLpf />
           <Delay />
 
+          <div className="meter Meter-wave">
+            <div className="inner">
+              <div className="wrap">
+                <MeterWave cl="meter-panel" />
+              </div>
+            </div>
+          </div>
           <div className="meter Meter-vu">
             <div className="inner">
               <div className="wrap">
-                <MeterVU cl="meter-panel" />
+                <MeterVu cl="meter-panel" />
               </div>
             </div>
           </div>

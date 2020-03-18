@@ -1,37 +1,45 @@
-import React, { Fragment, memo, useEffect } from 'react';
-import { useGlobalState } from '../../libs/hooks';
-import { MeterFrame } from '../_shared';
-import MeterVUBackpane from './MeterVUBackpane.jsx';
-import MeterVULED from './MeterVULED.jsx';
-import MeterVUNeedle from './MeterVUNeedle.jsx';
+// import React, { Fragment, memo } from 'react';
+// import { MeterFrame } from '../_shared';
+// import MeterVuBackpane from './MeterVuBackpane.jsx';
+// import MeterVuLed from './MeterVuLed.jsx';
+// import MeterVuNeedle from './MeterVuNeedle.jsx';
 
 
-const peak = false;
-let rotation = Math.random() * 96 - 48;
 
-// const changeRotation = () => {
-//   rotation = Math.random() * 96 - 48;
-//   requestAnimationFrame(changeRotation);
-// };
 
-// changeRotation();
+
+// export default memo(({ cl = '' } ={}) => {
+//   return (
+//     <Fragment>
+//       <MeterVuBackpane cl={cl} />
+//       <MeterVuLed cl={cl} />
+//       <MeterVuNeedle cl={cl} />
+//       <MeterFrame cl={cl} />
+//     </Fragment>
+//   );
+// });
+
+
+
+
+
+import React, { Fragment, memo } from 'react';
+import { ReactComponent as MeterFrame } from './meter--frame.svg';
+import { ReactComponent as MeterVuBackpane } from './metervu--0.svg';
+import MeterVuLed from './MeterVuLed.jsx';
+import MeterVuNeedle from './MeterVuNeedle.jsx';
+
+
+
 
 
 export default memo(({ cl = '' } ={}) => {
-  const { analyser } = useGlobalState();
-  // const { peak, rotation } = audio;
-
-  useEffect(() => {
-    console.log('in effect', analyser)
-  }, [analyser])
-
-  console.log('analyser in metersvu', analyser)
   return (
     <Fragment>
-      <MeterVUBackpane cl={cl} />
-      <MeterVULED cl={cl} peak={peak} />
-      <MeterVUNeedle cl={cl} rotation={rotation} />
-      <MeterFrame cl={cl} />
+      <MeterVuBackpane className={cl} />
+      <MeterVuLed cl={cl} />
+      <MeterVuNeedle cl={cl} />
+      <MeterFrame className={cl} />
     </Fragment>
   );
 });

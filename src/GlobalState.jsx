@@ -92,7 +92,7 @@ const tracker = new Tracker({
 
 const analyser = new Analyser(audio.analyser);
 
-audio.cb = analyser.runtime;
+audio.callback = analyser.runtime;
 
 
 

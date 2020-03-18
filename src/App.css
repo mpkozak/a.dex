@@ -128,15 +128,12 @@
   grid-row: 86 / span 25;
 }
 
-
-
-
-.meter-scope {
+.Interface>.Meter-wave {
   grid-column: 121 / span 50;
   grid-row: 26 / span 30;
 }
 
-.Meter-vu {
+.Interface>.Meter-vu {
   grid-column: 121 / span 50;
   grid-row: 56 / span 30;
 }

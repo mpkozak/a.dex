@@ -8,7 +8,7 @@ import EqDigits from './EqDigits.jsx';
 
 
 
-export default memo(({ cl = '', eqKey = '', label = '' } = {}) =>
+const Eq = memo(({ cl = '', eqKey = '', label = '' } = {}) =>
   <div className={parseCl(['Eq', cl, 'outer'])}>
     <div className="Eq--inner inner border vert">
       <div className="Eq--label label">
@@ -23,3 +23,10 @@ export default memo(({ cl = '', eqKey = '', label = '' } = {}) =>
     </div>
   </div>
 );
+
+
+
+
+
+export const EqHpf = memo(() => <Eq cl="Eq-hpf" eqKey="hpf" label="HPF" />);
+export const EqLpf = memo(() => <Eq cl="Eq-lpf" eqKey="lpf" label="LPF" />);

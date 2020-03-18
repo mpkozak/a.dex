@@ -8,7 +8,7 @@ import OscButton from './OscButton.jsx';
 
 
 
-export default memo(({ cl = '', oscKey = '', label = '' } = {}) => {
+const Osc = memo(({ cl = '', oscKey = '', label = '' } = {}) => {
   const { params } = useGlobalState();
   const { osc } = params.types;
 
@@ -32,3 +32,10 @@ export default memo(({ cl = '', oscKey = '', label = '' } = {}) => {
     </div>
   );
 });
+
+
+
+
+
+export const Osc1 = memo(() => <Osc cl="Osc-1" oscKey="osc1" label="Osc 1" />);
+export const Osc2 = memo(() => <Osc cl="Osc-2" oscKey="osc2" label="Osc 2" />);

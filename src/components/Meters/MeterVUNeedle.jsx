@@ -1,10 +1,26 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect, useRef } from 'react';
+import { useGlobalState } from '../../libs/hooks';
 
 
 
 
 
-export default memo(({ cl = '', rotation = -48 } = {}) => {
+export default memo(({ cl = '' } = {}) => {
+  const { analyser } = useGlobalState();
+
+  const shadowRef = useRef(null);
+  const needleRef = useRef(null);
+
+
+  useEffect(() => {
+    const elShadow = shadowRef.current;
+    const elNeedle = needleRef.current;
+    if (elShadow && elNeedle) {
+      analyser.needle = { elShadow, elNeedle };
+    };
+  }, [analyser, shadowRef, needleRef]);
+
+
   const style = {
     transitionTimingFunction: 'ease',
     transitionDuration: '150ms'
@@ -63,7 +79,9 @@ export default memo(({ cl = '', rotation = -48 } = {}) => {
 {/* SHADOW */}
       <g
         style={style}
-        transform={`translate(${rotation * 0.01}, ${rotation * 0.012 + 1.2}) rotate(${rotation}, 50, 57)`}
+        ref={shadowRef}
+        // transform={`translate(${rotation * 0.01}, ${rotation * 0.012 + 1.2}) rotate(${rotation}, 50, 57)`}
+        transform="translate(-.48, .642) rotate(-48, 50, 57)"
       >
         <rect
           x="50"
@@ -76,7 +94,9 @@ export default memo(({ cl = '', rotation = -48 } = {}) => {
 {/* NEEDLE */}
       <g
         style={style}
-        transform={`rotate(${rotation}, 50, 57)`}
+        ref={needleRef}
+        // transform={`rotate(${rotation}, 50, 57)`}
+        transform="rotate(-48, 50, 57)"
       >
         <rect
           x="50"

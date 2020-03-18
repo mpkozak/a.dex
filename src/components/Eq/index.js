@@ -1,1 +1,1 @@
-export { default } from './Eq.jsx';
+export { EqHpf, EqLpf } from './Eq.jsx';
