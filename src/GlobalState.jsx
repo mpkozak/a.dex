@@ -1,5 +1,5 @@
 import React, { createContext, useReducer, useContext } from 'react';
-import Tracker from './libs/tracker/';
+import Tracker from './libs/tracker';
 import { Audio, Analyser } from './libs/audio/';
 
 
@@ -45,6 +45,8 @@ const params = {
 
 
 const initialState = {
+  init: false,
+
   colorGain: '#00FF00',
   colorFreq: '#FF0000',
   colorSet: false,
@@ -65,34 +67,77 @@ const initialState = {
 
 
 
-const audio = new Audio({
-  octaves: initialState.octaves,
-  osc1Type: initialState.osc1,
-  osc2Type: initialState.osc2,
-  osc2Detune: initialState.width,
-  fmGainGain: initialState.depth,
-  hpfFreq: initialState.hpf,
-  lpfFreq: initialState.lpf,
-  delayTime: initialState.delay,
-  delayGain: initialState.wet,
-  masterGain: initialState.master,
-});
+// const audio = new Audio({
+//   octaves: initialState.octaves,
+//   osc1Type: initialState.osc1,
+//   osc2Type: initialState.osc2,
+//   osc2Detune: initialState.width,
+//   fmGainGain: initialState.depth,
+//   hpfFreq: initialState.hpf,
+//   lpfFreq: initialState.lpf,
+//   delayTime: initialState.delay,
+//   delayGain: initialState.wet,
+//   masterGain: initialState.master,
+// });
 
-audio.init();
+// audio.init();
 
-const tracker = new Tracker({
-  scalar: 10,
-  callback: audio.handleTrackerData,
-  sensitivity: initialState.sensitivity,
-  colors: [
-    initialState.colorGain,
-    initialState.colorFreq,
-  ],
-});
+// const tracker = new Tracker({
+//   scalar: 10,
+//   callback: audio.handleTrackerData,
+//   sensitivity: initialState.sensitivity,
+//   colors: [
+//     initialState.colorGain,
+//     initialState.colorFreq,
+//   ],
+// });
 
-const analyser = new Analyser(audio.analyser);
+// const analyser = new Analyser(audio.analyser);
 
-audio.callback = analyser.runtime;
+// audio.callback = analyser.runtime;
+
+
+
+
+let audio, tracker, analyser;
+
+
+
+/*
+get streams
+
+
+*/
+
+
+
+
+
+
+async function initialize() {
+
+
+  try {
+
+
+
+
+  } catch {
+
+
+  }
+
+
+};
+
+
+
+
+
+
+
+
+
 
 
 
@@ -159,16 +204,10 @@ function globalStateReducer(state, action) {
 };
 
 
-
-
-
 const GlobalStateContext = createContext();
 
 
-
-
-
-export const GlobalStateProvider = ({ children } = {}) => {
+function GlobalStateProvider({ children } = {}) {
   const [state, dispatch] = useReducer(globalStateReducer, initialState);
 
   return (
@@ -179,17 +218,16 @@ export const GlobalStateProvider = ({ children } = {}) => {
 };
 
 
-
-
-
-export default function useGlobalState() {
+function useGlobalState() {
   const [state, dispatch] = useContext(GlobalStateContext);
+
+  const setInit = stage => dispatch({ type: 'init', payload: stage });
 
   const setColorGain = color => dispatch({ type: 'colorGain', payload: color });
   const setColorFreq = color => dispatch({ type: 'colorFreq', payload: color });
+  const setColorSet = colorKey => dispatch({ type: 'colorSet', payload: colorKey });
   const setSensitivity = val => dispatch({ type: 'sensitivity', payload: val });
   const setOctaves = val => dispatch({ type: 'octaves', payload: val });
-  const setColorSet = colorKey => dispatch({ type: 'colorSet', payload: colorKey });
   const setOsc1 = wave => dispatch({ type: 'osc1', payload: wave });
   const setOsc2 = wave => dispatch({ type: 'osc2', payload: wave });
   const setDepth = val => dispatch({ type: 'depth', payload: val });
@@ -205,16 +243,18 @@ export default function useGlobalState() {
 
   return {
     tracker: tracker,
-    audio: audio,
+    // audio: audio,
     analyser: analyser,
     params: { ...params },
     state: { ...state },
     setState: {
+      init: setInit,
+
       colorGain: setColorGain,
       colorFreq: setColorFreq,
-      octaves: setOctaves,
-      sensitivity: setSensitivity,
       colorSet: setColorSet,
+      sensitivity: setSensitivity,
+      octaves: setOctaves,
       osc1: setOsc1,
       osc2: setOsc2,
       depth: setDepth,
@@ -229,3 +269,25 @@ export default function useGlobalState() {
     },
   };
 };
+
+
+
+
+
+
+// function throttle(fn, t) {
+//   let now = Date.now();
+//   return () => {
+//     console.log('in throttle return')
+//     const nextNow = Date.now();
+//     if (nextNow - now < t) {
+//       return null;
+//     };
+//     now = nextNow;
+//     fn();
+//   };
+// };
+
+
+
+export { GlobalStateProvider, useGlobalState as default };

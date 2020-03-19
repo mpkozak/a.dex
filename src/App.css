@@ -12,17 +12,19 @@
   background-size: cover;
 }
 
+
+
 .Interface {
-  --size-unit: calc(95vw / 17);
-  --size-unit-max: calc(95vh / 15);
-  --size-unit-min: 40px;
+  --unit: calc(95vw / 17);
+  --unit-max: calc(95vh / 15);
+  --unit-min: 30px;
   position: absolute;
-  width: calc(17 * var(--size-unit));
-  height: calc(15 * var(--size-unit));
-  max-width: calc(17 * var(--size-unit-max));
-  max-height: calc(15 * var(--size-unit-max));
-  min-width: calc(17 * var(--size-unit-min));
-  min-height: calc(15 * var(--size-unit-min));
+  width: calc(17 * var(--unit));
+  height: calc(15 * var(--unit));
+  max-width: calc(17 * var(--unit-max));
+  max-height: calc(15 * var(--unit-max));
+  min-width: calc(17 * var(--unit-min));
+  min-height: calc(15 * var(--unit-min));
   display: grid;
   grid-template-columns: repeat(170, [col-start] 1fr [col-end]);
   grid-template-rows: repeat(150, [row-start] 1fr [row-end]);
@@ -35,13 +37,16 @@
   background-position: 50% 50%;
   background-size: cover;
   border-radius: .5vmin;
+  overflow: hidden;
   box-shadow: 0 0 .5vmin .1vmin #000000;
 }
+
 
 .Interface>.outer {
   position: relative;
   padding: 1vmin;
 }
+
 
 .Interface>.outer>.inner {
   position: relative;
@@ -63,6 +68,7 @@
   justify-content: space-between;
 }
 
+
 .Interface>.outer>.inner.vert>.label {
   width: 100%;
   height: 6rem;
@@ -71,6 +77,7 @@
   align-items: flex-start;
   justify-content: center;
 }
+
 
 .Interface>.outer>.inner.vert>.label>h3 {
   text-align: left;
@@ -143,6 +150,44 @@
 
 
 
+
+.Init {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+  background-color: #1a1c1e;
+  background-color: #0a0c0e;
+}
+
+
+.Power {
+  width: 50%;
+  height: 50%;
+  opacity: .7;
+  transition: opacity 25ms ease;
+  cursor: pointer;
+}
+
+.Power:hover {
+  opacity: 1;
+}
+
+
+
+
+
+
+
+
+
 .meter {
   /*padding: 0 1vmin;*/
   padding: 0 1vmin;
@@ -203,9 +248,6 @@
   grid-column: 149 / span 22;
   grid-row: 16 / span 10;
 }
-
-
-
 
 .master {
   grid-column: 150 / span 21;

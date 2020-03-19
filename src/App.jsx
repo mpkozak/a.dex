@@ -17,6 +17,28 @@ import {
   MeterWave,
 } from './components';
 
+import Init from './Init.jsx';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 export default memo(() => {
@@ -31,6 +53,10 @@ export default memo(() => {
     <GlobalStateProvider>
       <div id="App">
         <div className="Interface" ref={interfaceRef}>
+          <Init />
+
+        {/*
+
           <Screen videoStream={video} />
           <Placard />
           <Colors />
@@ -57,6 +83,9 @@ export default memo(() => {
             </div>
           </div>
 
+
+
+        */}
         </div>
       </div>
     </GlobalStateProvider>
