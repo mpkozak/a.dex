@@ -36,6 +36,10 @@ export default class Analyser {
     Getters
 */
 
+  get callback() {
+    return this.runtime;
+  };
+
   get peak() {
     const now = Date.now();
     if (now - this._peak > 1000) {

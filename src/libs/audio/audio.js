@@ -88,6 +88,10 @@ export default class Audio {
     return this._analyser;
   };
 
+  get trackerCallback() {
+    return this.handleTrackerData;
+  };
+
 
 
 /*
@@ -98,7 +102,7 @@ export default class Audio {
     this._octaves = val;
   };
 
-  set callback(fn) {
+  set analyserCallback(fn) {
     this._cb = fn;
   };
 

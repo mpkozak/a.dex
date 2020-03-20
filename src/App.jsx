@@ -1,7 +1,7 @@
 import React, { memo, useRef } from 'react';
 import './App.css';
 import { GlobalStateProvider } from './GlobalState.jsx';
-import { useSizeUnit, useMediaStream } from './libs/hooks';
+import { useSizeUnit } from './libs/hooks';
 import {
   Placard,
   Screen,
@@ -45,19 +45,13 @@ export default memo(() => {
   const interfaceRef = useRef(null);
   useSizeUnit(interfaceRef);
 
-  const streams = useMediaStream();
-  const { video } = streams || {};
-
 
   return (
     <GlobalStateProvider>
       <div id="App">
         <div className="Interface" ref={interfaceRef}>
           <Init />
-
-        {/*
-
-          <Screen videoStream={video} />
+          <Screen />
           <Placard />
           <Colors />
           <Settings />
@@ -82,6 +76,7 @@ export default memo(() => {
               </div>
             </div>
           </div>
+        {/*
 
 
 

@@ -5,11 +5,14 @@ import { useGlobalState } from '../../libs/hooks';
 
 
 
-export default memo(({ videoStream } = {}) => {
-  const { tracker, state, setState } = useGlobalState();
+export default memo(() => {
+  const { mediaStreams, tracker, state, setState } = useGlobalState();
   const {
     colorSet,
   } = state;
+  const videoStream = mediaStreams.video;
+
+  // if (!videoStream) return null;
 
   const videoRef = useRef(null);
   const svgRef = useRef(null);

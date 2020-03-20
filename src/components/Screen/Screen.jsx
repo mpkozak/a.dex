@@ -7,10 +7,10 @@ import ScreenFrame from './ScreenFrame.jsx';
 
 
 
-export default memo(({ videoStream } = {}) =>
+export default memo(() =>
   <div className="Screen outer">
     <div className="Screen--inner">
-      <ScreenVideobox videoStream={videoStream} />
+      <ScreenVideobox />
       <ScreenFrame />
     </div>
   </div>

@@ -67,67 +67,110 @@ const initialState = {
 
 
 
-// const audio = new Audio({
-//   octaves: initialState.octaves,
-//   osc1Type: initialState.osc1,
-//   osc2Type: initialState.osc2,
-//   osc2Detune: initialState.width,
-//   fmGainGain: initialState.depth,
-//   hpfFreq: initialState.hpf,
-//   lpfFreq: initialState.lpf,
-//   delayTime: initialState.delay,
-//   delayGain: initialState.wet,
-//   masterGain: initialState.master,
-// });
-
-// audio.init();
-
-// const tracker = new Tracker({
-//   scalar: 10,
-//   callback: audio.handleTrackerData,
-//   sensitivity: initialState.sensitivity,
-//   colors: [
-//     initialState.colorGain,
-//     initialState.colorFreq,
-//   ],
-// });
-
-// const analyser = new Analyser(audio.analyser);
-
-// audio.callback = analyser.runtime;
-
-
-
-
-let audio, tracker, analyser;
-
-
-
-/*
-get streams
-
-
-*/
 
 
 
 
 
-
-async function initialize() {
-
-
+function audioInit() {
+  const options = {
+    octaves: initialState.octaves,
+    osc1Type: initialState.osc1,
+    osc2Type: initialState.osc2,
+    osc2Detune: initialState.width,
+    fmGainGain: initialState.depth,
+    hpfFreq: initialState.hpf,
+    lpfFreq: initialState.lpf,
+    delayTime: initialState.delay,
+    delayGain: initialState.wet,
+    masterGain: initialState.master,
+  };
   try {
+    const audio = new Audio(options);
+    audio.init();
+    return audio;
+  } catch (err) {
+    console.error('audioInit', err);
+    throw err;
+  };
+};
+
+
+function analyserInit(analyserNode) {
+  try {
+    const analyser = new Analyser(analyserNode);
+    return analyser;
+  } catch (err) {
+    console.error('analyserInit', err);
+    throw err;
+  };
+};
+
+
+async function streamInit() {
+  const options = {
+    video: {
+      width: { ideal: 640 },
+      height: { ideal: 480 },
+    },
+    audio: true,
+  };
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia(options);
+    const mediaStreams = {
+      audio: new MediaStream([stream.getAudioTracks()[0]]),
+      video: new MediaStream([stream.getVideoTracks()[0]]),
+    };
+    return mediaStreams;
+  } catch (err) {
+    console.error('streamInit', err);
+    throw err;
+  };
+};
+
+
+function trackerInit(audioCallback) {
+  const options = {
+    scalar: 10,
+    callback: audioCallback,
+    sensitivity: initialState.sensitivity,
+    colors: [
+      initialState.colorGain,
+      initialState.colorFreq,
+    ],
+  };
+  try {
+    const tracker = new Tracker(options);
+    return tracker;
+  } catch (err) {
+    console.error('trackerInit', err);
+    throw err;
+  };
+};
 
 
 
-
-  } catch {
-
-
-  }
-
-
+let audio = {},
+    analyser = {},
+    tracker = {},
+    mediaStreams = {};
+async function initialize() {
+  console.log('initialize ran')
+  try {
+    audio = audioInit();
+    // console.log('audio', audio)
+    analyser = analyserInit(audio.analyser);
+    audio.analyserCallback = analyser.callback;
+    // console.log('analyser', analyser)
+    tracker = trackerInit(audio.trackerCallback);
+    // console.log('tracker', tracker)
+    mediaStreams = await streamInit();
+    // console.log('mediaStreams', mediaStreams)
+    return true;
+  } catch (err) {
+    console.error('initialize', err);
+    return false;
+  };
 };
 
 
@@ -144,6 +187,11 @@ async function initialize() {
 
 function updateState(state, key, val) {
   switch (key) {
+    case 'init':
+      if (val !== true) {
+        console.log('init set wasn not true', val)
+      }
+      break;
     case 'colorGain':
       tracker.colors = [
         val,
@@ -244,7 +292,9 @@ function useGlobalState() {
   return {
     tracker: tracker,
     // audio: audio,
+
     analyser: analyser,
+    mediaStreams: mediaStreams,
     params: { ...params },
     state: { ...state },
     setState: {
@@ -277,17 +327,17 @@ function useGlobalState() {
 
 // function throttle(fn, t) {
 //   let now = Date.now();
-//   return () => {
+//   return (e) => {
 //     console.log('in throttle return')
 //     const nextNow = Date.now();
 //     if (nextNow - now < t) {
 //       return null;
 //     };
 //     now = nextNow;
-//     fn();
+//     fn(e);
 //   };
 // };
 
 
 
-export { GlobalStateProvider, useGlobalState as default };
+export { initialize, GlobalStateProvider, useGlobalState as default };

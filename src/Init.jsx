@@ -1,6 +1,7 @@
 import React, { memo, useCallback } from 'react';
 import { useGlobalState } from './libs/hooks';
 
+import { initialize } from './GlobalState.jsx';
 
 
 
@@ -44,9 +45,18 @@ export default memo(() => {
   const handleClick = useCallback((e) => {
     console.log('clicked the target')
     if (!init) {
-      setState.init(true);
+      initialize()
+        .then(initOk => {
+          if (initOk) {
+            return setState.init(true);
+          };
+          setState.init('upgrade');
+        })
+        .catch(err => {
+          console.log('Init error', err);
+        });
     };
-  }, [init, setState]);
+  }, [initialize, init, setState]);
 
   if (init) {
     return null;
