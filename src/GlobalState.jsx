@@ -273,24 +273,7 @@ function GlobalStateProvider({ children } = {}) {
 
 function useGlobalState() {
   const [state, dispatch] = useContext(GlobalStateContext);
-
-  const setInit = stage => dispatch({ type: 'init', payload: stage });
-  const setMessage = text => dispatch({ type: 'message', payload: text });
-  const setColorGain = color => dispatch({ type: 'colorGain', payload: color });
-  const setColorFreq = color => dispatch({ type: 'colorFreq', payload: color });
-  const setColorSet = colorKey => dispatch({ type: 'colorSet', payload: colorKey });
-  const setSensitivity = val => dispatch({ type: 'sensitivity', payload: val });
-  const setOctaves = val => dispatch({ type: 'octaves', payload: val });
-  const setOsc1 = wave => dispatch({ type: 'osc1', payload: wave });
-  const setOsc2 = wave => dispatch({ type: 'osc2', payload: wave });
-  const setDepth = val => dispatch({ type: 'depth', payload: val });
-  const setWidth = val => dispatch({ type: 'width', payload: val });
-  const setHpf = val => dispatch({ type: 'hpf', payload: val });
-  const setLpf = val => dispatch({ type: 'lpf', payload: val });
-  const setDelay = val => dispatch({ type: 'delay', payload: val });
-  const setWet = val => dispatch({ type: 'wet', payload: val });
-  const setMaster = val => dispatch({ type: 'master', paylaod: val });
-
+  const setState = ([type, payload]) => dispatch({ type, payload });
 
   return {
     tracker: tracker,
@@ -299,24 +282,7 @@ function useGlobalState() {
     mediaStreams: mediaStreams,
     params: { ...params },
     state: { ...state },
-    setState: {
-      init: setInit,
-      message: setMessage,
-      colorGain: setColorGain,
-      colorFreq: setColorFreq,
-      colorSet: setColorSet,
-      sensitivity: setSensitivity,
-      octaves: setOctaves,
-      osc1: setOsc1,
-      osc2: setOsc2,
-      depth: setDepth,
-      width: setWidth,
-      hpf: setHpf,
-      lpf: setLpf,
-      delay: setDelay,
-      wet: setWet,
-      master: setMaster,
-    },
+    setState: setState,
   };
 };
 
@@ -339,4 +305,4 @@ function useGlobalState() {
 
 
 
-export { initialize, GlobalStateProvider, useGlobalState as default };
+export { initialize, params, initialState, GlobalStateProvider, useGlobalState as default };

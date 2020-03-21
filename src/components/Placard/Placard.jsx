@@ -12,7 +12,7 @@ export default memo(() => {
 
   const handleClick = useCallback(() => {
     tracker.toggle();
-    setState.message(tracker.active ? 'tracking...' : '');
+    setState(['message', tracker.active ? 'tracking...' : '']);
   }, [setState, tracker]);
 
 

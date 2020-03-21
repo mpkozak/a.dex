@@ -15,13 +15,13 @@ export default memo(() => {
 
   const handleClick = useCallback((e) => {
     if (init === false) {
-      setState.init('pending');
+      setState(['init', 'pending']);
       initialize()
         .then(initOk => {
           if (initOk) {
-            return setState.init(true);
+            return setState(['init', true]);
           };
-          return setState.init('unsupported');
+          return setState(['init', 'unsupported']);
         })
         .catch(err => {
           console.error('Init error', err);

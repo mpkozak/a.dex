@@ -42,9 +42,9 @@ export default memo(() => {
     };
     const { offsetX, offsetY } = e.nativeEvent;
     const color = tracker.getPointColor(offsetX, offsetY);
-    setState.message(null);
-    setState.colorSet(false);
-    setState[colorSet](color);
+    setState(['message', null]);
+    setState(['colorSet', false]);
+    setState([colorSet, color]);
   }, [tracker, setState, colorSet]);
 
 

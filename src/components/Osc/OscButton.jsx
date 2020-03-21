@@ -14,7 +14,7 @@ export default memo(({ oscKey = '', waveType = '' } = {}) => {
     if (wave === waveType) {
       return null;
     };
-    setState[oscKey](waveType);
+    setState([oscKey, waveType]);
     return;
   }, [oscKey, waveType, setState, wave]);
 

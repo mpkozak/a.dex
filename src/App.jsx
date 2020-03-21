@@ -34,6 +34,7 @@ const Interface = memo(() => {
       <Placard />
       <Colors />
       <Settings />
+
       <Osc1 />
       <Osc2 />
       <FmSynth />
@@ -56,11 +57,10 @@ const Interface = memo(() => {
         </div>
       </div>
 
+
     </div>
   );
 });
-
-
 
 
 

@@ -16,8 +16,8 @@ export default memo(({ colorKey = '', label = '' } = {}) => {
     if (colorSet === colorKey) {
       nextColorSet = false;
     };
-    setState.message(nextColorSet ? 'Calibrating...' : null);
-    return setState.colorSet(nextColorSet);
+    setState(['message', nextColorSet ? 'Calibrating...' : null]);
+    return setState(['colorSet', nextColorSet]);
   }, [colorKey, colorSet, setState]);
 
 

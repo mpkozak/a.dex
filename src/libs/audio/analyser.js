@@ -57,7 +57,7 @@ export default class Analyser {
   set wave(els) {
     const { elPath } = els;
     this._wave = d3.select(elPath);
-  }
+  };
 
   set needle(els) {
     const { elShadow, elNeedle } = els;
