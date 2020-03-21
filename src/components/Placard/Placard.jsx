@@ -1,7 +1,7 @@
 import React, { memo, useCallback } from 'react';
 import './Placard.css';
 import { useGlobalState } from '../../libs/hooks';
-import PlacardLogo from './PlacardLogo.jsx';
+import { Logo } from '../_shared'
 
 
 
@@ -19,7 +19,7 @@ export default memo(() => {
   return (
     <div className="Placard outer">
       <div className="Placard--inner inner">
-        <PlacardLogo />
+        <Logo cl="Placard--logo" />
         <button onClick={handleClick}>
           kick it
         </button>

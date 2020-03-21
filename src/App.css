@@ -151,40 +151,6 @@
 
 
 
-.Init {
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 100;
-
-  display: flex;
-  flex-flow: column nowrap;
-  align-items: center;
-  justify-content: center;
-  background-color: #1a1c1e;
-  background-color: #0a0c0e;
-}
-
-
-.Power {
-  width: 50%;
-  height: 50%;
-  opacity: .7;
-  transition: opacity 25ms ease;
-  cursor: pointer;
-}
-
-.Power:hover {
-  opacity: 1;
-}
-
-
-
-
-
-
 
 
 

@@ -2,6 +2,7 @@ export { default as Colors } from './Colors';
 export { default as Delay } from './Delay';
 export { EqHpf, EqLpf } from './Eq';
 export { default as FmSynth } from './FmSynth';
+export { default as Init } from './Init';
 export { Osc1, Osc2 } from './Osc';
 export { default as Placard } from './Placard';
 export { default as Screen } from './Screen';

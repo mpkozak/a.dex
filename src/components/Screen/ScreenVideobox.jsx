@@ -12,8 +12,6 @@ export default memo(() => {
   } = state;
   const videoStream = mediaStreams.video;
 
-  // if (!videoStream) return null;
-
   const videoRef = useRef(null);
   const svgRef = useRef(null);
 
@@ -44,6 +42,7 @@ export default memo(() => {
     };
     const { offsetX, offsetY } = e.nativeEvent;
     const color = tracker.getPointColor(offsetX, offsetY);
+    setState.message(null);
     setState.colorSet(false);
     setState[colorSet](color);
   }, [tracker, setState, colorSet]);

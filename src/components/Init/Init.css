@@ -1,0 +1,40 @@
+.Init {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+  background-color: #0a0c0e;
+}
+
+
+
+
+
+.InitPower {
+  width: 50%;
+  height: 50%;
+  opacity: .7;
+  transition: opacity 25ms ease;
+  cursor: pointer;
+}
+
+.InitPower:hover {
+  opacity: 1;
+}
+
+
+
+
+
+.InitUnsupported {
+  width: 80%;
+  height: 30%;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: space-around;
+}

@@ -5,10 +5,11 @@ import React, { memo } from 'react';
 
 
 export default memo(({
+  cl = '',
   color = 'rgba(255, 255, 255, .7)'
 } = {}) =>
   <svg
-    className="PlacardLogo"
+    className={cl}
     viewBox="0 0 90 25"
     width="90"
     height="25"

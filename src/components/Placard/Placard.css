@@ -11,15 +11,15 @@
 }
 
 
-.Placard button {
-  background-color: black;
+.Placard--logo {
+  width: 80%;
+  height: auto;
 }
 
 
 
 
 
-.PlacardLogo {
-  width: 80%;
-  height: auto;
+.Placard button {
+  background-color: black;
 }

@@ -6,6 +6,15 @@ import { Audio, Analyser } from './libs/audio/';
 
 
 
+
+
+
+
+
+/*
+    Global Parameters
+*/
+
 const params = {
   types: {
     osc: [
@@ -46,6 +55,7 @@ const params = {
 
 const initialState = {
   init: false,
+  message: null,
 
   colorGain: '#00FF00',
   colorFreq: '#FF0000',
@@ -61,16 +71,15 @@ const initialState = {
   delay: 0,
   wet: 0,
   master: .73,
-
-  message: null,
 };
 
 
 
 
 
-
-
+/*
+    Initialization Stack
+*/
 
 function audioInit() {
   const options = {
@@ -154,8 +163,8 @@ let audio = {},
     analyser = {},
     tracker = {},
     mediaStreams = {};
+
 async function initialize() {
-  console.log('initialize ran')
   try {
     audio = audioInit();
     // console.log('audio', audio)
@@ -168,7 +177,7 @@ async function initialize() {
     // console.log('mediaStreams', mediaStreams)
     return true;
   } catch (err) {
-    console.error('initialize', err);
+    // console.error('initialize', err);
     return false;
   };
 };
@@ -177,19 +186,15 @@ async function initialize() {
 
 
 
-
-
-
-
-
-
-
+/*
+    Global State + Context
+*/
 
 function updateState(state, key, val) {
   switch (key) {
     case 'init':
-      if (val !== true) {
-        console.log('init set wasn not true', val)
+      if (val === true) {
+        // console.log('init set wasn not true', val)
       }
       break;
     case 'colorGain':
@@ -270,7 +275,7 @@ function useGlobalState() {
   const [state, dispatch] = useContext(GlobalStateContext);
 
   const setInit = stage => dispatch({ type: 'init', payload: stage });
-
+  const setMessage = text => dispatch({ type: 'message', payload: text });
   const setColorGain = color => dispatch({ type: 'colorGain', payload: color });
   const setColorFreq = color => dispatch({ type: 'colorFreq', payload: color });
   const setColorSet = colorKey => dispatch({ type: 'colorSet', payload: colorKey });
@@ -286,20 +291,17 @@ function useGlobalState() {
   const setWet = val => dispatch({ type: 'wet', payload: val });
   const setMaster = val => dispatch({ type: 'master', paylaod: val });
 
-  const setMessage = text => dispatch({ type: 'message', payload: text });
-
 
   return {
     tracker: tracker,
     // audio: audio,
-
     analyser: analyser,
     mediaStreams: mediaStreams,
     params: { ...params },
     state: { ...state },
     setState: {
       init: setInit,
-
+      message: setMessage,
       colorGain: setColorGain,
       colorFreq: setColorFreq,
       colorSet: setColorSet,
@@ -314,12 +316,9 @@ function useGlobalState() {
       delay: setDelay,
       wet: setWet,
       master: setMaster,
-
-      message: setMessage,
     },
   };
 };
-
 
 
 
