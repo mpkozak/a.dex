@@ -54,7 +54,6 @@ const params = {
 
 
 const initialState = {
-  init: false,
   message: null,
 
   colorGain: '#00FF00',
@@ -192,11 +191,6 @@ async function initialize() {
 
 function updateState(state, key, val) {
   switch (key) {
-    case 'init':
-      if (val === true) {
-        // console.log('init set wasn not true', val)
-      }
-      break;
     case 'colorGain':
       tracker.colors = [
         val,
@@ -305,4 +299,12 @@ function useGlobalState() {
 
 
 
-export { initialize, params, initialState, GlobalStateProvider, useGlobalState as default };
+export {
+  params,
+  initialState,
+  initialize,
+  tracker,
+  audio,
+  GlobalStateProvider,
+  useGlobalState as default,
+};

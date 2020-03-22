@@ -1,7 +1,6 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo, useState, useCallback } from 'react';
 import './Init.css'
 import { initialize } from '../../GlobalState.jsx';
-import { useGlobalState } from '../../libs/hooks';
 import InitPower from './InitPower.jsx';
 import InitUnsupported from './InitUnsupported.jsx';
 
@@ -10,25 +9,25 @@ import InitUnsupported from './InitUnsupported.jsx';
 
 
 export default memo(() => {
-  const { state, setState } = useGlobalState();
-  const { init } = state;
+  const [init, setInit] = useState(false);
+
 
   const handleClick = useCallback((e) => {
     if (init === false) {
-      setState(['init', 'pending']);
+      setInit('pending');
       initialize()
         .then(initOk => {
           if (initOk) {
-            return setState(['init', true]);
+            return setInit(true);
           };
-          return setState(['init', 'unsupported']);
+          return setInit('unsupported');
         })
         .catch(err => {
           console.error('Init error', err);
           return null;
         });
     };
-  }, [init, setState]);
+  }, [init, setInit]);
 
 
   if (init === true) {

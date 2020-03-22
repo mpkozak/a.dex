@@ -7,10 +7,8 @@ import Knob from './Knob.jsx';
 
 
 
-export default memo(({ cl = '', stateKey = '', color = '' } = {}) => {
-  // const { params, state, setState } = useGlobalState();
+export default memo(({ cl = '', stateKey = '', cb = null, color = '' } = {}) => {
   const range = params.range[stateKey];
-  // const value = state[stateKey];
   const scalar = 350 / (range[1] - range[0]);
 
   const [pointerCaptured, setPointerCaptured] = useState(false);
@@ -20,14 +18,19 @@ export default memo(({ cl = '', stateKey = '', color = '' } = {}) => {
 
 
   useEffect(() => {
+    if (!!cb) {
+      cb(value);
+    };
+  }, [cb, value]);
+
+
+  useEffect(() => {
     const el = knobRef.current;
 
     const handlePointerMove = e => {
       const delta = -e.movementY / scalar;
       const newVal = clampRange(value + delta, range);
       return setValue(newVal);
-      // setState([stateKey, newVal]);
-      // return;
     };
 
     if (el && pointerCaptured) {

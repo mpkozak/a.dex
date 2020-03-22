@@ -30,6 +30,7 @@ const Interface = memo(() => {
   return (
     <div className="Interface" ref={interfaceRef}>
       <Init />
+
       <Screen />
       <Placard />
       <Colors />
@@ -61,6 +62,8 @@ const Interface = memo(() => {
     </div>
   );
 });
+
+
 
 
 
