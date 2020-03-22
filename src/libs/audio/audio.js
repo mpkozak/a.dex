@@ -24,38 +24,38 @@ export default class Audio {
 
     this._ctx = new AudioContext();
 
-    this.osc1 = new OscillatorNode(this._ctx, {
+    this._osc1 = new OscillatorNode(this._ctx, {
       type: osc1Type,
       frequency: this._baseHz,
     });
-    this.osc2 = new OscillatorNode(this._ctx, {
+    this._osc2 = new OscillatorNode(this._ctx, {
       type: osc2Type,
       frequency: this._baseHz,
       detune: osc2Detune,
     });
-    this.fmGain = new GainNode(this._ctx, {
+    this._fmGain = new GainNode(this._ctx, {
       gain: fmGainGain,
     });
     this.instGain = new GainNode(this._ctx, {
       gain: 0,
     });
-    this.hpf = new BiquadFilterNode(this._ctx, {
+    this._hpf = new BiquadFilterNode(this._ctx, {
       type: 'highpass',
       frequency: hpfFreq,
       Q: 1,
     });
-    this.lpf = new BiquadFilterNode(this._ctx, {
+    this._lpf = new BiquadFilterNode(this._ctx, {
       type: 'lowpass',
       frequency: lpfFreq,
       Q: 1,
     });
-    this.delay = new DelayNode(this._ctx, {
+    this._delay = new DelayNode(this._ctx, {
       delayTime: delayTime,
     });
-    this.delayGain = new GainNode(this._ctx, {
+    this._delayGain = new GainNode(this._ctx, {
       gain: delayGain,
     });
-    this.masterGain = new GainNode(this._ctx, {
+    this._masterGain = new GainNode(this._ctx, {
       gain: masterGain,
     });
 
@@ -84,6 +84,17 @@ export default class Audio {
     return this._ctx.currentTime;
   };
 
+  // get delay() {
+  //   console.log("get delay", this._delay)
+  //   return this._delay.delayTime.value;
+  // };
+
+
+
+
+
+
+
   get analyser() {
     return this._analyser;
   };
@@ -98,9 +109,59 @@ export default class Audio {
     Setters
 */
 
+  set osc1(type) {
+    console.log('set osc1', type)
+    this._osc1.type = type;
+  };
+
+  set osc2(type) {
+    console.log('set osc2', type)
+    this._osc2.type = type;
+  };
+
   set octaves(val) {
+    console.log('set octaves', val)
     this._octaves = val;
   };
+
+  set depth(val) {
+    console.log('set depth', val)
+    this.setParam(this._fmGain.gain, val, this.now);
+  };
+
+  set width(val) {
+    console.log('set width', val)
+    this.setParam(this._osc2.detune, val, this.now);
+  };
+
+  set hpf(val) {
+    console.log('set hpf', val)
+    this.setParam(this._hpf.frequency, val, this.now);
+  };
+
+  set lpf(val) {
+    console.log('set lpf', val)
+    this.setParam(this._lpf.frequency, val, this.now);
+  };
+
+  set delay(val) {
+    console.log('set delay', val)
+    this.setParam(this._delay.delayTime, val, this.now);
+  };
+
+  set wet(val) {
+    console.log('set wet', val)
+    this.setParam(this._delayGain.gain, val, this.now);
+  };
+
+  set master(val) {
+    console.log('set master', val)
+    this.setParam(this._masterGain.gain, val, this.now);
+  };
+
+
+
+
 
   set analyserCallback(fn) {
     this._cb = fn;
@@ -113,23 +174,23 @@ export default class Audio {
 */
 
   connect() {
-    this.osc1.connect(this.fmGain);
-    this.fmGain.connect(this.osc2.frequency);
-    this.osc2.connect(this.instGain);
-    this.instGain.connect(this.hpf);
-    this.hpf.connect(this.lpf);
-    this.lpf.connect(this.masterGain);
-    this.lpf.connect(this.delay);
-    this.delay.connect(this.delayGain);
-    this.delayGain.connect(this.masterGain);
-    this.masterGain.connect(this._analyser);
-    this.masterGain.connect(this._ctx.destination);
+    this._osc1.connect(this._fmGain);
+    this._fmGain.connect(this._osc2.frequency);
+    this._osc2.connect(this.instGain);
+    this.instGain.connect(this._hpf);
+    this._hpf.connect(this._lpf);
+    this._lpf.connect(this._masterGain);
+    this._lpf.connect(this._delay);
+    this._delay.connect(this._delayGain);
+    this._delayGain.connect(this._masterGain);
+    this._masterGain.connect(this._analyser);
+    this._masterGain.connect(this._ctx.destination);
     return;
   };
 
   init() {
-    this.osc1.start();
-    this.osc2.start();
+    this._osc1.start();
+    this._osc2.start();
     return;
   };
 
@@ -149,8 +210,8 @@ export default class Audio {
     const nextLevel = Math.pow(y, 2);
     const nextFreq = Math.pow(2, x * this._octaves) * this._baseHz;
     this.setGain(this.instGain.gain, nextLevel, now);
-    this.setFreq(this.osc1.frequency, nextFreq, now);
-    this.setFreq(this.osc2.frequency, nextFreq, now);
+    this.setFreq(this._osc1.frequency, nextFreq, now);
+    this.setFreq(this._osc2.frequency, nextFreq, now);
     this._cb();
     return;
   };

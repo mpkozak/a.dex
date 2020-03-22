@@ -1,6 +1,6 @@
-import React, { memo } from 'react';
+import React, { memo, useState, useCallback } from 'react';
 import './Osc.css';
-import { useGlobalState } from '../../libs/hooks';
+import { params, audio } from '../../GlobalState.jsx';
 import { parseCl } from '../../libs/parse.js';
 import OscButton from './OscButton.jsx';
 
@@ -9,8 +9,15 @@ import OscButton from './OscButton.jsx';
 
 
 const Osc = memo(({ cl = '', oscKey = '', label = '' } = {}) => {
-  const { params } = useGlobalState();
-  const { osc } = params.types;
+  const [wave, setWave] = useState(params.initial[oscKey]);
+
+  const oscCallback = useCallback(type => {
+    if (type === wave) {
+      return null;
+    };
+    audio[oscKey] = type;
+    setWave(type);
+  }, [oscKey, wave, setWave]);
 
 
   return (
@@ -20,11 +27,12 @@ const Osc = memo(({ cl = '', oscKey = '', label = '' } = {}) => {
           <h3>{label}</h3>
         </div>
         <div className="Osc--buttonbox">
-          {osc.map(d =>
+          {params.types.osc.map(d =>
             <OscButton
               key={oscKey + d}
-              oscKey={oscKey}
               waveType={d}
+              active={d === wave}
+              cb={oscCallback}
             />
           )}
         </div>

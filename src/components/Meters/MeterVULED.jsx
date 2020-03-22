@@ -1,13 +1,11 @@
 import React, { memo, useEffect, useRef } from 'react';
-import { useGlobalState } from '../../libs/hooks';
+import { analyser } from '../../GlobalState.jsx';
 
 
 
 
 
 export default memo(({ cl = '' } = {}) => {
-  const { analyser } = useGlobalState();
-
   const shadowRef = useRef(null);
   const ledRef = useRef(null);
   const haloRef = useRef(null);
@@ -20,7 +18,7 @@ export default memo(({ cl = '' } = {}) => {
     if (elShadow && elLed && elHalo) {
       analyser.led = { elShadow, elLed, elHalo };
     };
-  }, [analyser, shadowRef, ledRef, haloRef]);
+  }, [shadowRef, ledRef, haloRef]);
 
 
   return (

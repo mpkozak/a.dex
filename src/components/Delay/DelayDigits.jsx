@@ -1,22 +1,20 @@
 import React, { memo } from 'react';
-import { useGlobalState } from '../../libs/hooks';
+import { params } from '../../GlobalState.jsx';
 import { SevenSeg } from '../_shared';
 
 
 
 
 
-export default memo(({ delayKey = '' } = {}) => {
-  const { params, state } = useGlobalState();
+export default memo(({ delayKey = '', val = 0 } = {}) => {
   const { unit, scalar } = params.units[delayKey];
-  const value = state[delayKey];
 
 
   return (
     <div className="DelayDigits">
       <SevenSeg
         cl="DelayDigits--display"
-        value={value * scalar}
+        value={val * scalar}
         digits={3}
         dec={0}
       />

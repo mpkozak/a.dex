@@ -1,4 +1,5 @@
 import React, { memo, useEffect, useRef, useCallback } from 'react';
+import { tracker, mediaStreams } from '../../GlobalState.jsx';
 import { useGlobalState } from '../../libs/hooks';
 
 
@@ -6,7 +7,7 @@ import { useGlobalState } from '../../libs/hooks';
 
 
 export default memo(() => {
-  const { mediaStreams, tracker, state, setState } = useGlobalState();
+  const { state, setState } = useGlobalState();
   const {
     colorSet,
   } = state;
@@ -15,6 +16,7 @@ export default memo(() => {
   const videoRef = useRef(null);
   const svgRef = useRef(null);
 
+  console.log('videobox render', mediaStreams)
 
   useEffect(() => {   // set video stream
     const el = videoRef.current;
@@ -33,7 +35,7 @@ export default memo(() => {
     if (elSvg && !tracker.svg) {
       tracker.svg = elSvg;
     };
-  }, [tracker, videoRef, svgRef]);
+  }, [videoRef, svgRef]);
 
 
   const handleClick = useCallback((e) => {
@@ -45,7 +47,7 @@ export default memo(() => {
     setState(['message', null]);
     setState(['colorSet', false]);
     setState([colorSet, color]);
-  }, [tracker, setState, colorSet]);
+  }, [setState, colorSet]);
 
 
   return (

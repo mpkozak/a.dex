@@ -1,6 +1,6 @@
-import React, { memo, useRef } from 'react';
+import React, { Fragment, memo, useState, useRef, useCallback } from 'react';
 import './App.css';
-import { GlobalStateProvider } from './GlobalState.jsx';
+import { initialize, GlobalStateProvider } from './GlobalState.jsx';
 import { useSizeUnit } from './libs/hooks';
 import {
   Init,
@@ -22,43 +22,71 @@ import {
 
 
 
+const UI = memo(() =>
+  <Fragment>
+    <Screen />
+    <Placard />
+    <Colors />
+    <Settings />
+    <Osc1 />
+    <Osc2 />
+    <FmSynth />
+    <EqHpf />
+    <EqLpf />
+    <Delay />
+
+    <div className="meter Meter-wave">
+      <div className="inner">
+        <div className="wrap">
+          <MeterWave cl="meter-panel" />
+        </div>
+      </div>
+    </div>
+    <div className="meter Meter-vu">
+      <div className="inner">
+        <div className="wrap">
+          <MeterVu cl="meter-panel" />
+        </div>
+      </div>
+    </div>
+  </Fragment>
+);
+
+
+
+
+
 const Interface = memo(() => {
+  const [init, setInit] = useState(false);
+
   const interfaceRef = useRef(null);
   useSizeUnit(interfaceRef);
 
 
+  const handleClick = useCallback((e) => {
+    if (init === false) {
+      setInit('pending');
+      initialize()
+        .then(initOk => {
+          if (initOk) {
+            return setInit(true);
+          };
+          return setInit('unsupported');
+        })
+        .catch(err => {
+          console.error('Init error', err);
+          return null;
+        });
+    };
+  }, [init, setInit]);
+
+
   return (
     <div className="Interface" ref={interfaceRef}>
-      <Init />
-
-      <Screen />
-      <Placard />
-      <Colors />
-      <Settings />
-
-      <Osc1 />
-      <Osc2 />
-      <FmSynth />
-      <EqHpf />
-      <EqLpf />
-      <Delay />
-
-      <div className="meter Meter-wave">
-        <div className="inner">
-          <div className="wrap">
-            <MeterWave cl="meter-panel" />
-          </div>
-        </div>
-      </div>
-      <div className="meter Meter-vu">
-        <div className="inner">
-          <div className="wrap">
-            <MeterVu cl="meter-panel" />
-          </div>
-        </div>
-      </div>
-
-
+      {init === true
+        ? <UI />
+        : <Init init={init} handleClick={handleClick} />
+      }
     </div>
   );
 });

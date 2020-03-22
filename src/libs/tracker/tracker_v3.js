@@ -116,6 +116,7 @@ export default class Tracker {
 */
 
   initialize() {
+    console.log('tracker init')
     if (!this._videoElement || !this._svgElement) {
       return null;
     };
@@ -124,6 +125,7 @@ export default class Tracker {
     this.initCanvas();
     this.initOverlay();
     this.initWorker();
+    console.log('tracker init okay')
     return;
   };
 

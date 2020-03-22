@@ -9,9 +9,9 @@ export default memo(({ settingsKey = '', label = '', cb = null } = {}) =>
   <div className="SettingsElement">
     <KnobDrag
       cl="SettingsElement--knob"
-      stateKey={settingsKey}
-      cb={cb}
+      paramKey={settingsKey}
       color="#1F2224"
+      cb={cb}
     />
     <h5>{label}</h5>
   </div>

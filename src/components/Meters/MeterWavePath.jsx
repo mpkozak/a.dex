@@ -1,13 +1,11 @@
 import React, { memo, useEffect, useRef } from 'react';
-import { useGlobalState } from '../../libs/hooks';
+import { analyser } from '../../GlobalState.jsx';
 
 
 
 
 
 export default memo(({ cl = '' } = {}) => {
-  const { analyser } = useGlobalState();
-
   const pathRef = useRef(null);
 
 
@@ -16,7 +14,7 @@ export default memo(({ cl = '' } = {}) => {
     if (elPath) {
       analyser.wave = { elPath };
     };
-  }, [analyser, pathRef]);
+  }, [pathRef]);
 
 
   return (

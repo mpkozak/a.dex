@@ -1,22 +1,20 @@
 import React, { memo } from 'react';
-import { useGlobalState } from '../../libs/hooks';
+import { params } from '../../GlobalState.jsx';
 import { SevenSeg } from '../_shared';
 
 
 
 
 
-export default memo(({ eqKey = '' } = {}) => {
-  const { params, state } = useGlobalState();
+export default memo(({ eqKey = '', val = 0 } = {}) => {
   const { unit, scalar } = params.units[eqKey];
-  const value = state[eqKey];
 
 
   return (
     <div className="EqDigits">
       <SevenSeg
         cl="EqDigits--display"
-        value={value * scalar}
+        value={val * scalar}
         digits={4}
         dec={scalar !== 1 ? 2 : 0}
       />

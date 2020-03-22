@@ -1,5 +1,5 @@
 import React, { memo, useState, useEffect, useRef, useCallback } from 'react';
-import { params, initialState } from '../../GlobalState.jsx';
+import { params } from '../../GlobalState.jsx';
 import { clampRange, getPct } from '../../libs/parse.js';
 import Knob from './Knob.jsx';
 
@@ -7,21 +7,15 @@ import Knob from './Knob.jsx';
 
 
 
-export default memo(({ cl = '', stateKey = '', cb = null, color = '' } = {}) => {
-  const range = params.range[stateKey];
+export default memo(({ cl = '', paramKey = '', color = '', cb = null } = {}) => {
+  const range = params.range[paramKey];
+  const initial = params.initial[paramKey];
   const scalar = 350 / (range[1] - range[0]);
 
   const [pointerCaptured, setPointerCaptured] = useState(false);
-  const [value, setValue] = useState(initialState[stateKey])
+  const [value, setValue] = useState(initial);
 
   const knobRef = useRef(null);
-
-
-  useEffect(() => {
-    if (!!cb) {
-      cb(value);
-    };
-  }, [cb, value]);
 
 
   useEffect(() => {
@@ -30,6 +24,7 @@ export default memo(({ cl = '', stateKey = '', cb = null, color = '' } = {}) => 
     const handlePointerMove = e => {
       const delta = -e.movementY / scalar;
       const newVal = clampRange(value + delta, range);
+      cb(newVal);
       return setValue(newVal);
     };
 
@@ -40,7 +35,7 @@ export default memo(({ cl = '', stateKey = '', cb = null, color = '' } = {}) => 
     return () => {
       el.removeEventListener('pointermove', handlePointerMove);
     };
-  }, [setValue, range, value, scalar, pointerCaptured, knobRef]);
+  }, [cb, setValue, range, value, scalar, pointerCaptured, knobRef]);
 
 
   const handlePointerDown = useCallback((e) => {
@@ -91,10 +86,10 @@ export default memo(({ cl = '', stateKey = '', cb = null, color = '' } = {}) => 
 
 
 
-// export default memo(({ cl = '', stateKey = '', color = '' } = {}) => {
+// export default memo(({ cl = '', paramKey = '', color = '' } = {}) => {
 //   const { params, state, setState } = useGlobalState();
-//   const range = params.range[stateKey];
-//   const value = state[stateKey];
+//   const range = params.range[paramKey];
+//   const value = state[paramKey];
 //   const scalar = 350 / (range[1] - range[0]);
 
 //   const [pointerCaptured, setPointerCaptured] = useState(false);
@@ -108,7 +103,7 @@ export default memo(({ cl = '', stateKey = '', cb = null, color = '' } = {}) => 
 //     const handlePointerMove = e => {
 //       const delta = -e.movementY / scalar;
 //       const newVal = clampRange(value + delta, range);
-//       setState([stateKey, newVal]);
+//       setState([paramKey, newVal]);
 //       return;
 //     };
 
@@ -119,7 +114,7 @@ export default memo(({ cl = '', stateKey = '', cb = null, color = '' } = {}) => 
 //     return () => {
 //       el.removeEventListener('pointermove', handlePointerMove);
 //     };
-//   }, [stateKey, setState, range, value, scalar, pointerCaptured, knobRef]);
+//   }, [paramKey, setState, range, value, scalar, pointerCaptured, knobRef]);
 
 
 //   const handlePointerDown = useCallback((e) => {

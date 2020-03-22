@@ -1,17 +1,27 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback } from 'react';
+import { audio } from '../../GlobalState.jsx';
 import { KnobDrag } from '../_shared';
 
 
 
 
 
-export default memo(({ fmKey = '', label = ''} = {}) =>
-  <div className="FmSynthElement">
-    <KnobDrag
-      cl="FmSynthElement--knob"
-      stateKey={fmKey}
-      color="#313638"
-    />
-    <h5>{label}</h5>
-  </div>
-);
+export default memo(({ fmKey = '', label = ''} = {}) => {
+
+  const fmCallback = useCallback(val => {
+    audio[fmKey] = val;
+  }, [fmKey]);
+
+
+  return (
+    <div className="FmSynthElement">
+      <KnobDrag
+        cl="FmSynthElement--knob"
+        paramKey={fmKey}
+        color="#313638"
+        cb={fmCallback}
+      />
+      <h5>{label}</h5>
+    </div>
+  );
+});

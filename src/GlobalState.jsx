@@ -6,11 +6,6 @@ import { Audio, Analyser } from './libs/audio/';
 
 
 
-
-
-
-
-
 /*
     Global Parameters
 */
@@ -38,6 +33,19 @@ const params = {
       scalar: 1e3,
     },
   },
+  initial: {
+    osc1: 'triangle',
+    osc2: 'sine',
+    sensitivity: 30,
+    octaves: 4,
+    depth: 1500,
+    width: -1200,
+    hpf: 0,
+    lpf: 22000,
+    delay: 0,
+    wet: 0,
+    master: .73,
+  },
   range: {
     sensitivity: [0, 221],
     octaves: [2, 6],
@@ -55,21 +63,9 @@ const params = {
 
 const initialState = {
   message: null,
-
   colorGain: '#00FF00',
   colorFreq: '#FF0000',
   colorSet: false,
-  sensitivity: 30,
-  octaves: 4,
-  osc1: 'triangle',
-  osc2: 'sine',
-  depth: 1500,
-  width: -1200,
-  hpf: 0,
-  lpf: 22000,
-  delay: 0,
-  wet: 0,
-  master: .73,
 };
 
 
@@ -82,16 +78,16 @@ const initialState = {
 
 function audioInit() {
   const options = {
-    octaves: initialState.octaves,
-    osc1Type: initialState.osc1,
-    osc2Type: initialState.osc2,
-    osc2Detune: initialState.width,
-    fmGainGain: initialState.depth,
-    hpfFreq: initialState.hpf,
-    lpfFreq: initialState.lpf,
-    delayTime: initialState.delay,
-    delayGain: initialState.wet,
-    masterGain: initialState.master,
+    octaves: params.initial.octaves,
+    osc1Type: params.initial.osc1,
+    osc2Type: params.initial.osc2,
+    osc2Detune: params.initial.width,
+    fmGainGain: params.initial.depth,
+    hpfFreq: params.initial.hpf,
+    lpfFreq: params.initial.lpf,
+    delayTime: params.initial.delay,
+    delayGain: params.initial.wet,
+    masterGain: params.initial.master,
   };
   try {
     const audio = new Audio(options);
@@ -141,7 +137,7 @@ function trackerInit(audioCallback) {
   const options = {
     scalar: 10,
     callback: audioCallback,
-    sensitivity: initialState.sensitivity,
+    sensitivity: params.initial.sensitivity,
     colors: [
       initialState.colorGain,
       initialState.colorFreq,
@@ -203,39 +199,6 @@ function updateState(state, key, val) {
         val,
       ];
       break;
-    case 'sensitivity':
-      tracker.sensitivity = val;
-      break;
-    case 'octaves':
-      audio.octaves = val;
-      break;
-    case 'osc1':
-      audio.osc1.type = val;
-      break;
-    case 'osc2':
-      audio.osc2.type = val;
-      break;
-    case 'depth':
-      audio.setParam(audio.fmGain.gain, val, audio.now);
-      break;
-    case 'width':
-      audio.setParam(audio.osc2.detune, val, audio.now);
-      break;
-    case 'hpf':
-      audio.setParam(audio.hpf.frequency, val, audio.now);
-      break;
-    case 'lpf':
-      audio.setParam(audio.lpf.frequency, val, audio.now);
-      break;
-    case 'delay':
-      audio.setParam(audio.delay.delayTime, val, audio.now);
-      break;
-    case 'wet':
-      audio.setParam(audio.delayGain.gain, val, audio.now);
-      break;
-    case 'master':
-      audio.setParam(audio.masterGain.gain, val, audio.now);
-      break;
     default:
       break;
   };
@@ -269,15 +232,7 @@ function useGlobalState() {
   const [state, dispatch] = useContext(GlobalStateContext);
   const setState = ([type, payload]) => dispatch({ type, payload });
 
-  return {
-    tracker: tracker,
-    // audio: audio,
-    analyser: analyser,
-    mediaStreams: mediaStreams,
-    params: { ...params },
-    state: { ...state },
-    setState: setState,
-  };
+  return { state, setState };
 };
 
 
@@ -301,10 +256,11 @@ function useGlobalState() {
 
 export {
   params,
-  initialState,
   initialize,
-  tracker,
   audio,
+  analyser,
+  tracker,
+  mediaStreams,
   GlobalStateProvider,
   useGlobalState as default,
 };
