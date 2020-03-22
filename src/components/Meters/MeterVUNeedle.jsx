@@ -19,8 +19,8 @@ export default memo(({ cl = '' } = {}) => {
 
 
   const style = {
-    transitionTimingFunction: 'ease',
-    transitionDuration: '150ms'
+    // transitionTimingFunction: 'ease',
+    // transitionDuration: '150ms'
   };
 
 

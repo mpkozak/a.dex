@@ -119,6 +119,7 @@ export default class Analyser {
   };
 
   drawNeedle() {
+    console.log('draw needle', this._rotation)
     this._needle
       .attr('transform', `rotate(${this._rotation}, 50, 57)`);
     this._needleShadow
@@ -187,6 +188,7 @@ export default class Analyser {
     this._path = this._waveScaleCurve(this._dataCurve);
     this._rotation = this._rotation * (5 / 6) + (this._needleScale(rms) / 6);
     this._peak = dataRms > 15 ? Date.now() : this._peak;
+    console.log(this._rotation)
     return;
   };
 
