@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useRef } from 'react';
-import { analyser } from '../../GlobalState.jsx';
+import { analyser } from '../../global';
 
 
 

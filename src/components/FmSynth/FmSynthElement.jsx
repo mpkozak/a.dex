@@ -1,5 +1,5 @@
 import React, { memo, useCallback } from 'react';
-import { audio } from '../../GlobalState.jsx';
+import { audio } from '../../global';
 import { KnobDrag } from '../_shared';
 
 

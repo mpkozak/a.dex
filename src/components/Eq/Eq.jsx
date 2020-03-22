@@ -1,6 +1,6 @@
 import React, { memo, useState, useCallback } from 'react';
 import './Eq.css';
-import { audio, params } from '../../GlobalState.jsx';
+import { params, audio } from '../../global';
 import { parseCl } from '../../libs/parse.js';
 import { KnobDrag } from '../_shared';
 import EqDigits from './EqDigits.jsx';
@@ -11,6 +11,8 @@ import EqDigits from './EqDigits.jsx';
 
 const Eq = memo(({ cl = '', eqKey = '', label = '' } = {}) => {
   const [freq, setFreq] = useState(params.initial[eqKey]);
+
+  const { unit, scalar } = params.units[eqKey];
 
 
   const eqCallback = useCallback(val => {
@@ -32,8 +34,9 @@ const Eq = memo(({ cl = '', eqKey = '', label = '' } = {}) => {
           cb={eqCallback}
         />
         <EqDigits
-          eqKey={eqKey}
-          val={freq}
+          val={freq * scalar}
+          dec={scalar !== 1 ? 2 : 0}
+          unit={unit}
         />
       </div>
     </div>

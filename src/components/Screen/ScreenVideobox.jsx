@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useRef, useCallback } from 'react';
-import { tracker, mediaStreams } from '../../GlobalState.jsx';
+import { tracker, mediaStreams } from '../../global';
 import { useGlobalState } from '../../libs/hooks';
 
 

@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import './Settings.css';
-import { tracker, audio } from '../../GlobalState.jsx';
+import { audio, tracker } from '../../global';
 import SettingsElement from './SettingsElement.jsx';
 
 

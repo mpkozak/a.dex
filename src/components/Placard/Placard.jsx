@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import './Placard.css';
-import { tracker } from '../../GlobalState.jsx';
+import { tracker } from '../../global';
 import { Logo } from '../_shared'
 
 

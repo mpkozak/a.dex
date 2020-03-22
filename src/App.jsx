@@ -1,7 +1,8 @@
-import React, { Fragment, memo, useState, useRef, useCallback } from 'react';
+import React, { Fragment, memo, useRef } from 'react';
 import './App.css';
-import { initialize, GlobalStateProvider } from './GlobalState.jsx';
-import { useSizeUnit } from './libs/hooks';
+import { GlobalStateProvider } from './global';
+
+import { useInit, useSizeUnit } from './libs/hooks';
 import {
   Init,
   Placard,
@@ -57,35 +58,17 @@ const UI = memo(() =>
 
 
 const Interface = memo(() => {
-  const [init, setInit] = useState(false);
+  const [init, toggleInit] = useInit();
 
   const interfaceRef = useRef(null);
   useSizeUnit(interfaceRef);
-
-
-  const handleClick = useCallback((e) => {
-    if (init === false) {
-      setInit('pending');
-      initialize()
-        .then(initOk => {
-          if (initOk) {
-            return setInit(true);
-          };
-          return setInit('unsupported');
-        })
-        .catch(err => {
-          console.error('Init error', err);
-          return null;
-        });
-    };
-  }, [init, setInit]);
 
 
   return (
     <div className="Interface" ref={interfaceRef}>
       {init === true
         ? <UI />
-        : <Init init={init} handleClick={handleClick} />
+        : <Init init={init} handleClick={toggleInit} />
       }
     </div>
   );

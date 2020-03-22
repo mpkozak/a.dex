@@ -1,6 +1,6 @@
 import React, { memo, useState, useCallback } from 'react';
 import './Delay.css';
-import { audio, params } from '../../GlobalState.jsx';
+import { params, audio } from '../../global';
 import DelayDigits from './DelayDigits.jsx';
 import DelayElement from './DelayElement.jsx';
 
@@ -10,6 +10,8 @@ import DelayElement from './DelayElement.jsx';
 
 export default memo(() =>{
   const [delay, setDelay] = useState(params.initial.delay);
+
+  const { unit, scalar } = params.units.delay;
 
 
   const delayCallback = useCallback(val => {
@@ -30,8 +32,8 @@ export default memo(() =>{
         </div>
         <div className="Delay--knobbox">
           <DelayDigits
-            delayKey="delay"
-            val={delay}
+            val={delay * scalar}
+            unit={unit}
           />
           <DelayElement
             delayKey="delay"

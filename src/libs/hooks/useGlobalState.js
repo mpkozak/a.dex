@@ -1,1 +1,1 @@
-export { default } from '../../GlobalState.jsx';
+export { default } from '../../global/state.jsx';

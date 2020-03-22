@@ -1,6 +1,5 @@
-import React, { memo, useState, useCallback } from 'react';
+import React, { memo } from 'react';
 import './Init.css'
-import { initialize } from '../../GlobalState.jsx';
 import InitPower from './InitPower.jsx';
 import InitUnsupported from './InitUnsupported.jsx';
 
