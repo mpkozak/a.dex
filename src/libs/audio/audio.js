@@ -110,52 +110,42 @@ export default class Audio {
 */
 
   set osc1(type) {
-    console.log('set osc1', type)
     this._osc1.type = type;
   };
 
   set osc2(type) {
-    console.log('set osc2', type)
     this._osc2.type = type;
   };
 
   set octaves(val) {
-    console.log('set octaves', val)
     this._octaves = val;
   };
 
   set depth(val) {
-    console.log('set depth', val)
     this.setParam(this._fmGain.gain, val, this.now);
   };
 
   set width(val) {
-    console.log('set width', val)
     this.setParam(this._osc2.detune, val, this.now);
   };
 
   set hpf(val) {
-    console.log('set hpf', val)
     this.setParam(this._hpf.frequency, val, this.now);
   };
 
   set lpf(val) {
-    console.log('set lpf', val)
     this.setParam(this._lpf.frequency, val, this.now);
   };
 
   set delay(val) {
-    console.log('set delay', val)
     this.setParam(this._delay.delayTime, val, this.now);
   };
 
   set wet(val) {
-    console.log('set wet', val)
     this.setParam(this._delayGain.gain, val, this.now);
   };
 
   set master(val) {
-    console.log('set master', val)
     this.setParam(this._masterGain.gain, val, this.now);
   };
 
@@ -203,7 +193,7 @@ export default class Audio {
   handleTrackerData(data) {
     const now = this.now;
     if (!data) {
-      this._cb(true);
+      // this._cb(true);
       return this.mute();
     };
     const { x, y } = data;
@@ -212,7 +202,7 @@ export default class Audio {
     this.setGain(this.instGain.gain, nextLevel, now);
     this.setFreq(this._osc1.frequency, nextFreq, now);
     this.setFreq(this._osc2.frequency, nextFreq, now);
-    this._cb();
+    // this._cb();
     return;
   };
 

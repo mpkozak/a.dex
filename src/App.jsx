@@ -1,7 +1,6 @@
 import React, { Fragment, memo, useRef } from 'react';
 import './App.css';
 import { GlobalStateProvider } from './global';
-
 import { useInit, useSizeUnit } from './libs/hooks';
 import {
   Init,
@@ -15,8 +14,9 @@ import {
   EqHpf,
   EqLpf,
   Delay,
-  MeterVu,
-  MeterWave,
+  // MeterVu,
+  // MeterWave,
+  Meters,
 } from './components';
 
 
@@ -35,29 +35,30 @@ const UI = memo(() =>
     <EqHpf />
     <EqLpf />
     <Delay />
+    <Meters />
 
-    <div className="meter Meter-wave">
-      <div className="inner">
-        <div className="wrap">
-          <MeterWave cl="meter-panel" />
-        </div>
-      </div>
-    </div>
-    <div className="meter Meter-vu">
-      <div className="inner">
-        <div className="wrap">
-          <MeterVu cl="meter-panel" />
-        </div>
-      </div>
-    </div>
   </Fragment>
 );
 
 
+    // <div className="meter Meter-wave">
+    //   <div className="inner">
+    //     <div className="wrap">
+    //       <MeterWave cl="meter-panel" />
+    //     </div>
+    //   </div>
+    // </div>
+    // <div className="meter Meter-vu">
+    //   <div className="inner">
+    //     <div className="wrap">
+    //       <MeterVu cl="meter-panel" />
+    //     </div>
+    //   </div>
+    // </div>
 
 
 
-const Interface = memo(() => {
+export default memo(() => {
   const [init, toggleInit] = useInit();
 
   const interfaceRef = useRef(null);
@@ -65,23 +66,15 @@ const Interface = memo(() => {
 
 
   return (
-    <div className="Interface" ref={interfaceRef}>
-      {init === true
-        ? <UI />
-        : <Init init={init} handleClick={toggleInit} />
-      }
-    </div>
+    <GlobalStateProvider>
+      <div id="App">
+        <div className="Interface" ref={interfaceRef}>
+          {init === true
+            ? <UI />
+            : <Init init={init} handleClick={toggleInit} />
+          }
+        </div>
+      </div>
+    </GlobalStateProvider>
   );
 });
-
-
-
-
-
-export default memo(() =>
-  <GlobalStateProvider>
-    <div id="App">
-      <Interface />
-    </div>
-  </GlobalStateProvider>
-);

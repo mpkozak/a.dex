@@ -16,7 +16,6 @@ export default memo(() => {
   const videoRef = useRef(null);
   const svgRef = useRef(null);
 
-  console.log('videobox render', mediaStreams)
 
   useEffect(() => {   // set video stream
     const el = videoRef.current;

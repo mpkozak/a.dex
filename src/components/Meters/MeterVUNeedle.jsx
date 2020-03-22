@@ -5,10 +5,9 @@ import { analyser } from '../../global';
 
 
 
-export default memo(({ cl = '' } = {}) => {
+export default memo(({ cl = '', rotation = -48 } = {}) => {
   const shadowRef = useRef(null);
   const needleRef = useRef(null);
-
 
   useEffect(() => {
     const elShadow = shadowRef.current;
@@ -17,6 +16,9 @@ export default memo(({ cl = '' } = {}) => {
       analyser.needle = { elShadow, elNeedle };
     };
   }, [shadowRef, needleRef]);
+
+
+  // console.log('in needle', rotation)
 
 
   const style = {

@@ -5,7 +5,7 @@ import { analyser } from '../../global';
 
 
 
-export default memo(({ cl = '' } = {}) => {
+export default memo(({ cl = '', peak = false } = {}) => {
   const shadowRef = useRef(null);
   const ledRef = useRef(null);
   const haloRef = useRef(null);
@@ -19,6 +19,9 @@ export default memo(({ cl = '' } = {}) => {
       analyser.led = { elShadow, elLed, elHalo };
     };
   }, [shadowRef, ledRef, haloRef]);
+
+
+  // console.log('led rendered', peak)
 
 
   return (
