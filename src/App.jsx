@@ -14,9 +14,8 @@ import {
   EqHpf,
   EqLpf,
   Delay,
-  // MeterVu,
-  // MeterWave,
-  Meters,
+  MeterVu,
+  MeterWave,
 } from './components';
 
 
@@ -35,26 +34,25 @@ const UI = memo(() =>
     <EqHpf />
     <EqLpf />
     <Delay />
-    <Meters />
-
+    <div className="meter Meter-wave">
+      <div className="inner">
+        <div className="wrap">
+          <MeterWave cl="meter-panel" />
+        </div>
+      </div>
+    </div>
+    <div className="meter Meter-vu">
+      <div className="inner">
+        <div className="wrap">
+          <MeterVu cl="meter-panel" />
+        </div>
+      </div>
+    </div>
   </Fragment>
 );
 
 
-    // <div className="meter Meter-wave">
-    //   <div className="inner">
-    //     <div className="wrap">
-    //       <MeterWave cl="meter-panel" />
-    //     </div>
-    //   </div>
-    // </div>
-    // <div className="meter Meter-vu">
-    //   <div className="inner">
-    //     <div className="wrap">
-    //       <MeterVu cl="meter-panel" />
-    //     </div>
-    //   </div>
-    // </div>
+
 
 
 

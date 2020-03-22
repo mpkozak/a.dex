@@ -8,5 +8,4 @@ export { default as Placard } from './Placard';
 export { default as Screen } from './Screen';
 export { default as Settings } from './Settings';
 
-// export { MeterVu, MeterWave } from './Meters';
-export { default as Meters } from './Meters';
+export { MeterVu, MeterWave } from './Meters';

@@ -8,13 +8,11 @@ import MeterWaveOverlay from './MeterWaveOverlay.jsx';
 
 
 
-export default memo(({ cl = '' } ={}) => {
-  return (
-    <Fragment>
-      <MeterWaveBackpane cl={cl} />
-      <MeterWavePath cl={cl} />
-      <MeterWaveOverlay cl={cl} />
-      <MeterFrame cl={cl} />
-    </Fragment>
-  );
-});
+export default memo(({ cl = '' } = {}) =>
+  <Fragment>
+    <MeterWaveBackpane cl={cl} />
+    <MeterWavePath cl={cl} />
+    <MeterWaveOverlay cl={cl} />
+    <MeterFrame cl={cl} />
+  </Fragment>
+);

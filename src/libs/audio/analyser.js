@@ -54,13 +54,20 @@ export default class Analyser {
     return true;
   };
 
-  get data() {
-    console.log('got data')
-    return {
-      path: this._path,
-      rotation: this._rotation,
-      peak: this.peak,
+  // get data() {
+  //   console.log('got data')
+  //   return {
+  //     path: this._path,
+  //     rotation: this._rotation,
+  //     peak: this.peak,
+  //   };
+  // };
+
+  get ready() {
+    if (!this._needle || !this._needleShadow || !this._led || !this._ledShadow || !this._ledHalo) {
+      return false;
     };
+    return true;
   };
 
 
@@ -101,7 +108,7 @@ export default class Analyser {
   draw() {
     this.drawWave();
     this.drawNeedle();
-    // this.drawLED();
+    this.drawLED();
     return;
   };
 
@@ -137,7 +144,9 @@ export default class Analyser {
 
   runtime() {
     this.analyse();
-    this.draw();
+    if (this.ready) {
+      this.draw();
+    };
     // this._cb()
     this._rAF = requestAnimationFrame(this.runtime);
     return;

@@ -5,11 +5,10 @@ import { analyser } from '../../global';
 
 
 
-export default memo(({ cl = '', peak = false } = {}) => {
+export default memo(({ cl = '' } = {}) => {
   const shadowRef = useRef(null);
   const ledRef = useRef(null);
   const haloRef = useRef(null);
-
 
   useEffect(() => {
     const elShadow = shadowRef.current;
@@ -19,9 +18,6 @@ export default memo(({ cl = '', peak = false } = {}) => {
       analyser.led = { elShadow, elLed, elHalo };
     };
   }, [shadowRef, ledRef, haloRef]);
-
-
-  // console.log('led rendered', peak)
 
 
   return (

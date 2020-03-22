@@ -95,6 +95,7 @@ async function initialize() {
     audio = audioInit();
     // console.log('audio', audio)
     analyser = analyserInit(audio.analyser);
+    analyser.toggle();
     // audio.analyserCallback = analyser.callback;
     // console.log('analyser', analyser)
     tracker = trackerInit(audio.trackerCallback);

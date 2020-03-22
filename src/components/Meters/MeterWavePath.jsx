@@ -8,7 +8,6 @@ import { analyser } from '../../global';
 export default memo(({ cl = '' } = {}) => {
   const pathRef = useRef(null);
 
-
   useEffect(() => {
     const elPath = pathRef.current;
     if (elPath) {
