@@ -35,7 +35,7 @@ export default memo(({ cl = '', paramKey = '', color = '', cb = null } = {}) => 
     return () => {
       el.removeEventListener('pointermove', handlePointerMove);
     };
-  }, [cb, setValue, range, value, scalar, pointerCaptured, knobRef]);
+  }, [cb, range, scalar, pointerCaptured, value, setValue, knobRef]);
 
 
   const handlePointerDown = useCallback((e) => {

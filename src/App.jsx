@@ -4,8 +4,8 @@ import { GlobalStateProvider } from './global';
 import { useInit, useSizeUnit } from './libs/hooks';
 import {
   Init,
-  Placard,
   Screen,
+  Placard,
   Colors,
   Settings,
   Osc1,
@@ -14,6 +14,7 @@ import {
   EqHpf,
   EqLpf,
   Delay,
+  Master,
   MeterVu,
   MeterWave,
 } from './components';
@@ -34,6 +35,8 @@ const UI = memo(() =>
     <EqHpf />
     <EqLpf />
     <Delay />
+    <Master />
+
     <div className="meter Meter-wave">
       <div className="inner">
         <div className="wrap">
@@ -48,6 +51,7 @@ const UI = memo(() =>
         </div>
       </div>
     </div>
+
   </Fragment>
 );
 

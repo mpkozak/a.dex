@@ -1,0 +1,70 @@
+.Master {
+
+}
+
+
+.Master--inner {
+
+}
+
+
+.Master--label {
+  /*background-color: green;*/
+}
+
+.Master--label>h5 {
+
+}
+
+
+
+
+
+.MasterFader {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  /*background-color: orange;*/
+}
+
+
+
+.MasterFaderBackpane {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  /*background-color: blue;*/
+  /*opacity: 1;*/
+}
+
+
+.MasterFaderSlider {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  /*background-color: orange;*/
+  /*opacity: .5;*/
+}
+
+.MasterFaderSlider--element {
+  cursor: grab;
+}
+
+.MasterFaderSlider--element:active {
+  cursor: ns-resize;
+}
+
+
+
+
+
+
+

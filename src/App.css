@@ -145,6 +145,10 @@
   grid-row: 56 / span 30;
 }
 
+.Interface>.Master {
+  grid-column: 150 / span 21;
+  grid-row: 111 / span 40;
+}
 
 
 
@@ -213,9 +217,4 @@
 .mic {
   grid-column: 149 / span 22;
   grid-row: 16 / span 10;
-}
-
-.master {
-  grid-column: 150 / span 21;
-  grid-row: 111 / span 40;
 }
