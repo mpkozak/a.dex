@@ -15,10 +15,11 @@ export default class Analyser {
       .domain([-60, -20, -10, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 20])
       .range([-48, -40, -26, -15, -10.5, -5, -0.5, 5, 10, 15, 20, 25, 30, 35, 48]);
     this._waveScaleCurve = d3.line().curve(d3.curveLinear);
+    this._peakHold = 1e3;
 
     this._path = 'M 0 30 L 100 30';
     this._rotation = -48;
-    this._peak = Date.now();
+    this._peak = Date.now() - this._peakHold;
 
     this._wave = undefined;
     this._needle = undefined;
@@ -48,7 +49,7 @@ export default class Analyser {
 
   get peak() {
     const now = Date.now();
-    if (now - this._peak > 1000) {
+    if (now - this._peak > this._peakHold) {
       return false;
     };
     return true;
