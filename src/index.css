@@ -114,6 +114,34 @@ p {
 
 
 
+
+
+.Knob,
+.Button {
+  filter: drop-shadow(0 0 .3vmin #000000);
+}
+
+.Knob {
+  cursor: grab;
+}
+
+.Knob:active {
+  cursor: ns-resize;
+}
+
+.Button {
+  cursor: pointer;
+}
+
+.Button:active {
+  filter: drop-shadow(0 0 .25vmin #000000);
+  transform: scale(.98);
+}
+
+
+
+
+
 @keyframes pulsar {
   0% {
     opacity: 1;

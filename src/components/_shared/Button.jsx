@@ -1,4 +1,5 @@
 import React, { memo } from 'react';
+import { parseCl } from '../../libs/parse';
 
 
 
@@ -14,7 +15,7 @@ export default memo(({ cl = '', icon = '', active = false, handleClick = null } 
   };
   return (
     <svg
-      className={cl}
+      className={parseCl('Button', cl)}
       viewBox="0 0 100 100"
       width="100"
       height="100"

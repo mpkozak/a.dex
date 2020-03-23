@@ -39,9 +39,4 @@
 .FmSynthElement--knob {
   width: auto;
   height: 70%;
-  cursor: grab;
-}
-
-.FmSynthElement--knob:active {
-  cursor: ns-resize;
 }

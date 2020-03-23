@@ -167,7 +167,6 @@
 
 
 .Meter {
-  /*padding: 0 1vmin;*/
   padding: 0 1vmin;
   display: flex;
   flex-flow: column nowrap;
@@ -180,8 +179,6 @@
   width: 100%;
   height: 0;
   padding-top: 60%;
-  /*border: 0px;*/
-  /*background-color: blue;*/
 }
 
 .Meter>.inner>.wrap {

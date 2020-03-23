@@ -1,4 +1,5 @@
 import React, { memo } from 'react';
+import { parseCl } from '../../libs/parse';
 
 
 
@@ -13,7 +14,7 @@ export default memo(({
   handlePointerUp = null
 } = {}) =>
   <svg
-    className={cl}
+    className={parseCl('Knob', cl)}
     ref={knobRef}
     viewBox="0 0 100 100"
     width="100"

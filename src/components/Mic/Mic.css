@@ -27,11 +27,4 @@
 .MicButton {
   width: auto;
   height: 100%;
-  cursor: pointer;
-  filter: drop-shadow(0 0 .3vmin #000000);
-}
-
-.MicButton:active {
-  filter: drop-shadow(0 0 .25vmin #000000);
-  transform: scale(.98);
 }

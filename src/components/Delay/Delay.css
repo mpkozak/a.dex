@@ -39,11 +39,6 @@
 .DelayElement--knob {
   width: 80%;
   height: auto;
-  cursor: grab;
-}
-
-.DelayElement--knob:active {
-  cursor: ns-resize;
 }
 
 

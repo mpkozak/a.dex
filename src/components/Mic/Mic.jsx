@@ -15,7 +15,7 @@ export default memo(() => {
     setActive(audio.micActive);
   }, [setActive]);
 
-console.log('latency', audio.latency)
+
   return (
     <div className="Mic outer">
       <div className="Mic--inner inner">

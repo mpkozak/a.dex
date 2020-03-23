@@ -5,6 +5,7 @@ import { useInit, useSizeUnit } from './libs/hooks';
 import {
   Init,
   Placard,
+
   Mic,
   Screen,
   Colors,
@@ -27,6 +28,7 @@ import {
 const UI = memo(() =>
   <Fragment>
     <Placard />
+
     <Mic />
     <Screen />
     <Colors />

@@ -16,11 +16,6 @@
 .Eq--knob {
   width: auto;
   height: 35%;
-  cursor: grab;
-}
-
-.Eq--knob:active {
-  cursor: ns-resize;
 }
 
 

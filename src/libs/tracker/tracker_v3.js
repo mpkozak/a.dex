@@ -37,10 +37,6 @@ export default class Tracker {
     Getters
 */
 
-  get sensitivity() {
-    return this._sensitivity;
-  };
-
   get ready() {
     if (!this._svgElement || !this._videoElement || !this._imageCapture) {
       return false;
