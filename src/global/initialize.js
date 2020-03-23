@@ -53,8 +53,8 @@ async function streamInit() {
   try {
     const stream = await navigator.mediaDevices.getUserMedia(options);
     const mediaStreams = {
-      audio: new MediaStream([stream.getAudioTracks()[0]]),
-      video: new MediaStream([stream.getVideoTracks()[0]]),
+      mediaAudioStream: new MediaStream([stream.getAudioTracks()[0]]),
+      mediaVideoStream: new MediaStream([stream.getVideoTracks()[0]]),
     };
     return mediaStreams;
   } catch (err) {
@@ -85,10 +85,12 @@ function trackerInit(audioCallback) {
 
 
 
+
+
 let audio = {},
     analyser = {},
     tracker = {},
-    mediaStreams = {};
+    videoStream = {};
 
 async function initialize() {
   try {
@@ -96,12 +98,16 @@ async function initialize() {
     // console.log('audio', audio)
     analyser = analyserInit(audio.analyser);
     analyser.toggle();
-    // audio.analyserCallback = analyser.callback;
     // console.log('analyser', analyser)
     tracker = trackerInit(audio.trackerCallback);
     // console.log('tracker', tracker)
-    mediaStreams = await streamInit();
-    // console.log('mediaStreams', mediaStreams)
+    const {
+      mediaAudioStream,
+      mediaVideoStream,
+    } = await streamInit();
+    videoStream = mediaVideoStream;
+    audio.mic = mediaAudioStream;
+    // console.log('mediaStreams', mediaAudioStream, mediaVideoStream)
     return true;
   } catch (err) {
     // console.error('initialize', err);
@@ -144,6 +150,6 @@ export {
   audio,
   analyser,
   tracker,
-  mediaStreams,
+  videoStream,
   useInit as default
 };

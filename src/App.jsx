@@ -4,8 +4,9 @@ import { GlobalStateProvider } from './global';
 import { useInit, useSizeUnit } from './libs/hooks';
 import {
   Init,
-  Screen,
   Placard,
+  Mic,
+  Screen,
   Colors,
   Settings,
   Osc1,
@@ -25,8 +26,9 @@ import {
 
 const UI = memo(() =>
   <Fragment>
-    <Screen />
     <Placard />
+    <Mic />
+    <Screen />
     <Colors />
     <Settings />
     <Osc1 />
@@ -37,14 +39,14 @@ const UI = memo(() =>
     <Delay />
     <Master />
 
-    <div className="meter Meter-wave">
+    <div className="Meter Meter-wave">
       <div className="inner">
         <div className="wrap">
           <MeterWave cl="meter-panel" />
         </div>
       </div>
     </div>
-    <div className="meter Meter-vu">
+    <div className="Meter Meter-vu">
       <div className="inner">
         <div className="wrap">
           <MeterVu cl="meter-panel" />

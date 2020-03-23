@@ -1,13 +1,8 @@
-
-
-
-
-
 export default class Audio {
   constructor({
-    octaves = 0,
-    baseHz = 110,
     latency = .05,
+    baseHz = 110,
+    octaves = 0,
     osc1Type,
     osc2Type,
     osc2Detune,
@@ -18,12 +13,10 @@ export default class Audio {
     delayGain,
     masterGain,
   } = {}) {
-    this._octaves = octaves;
-    this._baseHz = baseHz;
     this._latency = .05;
-
+    this._baseHz = baseHz;
+    this._octaves = octaves;
     this._ctx = new AudioContext();
-
     this._osc1 = new OscillatorNode(this._ctx, {
       type: osc1Type,
       frequency: this._baseHz,
@@ -36,7 +29,7 @@ export default class Audio {
     this._fmGain = new GainNode(this._ctx, {
       gain: fmGainGain,
     });
-    this.instGain = new GainNode(this._ctx, {
+    this._instGain = new GainNode(this._ctx, {
       gain: 0,
     });
     this._hpf = new BiquadFilterNode(this._ctx, {
@@ -58,20 +51,18 @@ export default class Audio {
     this._masterGain = new GainNode(this._ctx, {
       gain: masterGain,
     });
-
     this._analyser = new AnalyserNode(this._ctx, {
       fftSize: 2 ** 8,
       minDecibels: -100,
       maxDecibels: -30,
       smoothingTimeConstant: 0,
     });
-
-
-    this._cb = null;
-
-    this.handleTrackerData = this.handleTrackerData.bind(this);
-
-    this.connect();
+    this._mic = undefined;
+    this._micActive = false;
+    this.init = this.init.bind(this);
+    this.toggleMic = this.toggleMic.bind(this);
+    this._handleTrackerData = this._handleTrackerData.bind(this);
+    this._connect();
   };
 
 
@@ -84,23 +75,20 @@ export default class Audio {
     return this._ctx.currentTime;
   };
 
-  // get delay() {
-  //   console.log("get delay", this._delay)
-  //   return this._delay.delayTime.value;
-  // };
-
-
-
-
-
-
-
   get analyser() {
     return this._analyser;
   };
 
   get trackerCallback() {
-    return this.handleTrackerData;
+    return this._handleTrackerData;
+  };
+
+  get latency() {
+    return this._ctx.baseLatency * 1e3;
+  };
+
+  get micActive() {
+    return this._micActive;
   };
 
 
@@ -108,6 +96,14 @@ export default class Audio {
 /*
     Setters
 */
+
+  set mic(stream) {
+    this._mic = new MediaStreamAudioSourceNode(this._ctx, { mediaStream: stream });
+  };
+
+  set octaves(val) {
+    this._octaves = val;
+  };
 
   set osc1(type) {
     this._osc1.type = type;
@@ -117,44 +113,32 @@ export default class Audio {
     this._osc2.type = type;
   };
 
-  set octaves(val) {
-    this._octaves = val;
-  };
-
   set depth(val) {
-    this.setParam(this._fmGain.gain, val, this.now);
+    this._setParam(this._fmGain.gain, val, this.now);
   };
 
   set width(val) {
-    this.setParam(this._osc2.detune, val, this.now);
+    this._setParam(this._osc2.detune, val, this.now);
   };
 
   set hpf(val) {
-    this.setParam(this._hpf.frequency, val, this.now);
+    this._setParam(this._hpf.frequency, val, this.now);
   };
 
   set lpf(val) {
-    this.setParam(this._lpf.frequency, val, this.now);
+    this._setParam(this._lpf.frequency, val, this.now);
   };
 
   set delay(val) {
-    this.setParam(this._delay.delayTime, val, this.now);
+    this._setParam(this._delay.delayTime, val, this.now);
   };
 
   set wet(val) {
-    this.setParam(this._delayGain.gain, val, this.now);
+    this._setParam(this._delayGain.gain, val, this.now);
   };
 
   set master(val) {
-    this.setParam(this._masterGain.gain, val, this.now);
-  };
-
-
-
-
-
-  set analyserCallback(fn) {
-    this._cb = fn;
+    this._setParam(this._masterGain.gain, val, this.now);
   };
 
 
@@ -163,11 +147,11 @@ export default class Audio {
     Initializers
 */
 
-  connect() {
+  _connect() {
     this._osc1.connect(this._fmGain);
     this._fmGain.connect(this._osc2.frequency);
-    this._osc2.connect(this.instGain);
-    this.instGain.connect(this._hpf);
+    this._osc2.connect(this._instGain);
+    this._instGain.connect(this._hpf);
     this._hpf.connect(this._lpf);
     this._lpf.connect(this._masterGain);
     this._lpf.connect(this._delay);
@@ -187,27 +171,41 @@ export default class Audio {
 
 
 /*
-    Tracker Stream
+    Analyser Source Toggle
 */
 
-  handleTrackerData(data) {
-    const now = this.now;
-    if (!data) {
-      // this._cb(true);
-      return this.mute();
+  toggleMic() {
+    if (this._micActive) {
+      this._mic.disconnect(this._analyser);
+      this._masterGain.connect(this._analyser);
+      this._micActive = false;
+      return;
     };
-    const { x, y } = data;
-    const nextLevel = Math.pow(y, 2);
-    const nextFreq = Math.pow(2, x * this._octaves) * this._baseHz;
-    this.setGain(this.instGain.gain, nextLevel, now);
-    this.setFreq(this._osc1.frequency, nextFreq, now);
-    this.setFreq(this._osc2.frequency, nextFreq, now);
-    // this._cb();
+    this._masterGain.disconnect(this._analyser);
+    this._mic.connect(this._analyser);
+    this._micActive = true;
     return;
   };
 
 
 
+/*
+    Tracker Stream
+*/
+
+  _handleTrackerData(data) {
+    const now = this.now;
+    if (!data) {
+      return this.mute();
+    };
+    const { x, y } = data;
+    const nextLevel = Math.pow(y, 2);
+    const nextFreq = Math.pow(2, x * this._octaves) * this._baseHz;
+    this._setGain(this._instGain.gain, nextLevel, now);
+    this._setFreq(this._osc1.frequency, nextFreq, now);
+    this._setFreq(this._osc2.frequency, nextFreq, now);
+    return;
+  };
 
 
 
@@ -216,10 +214,10 @@ export default class Audio {
 */
 
   mute() {
-    return this.setGain(this.instGain.gain, 0, this._ctx.currentTime);
+    return this._setGain(this._instGain.gain, 0, this._ctx.currentTime);
   };
 
-  setGain(gainNode, val, t) {
+  _setGain(gainNode, val, t) {
     const prevVal = gainNode.value;
     gainNode.cancelScheduledValues(t - 1);
     gainNode.setValueAtTime(prevVal, t);
@@ -227,7 +225,7 @@ export default class Audio {
     return;
   };
 
-  setFreq(oscNode, val, t) {
+  _setFreq(oscNode, val, t) {
     const prevVal = oscNode.value;
     oscNode.cancelScheduledValues(t - 1);
     oscNode.setValueAtTime(prevVal, t);
@@ -235,14 +233,10 @@ export default class Audio {
     return;
   };
 
-  setParam(param, val, t) {
+  _setParam(param, val, t) {
     const prevVal = param.value;
     param.cancelScheduledValues(t - 1);
     param.setValueAtTime(prevVal, t);
     param.linearRampToValueAtTime(val, t + this._latency);
   };
-
-
-
-
 };

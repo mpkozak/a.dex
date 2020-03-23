@@ -4,4 +4,11 @@ import { scaleLinear } from 'd3-scale';
 
 
 
-export default { select, line, curveLinear, scaleLinear };
+
+
+export default Object.freeze({
+  select,
+  line,
+  curveLinear,
+  scaleLinear,
+});

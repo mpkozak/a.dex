@@ -14,6 +14,8 @@
 
 
 
+
+
 .Interface {
   --unit: calc(95vw / 17);
   --unit-max: calc(95vh / 15);
@@ -85,14 +87,19 @@
 
 
 
-.Interface>.Screen {
-  grid-column: 1 / span 120;
-  grid-row: 1 / span 90;
-}
-
 .Interface>.Placard {
   grid-column: 121 / span 50;
   grid-row: 1 / span 15;
+}
+
+.Interface>.Mic {
+  grid-column: 149 / span 22;
+  grid-row: 16 / span 10;
+}
+
+.Interface>.Screen {
+  grid-column: 1 / span 120;
+  grid-row: 1 / span 90;
 }
 
 .Interface>.Colors {
@@ -135,6 +142,11 @@
   grid-row: 86 / span 25;
 }
 
+.Interface>.Master {
+  grid-column: 150 / span 21;
+  grid-row: 111 / span 40;
+}
+
 .Interface>.Meter-wave {
   grid-column: 121 / span 50;
   grid-row: 26 / span 30;
@@ -145,10 +157,6 @@
   grid-row: 56 / span 30;
 }
 
-.Interface>.Master {
-  grid-column: 150 / span 21;
-  grid-row: 111 / span 40;
-}
 
 
 
@@ -158,7 +166,7 @@
 
 
 
-.meter {
+.Meter {
   /*padding: 0 1vmin;*/
   padding: 0 1vmin;
   display: flex;
@@ -167,16 +175,16 @@
   justify-content: center;
 }
 
-.meter>.inner {
+.Meter>.inner {
   position: relative;
   width: 100%;
   height: 0;
   padding-top: 60%;
-  border: 0px;
+  /*border: 0px;*/
   /*background-color: blue;*/
 }
 
-.meter>.inner>.wrap {
+.Meter>.inner>.wrap {
   position: absolute;
   left: 0;
   top: 0;
@@ -186,7 +194,7 @@
   box-shadow: .05vmin .1vmin .6vmin .3vmin rgba(0, 0, 0, .9);
 }
 
-.meter>.inner>.wrap>.meter-panel {
+.Meter>.inner>.wrap>.meter-panel {
   position: absolute;
   left: 0;
   top: 0;
@@ -194,7 +202,7 @@
   height: auto;
 }
 
-.meter>.inner>.wrap>.meter-panel.hide {
+.Meter>.inner>.wrap>.meter-panel.hide {
   display: none;
 }
 
@@ -211,10 +219,5 @@
 
 .latency {
   grid-column: 121 / span 28;
-  grid-row: 16 / span 10;
-}
-
-.mic {
-  grid-column: 149 / span 22;
   grid-row: 16 / span 10;
 }

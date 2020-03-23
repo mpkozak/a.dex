@@ -1,4 +1,4 @@
-import d3 from '../d3.js';
+import d3 from '../d3';
 import { clampRange } from '../parse.js';
 
 

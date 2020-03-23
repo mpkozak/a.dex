@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useRef, useCallback } from 'react';
-import { tracker, mediaStreams } from '../../global';
+import { tracker, videoStream } from '../../global';
 import { useGlobalState } from '../../libs/hooks';
 
 
@@ -11,7 +11,6 @@ export default memo(() => {
   const {
     colorSet,
   } = state;
-  const videoStream = mediaStreams.video;
 
   const videoRef = useRef(null);
   const svgRef = useRef(null);
@@ -22,7 +21,7 @@ export default memo(() => {
     if (el && videoStream) {
       el.srcObject = videoStream;
     };
-  }, [videoStream, videoRef]);
+  }, [videoRef]);
 
 
   useEffect(() => {   // set tracker video + svg

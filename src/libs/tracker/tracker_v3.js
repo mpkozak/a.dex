@@ -1,4 +1,4 @@
-import d3 from '../d3.js';
+import d3 from '../d3';
 import WebWorker from '../WebWorker.js';
 import worker from './worker_v3.js';
 

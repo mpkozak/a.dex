@@ -32,14 +32,14 @@ export default memo(({ pct = 0 } = {}) => {
       width="40"
       height="80"
     >
+      <rect
+        x="19"
+        y="10"
+        width="2"
+        height="60"
+        fill="#000000"
+      />
       <g opacity=".7">
-        <rect
-          x="19"
-          y="10"
-          width="2"
-          height="60"
-          fill="#000000"
-        />
         {ticks.map(d =>
           <Fragment key={'MasterSlider' + d.text}>
             <rect
