@@ -6,17 +6,15 @@ import d3 from '../d3';
 
 export default class Analyser {
   constructor(analyserNode) {
-    this.analyser = analyserNode;
-    this.fftSize = this.analyser.fftSize;
-
-    this._data = new Float32Array(this.fftSize);
-    this._dataCurve = new Array(this.fftSize);
+    this._analyser = analyserNode;
+    this._fftSize = this._analyser.fftSize;
+    this._data = new Float32Array(this._fftSize);
+    this._dataCurve = new Array(this._fftSize);
     this._needleScale = d3.scaleLinear()
       .domain([-60, -20, -10, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 20])
       .range([-48, -40, -26, -15, -10.5, -5, -0.5, 5, 10, 15, 20, 25, 30, 35, 48]);
     this._waveScaleCurve = d3.line().curve(d3.curveLinear);
     this._peakHold = 1e3;
-
     this._path = 'M 0 30 L 100 30';
     this._rotation = -48;
     this._peak = Date.now() - this._peakHold;
@@ -28,7 +26,6 @@ export default class Analyser {
     this._ledShadow = undefined;
     this._ledHalo = undefined;
 
-    this._cb = null;
     this._rAF = undefined;
     this.runtime = this.runtime.bind(this);
   };
@@ -38,14 +35,6 @@ export default class Analyser {
 /*
     Getters
 */
-
-  get callback() {
-    return !!this._cb;
-  };
-
-  // get callback() {
-  //   return this.runtime;
-  // };
 
   get peak() {
     const now = Date.now();
@@ -76,11 +65,6 @@ export default class Analyser {
 /*
     Setters
 */
-
-  set callback(cb) {
-    this._cb = cb;
-    this.toggle();
-  };
 
   set wave(els) {
     const { elPath } = els;
@@ -148,7 +132,6 @@ export default class Analyser {
     if (this.ready) {
       this.draw();
     };
-    // this._cb()
     this._rAF = requestAnimationFrame(this.runtime);
     return;
   };
@@ -176,14 +159,14 @@ export default class Analyser {
 */
 
   analyse() {
-    this.analyser.getFloatTimeDomainData(this._data);
+    this._analyser.getFloatTimeDomainData(this._data);
     let dataSum = 0;
-    for (let i = 0; i < this.fftSize; i++) {
+    for (let i = 0; i < this._fftSize; i++) {
       const d = this._data[i];
       dataSum += Math.pow(d, 2);
-      this._dataCurve[i] = [(i / (this.fftSize - 1)) * 100, (d * 50) + 30];
+      this._dataCurve[i] = [(i / (this._fftSize - 1)) * 100, (d * 50) + 30];
     };
-    const dataRms = 20 * Math.log10(Math.sqrt(dataSum / this.fftSize)) + 20;
+    const dataRms = 20 * Math.log10(Math.sqrt(dataSum / this._fftSize)) + 20;
     const rms = dataRms < -60 ? -60 : (dataRms > 20 ? 20 : dataRms);
     this._path = this._waveScaleCurve(this._dataCurve);
     this._rotation = this._rotation * (5 / 6) + (this._needleScale(rms) / 6);

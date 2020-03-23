@@ -66,7 +66,6 @@ async function streamInit() {
 
 function trackerInit(audioCallback) {
   const options = {
-    scalar: 10,
     callback: audioCallback,
     sensitivity: params.initial.sensitivity,
     colors: [

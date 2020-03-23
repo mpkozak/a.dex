@@ -4,12 +4,13 @@ import React, { memo } from 'react';
 
 
 
-export default memo(() =>
+export default memo(({ handleClick = null } = {}) =>
   <svg
     className="InitPower"
     viewBox="0 0 10 10"
     width="10"
     height="10"
+    onClick={handleClick}
   >
     <path
       d="

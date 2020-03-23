@@ -18,12 +18,13 @@
   width: 50%;
   height: 50%;
   opacity: .7;
-  transition: opacity 25ms ease;
+  transition: opacity 25ms ease, filter 25ms ease;
   cursor: pointer;
 }
 
 .InitPower:hover {
   opacity: 1;
+  filter: drop-shadow(0 0 .8vmin rgba(255, 255, 255, .4));
 }
 
 

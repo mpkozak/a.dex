@@ -59,6 +59,10 @@
 .ScreenVideobox--video {
   z-index: 1;
   background-color: #131415;
+  background-image: url('/_img/smpte.svg');
+  background-size: contain;
+  background-position: center center;
+  background-repeat: no-repeat;
 }
 
 
@@ -73,11 +77,10 @@
   flex-flow: column nowrap;
   justify-content: center;
   align-items: center;
-  animation: pulsar 1.5s ease-in-out infinite;
 }
 
-.ScreenVideobox--messagebox>* {
-
+.ScreenVideobox--messagebox>h3 {
+  animation: pulsar 1.5s ease-in-out infinite;
 }
 
 
