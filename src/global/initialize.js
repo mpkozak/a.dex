@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react';
 import { params } from './';
-import { Audio, Analyser } from '../libs/audio';
+import Audio from '../libs/audio';
+import Analyser from '../libs/analyser';
 import Tracker from '../libs/tracker';
 
 
@@ -109,7 +110,7 @@ async function initialize() {
     // console.log('mediaStreams', mediaAudioStream, mediaVideoStream)
     return true;
   } catch (err) {
-    // console.error('initialize', err);
+    console.error('initialize', err);
     return false;
   };
 };

@@ -1,14 +1,10 @@
 
 
 
-export default function() {
+export default (() => {
 
-  // if (!global.AudioContext && global.webkitAudioContext) {
-  //   global.AudioContext = global.webkitAudioContext;
-  // };
-
+// Webkit Audio Context
   window.AudioContext = window.AudioContext || window.webkitAudioContext;
-
 
 
 // AnalyserNode Polyfill From:
@@ -25,7 +21,5 @@ export default function() {
   };
 
 
-};
-
-
-
+  return Promise.resolve();
+})();

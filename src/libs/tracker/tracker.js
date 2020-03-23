@@ -1,6 +1,6 @@
 import d3 from '../d3';
 import WebWorker from '../WebWorker';
-import worker from './worker_v2';
+import worker from './worker.js';
 
 
 
@@ -18,13 +18,13 @@ export default class Tracker {
     this._sensitivity = sensitivity;
     this._colors = colors.map(d => this.validateHex(d)).filter(a => !!a);
     this._videoElement = undefined;
+    this._imageCapture = null;
     this._svgElement = undefined;
     this._width = 0;
     this._height = 0;
     this._canvas = undefined;
     this._ctx = undefined;
     this._overlay = undefined;
-    this._imageData = undefined;
     this._rAF = undefined;
     this.runtime = this.runtime.bind(this);
     this.worker = new WebWorker(worker);
@@ -38,10 +38,10 @@ export default class Tracker {
 */
 
   get ready() {
-    if (this._svgElement && this._videoElement) {
-      return true;
+    if (!this._svgElement || !this._videoElement || !this._imageCapture) {
+      return false;
     };
-    return false;
+    return true;
   };
 
   get active() {
@@ -74,6 +74,7 @@ export default class Tracker {
   };
 
   set video(video) {
+    this._imageCapture = null;
     if (!video) {
       console.error('TRACKER --- no video element specified');
       return null;
@@ -83,6 +84,11 @@ export default class Tracker {
       return null;
     };
     this._videoElement = video;
+    this._videoElement.onplay = () => {
+      const stream = this._videoElement.captureStream();
+      const [track] = stream.getVideoTracks();
+      this._imageCapture = new ImageCapture(track);
+    };
     this.initialize();
   };
 
@@ -118,10 +124,8 @@ export default class Tracker {
   };
 
   initCanvas() {
-    this._canvas = document.createElement('canvas');
-    this._canvas.width = this._width;
-    this._canvas.height = this._height;
-    this._ctx = this._canvas.getContext('2d');
+    this._canvas = new OffscreenCanvas(this._width, this._height);
+    this._ctx = this._canvas.getContext('2d', { alpha: false });
     return;
   };
 
@@ -176,9 +180,9 @@ export default class Tracker {
   Runtime invocation
 */
 
-  runtime() {
-    this.getData();
-    this.worker.postMessage({ imageData: this._imageData });
+  async runtime() {
+    const imageBitmap = await this._imageCapture.grabFrame();
+    this.worker.postMessage({ imageBitmap }, [imageBitmap]);
   };
 
   runtimeIn(data) {
@@ -208,18 +212,6 @@ export default class Tracker {
       return this.start();
     };
     return this.stop();
-  };
-
-
-
-/*
-  Runtime methods
-*/
-
-  getData() {
-    this._ctx.drawImage(this._videoElement, 0, 0, this._width, this._height);
-    this._imageData = this._ctx.getImageData(0, 0, this._width, this._height);
-    return;
   };
 
 

@@ -16,6 +16,16 @@ export default memo(() => {
   const svgRef = useRef(null);
 
 
+  useEffect(() => {   // explicitly set dimensions of video
+    const el = videoRef.current;
+    if (el) {
+      const { clientWidth, clientHeight } = el;
+      el.width = clientWidth;
+      el.height = clientHeight;
+    };
+  }, [videoRef]);
+
+
   useEffect(() => {   // set video stream
     const el = videoRef.current;
     if (el && videoStream) {

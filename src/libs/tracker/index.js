@@ -1,4 +1,4 @@
-import Tracker_v1 from './tracker_v1.js';
+import Tracker from './tracker.js';
 import Tracker_v2 from './tracker_v2.js';
 import Tracker_v3 from './tracker_v3.js';
 
@@ -6,7 +6,7 @@ import Tracker_v3 from './tracker_v3.js';
 
 
 
-let Tracker = undefined;
+let supportedTracker = undefined;
 
 
 (() => {
@@ -26,15 +26,15 @@ let Tracker = undefined;
   };
 
   if (!hasWorker && !hasOffscreenCanvas) {
-    Tracker = Tracker_v1;
+    supportedTracker = Tracker;
   };
 
   if (hasWorker && !hasOffscreenCanvas) {
-    Tracker = Tracker_v2;
+    supportedTracker = Tracker_v2;
   };
 
   if (hasWorker && hasOffscreenCanvas) {
-    Tracker = Tracker_v3;
+    supportedTracker = Tracker_v3;
   };
 })();
 
@@ -42,30 +42,7 @@ let Tracker = undefined;
 
 
 
-export { Tracker as default };
-// export default Tracker_v1;
+export { supportedTracker as default };
+// export default Tracker;
 // export default Tracker_v2;
 // export default Tracker_v3;
-
-
-
-
-
-/*
-TRACKER API >>>
-
-  SET:
-    video
-    svg
-    sensitivity
-    colors
-
-  GET:
-    video
-    svg
-    sensitivity
-    colors
-    ready
-    active
-
-*/

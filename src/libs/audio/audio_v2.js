@@ -17,46 +17,36 @@ export default class Audio {
     this._baseHz = baseHz;
     this._octaves = octaves;
     this._ctx = new AudioContext();
-    this._osc1 = new OscillatorNode(this._ctx, {
-      type: osc1Type,
-      frequency: this._baseHz,
-    });
-    this._osc2 = new OscillatorNode(this._ctx, {
-      type: osc2Type,
-      frequency: this._baseHz,
-      detune: osc2Detune,
-    });
-    this._fmGain = new GainNode(this._ctx, {
-      gain: fmGainGain,
-    });
-    this._instGain = new GainNode(this._ctx, {
-      gain: 0,
-    });
-    this._hpf = new BiquadFilterNode(this._ctx, {
-      type: 'highpass',
-      frequency: hpfFreq,
-      Q: 1,
-    });
-    this._lpf = new BiquadFilterNode(this._ctx, {
-      type: 'lowpass',
-      frequency: lpfFreq,
-      Q: 1,
-    });
-    this._delay = new DelayNode(this._ctx, {
-      delayTime: delayTime,
-    });
-    this._delayGain = new GainNode(this._ctx, {
-      gain: delayGain,
-    });
-    this._masterGain = new GainNode(this._ctx, {
-      gain: masterGain,
-    });
-    this._analyser = new AnalyserNode(this._ctx, {
-      fftSize: 2 ** 8,
-      minDecibels: -100,
-      maxDecibels: -30,
-      smoothingTimeConstant: 0,
-    });
+    this._osc1 = this._ctx.createOscillator();
+    this._osc1.type = osc1Type;
+    this._osc1.frequency.value = this._baseHz;
+    this._osc2 = this._ctx.createOscillator();
+    this._osc2.type = osc2Type;
+    this._osc2.frequency.value = this._baseHz;
+    this._osc2.detune.value = osc2Detune;
+    this._fmGain = this._ctx.createGain();
+    this._fmGain.gain.value = fmGainGain;
+    this._instGain = this._ctx.createGain();
+    this._instGain.gain.value = 0;
+    this._hpf = this._ctx.createBiquadFilter();
+    this._hpf.type = 'highpass';
+    this._hpf.frequency.value = hpfFreq;
+    this._hpf.Q.value = 1;
+    this._lpf = this._ctx.createBiquadFilter();
+    this._lpf.type = 'lowpass';
+    this._lpf.frequency.value = lpfFreq;
+    this._lpf.Q.value = 1;
+    this._delay = this._ctx.createDelay();
+    this._delay.delayTime.value = delayTime;
+    this._delayGain = this._ctx.createGain();
+    this._delayGain.gain.value = delayGain;
+    this._masterGain = this._ctx.createGain();
+    this._masterGain.gain.value = masterGain;
+    this._analyser = this._ctx.createAnalyser();
+    this._analyser.fftSize = 2 ** 8;
+    this._analyser.minDecibels = -100;
+    this._analyser.maxDecibels = -30;
+    this._analyser.smoothingTimeConstant = 0;
     this._mic = undefined;
     this._micActive = false;
     this._handleTrackerData = this._handleTrackerData.bind(this);
@@ -99,7 +89,7 @@ export default class Audio {
 */
 
   set mic(stream) {
-    this._mic = new MediaStreamAudioSourceNode(this._ctx, { mediaStream: stream });
+    this._mic = this._ctx.createMediaStreamSource(stream);
   };
 
   set octaves(val) {

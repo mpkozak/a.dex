@@ -6,8 +6,8 @@ import App from './App.jsx';
 
 
 
-polyfills();
 
 
-
-ReactDOM.render(<App />, document.getElementById('root'));
+polyfills.then(done =>
+  ReactDOM.render(<App />, document.getElementById('root'))
+);
