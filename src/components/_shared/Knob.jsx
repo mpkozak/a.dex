@@ -11,7 +11,9 @@ export default memo(({
   color = '#3A3125',
   rotation = 0,
   handlePointerDown = null,
-  handlePointerUp = null
+  handlePointerUp = null,
+  handleMouseDown = null,
+  handleMouseUp = null,
 } = {}) =>
   <svg
     className={parseCl('Knob', cl)}
@@ -21,6 +23,8 @@ export default memo(({
     height="100"
     onPointerDown={handlePointerDown}
     onPointerUp={handlePointerUp}
+    onMouseDown={handleMouseDown}
+    onMouseUp={handleMouseUp}
   >
     <defs>
       <circle
