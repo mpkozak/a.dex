@@ -26,7 +26,7 @@ let supportedTracker = undefined;
   };
 
   if (!hasWorker && !hasOffscreenCanvas) {
-    supportedTracker = Tracker;
+    supportedTracker = Tracker_v3;
   };
 
   if (hasWorker && !hasOffscreenCanvas) {
@@ -34,7 +34,7 @@ let supportedTracker = undefined;
   };
 
   if (hasWorker && hasOffscreenCanvas) {
-    supportedTracker = Tracker_v3;
+    supportedTracker = Tracker;
   };
 })();
 
