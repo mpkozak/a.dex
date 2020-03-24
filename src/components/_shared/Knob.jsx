@@ -19,60 +19,6 @@ export default memo(({ cl = '', color = '#3A3125', paramKey = '', cb = null } = 
       width="100"
       height="100"
     >
-      <defs>
-        <circle
-          id="knob--circle"
-          cx="50"
-          cy="50"
-          r="48"
-        />
-        <linearGradient
-          id="knob--grad-notch"
-          x1="0%"
-          y1="0%"
-          x2="0%"
-          y2="100%"
-          gradientUnits="objectBoundingBox"
-        >
-          <stop offset="0%" stopColor="#000000" stopOpacity=".5"/>
-          <stop offset="10%" stopColor="#000000" stopOpacity=".6"/>
-          <stop offset="50%" stopColor="#000000" stopOpacity=".7"/>
-          <stop offset="90%" stopColor="#000000" stopOpacity=".6"/>
-          <stop offset="100%" stopColor="#000000" stopOpacity=".5"/>
-        </linearGradient>
-        <radialGradient
-          id="knob--grad-contour"
-          cx="50%"
-          cy="50%"
-          r="100%"
-          gradientUnits="objectBoundingBox"
-        >
-          <stop offset="0%" stopColor="#000000" stopOpacity="0"/>
-          <stop offset="20%" stopColor="#000000" stopOpacity=".1"/>
-          <stop offset="35%" stopColor="#000000" stopOpacity=".3"/>
-          <stop offset="45%" stopColor="#000000" stopOpacity=".5"/>
-          <stop offset="50%" stopColor="#000000" stopOpacity="1"/>
-        </radialGradient>
-        <radialGradient
-          id="knob--grad-glare"
-          cx="50%"
-          cy="50%"
-          r="100%"
-          fx="0%"
-          fy="0%"
-          fr="10%"
-          gradientUnits="objectBoundingBox"
-        >
-          <stop offset="0%" stopColor="#FFFFFF" stopOpacity="1"/>
-          <stop offset="5%" stopColor="#FFFFFF" stopOpacity=".5"/>
-          <stop offset="15%" stopColor="#FFFFFF" stopOpacity=".3"/>
-          <stop offset="25%" stopColor="#FFFFFF" stopOpacity=".2"/>
-          <stop offset="40%" stopColor="#FFFFFF" stopOpacity=".1"/>
-          <stop offset="65%" stopColor="#FFFFFF" stopOpacity="0"/>
-          <stop offset="70%" stopColor="#000000" stopOpacity="0"/>
-          <stop offset="80%" stopColor="#000000" stopOpacity="1"/>
-        </radialGradient>
-      </defs>
       <use
         xlinkHref="#knob--circle"
         fill={color}

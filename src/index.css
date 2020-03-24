@@ -120,6 +120,15 @@ text {
 
 
 
+.defs {
+  /*display: none;*/
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+
+
 .Knob,
 .Button {
   filter: drop-shadow(0 0 .3vmin #000000);

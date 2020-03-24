@@ -1,6 +1,6 @@
 import React, { memo, useRef } from 'react';
 import './App.css';
-import { GlobalStateProvider } from './global';
+import { GlobalStateProvider, SvgDefs } from './global';
 import { useInit, useSizeUnit } from './libs/hooks';
 import UI, { Init } from './components';
 
@@ -17,6 +17,7 @@ export default memo(() => {
 
   return (
     <GlobalStateProvider>
+      <SvgDefs />
       <div id="App">
         <div className="Interface" ref={interfaceRef}>
           {init === true

@@ -11,7 +11,6 @@ export default memo(({ cl = '' } = {}) =>
     width="100"
     height="60"
   >
-{/* BACKPLANE */}
     <rect
       x="5"
       y="5"
