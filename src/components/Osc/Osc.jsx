@@ -1,7 +1,7 @@
 import React, { memo, useState, useCallback } from 'react';
 import './Osc.css';
 import { params, audio } from '../../global';
-import { parseCl } from '../../libs/parse.js';
+import { parseCl } from '../../libs/parse';
 import OscButton from './OscButton.jsx';
 
 
