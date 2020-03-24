@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { KnobDrag } from '../_shared';
+import { Knob } from '../_shared';
 
 
 
@@ -7,10 +7,10 @@ import { KnobDrag } from '../_shared';
 
 export default memo(({ settingsKey = '', label = '', cb = null } = {}) =>
   <div className="SettingsElement">
-    <KnobDrag
+    <Knob
       cl="SettingsElement--knob"
-      paramKey={settingsKey}
       color="#1F2224"
+      paramKey={settingsKey}
       cb={cb}
     />
     <h5>{label}</h5>

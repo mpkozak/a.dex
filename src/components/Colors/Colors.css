@@ -46,8 +46,15 @@
   width: auto;
   height: 65%;
   cursor: pointer;
+  filter: drop-shadow(0 0 .3vmin #000000);
 }
 
 .ColorsElementGem:active {
+  filter: drop-shadow(0 0 .25vmin #000000);
+}
+
+
+.ColorsElementGem:active>.ColorsElementGem--glow {
   transform: scale(.96);
+  transform-origin: 50% 50%;
 }

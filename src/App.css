@@ -166,48 +166,6 @@
 
 
 
-.Meter {
-  padding: 0 1vmin;
-  display: flex;
-  flex-flow: column nowrap;
-  align-items: flex-end;
-  justify-content: center;
-}
-
-.Meter>.inner {
-  position: relative;
-  width: 100%;
-  height: 0;
-  padding-top: 60%;
-}
-
-.Meter>.inner>.wrap {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  border-radius: .6vmin;
-  box-shadow: .05vmin .1vmin .6vmin .3vmin rgba(0, 0, 0, .9);
-}
-
-.Meter>.inner>.wrap>.meter-panel {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: calc(100% + 1px);
-  height: auto;
-}
-
-.Meter>.inner>.wrap>.meter-panel.hide {
-  display: none;
-}
-
-
-
-
-
-
 
 
 

@@ -1,8 +1,8 @@
 import React, { memo, useState, useCallback } from 'react';
 import './Eq.css';
 import { params, audio } from '../../global';
-import { parseCl } from '../../libs/parse.js';
-import { KnobDrag } from '../_shared';
+import { parseCl } from '../../libs/parse';
+import { Knob } from '../_shared';
 import EqDigits from './EqDigits.jsx';
 
 
@@ -27,10 +27,10 @@ const Eq = memo(({ cl = '', eqKey = '', label = '' } = {}) => {
         <div className="Eq--label label">
           <h3>{label}</h3>
         </div>
-        <KnobDrag
+        <Knob
           cl="Eq--knob"
-          paramKey={eqKey}
           color="#3A3125"
+          paramKey={eqKey}
           cb={eqCallback}
         />
         <EqDigits

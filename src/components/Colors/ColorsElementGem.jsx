@@ -4,11 +4,7 @@ import React, { memo } from 'react';
 
 
 
-export default memo(({
-  color = '#FFFFFF',
-  active = false,
-  handleClick = null,
-} = {}) => {
+export default memo(({ color = '#FFFFFF', active = false, handleClick = null } = {}) => {
   const styles = {
     pulse: {
       animation: 'pulsar 1.5s ease-in-out infinite',
@@ -17,6 +13,8 @@ export default memo(({
       display: 'none',
     },
   };
+
+
   return (
     <svg
       className="ColorsElementGem"
@@ -88,6 +86,7 @@ export default memo(({
         stroke="#000000"
         strokeWidth="6%"
       />
+      <g className="ColorsElementGem--glow">
       <use
         xlinkHref="#colorgem--circle-small"
         style={active ? styles.pulse : null}
@@ -110,6 +109,7 @@ export default memo(({
         xlinkHref="#colorgem--circle-big"
         fill="url(#colorgem--grad-glare)"
       />
+      </g>
     </svg>
   );
 });

@@ -1,6 +1,6 @@
 import React, { memo, useState, useEffect, useRef, useCallback } from 'react';
 import { params } from '../../global';
-import { clampRange, getPct } from '../../libs/parse.js';
+import { clampRange, getPct } from '../../libs/parse';
 import Knob from './Knob.jsx';
 
 

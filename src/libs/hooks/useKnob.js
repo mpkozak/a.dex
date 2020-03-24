@@ -1,13 +1,12 @@
-import React, { memo, useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { params } from '../../global';
-import { clampRange, getPct } from '../../libs/parse.js';
-import Knob from './Knob.jsx';
+import { clampRange, getPct } from '../parse';
 
 
 
 
 
-export default memo(({ cl = '', paramKey = '', color = '', cb = null } = {}) => {
+export default function({ knobRef = null, paramKey = '', cb = null } = {}) {
   const hasPointerEvents = !!window.PointerEvent;
   const range = params.range[paramKey];
   const initial = params.initial[paramKey];
@@ -15,8 +14,6 @@ export default memo(({ cl = '', paramKey = '', color = '', cb = null } = {}) => 
 
   const [pointerCaptured, setPointerCaptured] = useState(false);
   const [value, setValue] = useState(initial);
-
-  const knobRef = useRef(null);
 
 
   const handlePointerUp = useCallback((e) => {
@@ -101,12 +98,5 @@ export default memo(({ cl = '', paramKey = '', color = '', cb = null } = {}) => 
   }, [hasPointerEvents, pointerCaptured, knobRef, handlePointerMove, handleMouseMove]);
 
 
-  return (
-    <Knob
-      cl={cl}
-      knobRef={knobRef}
-      color={color}
-      rotation={getPct(value, range)}
-    />
-  );
-});
+  return getPct(value, range);
+};

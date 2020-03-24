@@ -1,6 +1,6 @@
 import d3 from '../d3';
 import WebWorker from '../WebWorker';
-import worker from './worker.js';
+import worker from './worker';
 
 
 

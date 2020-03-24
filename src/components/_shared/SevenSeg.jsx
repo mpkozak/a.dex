@@ -4,22 +4,21 @@ import React, { memo } from 'react';
 
 
 
-export default memo(({
-  cl = '',
-  value = 0,
-  digits = 3,
-  dec = 0,
-} = {}) => {
+export default memo(({ cl = '', value = 0, digits = 3, dec = 0 } = {}) => {
   const width = (digits * 6) + 2;
+
   let val = Math.round(value);
   if (dec) {
     const valueDecLen = Math.min(dec, digits - value.toFixed(0).length);
     val = value.toFixed(valueDecLen);
   };
+
   const style = {
     fontFamily: 'DSEG7 Classic',
     fontSize: 7,
   };
+
+
   return (
     <svg
       className={cl}
@@ -70,4 +69,3 @@ export default memo(({
     </svg>
   );
 });
-

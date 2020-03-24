@@ -13,6 +13,8 @@ export default memo(({ cl = '', icon = '', active = false, handleClick = null } 
     sawtooth: 'M 2 5 L 5 2.5 L 5 7.5 L 8 5',
     square: 'M 2 5 L 2 2.5 L 5 2.5 L 5 7.5 L 8 7.5 L 8 5',
   };
+
+
   return (
     <svg
       className={parseCl('Button', cl)}
