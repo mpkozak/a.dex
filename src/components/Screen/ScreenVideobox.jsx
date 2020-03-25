@@ -72,7 +72,11 @@ export default memo(() => {
       <div className="ScreenVideobox--messagebox">
         <h3>{state.message}</h3>
       </div>
-      <div className="ScreenVideobox--clickbox flip-h" onClick={handleClick} />
+      <div
+        className="ScreenVideobox--clickbox flip-h"
+        style={{ cursor: !!colorSet ? 'crosshair' : 'default' }}
+        onClick={handleClick}
+      />
     </div>
   );
 });
