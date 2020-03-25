@@ -460,12 +460,161 @@ export default memo(() => {
       </svg>
 
 
+{/* MeterVuNeedle */}
+      <svg
+        className="defs MeterVuNeedle--defs"
+        viewBox="0 0 100 60"
+        width="100"
+        height="60"
+      >
+        <defs>
+          <linearGradient id="metervu--grad-needle-shadow"
+            x1="0%"
+            y1="0%"
+            x2="100%"
+            y2="0%"
+            gradientUnits="objectBoundingBox"
+          >
+            <stop offset="0%" stopColor="#000000" stopOpacity="0" />
+            <stop offset="25%" stopColor="#000000" stopOpacity=".1" />
+            <stop offset="50%" stopColor="#000000" stopOpacity=".4" />
+            <stop offset="75%" stopColor="#000000" stopOpacity=".1" />
+            <stop offset="0%" stopColor="#000000" stopOpacity="0" />
+          </linearGradient>
+          <linearGradient
+            id="metervu--grad-coil-shadow"
+            x1="0%"
+            y1="0%"
+            x2="0%"
+            y2="100%"
+            gradientUnits="objectBoundingBox"
+          >
+            <stop offset="0%" stopColor="#000000" stopOpacity=".6" />
+            <stop offset="20%" stopColor="#000000" stopOpacity=".2" />
+            <stop offset="50%" stopColor="#000000" stopOpacity="0" />
+            <stop offset="80%" stopColor="#000000" stopOpacity=".2" />
+            <stop offset="100%" stopColor="#000000" stopOpacity=".6" />
+          </linearGradient>
+          <linearGradient
+            id="metervu--grad-coil-wire"
+            x1="0%"
+            y1="0%"
+            x2="5%"
+            y2="0%"
+            gradientUnits="objectBoundingBox"
+            spreadMethod="repeat"
+          >
+            <stop offset="0%" stopColor="#3A2411" stopOpacity=".5" />
+            <stop offset="50%" stopColor="#68411E" stopOpacity="1" />
+            <stop offset="100%" stopColor="#3A2411" stopOpacity=".5" />
+          </linearGradient>
+        </defs>
+      </svg>
 
+
+{/* MeterVuLed */}
+      <svg
+        className="defs MeterVuLed--defs"
+        viewBox="0 0 100 60"
+        width="100"
+        height="60"
+      >
+        <defs>
+          <circle
+            id="metervu--circle-led"
+            cx="88"
+            cy="24.6"
+            r="1.875"
+          />
+          <radialGradient
+            id="metervu--grad-led-shadow"
+            cx="50%"
+            cy="50%"
+            r="100%"
+            fx="45%"
+            fy="45%"
+            fr="2%"
+            gradientUnits="objectBoundingBox"
+          >
+            <stop offset="0%" stopColor="#000000" stopOpacity="1" />
+            <stop offset="30%" stopColor="#000000" stopOpacity=".9" />
+            <stop offset="46%" stopColor="#000000" stopOpacity=".2" />
+            <stop offset="50%" stopColor="#000000" stopOpacity="0" />
+          </radialGradient>
+          <radialGradient
+            id="metervu--grad-led-border"
+            cx="50%"
+            cy="50%"
+            r="100%"
+            gradientUnits="objectBoundingBox"
+          >
+            <stop offset="0%" stopColor="#000000" stopOpacity="1" />
+            <stop offset="44%" stopColor="#000000" stopOpacity="1" />
+            <stop offset="50%" stopColor="#000000" stopOpacity="0" />
+          </radialGradient>
+          <radialGradient
+            id="metervu--grad-led-contour"
+            cx="50%"
+            cy="50%"
+            r="100%"
+            gradientUnits="objectBoundingBox"
+          >
+            <stop offset="0%" stopColor="#000000" stopOpacity="0" />
+            <stop offset="25%" stopColor="#000000" stopOpacity=".1" />
+            <stop offset="40%" stopColor="#000000" stopOpacity=".3" />
+            <stop offset="46%" stopColor="#000000" stopOpacity=".5" />
+            <stop offset="50%" stopColor="#000000" stopOpacity=".9" />
+          </radialGradient>
+          <radialGradient
+            id="metervu--grad-led-glare"
+            cx="50%"
+            cy="50%"
+            r="50%"
+            fx="28%"
+            fy="28%"
+            fr="4%"
+            gradientUnits="objectBoundingBox"
+          >
+            <stop offset="0%" stopColor="#FFFFFF" stopOpacity=".8" />
+            <stop offset="1%" stopColor="#FFFFFF" stopOpacity=".6" />
+            <stop offset="3%" stopColor="#FFFFFF" stopOpacity=".4" />
+            <stop offset="20%" stopColor="#FFFFFF" stopOpacity=".2" />
+            <stop offset="50%" stopColor="#000000" stopOpacity=".1" />
+          </radialGradient>
+          <radialGradient
+            id="metervu--grad-led-halo"
+            cx="50%"
+            cy="50%"
+            r="100%"
+            gradientUnits="objectBoundingBox"
+          >
+            <stop offset="0%" stopColor="#AB2D1E" stopOpacity="0" />
+            <stop offset="25%" stopColor="#FF352E" stopOpacity=".3" />
+            <stop offset="30%" stopColor="#FF352E" stopOpacity=".2" />
+            <stop offset="35%" stopColor="#FF352E" stopOpacity=".1" />
+            <stop offset="50%" stopColor="#FF352E" stopOpacity="0" />
+          </radialGradient>
+        </defs>
+      </svg>
 
 
     </Fragment>
   );
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
