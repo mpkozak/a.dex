@@ -14,16 +14,13 @@ export default class Analyser {
       .domain([-60, -20, -10, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 20])
       .range([-48, -40, -26, -15, -10.5, -5, -0.5, 5, 10, 15, 20, 25, 30, 35, 48]);
     this._waveScaleCurve = d3.line().curve(d3.curveLinear);
-
     this._peakHold = 1e3;
     this._peak = Date.now() - this._peakHold;
     this.rotation = -48;
     this.path = 'M 0 30 L 100 30';
-
     this._cbLed = undefined;
     this._cbNeedle = undefined;
     this._cbWave = undefined;
-
     this._rAF = undefined;
     this.runtime = this.runtime.bind(this);
   };
@@ -47,6 +44,24 @@ export default class Analyser {
       return false;
     };
     return true;
+  };
+
+
+
+/*
+    Setters
+*/
+
+  set ledCallback(cb) {
+    this._cbLed = cb;
+  };
+
+  set needleCallback(cb) {
+    this._cbNeedle = cb;
+  };
+
+  set waveCallback(cb) {
+    this._cbWave = cb;
   };
 
 

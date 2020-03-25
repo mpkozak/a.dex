@@ -31,12 +31,3 @@ export const clampRange = (val, [min, max]) => {
   };
   return val;
 };
-
-
-
-
-  // let num = parseInt(val, 10);
-  // if (isNaN(num)) {
-  //   console.error('clampRange --- value must be a number');
-  //   return null;
-  // };

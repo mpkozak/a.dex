@@ -14,7 +14,7 @@ export default memo(({ cl = '' } = {}) => {
 
 
   useEffect(() => {
-    analyser._cbWave = updatePath;
+    analyser.waveCallback = updatePath;
   }, [updatePath]);
 
 
@@ -30,6 +30,7 @@ export default memo(({ cl = '' } = {}) => {
         fill="none"
         stroke="#A0FFA0"
         strokeWidth=".15%"
+        clipPath="url(#meterframe--clip-inner)"
       />
     </svg>
   );

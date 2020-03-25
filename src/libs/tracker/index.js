@@ -6,7 +6,7 @@ import Tracker_v3 from './tracker_v3.js';
 
 
 
-let supportedTracker = undefined;
+let supportedTracker = Tracker;
 
 
 (() => {
@@ -32,10 +32,6 @@ let supportedTracker = undefined;
   if (hasWorker && !hasOffscreenCanvas) {
     supportedTracker = Tracker_v2;
   };
-
-  if (hasWorker && hasOffscreenCanvas) {
-    supportedTracker = Tracker;
-  };
 })();
 
 
@@ -43,6 +39,3 @@ let supportedTracker = undefined;
 
 
 export { supportedTracker as default };
-// export default Tracker;
-// export default Tracker_v2;
-// export default Tracker_v3;

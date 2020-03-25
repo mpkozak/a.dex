@@ -14,7 +14,7 @@ export default memo(({ cl = '' } = {}) => {
 
 
   useEffect(() => {
-    analyser._cbNeedle = updateRotation;
+    analyser.needleCallback = updateRotation;
   }, [updateRotation]);
 
 

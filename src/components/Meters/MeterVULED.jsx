@@ -14,7 +14,7 @@ export default memo(({ cl = '' } = {}) => {
 
 
   useEffect(() => {
-    analyser._cbLed = updatePeak;
+    analyser.ledCallback = updatePeak;
   }, [updatePeak]);
 
 

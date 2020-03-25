@@ -95,22 +95,17 @@ let audio = {},
 async function initialize() {
   try {
     audio = audioInit();
-    // console.log('audio', audio)
     analyser = analyserInit(audio.analyser);
     analyser.toggle();
-    // console.log('analyser', analyser)
     tracker = trackerInit(audio.trackerCallback);
-    // console.log('tracker', tracker)
     const {
       mediaAudioStream,
       mediaVideoStream,
     } = await streamInit();
     videoStream = mediaVideoStream;
     audio.mic = mediaAudioStream;
-    // console.log('mediaStreams', mediaAudioStream, mediaVideoStream)
     return true;
   } catch (err) {
-    console.error('initialize', err);
     return false;
   };
 };
