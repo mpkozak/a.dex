@@ -1,4 +1,5 @@
 import d3 from '../d3';
+import { clampRange } from '../parse';
 
 
 
@@ -112,7 +113,8 @@ export default class Analyser {
       this._dataCurve[i] = [(i / (this._fftSize - 1)) * 100, (d * 50) + 30];
     };
     const dataRms = 20 * Math.log10(Math.sqrt(dataSum / this._fftSize)) + 20;
-    const rms = dataRms < -60 ? -60 : (dataRms > 20 ? 20 : dataRms);
+    // const rms = dataRms < -60 ? -60 : (dataRms > 20 ? 20 : dataRms);
+    const rms = clampRange(dataRms, [-60, 20]);
     this._peak = dataRms > 15 ? Date.now() : this._peak;
     this.rotation = this.rotation * (5 / 6) + (this._needleScale(rms) / 6);
     this.path = this._waveScaleCurve(this._dataCurve);
