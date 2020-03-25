@@ -20,12 +20,12 @@ export default class Analyser {
     this.rotation = -48;
     this.path = 'M 0 30 L 100 30';
 
-    this._rAF = undefined;
-    this.runtime = this.runtime.bind(this);
-
     this._cbLed = undefined;
     this._cbNeedle = undefined;
     this._cbWave = undefined;
+
+    this._rAF = undefined;
+    this.runtime = this.runtime.bind(this);
   };
 
 
@@ -52,74 +52,12 @@ export default class Analyser {
 
 
 /*
-    Setters
-*/
-
-  // set wave(els) {
-  //   const { elPath } = els;
-  //   this._wave = d3.select(elPath);
-  // };
-
-  // set needle(els) {
-  //   const { elShadow, elNeedle } = els;
-  //   this._needle = d3.select(elNeedle);
-  //   this._needleShadow = d3.select(elShadow);
-  // };
-
-  // set led(els) {
-  //   const { elShadow, elLed, elHalo } = els;
-  //   this._led = d3.select(elLed);
-  //   this._ledShadow = d3.select(elShadow);
-  //   this._ledHalo = d3.select(elHalo);
-  // };
-
-
-
-/*
-    Draw stack
-*/
-
-  // draw() {
-  //   this.drawWave();
-  //   this.drawNeedle();
-  //   this.drawLED();
-  //   return;
-  // };
-
-  // drawWave() {
-  //   this._wave
-  //     .attr('d', this.path);
-  //   return;
-  // };
-
-  // drawNeedle() {
-  //   this._needle
-  //     .attr('transform', `rotate(${this.rotation}, 50, 57)`);
-  //   this._needleShadow
-  //     .attr('transform', `translate(${this.rotation * 0.01}, ${this.rotation * 0.012 + 1.2}) rotate(${this.rotation}, 50, 57)`);
-  //   return;
-  // };
-
-  // drawLED() {
-  //   this._led
-  //     .attr('fill', this.peak ? '#FF452F' : '#AB2D1E');
-  //   this._ledShadow
-  //     .attr('opacity', this.peak ? .5 : 1);
-  //   this._ledHalo
-  //     .attr('opacity', this.peak ? 1 : 0);
-  //   return;
-  // };
-
-
-
-/*
     Runtime
 */
 
   runtime() {
     this.analyse();
     if (this.ready) {
-      // this.draw();
       this._cbLed(this.peak);
       this._cbNeedle(this.rotation);
       this._cbWave(this.path);
@@ -165,6 +103,4 @@ export default class Analyser {
     this.path = this._waveScaleCurve(this._dataCurve);
     return;
   };
-
-
 };
