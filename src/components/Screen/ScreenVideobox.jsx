@@ -2,7 +2,7 @@ import React, { memo, useEffect, useRef, useCallback } from 'react';
 import { tracker, videoStream } from '../../global';
 import { useGlobalState } from '../../libs/hooks';
 import { parseCl } from '../../libs/parse';
-import Tutorial from './Tutorial.jsx';
+import { Tutorial } from '../';
 
 
 
