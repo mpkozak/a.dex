@@ -1,7 +1,7 @@
 import React, { Fragment, memo } from 'react';
 import {
   Placard,
-
+  Latency,
   Mic,
   Screen,
   Colors,
@@ -24,7 +24,7 @@ import {
 export default memo(() =>
   <Fragment>
     <Placard />
-
+    <Latency />
     <Mic />
     <Screen />
     <Colors />
@@ -40,10 +40,3 @@ export default memo(() =>
     <MeterVu />
   </Fragment>
 );
-
-
-
-
-
-
-

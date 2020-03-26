@@ -1,7 +1,8 @@
 import React, { memo, useEffect, useRef, useCallback } from 'react';
 import { tracker, videoStream } from '../../global';
 import { useGlobalState } from '../../libs/hooks';
-import ScreenVideoboxTutorial from './ScreenVideoboxTutorial.jsx';
+import { parseCl } from '../../libs/parse';
+import Tutorial from './Tutorial.jsx';
 
 
 
@@ -70,9 +71,9 @@ export default memo(() => {
         muted
       />
       <svg className="ScreenVideobox--overlay flip-h" ref={svgRef} />
-      <div className="ScreenVideobox--messagebox">
+      <div className={parseCl('ScreenVideobox--messagebox', { tutorial })}>
         {!!colorSet && <h3>Calibrating...</h3>}
-        {(tutorial && !colorSet) && <ScreenVideoboxTutorial />}
+        {(tutorial && !colorSet) && <Tutorial />}
       </div>
       <div
         className="ScreenVideobox--clickbox flip-h"

@@ -92,6 +92,11 @@
   grid-row: 1 / span 15;
 }
 
+.Interface>.Latency {
+  grid-column: 121 / span 28;
+  grid-row: 16 / span 10;
+}
+
 .Interface>.Mic {
   grid-column: 149 / span 22;
   grid-row: 16 / span 10;
@@ -164,15 +169,13 @@
 
 
 
-
-
-
-
-
-
-
-
-.latency {
-  grid-column: 121 / span 28;
-  grid-row: 16 / span 10;
+.Interface>* {
+  /*border: 1px solid red;*/
 }
+
+
+
+
+
+
+
