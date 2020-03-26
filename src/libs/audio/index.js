@@ -1,5 +1,5 @@
 import Audio from './audio.js';
-import Audio_v2 from './audio_v2.js';
+// import Audio_v2 from './audio_v2.js';
 
 
 
@@ -8,15 +8,15 @@ import Audio_v2 from './audio_v2.js';
 let supportedAudio = Audio;
 
 
-(() => {
-  try {
-    const ctx = new AudioContext();
-    new OscillatorNode(ctx);
-    ctx.close();
-  } catch (err) {
-    supportedAudio = Audio_v2;
-  };
-})();
+// (() => {
+//   try {
+//     const ctx = new AudioContext();
+//     new OscillatorNode(ctx);
+//     ctx.close();
+//   } catch (err) {
+//     supportedAudio = Audio_v2;
+//   };
+// })();
 
 
 
