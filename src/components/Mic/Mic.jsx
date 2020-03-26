@@ -1,7 +1,7 @@
 import React, { memo, useState, useCallback } from 'react';
 import './Mic.css';
 import { audio } from '../../global';
-import { Button } from '../_shared';
+import { Button } from '../';
 
 
 

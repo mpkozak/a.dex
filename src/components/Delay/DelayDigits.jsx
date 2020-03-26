@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { SevenSeg } from '../_shared';
+import { SevenSeg } from '../';
 
 
 

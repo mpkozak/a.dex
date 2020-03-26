@@ -1,5 +1,5 @@
 import React, { memo, useCallback } from 'react';
-import { Button } from '../_shared'
+import { Button } from '../'
 
 
 

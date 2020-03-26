@@ -1,3 +1,4 @@
+export { Button, Knob, Logo, SevenSeg } from './_shared';
 export { default as Colors } from './Colors';
 export { default as Delay } from './Delay';
 export { EqHpf, EqLpf } from './Eq';

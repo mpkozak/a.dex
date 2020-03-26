@@ -2,7 +2,7 @@ import React, { memo, useState, useCallback } from 'react';
 import './Eq.css';
 import { params, audio } from '../../global';
 import { parseCl } from '../../libs/parse';
-import { Knob } from '../_shared';
+import { Knob } from '../';
 import EqDigits from './EqDigits.jsx';
 
 

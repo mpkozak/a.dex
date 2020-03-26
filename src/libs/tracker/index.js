@@ -10,20 +10,8 @@ let supportedTracker = Tracker;
 
 
 (() => {
-  let hasWorker = false;
-  let hasOffscreenCanvas = false;
-
-  if (typeof Worker !== 'undefined') {
-    hasWorker = true;
-  } else {
-    hasWorker = false;
-  };
-
-  if (typeof OffscreenCanvas !== 'undefined') {
-    hasOffscreenCanvas = true;
-  } else {
-    hasOffscreenCanvas = false;
-  };
+  let hasWorker = typeof Worker !== 'undefined';
+  let hasOffscreenCanvas = typeof OffscreenCanvas !== 'undefined';
 
   if (!hasWorker && !hasOffscreenCanvas) {
     supportedTracker = Tracker_v3;

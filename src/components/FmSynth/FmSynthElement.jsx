@@ -1,6 +1,6 @@
 import React, { memo, useCallback } from 'react';
 import { audio } from '../../global';
-import { Knob } from '../_shared';
+import { Knob } from '../';
 
 
 

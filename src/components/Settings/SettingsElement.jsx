@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { Knob } from '../_shared';
+import { Knob } from '../';
 
 
 

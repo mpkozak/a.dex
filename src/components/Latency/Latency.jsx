@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import './Latency.css';
 import { audio } from '../../global';
-import { SevenSeg } from '../_shared';
+import { SevenSeg } from '../';
 
 
 
