@@ -1,14 +1,14 @@
 .Tutorial {
   position: relative;
-  /*position: absolute;*/
-  /*left: 9%;*/
-  /*top: 12.5%;*/
   width: 82%;
   height: 75%;
 }
 
 
-.Tutorial--list {
+
+
+
+.TutorialList {
   position: absolute;
   left: 0;
   top: 0;
@@ -18,68 +18,66 @@
   animation: focus 12s infinite linear;
 }
 
-.Tutorial--list>li {
-  margin-bottom: 2%;
-  font-family: 'VCR';
-  font-size: 3.25rem;
-  list-style-type: none;
-}
-
-
-.Tutorial>.glitch-1 {
+.TutorialList.glitch-1 {
   left: 1px;
   text-shadow: 1px 0 #FF0000;
   opacity: .5;
   animation: glitchy-one 2s infinite linear;
 }
 
-.Tutorial>.glitch-1>li:nth-child(2n) {
-  animation: glitchy-two 3s infinite linear alternate-reverse;
-  /*background-color: brown;*/
-}
-
-.Tutorial>.glitch-1>li:nth-child(2n + 1) {
-  animation: glitchy-two 3s infinite linear alternate;
-  /*background-color: brown;*/
-}
-
-
-.Tutorial>.glitch-2 {
-  /*display: none;*/
+.TutorialList.glitch-2 {
   left: -1px;
   text-shadow: -1px 0 #00FF00;
   opacity: .5;
   animation: glitchy-two 3s infinite linear reverse;
 }
 
-.Tutorial>.glitch-2>li:nth-child(2n) {
-  animation: glitchy-two 3s infinite linear alternate;
-  /*background-color: yellow;*/
+
+.TutorialList>li {
+  margin-bottom: 2%;
+  font-family: 'VCR';
+  font-size: 3.25rem;
+  list-style-type: none;
 }
 
-.Tutorial>.glitch-2>li:nth-child(2n + 1) {
+.TutorialList.glitch-1>li:nth-child(2n) {
   animation: glitchy-two 3s infinite linear alternate-reverse;
-  /*background-color: yellow;*/
+}
+
+.TutorialList.glitch-1>li:nth-child(2n + 1) {
+  animation: glitchy-two 3s infinite linear alternate;
+}
+
+.TutorialList.glitch-2>li:nth-child(2n) {
+  animation: glitchy-two 3s infinite linear alternate;
+}
+
+.TutorialList.glitch-2>li:nth-child(2n + 1) {
+  animation: glitchy-two 3s infinite linear alternate-reverse;
 }
 
 
+
+@keyframes focus {
+  6% {
+    filter: blur(0);
+  }
+  10% {
+    filter: blur(.2rem);
+  }
+  11% {
+    filter: blur(0);
+  }
+}
 
 @keyframes glitchy-one {
   0% {
     clip-path: inset(0% 0 90% 0);
   }
-/*  10% {
-    clip-path: inset(5% 0 85% 0);
-  }
-  90% {
-    clip-path: inset(90% 0 0% 0);
-  }*/
   100% {
     clip-path: inset(90% 0 0% 0);
   }
 }
-
-
 
 @keyframes glitchy-two {
   0% {
@@ -101,67 +99,3 @@
     clip-path: inset(58% 0 43% 0);
   }
 }
-
-
-
-
-
-
-@keyframes focus {
-  6% {
-    filter: blur(0);
-  }
-  10% {
-    filter: blur(.2rem);
-  }
-  11% {
-    filter: blur(0);
-  }
-}
-
-
-/*@keyframes colorbars {
-  6% {
-    background-image: none;
-  }
-  10% {
-    background-image: url('/_img/smpte.svg');
-  }
-  16% {
-    background-image: none;
-  }
-}*/
-
-/*
-@keyframes glitch {
-  49% {
-    transform: translate(0%, 0%);
-  }
-  50% {
-    transform: translate(0%, -10%);
-  }
-  51% {
-    transform: translate(0%, 0%);
-  }
-  89% {
-    transform: translate(0%, 0%);
-  }
-  90% {
-    transform: translate(8%, 2%);
-  }
-  94% {
-    transform: translate(0%, 0%);
-  }
-}*/
-
-/*@keyframes discolor {
-  89% {
-    color: #FFFFFF;
-  }
-  90% {
-    color: #FFFF00;
-  }
-  94% {
-    color: #FFFFFF;
-  }
-}*/
