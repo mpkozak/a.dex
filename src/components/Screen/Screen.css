@@ -80,6 +80,8 @@
 }
 
 .ScreenVideobox--messagebox>h3 {
+  font-family: 'VCR';
+  color: #FFFFFF;
   animation: pulsar 1.5s ease-in-out infinite;
 }
 
@@ -87,3 +89,97 @@
 .ScreenVideobox--clickbox {
   z-index: 4;
 }
+
+
+
+
+
+.ScreenVideoboxTutorial {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  background-color: #0000FF;
+  /*animation: colorbars 20s step-end infinite;*/
+}
+
+.ScreenVideoboxTutorial>.list {
+  width: 82%;
+  margin-left: 0%;
+  color: #FFFFFF;
+  animation: focus 20s ease infinite;
+             /*glitch 15s step-end infinite,*/
+             /*discolor 12s step-end infinite;*/
+}
+
+.ScreenVideoboxTutorial>.list>li {
+  margin-bottom: 2%;
+  font-family: 'VCR';
+  font-size: 3.25rem;
+  list-style-type: none;
+}
+
+
+
+
+
+@keyframes focus {
+  6% {
+    filter: blur(0);
+  }
+  10% {
+    filter: blur(.2rem);
+  }
+  11% {
+    filter: blur(0);
+  }
+}
+
+
+/*@keyframes colorbars {
+  6% {
+    background-image: none;
+  }
+  10% {
+    background-image: url('/_img/smpte.svg');
+  }
+  16% {
+    background-image: none;
+  }
+}*/
+
+/*
+@keyframes glitch {
+  49% {
+    transform: translate(0%, 0%);
+  }
+  50% {
+    transform: translate(0%, -10%);
+  }
+  51% {
+    transform: translate(0%, 0%);
+  }
+  89% {
+    transform: translate(0%, 0%);
+  }
+  90% {
+    transform: translate(8%, 2%);
+  }
+  94% {
+    transform: translate(0%, 0%);
+  }
+}*/
+
+/*@keyframes discolor {
+  89% {
+    color: #FFFFFF;
+  }
+  90% {
+    color: #FFFF00;
+  }
+  94% {
+    color: #FFFFFF;
+  }
+}*/

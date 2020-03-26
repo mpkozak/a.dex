@@ -6,7 +6,7 @@ import { params, tracker } from './';
 
 
 const initialState = {
-  message: null,
+  tutorial: true,
   colorGain: params.initial.colorGain,
   colorFreq: params.initial.colorFreq,
   colorSet: false,

@@ -1,6 +1,7 @@
 import React, { memo, useEffect, useRef, useCallback } from 'react';
 import { tracker, videoStream } from '../../global';
 import { useGlobalState } from '../../libs/hooks';
+import ScreenVideoboxTutorial from './ScreenVideoboxTutorial.jsx';
 
 
 
@@ -9,6 +10,7 @@ import { useGlobalState } from '../../libs/hooks';
 export default memo(() => {
   const { state, setState } = useGlobalState();
   const {
+    tutorial,
     colorSet,
   } = state;
 
@@ -52,7 +54,6 @@ export default memo(() => {
     };
     const { offsetX, offsetY } = e.nativeEvent;
     const color = tracker.getPointColor(offsetX, offsetY);
-    setState(['message', null]);
     setState(['colorSet', false]);
     setState([colorSet, color]);
   }, [setState, colorSet]);
@@ -70,7 +71,8 @@ export default memo(() => {
       />
       <svg className="ScreenVideobox--overlay flip-h" ref={svgRef} />
       <div className="ScreenVideobox--messagebox">
-        <h3>{state.message}</h3>
+        {!!colorSet && <h3>Calibrating...</h3>}
+        {(tutorial && !colorSet) && <ScreenVideoboxTutorial />}
       </div>
       <div
         className="ScreenVideobox--clickbox flip-h"
