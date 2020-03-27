@@ -1,0 +1,36 @@
+.Osc {
+
+}
+
+
+.Osc--inner {
+
+}
+
+
+.Osc--label {
+
+}
+
+
+.Osc--buttonbox {
+  width: 100%;
+  height: calc(100% - 6rem);
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+
+
+
+
+.OscButton {
+  width: 22%;
+  height: auto;
+}
+
+.OscButton:active {
+  transform: scale(.96);
+}

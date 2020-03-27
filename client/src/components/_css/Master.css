@@ -1,9 +1,0 @@
-.master {
-  flex-flow: column nowrap;
-}
-
-.master .inner {
-  flex-flow: column nowrap;
-  align-items: center;
-  justify-content: space-between;
-}

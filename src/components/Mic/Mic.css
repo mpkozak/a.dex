@@ -1,0 +1,30 @@
+.Mic {
+
+}
+
+
+.Mic--inner {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-around;
+  overflow: visible !important;
+}
+
+
+.Mic--label {
+  width: auto;
+}
+
+.Mic--label>h6 {
+  text-align: left;
+}
+
+
+
+
+
+.MicButton {
+  width: auto;
+  height: 100%;
+}
