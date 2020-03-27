@@ -1,0 +1,60 @@
+.Colors {
+
+}
+
+
+.Colors--inner {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-around;
+}
+
+
+.Colors--label {
+  width: 35%;
+  padding-right: 1%;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.Colors--label>h3 {
+  text-align: right;
+  line-height: 7rem;
+}
+
+
+
+
+
+.ColorsElement {
+  width: 20%;
+  height: 95%;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+
+
+
+
+.ColorsElementGem {
+  width: auto;
+  height: 65%;
+  cursor: pointer;
+  filter: drop-shadow(0 0 .3vmin #000000);
+}
+
+.ColorsElementGem:active {
+  filter: drop-shadow(0 0 .25vmin #000000);
+}
+
+
+.ColorsElementGem:active>.ColorsElementGem--glow {
+  transform: scale(.96);
+  transform-origin: 50% 50%;
+}

@@ -1,0 +1,61 @@
+.Delay {
+
+}
+
+
+.Delay--inner {
+
+}
+
+
+.Delay--label {
+
+}
+
+
+.Delay--knobbox {
+  width: 100%;
+  height: calc(100% - 6rem);
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+
+
+
+
+.DelayElement {
+  width: 25%;
+  height: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+
+.DelayElement--knob {
+  width: 80%;
+  height: auto;
+}
+
+
+
+
+
+.DelayDigits {
+  width: 40%;
+  height: 85%;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.DelayDigits--display {
+  width: 85%;
+  height: auto;
+}

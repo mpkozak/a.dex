@@ -1,0 +1,38 @@
+.Eq {
+
+}
+
+
+.Eq--inner {
+
+}
+
+
+.Eq--label {
+
+}
+
+
+.Eq--knob {
+  width: auto;
+  height: 35%;
+}
+
+
+
+
+
+.EqDigits {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+
+.EqDigits--display {
+  width: 85%;
+  height: auto;
+}

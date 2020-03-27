@@ -1,0 +1,181 @@
+#App {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+  background-image: url('/_img/steel.jpg');
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-size: cover;
+}
+
+
+
+
+
+.Interface {
+  --unit: calc(95vw / 17);
+  --unit-max: calc(95vh / 15);
+  --unit-min: 30px;
+  position: absolute;
+  width: calc(17 * var(--unit));
+  height: calc(15 * var(--unit));
+  max-width: calc(17 * var(--unit-max));
+  max-height: calc(15 * var(--unit-max));
+  min-width: calc(17 * var(--unit-min));
+  min-height: calc(15 * var(--unit-min));
+  display: grid;
+  grid-template-columns: repeat(170, [col-start] 1fr [col-end]);
+  grid-template-rows: repeat(150, [row-start] 1fr [row-end]);
+  align-items: stretch;
+  justify-items: stretch;
+  align-content: space-around;
+  justify-content: space-around;
+  background-image: url('/_img/titanium.jpg');
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-size: cover;
+  border-radius: .5vmin;
+  overflow: hidden;
+  box-shadow: 0 0 .5vmin .1vmin #000000;
+}
+
+
+.Interface>.outer {
+  position: relative;
+  padding: 1vmin;
+}
+
+
+.Interface>.outer>.inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.Interface>.outer>.inner.border {
+  border-radius: 1vmin;
+  border: 1px solid rgba(255, 255, 255, .5);
+  padding: 1.5rem;
+}
+
+.Interface>.outer>.inner.vert {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+
+.Interface>.outer>.inner.vert>.label {
+  width: 100%;
+  height: 6rem;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+
+.Interface>.outer>.inner.vert>.label>h3 {
+  text-align: left;
+}
+
+
+
+.Interface>.Placard {
+  grid-column: 121 / span 50;
+  grid-row: 1 / span 15;
+}
+
+.Interface>.Latency {
+  grid-column: 121 / span 28;
+  grid-row: 16 / span 10;
+}
+
+.Interface>.Mic {
+  grid-column: 149 / span 22;
+  grid-row: 16 / span 10;
+}
+
+.Interface>.Screen {
+  grid-column: 1 / span 120;
+  grid-row: 1 / span 90;
+}
+
+.Interface>.Colors {
+  grid-column: 1 / span 72;
+  grid-row: 91 / span 20;
+}
+
+.Interface>.Settings {
+  grid-column: 73 / span 48;
+  grid-row: 91 / span 20;
+}
+
+.Interface>.Osc-1 {
+  grid-column: 1 / span 40;
+  grid-row: 111 / span 20;
+}
+
+.Interface>.Osc-2 {
+  grid-column: 1 / span 40;
+  grid-row: 131 / span 20;
+}
+
+.Interface>.FmSynth {
+  grid-column: 41 / span 55;
+  grid-row: 111 / span 40;
+}
+
+.Interface>.Eq-hpf {
+  grid-column: 96 / span 27;
+  grid-row: 111 / span 40;
+}
+
+.Interface>.Eq-lpf {
+  grid-column: 123 / span 27;
+  grid-row: 111 / span 40;
+}
+
+.Interface>.Delay {
+  grid-column: 121 / span 50;
+  grid-row: 86 / span 25;
+}
+
+.Interface>.Master {
+  grid-column: 150 / span 21;
+  grid-row: 111 / span 40;
+}
+
+.Interface>.Meter-wave {
+  grid-column: 121 / span 50;
+  grid-row: 26 / span 30;
+}
+
+.Interface>.Meter-vu {
+  grid-column: 121 / span 50;
+  grid-row: 56 / span 30;
+}
+
+
+
+
+
+
+
+
+.Interface>* {
+  /*border: 1px solid red;*/
+}
+
+
+
+
+
+
+

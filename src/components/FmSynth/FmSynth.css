@@ -1,0 +1,42 @@
+.FmSynth {
+
+}
+
+
+.FmSynth--inner {
+
+}
+
+
+.FmSynth--label {
+
+}
+
+
+.FmSynth--knobbox {
+  width: 100%;
+  height: calc(100% - 6rem);
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: flex-end;
+  justify-content: space-around;
+}
+
+
+
+
+
+.FmSynthElement {
+  width: 45%;
+  height: 85%;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+
+.FmSynthElement--knob {
+  width: auto;
+  height: 70%;
+}

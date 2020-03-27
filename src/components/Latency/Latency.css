@@ -1,0 +1,26 @@
+.Latency {
+
+}
+
+
+.Latency--inner {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+
+.Latency--digits {
+  width: auto;
+  height: 100%;
+}
+
+
+.Latency--label {
+
+}
+
+.Latency--label>h6 {
+  text-align: left;
+}

@@ -1,0 +1,56 @@
+.Master {
+
+}
+
+
+.Master--inner {
+
+}
+
+
+.Master--label {
+  height: 10%;
+}
+
+.Master--label>h5 {
+
+}
+
+
+
+
+
+.MasterFader {
+  position: relative;
+  width: 100%;
+  height: 90%;
+}
+
+
+
+
+
+.MasterFaderBackpane,
+.MasterFaderSlider {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+
+.MasterFaderSlider--element {
+  cursor: grab;
+}
+
+.MasterFaderSlider--element:active {
+  cursor: ns-resize;
+}
+
+
+
+
+
+
+

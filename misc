@@ -1,0 +1,18 @@
+
+
+
+
+
+// function throttle(fn, t) {
+//   let now = Date.now();
+//   return (e) => {
+//     console.log('in throttle return')
+//     const nextNow = Date.now();
+//     if (nextNow - now < t) {
+//       return null;
+//     };
+//     now = nextNow;
+//     fn(e);
+//   };
+// };
+
