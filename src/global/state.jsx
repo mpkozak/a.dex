@@ -15,6 +15,13 @@ const initialState = {
 
 function updateState(state, key, val) {
   switch (key) {
+    case 'tutorial':
+      if (val === false) {
+        tracker.start();
+      } else {
+        tracker.stop();
+      };
+      break;
     case 'colorGain':
       tracker.colors = [
         val,
