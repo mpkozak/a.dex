@@ -59,7 +59,7 @@
 .ScreenVideobox--video {
   z-index: 1;
   background-color: #131415;
-  background-image: url('/_img/smpte.svg');
+  background-image: url('../../_img/smpte.svg');
   background-size: contain;
   background-position: center center;
   background-repeat: no-repeat;

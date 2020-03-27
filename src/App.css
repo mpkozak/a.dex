@@ -6,7 +6,7 @@
   flex-flow: column nowrap;
   align-items: center;
   justify-content: center;
-  background-image: url('/_img/steel.jpg');
+  background-image: url('./_img/steel.jpg');
   background-repeat: no-repeat;
   background-position: 50% 50%;
   background-size: cover;
@@ -34,7 +34,7 @@
   justify-items: stretch;
   align-content: space-around;
   justify-content: space-around;
-  background-image: url('/_img/titanium.jpg');
+  background-image: url('./_img/titanium.jpg');
   background-repeat: no-repeat;
   background-position: 50% 50%;
   background-size: cover;

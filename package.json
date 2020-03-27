@@ -46,5 +46,6 @@
     "motion",
     "tracking"
   ],
-  "homepage": "/adex"
+  "_homepage": "/",
+  "homepage": "https://kozak.digital/adex"
 }

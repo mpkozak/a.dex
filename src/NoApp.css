@@ -6,7 +6,7 @@
   flex-flow: column nowrap;
   align-items: center;
   justify-content: center;
-  background-image: url('/_img/titanium.jpg');
+  background-image: url('./_img/titanium.jpg');
   background-repeat: no-repeat;
   background-position: 50% 50%;
   background-size: cover;
