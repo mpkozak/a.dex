@@ -3,4 +3,3 @@ build
 .DS_store
 .env
 CNAME
-misc
