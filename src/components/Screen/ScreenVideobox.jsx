@@ -14,6 +14,7 @@ export default memo(() => {
     tutorial,
     colorSet,
   } = state;
+  const showTutorial = tutorial && !colorSet;
 
   const videoRef = useRef(null);
   const svgRef = useRef(null);
@@ -50,6 +51,9 @@ export default memo(() => {
 
 
   const handleClick = useCallback((e) => {
+    if (tutorial) {
+      setState(['tutorial', false]);
+    };
     if (!colorSet) {
       return null;
     };
@@ -57,7 +61,7 @@ export default memo(() => {
     const color = tracker.getPointColor(offsetX, offsetY);
     setState(['colorSet', false]);
     setState([colorSet, color]);
-  }, [setState, colorSet]);
+  }, [setState, tutorial, colorSet]);
 
 
   return (
@@ -71,13 +75,20 @@ export default memo(() => {
         muted
       />
       <svg className="ScreenVideobox--overlay flip-h" ref={svgRef} />
-      <div className={parseCl('ScreenVideobox--messagebox', { tutorial })}>
+      <div className={parseCl(
+        'ScreenVideobox--messagebox',
+        showTutorial ? 'tutorial' : '',
+      )}>
         {!!colorSet && <h3>Calibrating...</h3>}
-        {(tutorial && !colorSet) && <Tutorial />}
+        {showTutorial && <Tutorial />}
       </div>
       <div
         className="ScreenVideobox--clickbox flip-h"
-        style={{ cursor: !!colorSet ? 'crosshair' : 'default' }}
+        style={{
+          cursor: showTutorial
+            ? 'pointer'
+            : (!!colorSet ? 'crosshair' : 'default')
+        }}
         onClick={handleClick}
       />
     </div>

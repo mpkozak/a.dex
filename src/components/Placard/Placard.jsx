@@ -3,6 +3,7 @@ import './Placard.css';
 import { tracker } from '../../global';
 import { useGlobalState } from '../../libs/hooks';
 import { Logo } from '../';
+import PlacardHelp from './PlacardHelp.jsx';
 
 
 
@@ -22,9 +23,11 @@ export default memo(() => {
     <div className="Placard outer">
       <div className="Placard--inner inner">
         <Logo cl="Placard--logo" />
-        <button onClick={toggleTutorial}>
-          help
-        </button>
+        <PlacardHelp
+          cl="PlacardHelp"
+          active={tutorial}
+          handleClick={toggleTutorial}
+        />
       </div>
     </div>
   );

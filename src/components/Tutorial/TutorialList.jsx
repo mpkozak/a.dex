@@ -12,6 +12,6 @@ export default memo(({ cl = '' } = {}) =>
     <li>If a tracking circle doesn’t appear (or only appears intermittently), use the "Sensitivity" knob to adjust.</li>
     <li>Volume is controlled by moving the corresponding controller up and down.</li>
     <li>Pitch is controlled by moving the corresponding controller left and right.</li>
-    <li>Press the power button to continue.</li>
+    <li>Click the screen to continue.</li>
   </ul>
 );

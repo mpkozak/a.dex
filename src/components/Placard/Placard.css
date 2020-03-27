@@ -4,14 +4,14 @@
 
 
 .Placard--inner {
-  display: flex;
-  flex-flow: row nowrap;
-  align-items: flex-end;
-  justify-content: space-between;
+
 }
 
 
 .Placard--logo {
+  position: absolute;
+  left: 0;
+  bottom: 0;
   width: 90%;
   height: auto;
 }
@@ -20,6 +20,20 @@
 
 
 
-.Placard button {
-  background-color: black;
+.PlacardHelp {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 10%;
+  height: auto;
+  opacity: .6;
+  cursor: pointer;
+}
+
+.PlacardHelp:hover {
+  opacity: .7;
+}
+
+.PlacardHelp:active {
+  opacity: .7;
 }
